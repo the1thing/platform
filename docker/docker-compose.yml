@@ -1,0 +1,24 @@
+db:
+  build: db
+  volumes:
+    - ./volumes/db/var/lib/postgresql/data:/var/lib/postgresql/data
+    - /etc/localtime:/etc/localtime:ro
+  environment:
+    - POSTGRES_USER=mmuser
+    - POSTGRES_PASSWORD=mmuser_password
+    - POSTGRES_DB=mattermost
+app:
+  build: app
+  links:
+    - db:db
+  ports:
+    - "8065:80"
+  volumes:
+    - ./volumes/app/mattermost/config:/mattermost/config:rw
+    - ./volumes/app/mattermost/data:/mattermost/data:rw
+    - /etc/localtime:/etc/localtime:ro
+  environment:
+  # set same as db environment
+    - MM_USERNAME=mmuser
+    - MM_PASSWORD=mmuser_password
+    - MM_DBNAME=mattermost

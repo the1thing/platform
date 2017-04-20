@@ -1,14 +1,14 @@
 @charset 'UTF-8';
 
 a {
-    color: $primary-color;
+    color: $primary-color!important;
     cursor: pointer;
     text-decoration: none;
     word-break: break-word;
 
     &:hover,
     &:focus {
-        color: $primary-color--hover;
+        color: $primary-color--hover!important;
     }
 }
 

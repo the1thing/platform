@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import Constants from 'utils/constants.jsx';
@@ -161,9 +161,10 @@ export default class FileAttachment extends React.Component {
                             rel='noopener noreferrer'
                         >
                             <span className='fa fa-download'/>
-                        </a>
+                        
                         <span className='post-image__type'>{fileInfo.extension.toUpperCase()}</span>
                         <span className='post-image__size'>{Utils.fileSizeToString(fileInfo.size)}</span>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2016 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import React from 'react';
@@ -21,8 +21,7 @@ export default class PostMessageView extends React.Component {
         mentionKeys: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,
         usernameMap: React.PropTypes.object.isRequired,
         channelNamesMap: React.PropTypes.object.isRequired,
-        team: React.PropTypes.object.isRequired,
-        isLastPost: React.PropTypes.bool
+        team: React.PropTypes.object.isRequired
     };
 
     shouldComponentUpdate(nextProps) {
@@ -114,7 +113,6 @@ export default class PostMessageView extends React.Component {
         return (
             <div>
                 <span
-                    id={this.props.isLastPost ? 'lastPostMessageText' : null}
                     className='post-message__text'
                     onClick={Utils.handleFormattedTextClick}
                     dangerouslySetInnerHTML={{__html: TextFormatting.formatText(this.props.post.message, options)}}

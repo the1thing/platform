@@ -80,10 +80,6 @@
 
         label {
             font-weight: 600;
-
-            &.has-error {
-                font-weight: normal;
-            }
         }
 
         .no-padding--left {
@@ -286,7 +282,8 @@
                     }
 
                     .input-group-addon {
-                        background: transparent;
+                        background: transparent!important;
+                        border: none!important;
                     }
 
                     .radio {
@@ -329,10 +326,12 @@
 
                 .divider-dark {
                     border-bottom: 1px solid #aaa;
+                    display: none!important;
                 }
 
                 .divider-light {
                     border-bottom: 1px solid lightgrey;
+                    display: none!important;
 
                     & + .divider-light {
                         display: none;

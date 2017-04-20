@@ -17,6 +17,8 @@
     padding: 100px 0 50px;
     position: relative;
 
+    h1 {display:none;}
+
     &.branded {
         @include display-flex;
         @include flex-direction(row);
@@ -37,6 +39,7 @@
 
         .signup__content {
             @include flex(1 0 0);
+
         }
 
     }
@@ -142,7 +145,7 @@
     }
 
     .signup-team-logo {
-        display: none;
+        display: block!important;
         margin: 0 0 2em;
         width: 210px;
     }

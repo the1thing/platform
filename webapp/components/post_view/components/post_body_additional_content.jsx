@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import PostAttachmentList from './post_attachment_list.jsx';
@@ -153,36 +153,30 @@ export default class PostBodyAdditionalContent extends React.Component {
 
     render() {
         if (this.isLinkToggleable() && !this.state.linkLoadError) {
+            const messageWithToggle = [];
+
             // if message has only one line and starts with a link place toggle in this only line
             // else - place it in new line between message and embed
             const prependToggle = (/^\s*https?:\/\/.*$/).test(this.props.post.message);
-
-            const toggle = (
+            messageWithToggle.push(
                 <a
-                    key='toggle'
                     className={`post__embed-visibility ${prependToggle ? 'pull-left' : ''}`}
                     data-expanded={this.state.embedVisible}
                     aria-label='Toggle Embed Visibility'
                     onClick={this.toggleEmbedVisibility}
                 />
             );
-            const message = (
-                <div key='message'>
-                    {this.props.message}
-                </div>
-            );
 
-            let contents;
             if (prependToggle) {
-                contents = [toggle, message];
+                messageWithToggle.push(this.props.message);
             } else {
-                contents = [message, toggle];
+                messageWithToggle.unshift(this.props.message);
             }
 
+            let toggleableEmbed;
             if (this.state.embedVisible) {
-                contents.push(
+                toggleableEmbed = (
                     <div
-                        key='embed'
                         className='post__embed-container'
                     >
                         {this.generateToggleableEmbed()}
@@ -192,7 +186,8 @@ export default class PostBodyAdditionalContent extends React.Component {
 
             return (
                 <div>
-                    {contents}
+                    {messageWithToggle}
+                    {toggleableEmbed}
                 </div>
             );
         }

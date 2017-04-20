@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 import $ from 'jquery';
 
@@ -104,10 +104,6 @@ export default class PostList extends React.Component {
     }
 
     isAtBottom() {
-        if (!this.refs.postlist) {
-            return this.wasAtBottom;
-        }
-
         // consider the view to be at the bottom if it's within this many pixels of the bottom
         const atBottomMargin = 10;
 
@@ -139,10 +135,6 @@ export default class PostList extends React.Component {
         // Postpone all DOM related calculations to next frame.
         // scrollHeight etc might return wrong data at this point
         setTimeout(() => {
-            if (!this.refs.postlist) {
-                return;
-            }
-
             this.wasAtBottom = this.isAtBottom();
             this.props.postListScrolled(this.isAtBottom());
             this.prevScrollHeight = this.refs.postlist.scrollHeight;
@@ -339,7 +331,6 @@ export default class PostList extends React.Component {
                 <Post
                     key={keyPrefix + 'postKey'}
                     ref={post.id}
-                    isLastPost={i === 0}
                     sameUser={sameUser}
                     sameRoot={sameRoot}
                     post={post}
@@ -489,14 +480,8 @@ export default class PostList extends React.Component {
     }
 
     scrollToBottomAnimated() {
-        if (UserAgent.isIos()) {
-            // JQuery animation doesn't work on iOS
-            this.refs.postlist.scrollTop = this.refs.postlist.scrollHeight;
-        } else {
-            var postList = $(this.refs.postlist);
-
-            postList.animate({scrollTop: this.refs.postlist.scrollHeight}, '500');
-        }
+        var postList = $(this.refs.postlist);
+        postList.animate({scrollTop: this.refs.postlist.scrollHeight}, '500');
     }
 
     getArchivesIntroMessage() {
@@ -504,7 +489,7 @@ export default class PostList extends React.Component {
             <div className={'channel-intro'}>
                 <h4 className='channel-intro__title'>
                     <FormattedMessage
-                        id='post_focus_view.beginning'
+                        id='post_focus_view.welcome'
                         defaultMessage='Beginning of Channel Archives'
                     />
                 </h4>

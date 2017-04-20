@@ -1,5 +1,4 @@
 @charset 'UTF-8';
-
 .sidebar--right {
     @include translateX(400px);
     background: $white;
@@ -9,15 +8,9 @@
     right: 0;
     width: 400px;
     z-index: 6;
-
     &.webrtc {
         z-index: 5;
     }
-
-    &.sidebar--right--expanded {
-        z-index: 10;
-    }
-
     .sidebar--right__bg {
         @include single-transition(background-color, .5s, ease);
         background-color: alpha-color($black, 0);
@@ -27,56 +20,42 @@
         visibility: hidden;
         width: 300%;
     }
-
     &.move--left,
     &.webrtc--show {
         .sidebar--right__bg {
             left: -100%;
         }
     }
-
     .post-body {
         img {
             max-height: 200px;
         }
     }
-
     .post {
-        &.post--compact {
-            .post__pinned-badge {
-                margin: 0 0 0 5px;
-            }
-        }
-
         .post__content {
             padding: 0 10px 0 0;
         }
-
         .post__header {
             .col__name {
                 .user-popover {
                     max-width: 120px;
                 }
             }
-
             .flag-icon__container {
                 z-index: 5;
             }
         }
     }
-
     .post-create__container {
         form {
             padding: .5em 15px 0;
         }
-
         .post-create-footer {
             @include clearfix;
             font-size: 13px;
             overflow: visible;
             position: relative;
             clear: both;
-
             .post-error {
                 font-weight: normal;
                 margin-bottom: 0;
@@ -85,20 +64,17 @@
                 @include opacity(.55);
                 position: absolute;
                 top: -25px;
-          }
-       }
+            }
+        }
     }
-
     .help__format-text {
         display: none;
     }
-
     .sidebar--right__content {
         @include display-flex;
         @include flex-direction(column);
         height: 100%;
     }
-
     .sidebar--right__back {
         @include single-transition(all, .2s, ease-in);
         @include opacity(.5);
@@ -109,28 +85,26 @@
         text-align: center;
         vertical-align: top;
         width: 30px;
-
         &:hover,
         &:active {
             color: inherit;
             opacity: .8;
         }
-
         i {
             position: relative;
-            top: -2px;
+            top: -1px;
+    left: 3px;
         }
     }
-
     .sidebar-right__body {
         @include display-flex;
         @include flex(1 1 auto);
         @include flex-direction(column);
-        border-left: $border-gray;
-        border-top: $border-gray;
+        // border-left: 1px solid #F0F0F0;
+        background: #F6F6F6;
+        // border-top: $border-gray;
         height: calc(100% - 56px);
     }
-
     .sidebar__overlay {
         @include opacity(.1);
         background-color: $yellow;
@@ -140,15 +114,12 @@
         width: 100%;
         z-index: 5;
     }
-
     .input-group {
         word-break: break-word;
     }
-
     .sidebar--right__buttons {
         float: right;
     }
-
     .sidebar--right__close {
         @include single-transition(all, .2s, ease-in);
         background: none;
@@ -161,59 +132,58 @@
         outline: none;
         padding: 0;
         width: 30px;
-
         &:hover,
         &:active {
             opacity: .8;
         }
-
         i {
             position: relative;
         }
     }
-
     .sidebar--right__expand {
         @extend .sidebar--right__close;
         font-size: 17px;
-
+        height: 32px!important;
         i {
             top: -2px;
         }
-
         .fa-compress {
             display: none;
         }
     }
-
     .sidebar--right__header {
         @include flex(0 0 44px);
         border-bottom: $border-gray;
+        border-color: #ffffff!important;
         color: inherit;
         font-size: 1em;
-        height: 44px;
-        line-height: 44px;
+        height: 60px;
+        line-height: 60px;
         padding: 0 5px 0 15px;
         text-transform: uppercase;
+        .sidebar--right__title span {
+            font-size: 24px;
+            color: #7F7F7F;
+            font-family: 'MarkPro-Black';
+            text-transform: capitalize;
+            line-height: 60px;
+                margin-left: 10px;
+        }
     }
-
     .sidebar--right__subheader {
         font-size: 1em;
         padding: 0.5em 1em 0;
-
         h4 {
             font-size: 1em;
         }
-
         ul {
             @include opacity(.7);
             padding: 10px 0 0 30px;
         }
-
         li {
             font-size: .95em;
             padding-bottom: 10px;
         }
-
         .usage__icon {
             @include opacity(.9);
             margin: 0 3px;
@@ -221,7 +191,6 @@
             top: 1px;
         }
     }
-
     .suggestion-list__content {
         max-height: 120px;
     }
@@ -229,4 +198,11 @@
 
 .sidebar-right-container {
     height: 100%;
+}
+
+i {
+    color: #BDBDBD!important;
+    &:hover {
+        color: #000000!important;
+    }
 }

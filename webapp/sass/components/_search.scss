@@ -1,14 +1,15 @@
 @charset 'UTF-8';
-
 .channel-header {
     .search-bar__container {
         padding: 0 9px 0 3px;
+        background: #FFFFFF!important;
     }
 }
 
 .search-bar__container {
     @include flex(0 0 56px);
     padding: 12px 8px 0 0;
+    background: #FFFFFF!important;
 }
 
 .icon--rotate {
@@ -18,7 +19,6 @@
 .search-item-snippet {
     @include clearfix;
     text-overflow: ellipsis;
-
     ul,
     ol {
         padding-left: 20px;
@@ -65,38 +65,36 @@
 
 .search__form {
     position: relative;
-
     .search-bar__container & {
-        @include border-radius(2px);
-        border: 1px solid $light-gray;
+        @include border-radius(8px);
+        border: 1px solid #F0F0F0;
         margin: 0;
         width: 300px;
     }
-
     .sidebar--right & {
         width: 300px;
         float: left;
         margin-left: 17px;
         margin-right: 9px;
     }
-
     .search-bar {
         box-shadow: none;
         height: 40px;
         padding-right: 30px;
-
+        border-radius: 8px;
+        background: #FFFFFF!important;
+        color: #7F7F7F!important;
+        font-family: 'MarkPro-Bold';
         .search-bar__container & {
             border: none;
             height: 30px;
         }
     }
-
     .icon--refresh {
         @include opacity(0.5);
         position: absolute;
         right: 27px;
         top: 27px;
-
         .search-bar__container & {
             right: 7px;
             top: 8px;
@@ -128,11 +126,9 @@
     .post {
         margin: 0;
         padding: 0 1em 1em;
-
         &:first-child {
             border: none;
         }
-
         .search-channel__name {
             font-weight: 600;
             margin: 0 0 10px;
@@ -145,23 +141,20 @@
     position: absolute;
     right: 0;
     top: 0;
-
     a {
         @include opacity(.8);
         vertical-align: top;
-
         &:hover {
             @include opacity(1);
         }
     }
-
-
     .search-item__jump {
-        font-size: 13px;
         position: relative;
         top: 1px;
+        color: #030306 !important;
+        font-size: 10px !important;
+        font-weight: bold !important;
     }
-
     .search-item__comment {
         margin-right: 5px;
     }

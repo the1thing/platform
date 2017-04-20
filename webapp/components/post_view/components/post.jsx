@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import PostHeader from './post_header.jsx';
@@ -283,7 +283,6 @@ export default class Post extends React.Component {
                                 post={post}
                                 currentUser={this.props.currentUser}
                                 sameRoot={this.props.sameRoot}
-                                isLastPost={this.props.isLastPost}
                                 parentPost={parentPost}
                                 handleCommentClick={this.handleCommentClick}
                                 compactDisplay={this.props.compactDisplay}
@@ -306,7 +305,6 @@ Post.propTypes = {
     sameUser: React.PropTypes.bool,
     sameRoot: React.PropTypes.bool,
     hideProfilePic: React.PropTypes.bool,
-    isLastPost: React.PropTypes.bool,
     isLastComment: React.PropTypes.bool,
     shouldHighlight: React.PropTypes.bool,
     displayNameType: React.PropTypes.string,

@@ -1,4 +1,4 @@
-// Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2016 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import React from 'react';
@@ -11,7 +11,8 @@ import ReactionListView from './reaction_list_view.jsx';
 
 export default class ReactionListContainer extends React.Component {
     static propTypes = {
-        post: React.PropTypes.object.isRequired
+        post: React.PropTypes.object.isRequired,
+        currentUserId: React.PropTypes.string.isRequired
     }
 
     constructor(props) {
@@ -81,9 +82,14 @@ export default class ReactionListContainer extends React.Component {
     }
 
     render() {
+        if (!this.props.post.has_reactions) {
+            return null;
+        }
+
         return (
             <ReactionListView
                 post={this.props.post}
+                currentUserId={this.props.currentUserId}
                 reactions={this.state.reactions}
                 emojis={this.state.emojis}
             />

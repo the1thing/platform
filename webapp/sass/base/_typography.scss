@@ -1,4 +1,43 @@
 @charset 'UTF-8';
+@font-face {
+    font-family: 'MarkPro-Book';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/fonts/MarkPro-Book.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.svg#MarkPro-Book') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'MarkPro-Light';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.svg#MarkPro-Light') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'MarkPro-Bold';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.svg#MarkPro-Bold') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Bold.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MarkPro-Black';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.svg#MarkPro-Black') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Black.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MarkPro-Medium';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.svg#MarkPro-Medium') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Medium.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
 
 b,
 strong {
@@ -10,7 +49,6 @@ a {
     cursor: pointer;
     text-decoration: none;
     word-break: break-word;
-
     &:focus,
     &:hover {
         color: $primary-color--hover;
@@ -37,11 +75,10 @@ body {
 
 .fa {
     &.fa-margin--left {
-        margin-left: 3px;
+        margin-left: 2px;
     }
-
     &.fa-margin--right {
-        margin-right: 3px;
+        margin-right: 2px;
     }
 }
 

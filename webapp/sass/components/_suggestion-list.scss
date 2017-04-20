@@ -3,12 +3,18 @@
 .suggestion-list {
     @extend %popover-box-shadow;
     width: 100%;
+    background:#FFFFFF!important;
     z-index: 100;
+    border-radius:8px;
+    border:none!important;
 }
 
 .suggestion-list--top {
     position: absolute;
     bottom: 100%;
+    background:#FFFFFF!important;
+    border-radius:8px;
+    border:none!important;
 }
 
 .suggestion-list--bottom {
@@ -27,13 +33,13 @@
     -webkit-overflow-scrolling: touch;
 
     .command {
-        border-bottom: 1px solid $light-gray;
+        // border-bottom: 1px solid $light-gray;
         font-size: .95em;
         line-height: 24px;
         padding: 5px 10px 8px;
         position: relative;
         width: 100%;
-        z-index: 101;
+        z-index: 101; 
 
         .command__desc {
             @include opacity(.5);
@@ -46,16 +52,19 @@
 .suggestion-list__content--top {
     bottom: 0;
     position: absolute;
+    background:#FFFFFF!important;
 }
 
 .suggestion-list--bottom {
     position: relative;
+    background:#FFFFFF!important;
 }
 
 .suggestion-list__divider {
     line-height: 21px;
     margin: 5px 0 5px 5px;
     position: relative;
+    background:#FFFFFF!important;
 
     &:first-child {
         margin-top: 5px;
@@ -67,11 +76,12 @@
         padding: 0 10px 0 5px;
         position: relative;
         z-index: 5;
+        background:#FFFFFF!important;
     }
 
     &:before {
         @include opacity(.2);
-        background: $dark-gray;
+        background: #FFFFFF;
         content: '';
         height: 1px;
         left: 0;

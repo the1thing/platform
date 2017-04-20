@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import PostStore from 'stores/post_store.jsx';
@@ -14,22 +14,12 @@ import React from 'react';
 export default class PendingPostOptions extends React.Component {
     constructor(props) {
         super(props);
-
         this.retryPost = this.retryPost.bind(this);
         this.cancelPost = this.cancelPost.bind(this);
-
-        this.submitting = false;
-
         this.state = {};
     }
     retryPost(e) {
         e.preventDefault();
-
-        if (this.submitting) {
-            return;
-        }
-
-        this.submitting = true;
 
         var post = this.props.post;
         queuePost(post, true, null,
@@ -40,7 +30,9 @@ export default class PendingPostOptions extends React.Component {
                     this.forceUpdate();
                 }
 
-                this.submitting = false;
+                this.setState({
+                    submitting: false
+                });
             }
         );
 

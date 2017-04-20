@@ -6,12 +6,12 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, .1);
+    background: #FBFBFB!important;
 }
 
 ::-webkit-scrollbar-thumb {
-    @include border-radius($border-rad * 2);
-    background: rgba(0, 0, 0, .2);
+    @include border-radius($border-rad * 10);
+    background: #E6E6E6!important;
 }
 
 body {
