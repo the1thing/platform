@@ -106,7 +106,7 @@
         "PreviewHeight": 0,
         "ProfileWidth": 128,
         "ProfileHeight": 128,
-        "InitialFont": "luximbi.ttf",
+        "InitialFont": "MarkPro-Bold.ttf",
         "AmazonS3AccessKeyId": "",
         "AmazonS3SecretAccessKey": "",
         "AmazonS3Bucket": "",

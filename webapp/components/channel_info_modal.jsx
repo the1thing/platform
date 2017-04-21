@@ -1,8 +1,7 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import * as Utils from 'utils/utils.jsx';
-import Constants from 'utils/constants.jsx';
 
 import {FormattedMessage} from 'react-intl';
 import {Modal} from 'react-bootstrap';
@@ -48,21 +47,9 @@ export default class ChannelInfoModal extends React.Component {
 
         const channelURL = TeamStore.getCurrentTeamUrl() + '/channels/' + channel.name;
 
-        let channelPurpose;
+        let channelPurpose = null;
         if (channel.purpose) {
-            channelPurpose = channel.purpose;
-        } else if (channel.name === Constants.DEFAULT_CHANNEL) {
             channelPurpose = (
-                <FormattedMessage
-                    id='default_channel.purpose'
-                    defaultMessage='Post messages here that you want everyone to see. Everyone automatically becomes a permanent member of this channel when they join the team.'
-                />
-            );
-        }
-
-        let channelPurposeElement;
-        if (channelPurpose) {
-            channelPurposeElement = (
                 <div className='form-group'>
                     <div className='info__label'>
                         <FormattedMessage
@@ -70,7 +57,7 @@ export default class ChannelInfoModal extends React.Component {
                             defaultMessage='Purpose:'
                         />
                     </div>
-                    <div className='info__value'>{channelPurpose}</div>
+                    <div className='info__value'>{channel.purpose}</div>
                 </div>
             );
         }
@@ -110,7 +97,7 @@ export default class ChannelInfoModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body ref='modalBody'>
-                    {channelPurposeElement}
+                    {channelPurpose}
                     {channelHeader}
                     <div className='form-group'>
                         <div className='info__label'>

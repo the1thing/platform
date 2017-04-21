@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import * as Utils from './utils.jsx';
@@ -150,24 +150,20 @@ export function createDMIntroMessage(channel, centeredIntro) {
 }
 
 export function createOffTopicIntroMessage(channel, centeredIntro) {
-    var uiType = (
-        <FormattedMessage
-            id='intro_messages.channel'
-            defaultMessage='channel'
-        />
-    );
-
     return (
         <div className={'channel-intro ' + centeredIntro}>
             <FormattedHTMLMessage
                 id='intro_messages.offTopic'
-                defaultMessage='<h4 class="channel-intro__title">Beginning of {display_name}</h4><p class="channel-intro__content">This is the start of {display_name}, a channel for non-work-related conversations.<br/></p>'
+                defaultMessage='<h4 class="channel-intro__title">Welcome to {display_name}</h4><p class="channel-intro__content">This is the start of {display_name}, a channel for non-work-related conversations.<br/></p>'
                 values={{
                     display_name: channel.display_name
                 }}
             />
-            {createInviteChannelMemberButton(channel, uiType)}
+            {createInviteChannelMemberButton(channel, 'channel')}
             {createSetHeaderButton(channel)}
+             <div className='space_for_loading_image'>
+                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
+            </div>           
         </div>
     );
 }
@@ -202,7 +198,7 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
         <div className={'channel-intro ' + centeredIntro}>
             <FormattedHTMLMessage
                 id='intro_messages.default'
-                defaultMessage="<h4 class='channel-intro__title'>Beginning of {display_name}</h4><p class='channel-intro__content'><strong>Welcome to {display_name}!</strong><br/><br/>This is the first channel teammates see when they sign up - use it for posting updates everyone needs to know.</p>"
+                defaultMessage="<h4 class='channel-intro__title'>Welcome to {display_name}</h4><p class='channel-intro__content'>This is the first channel teammates see when they sign up - use it for posting updates everyone needs to know.</p>"
                 values={{
                     display_name: channel.display_name
                 }}
@@ -210,6 +206,9 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
             {inviteModalLink}
             {createSetHeaderButton(channel)}
             <br/>
+            <div className='space_for_loading_image'>
+                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
+            </div>
         </div>
     );
 }
@@ -224,13 +223,13 @@ export function createStandardIntroMessage(channel, centeredIntro) {
         uiType = (
             <FormattedMessage
                 id='intro_messages.group'
-                defaultMessage='private channel'
+                defaultMessage='private group'
             />
         );
         memberMessage = (
             <FormattedMessage
                 id='intro_messages.onlyInvited'
-                defaultMessage=' Only invited members can see this private channel.'
+                defaultMessage=' Only invited members can see this private group.'
             />
         );
     } else {
@@ -307,8 +306,8 @@ export function createStandardIntroMessage(channel, centeredIntro) {
         <div className={'channel-intro ' + centeredIntro}>
             <h4 className='channel-intro__title'>
                 <FormattedMessage
-                    id='intro_messages.beginning'
-                    defaultMessage='Beginning of {name}'
+                    id='intro_messages.welcome'
+                    defaultMessage='Welcome to {name}'
                     values={{
                         name: (uiName)
                     }}
@@ -322,6 +321,9 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             </p>
             {createInviteChannelMemberButton(channel, uiType)}
             {createSetHeaderButton(channel)}
+            <div className='space_for_loading_image'>
+                 <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
+            </div>
         </div>
     );
 }

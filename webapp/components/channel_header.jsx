@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import $ from 'jquery';
@@ -269,7 +269,6 @@ export default class ChannelHeader extends React.Component {
         );
         let channelTitle = channel.display_name;
         const isAdmin = TeamStore.isTeamAdminForCurrentTeam() || UserStore.isSystemAdminForCurrentUser();
-        const isTeamAdmin = TeamStore.isTeamAdminForCurrentTeam();
         const isSystemAdmin = UserStore.isSystemAdminForCurrentUser();
         const isChannelAdmin = ChannelStore.isChannelAdminForCurrentChannel();
         const isDirect = (this.state.channel.type === Constants.DM_CHANNEL);
@@ -348,6 +347,21 @@ export default class ChannelHeader extends React.Component {
 
         if (isGroup) {
             channelTitle = ChannelUtils.buildGroupChannelName(channel.id);
+        }
+
+        let channelTerm = (
+            <FormattedMessage
+                id='channel_header.channel'
+                defaultMessage='Channel'
+            />
+        );
+        if (channel.type === Constants.PRIVATE_CHANNEL) {
+            channelTerm = (
+                <FormattedMessage
+                    id='channel_header.group'
+                    defaultMessage='Group'
+                />
+            );
         }
 
         let popoverListMembers;
@@ -485,74 +499,60 @@ export default class ChannelHeader extends React.Component {
                 </li>
             );
 
+            dropdownContents.push(
+                <li
+                    key='divider-1'
+                    className='divider'
+                />
+            );
+
             if (!ChannelStore.isDefault(channel)) {
                 dropdownContents.push(
                     <li
-                        key='divider-1'
-                        className='divider'
-                    />
+                        id='channelAddMembers'
+                        key='add_members'
+                        role='presentation'
+                    >
+                        <ToggleModalButton
+                            ref='channelInviteModalButton'
+                            role='menuitem'
+                            dialogType={ChannelInviteModal}
+                            dialogProps={{channel, currentUser: this.state.currentUser}}
+                        >
+                            <FormattedMessage
+                                id='channel_header.addMembers'
+                                defaultMessage='Add Members'
+                            />
+                        </ToggleModalButton>
+                    </li>
                 );
 
-                if (ChannelUtils.canManageMembers(channel, isSystemAdmin, isTeamAdmin, isChannelAdmin)) {
-                    dropdownContents.push(
-                        <li
-                            id='channelAddMembers'
-                            key='add_members'
-                            role='presentation'
+                dropdownContents.push(
+                    <li
+                        id='channelManageMembers'
+                        key='manage_members'
+                        role='presentation'
+                    >
+                        <a
+                            role='menuitem'
+                            href='#'
+                            onClick={() => this.setState({showMembersModal: true})}
                         >
-                            <ToggleModalButton
-                                ref='channelInviteModalButton'
-                                role='menuitem'
-                                dialogType={ChannelInviteModal}
-                                dialogProps={{channel, currentUser: this.state.currentUser}}
-                            >
-                                <FormattedMessage
-                                    id='channel_header.addMembers'
-                                    defaultMessage='Add Members'
-                                />
-                            </ToggleModalButton>
-                        </li>
-                    );
-
-                    dropdownContents.push(
-                        <li
-                            id='channelManageMembers'
-                            key='manage_members'
-                            role='presentation'
-                        >
-                            <a
-                                role='menuitem'
-                                href='#'
-                                onClick={() => this.setState({showMembersModal: true})}
-                            >
-                                <FormattedMessage
-                                    id='channel_header.manageMembers'
-                                    defaultMessage='Manage Members'
-                                />
-                            </a>
-                        </li>
-                    );
-                } else {
-                    dropdownContents.push(
-                        <li
-                            id='channelViewMembers'
-                            key='view_members'
-                            role='presentation'
-                        >
-                            <a
-                                role='menuitem'
-                                href='#'
-                                onClick={() => this.setState({showMembersModal: true})}
-                            >
-                                <FormattedMessage
-                                    id='channel_header.viewMembers'
-                                    defaultMessage='View Members'
-                                />
-                            </a>
-                        </li>
-                    );
-                }
+                            <FormattedMessage
+                                id='channel_header.manageMembers'
+                                defaultMessage='Manage Members'
+                            />
+                        </a>
+                    </li>
+                );
             }
+
+            dropdownContents.push(
+                <li
+                    key='divider-2'
+                    className='divider'
+                />
+            );
 
             const deleteOption = (
                 <li
@@ -567,20 +567,16 @@ export default class ChannelHeader extends React.Component {
                     >
                         <FormattedMessage
                             id='channel_header.delete'
-                            defaultMessage='Delete Channel'
+                            defaultMessage='Delete {term}'
+                            values={{
+                                term: (channelTerm)
+                            }}
                         />
                     </ToggleModalButton>
                 </li>
             );
 
             if (ChannelUtils.showManagementOptions(channel, isAdmin, isSystemAdmin, isChannelAdmin)) {
-                dropdownContents.push(
-                    <li
-                        key='divider-2'
-                        className='divider'
-                    />
-                );
-
                 dropdownContents.push(
                     <li
                         id='channelEditHeader'
@@ -594,7 +590,10 @@ export default class ChannelHeader extends React.Component {
                         >
                             <FormattedMessage
                                 id='channel_header.setHeader'
-                                defaultMessage='Edit Channel Header'
+                                defaultMessage='Edit {term} Header'
+                                values={{
+                                    term: (channelTerm)
+                                }}
                             />
                         </ToggleModalButton>
                     </li>
@@ -613,7 +612,10 @@ export default class ChannelHeader extends React.Component {
                         >
                             <FormattedMessage
                                 id='channel_header.setPurpose'
-                                defaultMessage='Edit Channel Purpose'
+                                defaultMessage='Edit {term} Purpose'
+                                values={{
+                                    term: (channelTerm)
+                                }}
                             />
                         </a>
                     </li>
@@ -632,7 +634,10 @@ export default class ChannelHeader extends React.Component {
                         >
                             <FormattedMessage
                                 id='channel_header.rename'
-                                defaultMessage='Rename Channel'
+                                defaultMessage='Rename {term}'
+                                values={{
+                                    term: (channelTerm)
+                                }}
                             />
                         </a>
                     </li>
@@ -647,15 +652,15 @@ export default class ChannelHeader extends React.Component {
                 dropdownContents.push(deleteOption);
             }
 
+            dropdownContents.push(
+                <li
+                    key='divider-3'
+                    className='divider'
+                />
+            );
+
             const canLeave = channel.type === Constants.PRIVATE_CHANNEL ? this.state.userCount > 1 : true;
             if (!ChannelStore.isDefault(channel) && canLeave) {
-                dropdownContents.push(
-                    <li
-                        key='divider-3'
-                        className='divider'
-                    />
-                );
-
                 dropdownContents.push(
                     <li
                         id='channelLeave'
@@ -669,7 +674,10 @@ export default class ChannelHeader extends React.Component {
                         >
                             <FormattedMessage
                                 id='channel_header.leave'
-                                defaultMessage='Leave Channel'
+                                defaultMessage='Leave {term}'
+                                values={{
+                                    term: (channelTerm)
+                                }}
                             />
                         </a>
                     </li>

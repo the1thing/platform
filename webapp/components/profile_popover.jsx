@@ -1,4 +1,4 @@
-// Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2016 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import * as Utils from 'utils/utils.jsx';
@@ -118,7 +118,9 @@ export default class ProfilePopover extends React.Component {
         if (webrtcEnabled && this.props.user.id !== this.state.currentUserId) {
             const isOnline = this.props.status !== UserStatuses.OFFLINE;
             let webrtcMessage;
+            let circleClass = 'offline';
             if (isOnline && !this.props.isBusy) {
+                circleClass = '';
                 webrtcMessage = (
                     <FormattedMessage
                         id='user_profile.webrtc.call'
@@ -141,20 +143,32 @@ export default class ProfilePopover extends React.Component {
                 );
             }
 
+            const webrtcTooltip = (
+                <Tooltip id='webrtcTooltip'>{webrtcMessage}</Tooltip>
+            );
+
             webrtc = (
                 <div
-                    data-toggle='tooltip'
+                    className='webrtc__user-profile'
                     key='makeCall'
-                    className='popover__row'
                 >
                     <a
                         href='#'
-                        className='text-nowrap user-popover__email'
                         onClick={() => this.initWebrtc()}
                         disabled={!isOnline}
                     >
-                        <i className='fa fa-video-camera'/>
-                        {webrtcMessage}
+                        <OverlayTrigger
+                            delayShow={Constants.WEBRTC_TIME_DELAY}
+                            placement='top'
+                            overlay={webrtcTooltip}
+                        >
+                            <div
+                                id='webrtc-btn'
+                                className={'webrtc__button ' + circleClass}
+                            >
+                                <span dangerouslySetInnerHTML={{__html: Constants.VIDEO_ICON}}/>
+                            </div>
+                        </OverlayTrigger>
                     </a>
                 </div>
             );
@@ -205,21 +219,12 @@ export default class ProfilePopover extends React.Component {
             );
         }
 
+        dataContent.push(webrtc);
+
         const email = this.props.user.email;
         if (global.window.mm_config.ShowEmailAddress === 'true' || UserStore.isSystemAdminForCurrentUser() || this.props.user === UserStore.getCurrentUser()) {
             dataContent.push(
-                <div
-                    data-toggle='tooltip'
-                    title={email}
-                    key='user-popover-email'
-                >
-                    <a
-                        href={'mailto:' + email}
-                        className='text-nowrap text-lowercase user-popover__email'
-                    >
-                        {email}
-                    </a>
-                </div>
+
             );
         }
 
@@ -228,7 +233,7 @@ export default class ProfilePopover extends React.Component {
                 <div
                     data-toggle='tooltip'
                     key='user-popover-dm'
-                    className='popover__row first'
+                    className='popover__row'
                 >
                     <a
                         href='#'
@@ -243,7 +248,6 @@ export default class ProfilePopover extends React.Component {
                     </a>
                 </div>
             );
-            dataContent.push(webrtc);
         }
 
         return (
