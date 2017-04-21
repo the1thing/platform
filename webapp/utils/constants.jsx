@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import keyMirror from 'key-mirror/keyMirror.js';
@@ -95,9 +95,11 @@ export const ActionTypes = keyMirror({
 
     RECEIVED_PROFILES: null,
     RECEIVED_PROFILES_IN_TEAM: null,
+    RECEIVED_PROFILES_NOT_IN_TEAM: null,
     RECEIVED_PROFILE: null,
     RECEIVED_PROFILES_IN_CHANNEL: null,
     RECEIVED_PROFILES_NOT_IN_CHANNEL: null,
+    RECEIVED_PROFILES_WITHOUT_TEAM: null,
     RECEIVED_ME: null,
     RECEIVED_SESSIONS: null,
     RECEIVED_AUDITS: null,
@@ -136,6 +138,7 @@ export const ActionTypes = keyMirror({
 
     RECEIVED_MSG: null,
 
+    RECEIVED_TEAM: null,
     RECEIVED_MY_TEAM: null,
     CREATED_TEAM: null,
     UPDATE_TEAM: null,
@@ -176,7 +179,9 @@ export const ActionTypes = keyMirror({
     SUGGESTION_SELECT_NEXT: null,
     SUGGESTION_SELECT_PREVIOUS: null,
 
-    BROWSER_CHANGE_FOCUS: null
+    BROWSER_CHANGE_FOCUS: null,
+
+    EMOJI_POSTED: null
 });
 
 export const WebrtcActionTypes = keyMirror({
@@ -203,7 +208,8 @@ export const UserStatuses = {
 };
 
 export const UserSearchOptions = {
-    ALLOW_INACTIVE: 'allow_inactive'
+    ALLOW_INACTIVE: 'allow_inactive',
+    WITHOUT_TEAM: 'without_team'
 };
 
 export const SocketEvents = {
@@ -215,6 +221,7 @@ export const SocketEvents = {
     CHANNEL_VIEWED: 'channel_viewed',
     DIRECT_ADDED: 'direct_added',
     NEW_USER: 'new_user',
+    ADDED_TO_TEAM: 'added_to_team',
     LEAVE_TEAM: 'leave_team',
     UPDATE_TEAM: 'update_team',
     USER_ADDED: 'user_added',
@@ -251,6 +258,33 @@ export const PostTypes = {
     EPHEMERAL: 'system_ephemeral'
 };
 
+export const StatTypes = keyMirror({
+    TOTAL_USERS: null,
+    TOTAL_PUBLIC_CHANNELS: null,
+    TOTAL_PRIVATE_GROUPS: null,
+    TOTAL_POSTS: null,
+    TOTAL_TEAMS: null,
+    TOTAL_FILE_POSTS: null,
+    TOTAL_HASHTAG_POSTS: null,
+    TOTAL_IHOOKS: null,
+    TOTAL_OHOOKS: null,
+    TOTAL_COMMANDS: null,
+    TOTAL_SESSIONS: null,
+    POST_PER_DAY: null,
+    USERS_WITH_POSTS_PER_DAY: null,
+    RECENTLY_ACTIVE_USERS: null,
+    NEWLY_CREATED_USERS: null,
+    TOTAL_WEBSOCKET_CONNECTIONS: null,
+    TOTAL_MASTER_DB_CONNECTIONS: null,
+    TOTAL_READ_DB_CONNECTIONS: null,
+    DAILY_ACTIVE_USERS: null,
+    MONTHLY_ACTIVE_USERS: null
+});
+
+export const ErrorPageTypes = {
+    LOCAL_STORAGE: 'local_storage'
+};
+
 export const Constants = {
     Preferences,
     SocketEvents,
@@ -260,6 +294,8 @@ export const Constants = {
     UserSearchOptions,
     TutorialSteps,
     PostTypes,
+    ErrorPageTypes,
+
     IGNORE_POST_TYPES: [PostTypes.JOIN_LEAVE, PostTypes.JOIN_CHANNEL, PostTypes.LEAVE_CHANNEL, PostTypes.REMOVE_FROM_CHANNEL, PostTypes.ADD_TO_CHANNEL, PostTypes.ADD_REMOVE],
 
     PayloadSources: keyMirror({
@@ -267,28 +303,7 @@ export const Constants = {
         VIEW_ACTION: null
     }),
 
-    StatTypes: keyMirror({
-        TOTAL_USERS: null,
-        TOTAL_PUBLIC_CHANNELS: null,
-        TOTAL_PRIVATE_GROUPS: null,
-        TOTAL_POSTS: null,
-        TOTAL_TEAMS: null,
-        TOTAL_FILE_POSTS: null,
-        TOTAL_HASHTAG_POSTS: null,
-        TOTAL_IHOOKS: null,
-        TOTAL_OHOOKS: null,
-        TOTAL_COMMANDS: null,
-        TOTAL_SESSIONS: null,
-        POST_PER_DAY: null,
-        USERS_WITH_POSTS_PER_DAY: null,
-        RECENTLY_ACTIVE_USERS: null,
-        NEWLY_CREATED_USERS: null,
-        TOTAL_WEBSOCKET_CONNECTIONS: null,
-        TOTAL_MASTER_DB_CONNECTIONS: null,
-        TOTAL_READ_DB_CONNECTIONS: null,
-        DAILY_ACTIVE_USERS: null,
-        MONTHLY_ACTIVE_USERS: null
-    }),
+    StatTypes,
     STAT_MAX_ACTIVE_USERS: 20,
     STAT_MAX_NEW_USERS: 20,
 
@@ -320,6 +335,7 @@ export const Constants = {
     CODE_TYPES: ['as', 'applescript', 'osascript', 'scpt', 'bash', 'sh', 'zsh', 'clj', 'boot', 'cl2', 'cljc', 'cljs', 'cljs.hl', 'cljscm', 'cljx', 'hic', 'coffee', '_coffee', 'cake', 'cjsx', 'cson', 'iced', 'cpp', 'c', 'cc', 'h', 'c++', 'h++', 'hpp', 'cs', 'csharp', 'css', 'd', 'di', 'dart', 'delphi', 'dpr', 'dfm', 'pas', 'pascal', 'freepascal', 'lazarus', 'lpr', 'lfm', 'diff', 'django', 'jinja', 'dockerfile', 'docker', 'erl', 'f90', 'f95', 'fsharp', 'fs', 'gcode', 'nc', 'go', 'groovy', 'handlebars', 'hbs', 'html.hbs', 'html.handlebars', 'hs', 'hx', 'java', 'jsp', 'js', 'jsx', 'json', 'jl', 'kt', 'ktm', 'kts', 'less', 'lisp', 'lua', 'mk', 'mak', 'md', 'mkdown', 'mkd', 'matlab', 'm', 'mm', 'objc', 'obj-c', 'ml', 'perl', 'pl', 'php', 'php3', 'php4', 'php5', 'php6', 'ps', 'ps1', 'pp', 'py', 'gyp', 'r', 'ruby', 'rb', 'gemspec', 'podspec', 'thor', 'irb', 'rs', 'scala', 'scm', 'sld', 'scss', 'st', 'sql', 'swift', 'tex', 'txt', 'vbnet', 'vb', 'bas', 'vbs', 'v', 'veo', 'xml', 'html', 'xhtml', 'rss', 'atom', 'xsl', 'plist', 'yaml'],
     PDF_TYPES: ['pdf'],
     PATCH_TYPES: ['patch'],
+    SVG_TYPES: ['svg'],
     ICON_FROM_TYPE: {
         audio: audioIcon,
         video: videoIcon,
@@ -443,6 +459,7 @@ export const Constants = {
             linkColor: '#2f81b7',
             buttonBg: '#1dacfc',
             buttonColor: '#FFFFFF',
+            errorTextColor: '#a94442',
             mentionHighlightBg: '#f3e197',
             mentionHighlightLink: '#2f81b7',
             codeTheme: 'github',
@@ -468,6 +485,7 @@ export const Constants = {
             linkColor: '#2389d7',
             buttonBg: '#23A2FF',
             buttonColor: '#FFFFFF',
+            errorTextColor: '#a94442',
             mentionHighlightBg: '#f3e197',
             mentionHighlightLink: '#2f81b7',
             codeTheme: 'github',
@@ -493,6 +511,7 @@ export const Constants = {
             linkColor: '#A4FFEB',
             buttonBg: '#4CBBA4',
             buttonColor: '#FFFFFF',
+            errorTextColor: '#ff6461',
             mentionHighlightBg: '#984063',
             mentionHighlightLink: '#A4FFEB',
             codeTheme: 'solarized-dark',
@@ -518,6 +537,7 @@ export const Constants = {
             linkColor: '#0D93FF',
             buttonBg: '#0177e7',
             buttonColor: '#FFFFFF',
+            errorTextColor: '#ff6461',
             mentionHighlightBg: '#784098',
             mentionHighlightLink: '#A4FFEB',
             codeTheme: 'monokai',
@@ -599,6 +619,11 @@ export const Constants = {
             group: 'centerChannelElements',
             id: 'newMessageSeparator',
             uiName: 'New Message Separator'
+        },
+        {
+            group: 'centerChannelElements',
+            id: 'errorTextColor',
+            uiName: 'Error Text Color'
         },
         {
             group: 'centerChannelElements',
@@ -856,6 +881,10 @@ export const Constants = {
         WEBRTC_PREVIEW: {
             label: 'webrtc_preview',
             description: 'Enable WebRTC one on one calls'
+        },
+        EMOJI_PICKER_PREVIEW: {
+            label: 'emojipicker',
+            description: 'Enable emoji picker'
         }
     },
     OVERLAY_TIME_DELAY_SMALL: 100,
@@ -884,6 +913,7 @@ export const Constants = {
     MIN_HASHTAG_LINK_LENGTH: 3,
     CHANNEL_SCROLL_ADJUSTMENT: 100,
     EMOJI_PATH: '/static/emoji',
+    RECENT_EMOJI_KEY: 'recentEmojis',
     DEFAULT_WEBHOOK_LOGO: logoWebhook,
     MHPNS: 'https://push.mattermost.com',
     MTPNS: 'http://push-test.mattermost.com',
