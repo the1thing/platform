@@ -1,26 +1,26 @@
 @charset 'UTF-8';
-
 .status-wrapper {
     display: inline-block;
     height: 32px;
     position: relative;
-
     .status {
         border-radius: 100px;
-        bottom: -4px;
-        height: 15px;
+        bottom: -3px;
+        height: 10px;
         line-height: 0;
         margin: 0;
         position: absolute;
-        right: -3px;
+        right: -1px;
         top: auto;
-        width: 15px;
-
+        width: 10px;
         .modal & {
             bottom: -6px;
         }
-
-
+        img {
+            max-width: 100%!important;
+            width: 10px!important;
+            height: 10px!important;
+        }
         svg {
             max-height: 11px;
             position: relative;
@@ -35,7 +35,6 @@
     position: relative;
     top: 1px;
     width: 12px;
-
     &.status--group {
         border-radius: 2px;
         font-size: 11px;
@@ -47,7 +46,6 @@
         text-align: center;
         top: -1px;
         width: 16px;
-
         .mentions__name & {
             height: 20px;
             left: 0;
@@ -57,29 +55,23 @@
             width: 20px;
         }
     }
-
     svg {
         max-height: 14px;
     }
-
     i,
     path,
     ellipse {
         @include opacity(.5);
-
         &.online--icon,
         &.away--icon {
             @include opacity(1);
         }
     }
-
     .fa-lock {
         margin-left: 1px;
     }
-
     .fa-globe {
         position: relative;
         top: -1px;
     }
 }
-

@@ -186,7 +186,7 @@ export default class LoginController extends React.Component {
                         serverError: (
                             <FormattedMessage
                                 id='login.userNotFound'
-                                defaultMessage="We couldn't find an account matching your login credentials."
+                                defaultMessage="We couldn't find an account matching your login credentials. Please sign up at <a href='http://1thing.io'>1thing</a>"
                             />
                         )
                     });

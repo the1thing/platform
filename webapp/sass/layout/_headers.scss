@@ -14,6 +14,9 @@
         margin-left: 7px;
         min-width: 30px;
         text-align: center;
+        color:#7F7F7F;
+        font-size: 1.5rem;
+        font-family: 'MarkPro-Black';
         white-space: nowrap;
         .fa {
             font-size: 16px;
@@ -25,7 +28,7 @@
     }
     .member-popover__trigger {
         .fa {
-            margin-left: 4px;
+            margin-left: 8px;
             color: #BDBDBD!important;
             &:before {
                 color: #BDBDBD!important;
@@ -41,9 +44,9 @@
     .pinned-posts-button svg {
         position: relative;
         top: 2px;
-        fill: #BDBDBD;
+        fill: #BDBDBD !important;
         &:hover {
-            fill: #000000;
+            fill: #000000 !important;
         }
     }
     &.alt {
@@ -82,9 +85,9 @@
     }
     .heading {
         display: inline-block;
-        font-size: 1.3em;
+        font-size: 0.9em;
         // font-weight: 600;
-        font-family: 'MarkPro-Black';
+        font-family: 'MarkPro-Bold';
         margin: 0 4px 0 0;
         max-width: 100%;
         overflow: hidden;
@@ -122,6 +125,12 @@
     margin-left: 1px;
     position: relative;
     top: 1px;
+    &:before {
+        font-size: .9rem;
+        top: -1px;
+        position: relative;
+        color:#7f7f7f;
+    }
 }
 
 .channel-header__info {
@@ -171,7 +180,7 @@
 .channel-intro {
     // border-bottom: 1px solid $light-gray;
     margin: 0 auto 15px;
-    padding: 0 1.8% 50px 3.5%;
+        padding: 0 11% 50px 3.5%;
     &.channel-intro--centered {
         max-width: 1020px;
     }
@@ -241,8 +250,9 @@
         @include legacy-pie-clearfix;
         padding: 9px 10px;
         position: relative;
-        background: #FBFBFB!important;
-        border-bottom: 1px solid #F0F0F0;
+        background: transparent !important;
+        // background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+        // border-bottom: 1px solid #F0F0F0;
         &:before {
             @include single-transition(all, .05s, linear);
             background: none;
@@ -332,6 +342,7 @@
         }
         .team__name,
         .user__name {
+            width: 100%;
             display: block;
             font-size: 16px;
             font-weight: 600;
@@ -347,14 +358,14 @@
             margin-top: -2px;
             text-transform: uppercase;
             letter-spacing: 8px;
-            color: #000000!important;
+            color: #FFFFFF!important;
         }
         .user__name {
             @include single-transition(all, .1s, linear);
             @include alpha-property(color, $white, .8);
-            font-size: 16px;
+            font-size: 14px;
             color: #7F7F7F!important;
-            font-family: 'MarkPro-Black';
+            font-family: 'MarkPro-Bold';
             font-weight: 400;
             line-height: 18px;
         }

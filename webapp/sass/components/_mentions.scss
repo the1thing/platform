@@ -1,5 +1,4 @@
 @charset 'UTF-8';
-
 .mention {
     @include border-radius(3px);
     background: $primary-color;
@@ -20,19 +19,16 @@
     white-space: nowrap;
     width: 100%;
     z-index: 101;
-
     .status {
         font-size: 15px;
         text-align: center;
         vertical-align: bottom;
         width: 20px;
     }
-
     .fa-user {
         position: relative;
         top: -1px;
     }
-
     .mention--align {
         @include clearfix;
         text-overflow: ellipsis;
@@ -49,7 +45,6 @@
     margin-right: 6px;
     text-align: center;
     width: 20px;
-
     .mention--align {
         display: inline-block;
         max-width: 80%;
@@ -64,7 +59,7 @@
 }
 
 .mention--highlight {
-    background-color: $yellow;
+    background-color: transparent !important;
 }
 
 .mention__purpose {
@@ -75,4 +70,11 @@
 
 .mention__channelname {
     @include opacity(.5);
+}
+
+.mention-link {
+    font-weight: 600;
+    &:hover {
+        text-decoration: underline;
+    }
 }
