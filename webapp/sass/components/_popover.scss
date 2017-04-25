@@ -1,10 +1,8 @@
 @charset 'UTF-8';
 @import 'compass/css3/transition';
-
 .popover {
     @include border-radius($border-rad);
     color: lighten($black, 25%);
-
     &.bottom,
     &.right,
     &.top,
@@ -15,7 +13,6 @@
             }
         }
     }
-
     .popover-title {
         @include border-radius(0);
         background: alpha-color($black, .05);
@@ -24,27 +21,22 @@
         padding: 8px 10px;
         text-overflow: ellipsis;
     }
-
     .popover-content {
         word-break: break-word;
-
         p {
             &:last-child {
                 margin-bottom: 5px;
             }
         }
     }
-
     .popover__row {
         border-top: 1px solid transparent;
         margin: 9px -15px 0;
         padding: 9px 15px 0;
-
         > a {
             > i {
                 margin-right: 5px;
             }
-
             > span {
                 text-transform: capitalize;
             }
@@ -85,30 +77,33 @@
 .search-help-popover {
     @include single-transition(opacity, .3s, ease-in);
     font-size: em(13px);
+    font-family: MarkPro-Book!important;
+    background: #fff!important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1) !important;
+    border: none !important;
     max-width: 350px;
     top: 36px;
     visibility: hidden;
     width: 100%;
-
     &.autocomplete {
         display: block;
-
         .popover-content {
             padding: 10px;
             position: relative;
             -webkit-overflow-scrolling: touch;
         }
     }
-
+    .arrow {
+        display: none;
+    }
     .search-autocomplete__divider {
         line-height: 21px;
         margin: 10px 0 5px;
         position: relative;
-
         &:first-child {
             margin-top: 5px;
         }
-
         > span {
             background: $white;
             display: inline-block;
@@ -116,7 +111,6 @@
             position: relative;
             z-index: 5;
         }
-
         &:before {
             @include opacity(.2);
             background: $dark-gray;
@@ -128,7 +122,6 @@
             width: 100%;
         }
     }
-
     .search-autocomplete__item {
         @include border-radius(2px);
         cursor: pointer;
@@ -137,24 +130,19 @@
         padding: 6px 8px;
         text-overflow: ellipsis;
         white-space: nowrap;
-
         &:hover {
             background: alpha-color($black, .1);
         }
-
         &.selected {
             background: alpha-color($black, .2);
         }
-
         .mention--align {
             display: inline-block;
         }
-
         .fa {
             @include opacity(.5);
             margin-right: 5px;
         }
-
         .profile-img {
             height: 16px;
             margin-right: 6px;
@@ -162,40 +150,35 @@
             width: 16px;
         }
     }
-
+    &.bottom {
+        margin-top: 4px;
+    }
     &.bottom > .arrow {
         border-width: 9px;
         left: 30px;
         top: -18px;
     }
-
     .popover-content {
         max-height: 500px;
         overflow: auto;
         padding: 3px 13px;
     }
-
     h4 {
         font-size: 1em;
     }
-
     ul {
         padding-left: 17px;
-
         span {
             @include opacity(.8);
         }
-
         strong,
         b {
             @include opacity(1);
         }
     }
-
     .tooltip-inner {
         max-width: 100%;
     }
-
     &.visible {
         @include opacity(1);
         visibility: visible;
@@ -204,28 +187,23 @@
 
 .member-list__popover {
     max-width: initial;
-
     .more-modal__list {
         .more-modal__row {
             min-height: inherit;
         }
-
         .more-modal__details {
             line-height: 32px;
         }
-
         .more-modal__actions {
             line-height: 31px;
             margin: 0;
         }
     }
-
     .popover-content {
         max-height: 350px;
         padding: 0;
         position: relative;
         width: 260px;
-
         .text-nowrap {
             font-size: 13px;
             line-height: 26px;
@@ -233,7 +211,6 @@
             padding: 6px 10px;
             width: 100%;
         }
-
         .more__name {
             margin-left: 6px;
             max-width: 140px;

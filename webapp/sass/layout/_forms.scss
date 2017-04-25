@@ -100,10 +100,32 @@
     }
 }
 
-input[type="text"], textarea, input.filter-textbox {
+input[type="text"],
+textarea,
+input.filter-textbox {
     border-radius: 8px!important;
     border: 1px solid #EBEBEB;
     background: #FFFFFF!important;
     outline: none;
     shadow: none;
+}
+
+.form-control {
+    display: block;
+    width: 100%!important;
+    height: 40px!important;
+    padding-right: 15px!important;
+    padding-left: 15px!important;
+    font-size: 14px!important;
+    font-family: MarkPro-Medium!important;
+    background: #fff!important;
+    color: #7f7f7f!important;
+    background-image: none!important;
+    border: 1px solid #f0f0f0!important;
+    border-radius: 8px!important;
+    box-shadow: none !important;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
 }

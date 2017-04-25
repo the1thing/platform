@@ -1,21 +1,16 @@
 @charset 'UTF-8';
-
 .form-control {
     @include border-radius($border-rad);
-
     &:focus {
         @include box-shadow(none);
     }
-
     &.no-padding {
         line-height: 32px;
         padding: 0;
     }
-
     &.no-resize {
         resize: none;
     }
-
     &[disabled],
     [readonly] {
         @include alpha-property(background, $white, .1);
@@ -43,5 +38,21 @@ input {
     &[type='checkbox'] {
         font-size: 14px;
         margin-top: 3px;
+    }
+}
+
+.signup-team__container input.form-control,
+input {
+    &[type='text'] {
+        box-shadow: none;
+        height: 40px;
+        border-radius: 8px!important;
+        background: #fff!important;
+        color: #7f7f7f!important;
+        font-family: MarkPro-Medium;
+        &:focus {
+            background: fff!important;
+             box-shadow: none!important;
+        }
     }
 }

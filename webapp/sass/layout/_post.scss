@@ -381,8 +381,8 @@
         .custom-textarea {
             bottom: 0;
             max-height: 162px !important;
-            padding-left: 45px;
-            padding-right: 20px;
+            padding-left: 45px !important;
+            padding-right: 20px !important;
             padding-top: 8px;
             border: 1px solid #F0F0F0!important;
             border-radius: 8px!important;
@@ -415,7 +415,6 @@
             &:active {
                 box-shadow: none;
                 cursor: pointer;
-                background: #1F1D1D!important;
             }
             &.btn-file__disabled {
                 @include opacity(.1);
@@ -701,8 +700,23 @@
     }
     &.post--comment {
         .post__body {
-            border-left: 4px solid $gray;
-            padding-left: 7px;
+            // border-left: 4px solid $gray!important;
+            padding-left: 20px;
+            margin-left: 0px;
+            position: relative;
+            &:before {
+                content: "";
+                display: block;
+                width: 0;
+                border-radius: 8px;
+                position: absolute;
+                height: 0;
+                border: 2px solid #bfbfbf;
+                position: absolute;
+                height: 80%;
+                left: 8px;
+                top: 10%;
+            }
             &.mention-comment {
                 border-left: 4px solid $yellow;
                 border-color: $yellow;
@@ -1264,10 +1278,11 @@
 }
 
 .app__body .post.post--comment .post__body {
-    margin-left: 15px;
+    margin-left: 0px;
     border: 1px solid #F0F0F0!important;
+    // border-left: 4px solid #BFBFBF!important;
     // box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    border-radius: 0 8px 8px 0;
+    border-radius: 8px;
     margin-bottom: 0px;
 }
 
@@ -1307,4 +1322,8 @@
 
 .post__header--info a:hover svg {
     fill: #000000!important;
+}
+
+.post a.markdown__link {
+    color: #22B541 !important;
 }

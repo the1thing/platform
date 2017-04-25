@@ -14,7 +14,7 @@
         margin-left: 7px;
         min-width: 30px;
         text-align: center;
-        color:#7F7F7F;
+        color: #7F7F7F;
         font-size: 1.5rem;
         font-family: 'MarkPro-Black';
         white-space: nowrap;
@@ -27,6 +27,9 @@
         display: inline;
     }
     .member-popover__trigger {
+        &:hover {
+            color: #000 !important;
+        }
         .fa {
             margin-left: 8px;
             color: #BDBDBD!important;
@@ -129,7 +132,7 @@
         font-size: .9rem;
         top: -1px;
         position: relative;
-        color:#7f7f7f;
+        color: #7f7f7f;
     }
 }
 
@@ -180,7 +183,7 @@
 .channel-intro {
     // border-bottom: 1px solid $light-gray;
     margin: 0 auto 15px;
-        padding: 0 11% 50px 3.5%;
+    padding: 0 11% 50px 3.5%;
     &.channel-intro--centered {
         max-width: 1020px;
     }

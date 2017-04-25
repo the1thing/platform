@@ -595,11 +595,6 @@ export default class SidebarHeaderDropdown extends React.Component {
                     {customEmoji}
                     {sysAdminDivider}
                     {sysAdminLink}
-                    {helpDivider}
-                    {helpLink}
-                    {reportLink}
-                    {nativeAppLink}
-                    {about}
                     {logoutDivider}
                     {logout}
                     <UserSettingsModal

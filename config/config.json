@@ -46,7 +46,7 @@
         "ClusterLogTimeoutMilliseconds": 2000
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": "1THING",
         "MaxUsersPerTeam": 50,
         "EnableTeamCreation": true,
         "EnableUserCreation": true,

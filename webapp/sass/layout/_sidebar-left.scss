@@ -52,10 +52,11 @@
         padding: 1em 1em 0;
     }
     .badge {
-        background-color: $primary-color;
+        background-color:#FFFFFF!important;
         position: absolute;
         right: 10px;
         top: 5px;
+        color:#000!important;
     }
     .nav-pills__container {
         -webkit-overflow-scrolling: touch;

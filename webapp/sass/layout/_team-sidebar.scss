@@ -6,7 +6,7 @@
         text-align: center;
         width: 65px;
         z-index: 5;
-        background: #fbfbfb!important;
+        background: #0c0b0b!important;
         border-right: 1px solid rgba(0, 0, 0, 0.03)!important;
         .team-wrapper {
             -webkit-overflow-scrolling: touch;
@@ -35,8 +35,8 @@
                     vertical-align: top;
                     width: 40px;
                     background: transparent;
-                    color: rgba(0, 0, 0, 0.5)!important;
-                    border: 1px solid rgba(0, 0, 0, 0.3);
+                    color:#FFF !important;
+                    border: 1px solid #FFFFFF;
                     border-radius: 8px;
                     .team-btn__initials {
                         text-align: left;
@@ -44,6 +44,7 @@
                     .team-btn__content {
                         bottom: 4px;
                         font-size: 8.5px;
+                        color:#FFF;
                         font-weight: normal;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -64,12 +65,14 @@
                 }
                 &.active {
                     .team-btn {
-                        background-color: rgb(127, 127, 127);
-                        border: 1px solid rgba(0, 0, 0, 0) !important;
+                        background-color: #FFFFFF;
+                        border: 1px solid #FFFFFF !important;
                         border-radius: 8px;
+                        font-family: 'MarkPro-Bold';
                         // border: none;
-                        color: #FFF!important;
+                        color: #030303 !important;
                     }
+                    .team-btn__content {color: #030303 !important;}
                 }
                 &.unread:before {
                     background: $black;
