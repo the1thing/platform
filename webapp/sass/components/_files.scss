@@ -1,7 +1,8 @@
 @charset 'UTF-8';
 .file-preview__container {
-    height: 100px;
+    height: 100px !important;
     margin: 1px 0 10px;
+    // padding:10px 0;
     max-height: 100px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -17,7 +18,8 @@
     height: 100px;
     margin: 0 0 0 10px;
     position: relative;
-    width: 120px;
+    width: 100px;
+    border-radius: 8px;
     &:first-child {
         margin-left: 0;
     }
@@ -36,27 +38,33 @@
     display: block;
     height: auto;
     max-width: 100%;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
 }
 
 .file-preview__remove {
-    background: alpha-color($black, .5);
-    border-radius: 0 0 0 2px;
-    height: 28px;
+    background: #464646 !important;
+    border-radius: 20px;
+    height: 20px;
     position: absolute;
-    right: 0;
+    right: 2px;
     text-align: center;
-    top: 0;
-    width: 28px;
+    top: 2px;
+    width: 20px;
     i {
-        color: $white;
+        color: $white !important;
         cursor: pointer;
-        font-size: 16px;
-        line-height: 29px;
+        font-size: 12px;
+        line-height: 20px;
         position: relative;
         right: auto;
         text-shadow: 0 0 3px alpha-color($black, .7);
         top: auto;
         z-index: 5;
+        &:hover {
+            color: #bfbfbf !important;
+        }
     }
 }
 
@@ -126,17 +134,21 @@
     }
 }
 
+.post-image__columns {
+    width: 350px;
+}
+
 .post-image__column {
-    border: 1px solid alpha-color($black, .08)!important;
+    // border: 1px solid alpha-color($black, .08)!important;
     float: left;
-    height: 100px;
-    margin: .5em 1em .5em 0!important;
-    // padding:
+    height: 350px;
+    margin: 0.5em 0em 0.5em 0 !important;
     position: relative;
-    width: 240px;
+    width: 350px;
+    border-radius: 4px;
     overflow: hidden!important;
-    border-radius: 8px!important;
-    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.08);
+    // border-radius: 8px!important;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     &--placeholder {
         visibility: hidden;
     }
@@ -157,15 +169,16 @@
     overflow: hidden;
     position: relative;
     text-align: center;
+    border-radius: 4px 4px 0 0 !important;
     width: 100%;
-    border-radius: 8px 0 0 8px!important;
     border: none;
+    background-size: cover;
     // border: 1px solid rgba(0, 0, 0, 0.08)!important;
     &.small {
         background-position: center;
     }
     &.normal {
-        background-position: top left;
+        background-position: center;
     }
     .spinner {
         .file__loading {
@@ -189,38 +202,44 @@
 }
 
 .post-image__thumbnail {
-    @include cursor(zoom-in);
+    cursor: -webkit-zoom-in !important;
     float: left;
-    height: 100%;
-    width: 50%;
+    height: 90%;
+    width: 100%;
+    border-bottom: 1px solid #dedede;
 }
 
 .post-image__details {
     @include clearfix;
     background: rgb(251, 251, 251)!important;
-    border-left: 1px solid rgba(0, 0, 0, 0.08)!important;
     color: alpha-color($black, .8);
     float: left;
+    border-radius: 0 0 4px 4px !important;
     position: relative;
     font-size: 13px;
-    height: 100%;
+    height: 10%;
     padding: 7px;
-    width: 50%;
-    border-radius:0 8px 8px 0;
+    width: 100%;
     word-break: break-word;
+    border: none !important;
+    background: #fff !important;
     >div {
         position: absolute;
         bottom: 4px;
         left: 7px;
-        width:100%;
+        width: 100%;
     }
     .post-image__name {
         display: block;
         margin-bottom: 3px;
         opacity: 0.5;
         font-size: 12px;
+        width: 100%;
+        margin-top: 2px;
+        overflow: hidden;
     }
     .post-image__download {
+        display: none !important;
         @include opacity(.7);
         cursor: pointer;
         display: inline-block;

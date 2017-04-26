@@ -43,16 +43,29 @@ input {
 
 .signup-team__container input.form-control,
 input {
-    &[type='text'] {
+    &[type='text'], &[type='search'] {
         box-shadow: none;
         height: 40px;
-        border-radius: 8px!important;
-        background: #fff!important;
-        color: #7f7f7f!important;
-        font-family: MarkPro-Medium;
+        border-radius: 8px !important;
+        background: #fff !important;
+        color: #030303 !important;
+        font-family: 'MarkPro-Book' !important;
         &:focus {
-            background: fff!important;
+            background: #fff!important;
              box-shadow: none!important;
         }
     }
+}
+
+.signup-team__container input.form-control, input[type='text']::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #7f7f7f!important;
+}
+.signup-team__container input.form-control, input[type='text']:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+ color: #7f7f7f!important;
+}
+.signup-team__container input.form-control, input[type='text']::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: #7f7f7f!important;
+}
+.signup-team__container input.form-control, input[type='text']:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #7f7f7f!important;
 }

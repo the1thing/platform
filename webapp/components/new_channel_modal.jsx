@@ -160,7 +160,7 @@ export default class NewChannelModal extends React.Component {
                         id='channel_modal.privateGroup1'
                         defaultMessage='Create a new private channel with restricted membership. '
                     />
-                    {createPublicChannelLink}
+                    <span className='switch-channel-type'>{createPublicChannelLink}</span>
                 </div>
             );
             break;
@@ -171,7 +171,7 @@ export default class NewChannelModal extends React.Component {
                         id='channel_modal.publicChannel2'
                         defaultMessage='Create a new public channel anyone can join. '
                     />
-                    {createPrivateChannelLink}
+                   <span className='switch-channel-type'> {createPrivateChannelLink}</span>
                 </div>
             );
             break;
@@ -195,15 +195,16 @@ export default class NewChannelModal extends React.Component {
                                 defaultMessage='New Channel'
                             />
                         </Modal.Title>
+                        <div className='clearBoth'></div>
+                            <div>
+                                {channelSwitchText}
+                            </div>
                     </Modal.Header>
                     <form
                         role='form'
                         className='form-horizontal'
                     >
                         <Modal.Body>
-                            <div>
-                                {channelSwitchText}
-                            </div>
                             <div className={displayNameClass}>
                                 <label className='col-sm-3 form__label control-label'>
                                     <FormattedMessage
@@ -217,7 +218,7 @@ export default class NewChannelModal extends React.Component {
                                         type='text'
                                         ref='display_name'
                                         className='form-control'
-                                        placeholder={Utils.localizeMessage('channel_modal.nameEx', 'E.g.: "Bugs", "Marketing", "客户支持"')}
+                                        placeholder={Utils.localizeMessage('channel_modal.nameEx', 'E.g.: "homepage" or "UI deliverables"')}
                                         maxLength={Constants.MAX_CHANNELNAME_LENGTH}
                                         value={this.props.channelData.displayName}
                                         autoFocus={true}
@@ -225,7 +226,7 @@ export default class NewChannelModal extends React.Component {
                                     />
                                     {displayNameError}
                                     <p className='input__help dark'>
-                                        {'URL: ' + prettyTeamURL + this.props.channelData.name + ' ('}
+                                        {'url: ' + prettyTeamURL + this.props.channelData.name + ' ('}
                                         <a
                                             href='#'
                                             onClick={this.props.onChangeURLPressed}
@@ -259,7 +260,7 @@ export default class NewChannelModal extends React.Component {
                                         className='form-control no-resize'
                                         ref='channel_purpose'
                                         rows='4'
-                                        placeholder={Utils.localizeMessage('channel_modal.purposeEx', 'E.g.: "A channel to file bugs and improvements"')}
+                                        placeholder={Utils.localizeMessage('channel_modal.purposeEx', 'E.g.: "A channel to keep track of UI changes."')}
                                         maxLength='250'
                                         value={this.props.channelData.purpose}
                                         onChange={this.handleChange}
@@ -268,7 +269,7 @@ export default class NewChannelModal extends React.Component {
                                     <p className='input__help'>
                                         <FormattedMessage
                                             id='channel_modal.descriptionHelp'
-                                            defaultMessage='Describe how this channel should be used.'
+                                            defaultMessage='Give a description to this channel.'
                                         />
                                     </p>
                                 </div>
@@ -293,7 +294,7 @@ export default class NewChannelModal extends React.Component {
                                         className='form-control no-resize'
                                         ref='channel_header'
                                         rows='4'
-                                        placeholder={Utils.localizeMessage('channel_modal.headerEx', 'E.g.: "[Link Title](http://example.com)"')}
+                                        placeholder={Utils.localizeMessage('channel_modal.headerEx', 'E.g.: "UX inspirations"')}
                                         maxLength='1024'
                                         value={this.props.channelData.header}
                                         onChange={this.handleChange}
@@ -302,7 +303,7 @@ export default class NewChannelModal extends React.Component {
                                     <p className='input__help'>
                                         <FormattedMessage
                                             id='channel_modal.headerHelp'
-                                            defaultMessage='Set text that will appear in the header of the channel beside the channel name. For example, include frequently used links by typing [Link Title](http://example.com).'
+                                            defaultMessage='Set text that will appear in the header of the channel beside the channel name.'
                                         />
                                     </p>
                                     {serverError}
