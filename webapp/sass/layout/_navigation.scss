@@ -50,6 +50,7 @@
                 font-size: 17px;
                 position: relative;
                 top: -2px;
+                display: none;
             }
 
             .icon--white {
@@ -74,7 +75,9 @@
                 color: $white;
                 display: inline-block;
                 font-weight: 600;
-                line-height: 47px;
+                line-height: 45px;
+                font-size: 14px;
+                font-family: 'MarkPro-Book';
                 margin-right: 5px;
                 max-width: calc(100% - 200px);
                 overflow: hidden;
@@ -96,6 +99,7 @@
                 margin-right: .5em;
 
                 &.info-popover {
+                    display: none;
                     @include background-size(100% 100%);
                     background-image: url('../images/info__icon.png');
                     cursor: pointer;

@@ -459,19 +459,6 @@ export default class SidebarRightMenu extends React.Component {
                             </a>
                         </li>
                         <li className='divider'/>
-                        <li>
-                            <a
-                                href='#'
-                                onClick={() => this.setState({showUserSettingsModal: true})}
-                            >
-                                <i className='icon fa fa-cog'/>
-                                <FormattedMessage
-                                    id='sidebar_right_menu.accountSettings'
-                                    defaultMessage='Account Settings'
-                                />
-                            </a>
-                        </li>
-                        <li className='divider'/>
                         {inviteLink}
                         {teamLink}
                         {addUserToTeamLink}
@@ -481,22 +468,6 @@ export default class SidebarRightMenu extends React.Component {
                         {joinAnotherTeamLink}
                         {consoleDivider}
                         {consoleLink}
-                        <li className='divider'/>
-                        {helpLink}
-                        {reportLink}
-                        {nativeAppLink}
-                        <li>
-                            <a
-                                href='#'
-                                onClick={this.handleAboutModal}
-                            >
-                                <i className='icon fa fa-info'/>
-                                <FormattedMessage
-                                    id='navbar_dropdown.about'
-                                    defaultMessage='About Mattermost'
-                                />
-                            </a>
-                        </li>
                         <li className='divider'/>
                         <li>
                             <a

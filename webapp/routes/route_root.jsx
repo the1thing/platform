@@ -20,10 +20,10 @@ import {browserHistory} from 'react-router/es6';
 function preLogin(nextState, replace, callback) {
     // redirect to the mobile landing page if the user hasn't seen it before
     if (window.mm_config.IosAppDownloadLink && UserAgent.isIosWeb() && !BrowserStore.hasSeenLandingPage()) {
-        replace('/get_ios_app');
+       // replace('/get_ios_app');
         BrowserStore.setLandingPageSeen(true);
     } else if (window.mm_config.AndroidAppDownloadLink && UserAgent.isAndroidWeb() && !BrowserStore.hasSeenLandingPage()) {
-        replace('/get_android_app');
+       // replace('/get_android_app');
         BrowserStore.setLandingPageSeen(true);
     }
 
