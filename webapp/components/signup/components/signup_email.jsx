@@ -337,7 +337,7 @@ export default class SignupEmail extends React.Component {
                                 ref='email'
                                 className='form-control'
                                 defaultValue={this.state.email}
-                                placeholder=''
+                                placeholder='Email id'
                                 maxLength='128'
                                 autoFocus={true}
                                 spellCheck='false'
@@ -360,7 +360,7 @@ export default class SignupEmail extends React.Component {
                                 type='text'
                                 ref='name'
                                 className='form-control'
-                                placeholder=''
+                                placeholder='Choose a username'
                                 maxLength={Constants.MAX_USERNAME_LENGTH}
                                 spellCheck='false'
                                 autoCapitalize='off'
@@ -381,7 +381,7 @@ export default class SignupEmail extends React.Component {
                                 type='password'
                                 ref='password'
                                 className='form-control'
-                                placeholder=''
+                                placeholder='Password'
                                 maxLength='128'
                                 spellCheck='false'
                             />
@@ -432,11 +432,9 @@ export default class SignupEmail extends React.Component {
                 <p>
                     <FormattedHTMLMessage
                         id='create_team.agreement'
-                        defaultMessage="By proceeding to create your account and use {siteName}, you agree to our <a href='{TermsOfServiceLink}'>Terms of Service</a> and <a href='{PrivacyPolicyLink}'>Privacy Policy</a>. If you do not agree, you cannot use {siteName}."
+                        defaultMessage="By proceeding to create your account and use {siteName}, you agree to our Terms of Service and Privacy Policy. If you do not agree, you cannot use {siteName}."
                         values={{
-                            siteName: global.window.mm_config.SiteName,
-                            TermsOfServiceLink: global.window.mm_config.TermsOfServiceLink,
-                            PrivacyPolicyLink: global.window.mm_config.PrivacyPolicyLink
+                            siteName: global.window.mm_config.SiteName
                         }}
                     />
                 </p>
@@ -475,10 +473,7 @@ export default class SignupEmail extends React.Component {
                             className='signup-team-logo'
                             src={logoImage}
                         />
-                        <h1>{global.window.mm_config.SiteName}</h1>
-                        <h4 className='color--light'>
-                            {description}
-                        </h4>
+
                         <h4 className='color--light'>
                             <FormattedMessage
                                 id='signup_user_completed.lets'

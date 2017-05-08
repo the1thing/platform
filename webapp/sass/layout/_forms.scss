@@ -44,7 +44,8 @@
 .help-block {
     color: $dark-gray;
     font-size: .95em;
-    margin: 10px 0 0;
+    margin: 5px 0 0 10px;
+    text-align: left !important;
 }
 
 .form-group {
@@ -113,7 +114,7 @@ input.filter-textbox {
 .form-control {
     display: block;
     width: 100%!important;
-    height: 40px!important;
+    height: 40px;
     padding-right: 15px!important;
     padding-left: 15px!important;
     font-size: 14px!important;

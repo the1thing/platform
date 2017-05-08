@@ -58,6 +58,7 @@
             font-weight: normal !important;
             &.header-list__right {
                 padding-right: 4px;
+                visibility: hidden;
             }
         }
         td {
@@ -406,6 +407,7 @@
 
 .app__body {
     .channel-header__links {
+        visibility: hidden;
         font-family: 'Open Sans', sans-serif;
         font-size: 22px;
         height: 30px;

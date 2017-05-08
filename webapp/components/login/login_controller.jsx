@@ -607,7 +607,7 @@ export default class LoginController extends React.Component {
             description = (
                 <FormattedMessage
                     id='web.root.signup_info'
-                    defaultMessage='All team communication in one place, searchable and accessible anywhere'
+                    defaultMessage='Protip: Everything makes sense with the right design team'
                 />
             );
         }
@@ -615,21 +615,49 @@ export default class LoginController extends React.Component {
         return (
             <div>
                 <ErrorBar/>
-                <div className='col-sm-12'>
-                    <div className={'signup-team__container ' + customClass}>
-                        <div className='signup__markdown'>
-                            {customContent}
-                        </div>
+                <div className='col-sm-10 col-sm-offset-1'>
+                <header>    
+                <div className='logo_on_header'>
+                    <a
+                    className=''
+                    href='http://1thing.io'
+                    >
                         <img
-                            className='signup-team-logo'
-                            src={logoImage}
+                            className='login-team-logo hide-on-mobile'
+                            src='http://1thing.io/img/build/full-logo.svg'
                         />
-                        <div className='signup__content'>
-                            <h1>{global.window.mm_config.SiteName}</h1>
-                            <h4 className='color--light'>
-                                {description}
-                            </h4>
-                            {content}
+                        <img
+                            className='login-team-logo-mobile hide-on-desktop'
+                            src='http://1thing.io/img/build/thumbnail.png'
+                        />
+                        </a>
+
+                </div>
+                <div className='call_on_phone'>
+                    <img 
+                    src='http://1thing.io/assets/images/call.png'
+                    />
+                    <a
+                    className='call-us'
+                    href='tel:+918375008375'
+                    >&nbsp;8375 00 8375</a>
+                </div>
+                </header>
+                    <div className='wrap_585px'>
+                        <div className={'signup-team__container ' + customClass}>
+                            <div className='signup__markdown'>
+                                {customContent}
+                            </div>
+                            <div className='signin-title'>
+                                <h2>Sign In</h2>
+                            </div>
+                            <div className='signup__content'>
+                                <h1>{global.window.mm_config.SiteName}</h1>
+                                <h4 className='color--light'>
+                                    <span>Protip: Everything makes sense with the right design team</span>    
+                                </h4>
+                                {content}
+                            </div>
                         </div>
                     </div>
                 </div>
