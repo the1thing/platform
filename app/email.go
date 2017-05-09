@@ -121,37 +121,6 @@ func SendSignInChangeEmail(email, method, locale, siteURL string) *model.AppErro
 }
 
 func SendWelcomeEmail(userId string, email string, verified bool, locale, siteURL string) *model.AppError {
-	T := utils.GetUserTranslations(locale)
-
-	rawUrl, _ := url.Parse(siteURL)
-
-	subject := T("api.templates.welcome_subject",
-		map[string]interface{}{"SiteName": utils.ClientCfg["SiteName"],
-			"ServerURL": rawUrl.Host})
-
-	bodyPage := utils.NewHTMLTemplate("welcome_body", locale)
-	bodyPage.Props["SiteURL"] = siteURL
-	bodyPage.Props["Title"] = T("api.templates.welcome_body.title", map[string]interface{}{"ServerURL": rawUrl.Host})
-	bodyPage.Props["Info"] = T("api.templates.welcome_body.info")
-	bodyPage.Props["Button"] = T("api.templates.welcome_body.button")
-	bodyPage.Props["Info2"] = T("api.templates.welcome_body.info2")
-	bodyPage.Props["Info3"] = T("api.templates.welcome_body.info3")
-	bodyPage.Props["SiteURL"] = siteURL
-
-	if *utils.Cfg.NativeAppSettings.AppDownloadLink != "" {
-		bodyPage.Props["AppDownloadInfo"] = T("api.templates.welcome_body.app_download_info")
-		bodyPage.Props["AppDownloadLink"] = *utils.Cfg.NativeAppSettings.AppDownloadLink
-	}
-
-	if !verified {
-		link := fmt.Sprintf("%s/do_verify_email?uid=%s&hid=%s&email=%s", siteURL, userId, model.HashPassword(userId+utils.Cfg.EmailSettings.InviteSalt), url.QueryEscape(email))
-		bodyPage.Props["VerifyUrl"] = link
-	}
-
-	if err := utils.SendMail(email, subject, bodyPage.Render()); err != nil {
-		return model.NewLocAppError("SendWelcomeEmail", "api.user.send_welcome_email_and_forget.failed.error", nil, err.Error())
-	}
-
 	return nil
 }
 

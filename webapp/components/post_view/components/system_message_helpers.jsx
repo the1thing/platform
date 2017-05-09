@@ -46,9 +46,8 @@ function renderAddToChannelMessage(post, options) {
     return (
         <FormattedMessage
             id='api.channel.add_member.added'
-            defaultMessage='{addedUsername} added to the channel by {username}'
+            defaultMessage='{addedUsername} added to the channel.'
             values={{
-                username,
                 addedUsername
             }}
         />

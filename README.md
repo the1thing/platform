@@ -1,3 +1,45 @@
+# Pushing updates on server - 
+
+After changes are done, do **'make stop'**.
+
+**Create a binary**
+- Then do, 'make package' on 'platform/'.
+- This command will generate a folder named "dist" inside 'platform/'.
+- Once done, go to 'dist/', you'll find a zip named 'mattermost-team-linux-amd64.tar.gz'.
+
+**Put it on S3**
+- Take this zip and put it on amazon s3 inside '1thing-logos/binary-images/production/' and add the version right before '.tar.gz'. For example - 
+'mattermost-team-linux-amd64_v8.tar.gz'
+- Give read permissions.
+- Copy the link.
+
+**Put the copied link in 'platform/docker/app/dockerfile'**
+
+- You'll find a line like this-
+"RUN curl https://s3.ap-south-1.amazonaws.com/1thing-logos/binary-images/production/mattermost-team-linux-amd64_v8.tar.gz | tar -xvz"
+
+- Replace the S3 link in the above line.
+
+
+**Push on Github**
+- Do " Git add . "
+- Do " Git commit -m 'write_details_of_the_commit' "
+- Do " Git push origin master "
+
+**Push on server**
+- Login into Digital Ocean.
+- Copy the url of the droplet named "workspace".
+- In terminal, enter "ssh root@DROPLET_URL"
+- Enter the password of root for the droplet.
+- Once you're logged into the droplet, enter 'cd platform'.
+- Enter ' git pull '
+- Once pull is successful, enter 'cd docker'
+- Do ' docker-compose build '
+- Once the build is successful, do 'docker-compose up -d'.
+
+Your changes will now start reflecting.
+
+
 # Mattermost
 
 Mattermost is an open source, self-hosted Slack-alternative from [https://mattermost.org](https://mattermost.org).
