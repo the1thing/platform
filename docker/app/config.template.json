@@ -13,7 +13,7 @@
         "EnableSecurityFixAlert": true
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": "1THING",
         "MaxUsersPerTeam": 50,
         "EnableTeamCreation": true,
         "EnableUserCreation": true,
@@ -59,8 +59,8 @@
         "EnableSignUpWithEmail": true,
         "SendEmailNotifications": false,
         "RequireEmailVerification": false,
-        "FeedbackName": "",
-        "FeedbackEmail": "",
+        "FeedbackName": "1THING",
+        "FeedbackEmail": "steve@1thing.design",
         "SMTPUsername": "",
         "SMTPPassword": "",
         "SMTPServer": "",

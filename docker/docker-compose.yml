@@ -22,3 +22,4 @@ app:
     - MM_USERNAME=mmuser
     - MM_PASSWORD=mmuser_password
     - MM_DBNAME=mattermost
+    - MM_SITENAME=1THING
