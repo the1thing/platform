@@ -2117,7 +2117,7 @@
   },
   {
     "id": "api.templates.email_change_subject",
-    "translation": "[{{ .SiteName }}] Your email address has changed"
+    "translation": "[1THING] Your email address has changed"
   },
   {
     "id": "api.templates.email_change_verify_body.button",
@@ -2133,7 +2133,7 @@
   },
   {
     "id": "api.templates.email_change_verify_subject",
-    "translation": "[{{ .SiteName }}] Verify new email address"
+    "translation": "[1THING] Verify new email address"
   },
   {
     "id": "api.templates.email_footer",
@@ -2153,7 +2153,7 @@
   },
   {
     "id": "api.templates.error.title",
-    "translation": "{{ .SiteName }} needs your help:"
+    "translation": "1THING needs your help:"
   },
   {
     "id": "api.templates.find_teams_body.found",
@@ -2169,7 +2169,7 @@
   },
   {
     "id": "api.templates.find_teams_subject",
-    "translation": "Your {{ .SiteName }} Teams"
+    "translation": "Your 1THING Teams"
   },
   {
     "id": "api.templates.invite_body.button",
@@ -2189,7 +2189,7 @@
   },
   {
     "id": "api.templates.invite_subject",
-    "translation": "[{{ .SiteName }}] {{ .SenderName }} invited you to join {{ .TeamDisplayName }} Team"
+    "translation": "[1THING] {{ .SenderName }} invited you to join {{ .TeamDisplayName }} Team"
   },
   {
     "id": "api.templates.mfa_activated_body.info",
@@ -2201,7 +2201,7 @@
   },
   {
     "id": "api.templates.mfa_change_subject",
-    "translation": "[{{ .SiteName }}] Your MFA has been updated"
+    "translation": "[1THING] Your MFA has been updated"
   },
   {
     "id": "api.templates.mfa_deactivated_body.info",
@@ -2221,7 +2221,7 @@
   },
   {
     "id": "api.templates.password_change_subject",
-    "translation": "[{{ .SiteName }}] Your password has been updated"
+    "translation": "[1THING] Your password has been updated"
   },
   {
     "id": "api.templates.post_body.button",
@@ -2257,11 +2257,11 @@
   },
   {
     "id": "api.templates.reset_subject",
-    "translation": "[{{ .SiteName }}] Reset your password"
+    "translation": "[1THING] Reset your password"
   },
   {
     "id": "api.templates.signin_change_email.body.info",
-    "translation": "You updated your sign-in method on {{ .SiteName }} to {{.Method}}.<br>If this change wasn't initiated by you, please contact your system administrator."
+    "translation": "You updated your sign-in method on 1THING to {{.Method}}.<br>If this change wasn't initiated by you, please contact your system administrator."
   },
   {
     "id": "api.templates.signin_change_email.body.method_email",
@@ -2273,7 +2273,7 @@
   },
   {
     "id": "api.templates.signin_change_email.subject",
-    "translation": "[{{ .SiteName }}] You updated your sign-in method on {{ .SiteName }}"
+    "translation": "[1THING] You updated your sign-in method on 1THING"
   },
   {
     "id": "api.templates.signup_team_body.button",
@@ -2281,7 +2281,7 @@
   },
   {
     "id": "api.templates.signup_team_body.info",
-    "translation": "{{ .SiteName }} is one place for all your team communication, searchable and available anywhere.<br>You'll get more out of {{ .SiteName }} when your team is in constant communication--let's get them on board."
+    "translation": "1THING is one place for all your team communication, searchable and available anywhere.<br>You'll get more out of 1THING when your team is in constant communication--let's get them on board."
   },
   {
     "id": "api.templates.signup_team_body.title",
@@ -2289,7 +2289,7 @@
   },
   {
     "id": "api.templates.signup_team_subject",
-    "translation": "{{ .SiteName }} Team Setup"
+    "translation": "1THING Team Setup"
   },
   {
     "id": "api.templates.upgrade_30_body.info",
@@ -2309,7 +2309,7 @@
   },
   {
     "id": "api.templates.username_change_subject",
-    "translation": "[{{ .SiteName }}] Your username has changed"
+    "translation": "[1THING] Your username has changed"
   },
   {
     "id": "api.templates.verify_body.button",
@@ -2325,7 +2325,7 @@
   },
   {
     "id": "api.templates.verify_subject",
-    "translation": "[{{ .SiteName }}] Email Verification"
+    "translation": "[1THING] Email Verification"
   },
   {
     "id": "api.templates.welcome_body.app_download_info",
@@ -2353,7 +2353,7 @@
   },
   {
     "id": "api.templates.welcome_subject",
-    "translation": "[{{ .SiteName }}] You joined {{ .ServerURL }}"
+    "translation": "[1THING] You joined {{ .ServerURL }}"
   },
   {
     "id": "api.user.activate_mfa.email_and_ldap_only.app_error",
