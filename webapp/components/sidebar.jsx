@@ -685,7 +685,7 @@ export default class Sidebar extends React.Component {
                 >
                     <FormattedMessage
                         id='sidebar.moreElips'
-                        defaultMessage='More...'
+                        defaultMessage='...'
                     />
                 </a>
             </li>
@@ -861,7 +861,7 @@ export default class Sidebar extends React.Component {
                             >
                                 <FormattedMessage
                                     id='sidebar.moreElips'
-                                    defaultMessage='More...'
+                                    defaultMessage='...'
                                 />
                             </a>
                         </li>
