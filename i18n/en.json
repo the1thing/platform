@@ -953,8 +953,8 @@
   {
     "id": "api.email_batching.send_batched_email_notification.subject",
     "translation": {
-      "one": "[{{.SiteName}}] New Notification for {{.Month}} {{.Day}}, {{.Year}}",
-      "other": "[{{.SiteName}}] New Notifications for {{.Month}} {{.Day}}, {{.Year}}"
+      "one": "[1THING] New Notification for {{.Month}} {{.Day}}, {{.Year}}",
+      "other": "[1THING] New Notifications for {{.Month}} {{.Day}}, {{.Year}}"
     }
   },
   {
@@ -2141,7 +2141,7 @@
   },
   {
     "id": "api.templates.email_info",
-    "translation": "Any questions at all, mail us any time: <a href='mailto:{{.SupportEmail}}' style='text-decoration: none; color:#2389D7;'>{{.SupportEmail}}</a>.<br>Best wishes,<br>The {{.SiteName}} Team<br>"
+    "translation": "Any questions at all, mail us any time: <a href='mailto:{{.SupportEmail}}' style='text-decoration: none; color:#2389D7;'>{{.SupportEmail}}</a>.<br>Best wishes,<br>The 1THING Team<br>"
   },
   {
     "id": "api.templates.email_organization",
