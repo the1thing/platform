@@ -8,7 +8,7 @@
     }
     .post-right-comments-container {
         position: relative;
-            padding-bottom: 30px;
+        padding-bottom: 30px;
         .post {
             &:first-child {
                 padding-top: 15px;
@@ -23,7 +23,7 @@
         &.post--root {
             // border-bottom: 1px solid #ddd;
             padding-bottom: 1em;
-                background: #f8f8f8 !important;
+            background: #f8f8f8 !important;
             margin: 0 2%!important;
             border: none!important;
             border-radius: 8px!important;
@@ -75,7 +75,7 @@
             min-width: 1px;
         }
         .post-create-footer {
-                padding: 5px 0 60px;
+            padding: 5px 0 60px;
             width: 100%;
         }
         .post-right-comments-upload-in-progress {
@@ -142,4 +142,12 @@
 
 .post-right-comment-time {
     color: #a8adb7;
+}
+
+.reaction {
+    display: none !important;
+}
+
+.reacticon__container {
+    display: none !important;
 }
