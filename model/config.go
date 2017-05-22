@@ -484,7 +484,7 @@ func (o *Config) SetDefaults() {
 
 	if o.FileSettings.InitialFont == "" {
 		// Defaults to "luximbi.ttf"
-		o.FileSettings.InitialFont = "luximbi.ttf"
+		o.FileSettings.InitialFont = "markprobold.ttf"
 	}
 
 	if len(o.EmailSettings.InviteSalt) == 0 {
