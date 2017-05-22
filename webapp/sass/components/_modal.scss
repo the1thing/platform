@@ -141,14 +141,14 @@
             font-size: 24px;
             font-family: 'MarkPro-Black';
             min-height: 56px;
-            padding: 14px 32px 11px 32px;
+            padding: 14px 32px 11px 15px;
             .modal-title {
-                color: #7F7F7F!important;
+                color: #030303!important;
                 float: left;
-                font-size: 24px;
+                font-size: 18px;
                 width: 100%;
                 font-family: 'MarkPro-Heavy';
-                line-height: 27px;
+                line-height: 36px;
                 max-width: calc(100% - 250px);
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -174,16 +174,18 @@
             .close {
                 @include opacity(1);
                 @include single-transition(all, .25s, ease-in);
-                color: #000000!important;
-                height: 30px;
-                font-size: 36px!important;
-                line-height: 30px!important;
+                color: #000000 !important;
+                height: 24px;
+                font-size: 26px !important;
+                line-height: 26px !important;
                 position: absolute;
                 overflow: hidden;
-                outline:none;
+                
+                outline: none;
                 right: 10px;
-                width: 30px;
+                width: 24px;
                 z-index: 5;
+                top: 20px;
                 text-shadow: none;
                 &:hover {
                     @include alpha-property(background, $black, .1);
@@ -191,7 +193,7 @@
                 span {
                     font-family: 'Open Sans', sans-serif;
                     // line-height: 10px;
-                        font-weight: 100;
+                    font-weight: 100;
                 }
             }
             .btn {
@@ -439,7 +441,7 @@
         }
         .filter-row {
             margin: 5px 0 10px;
-            width: 300px;
+            width: 100%;
             &.filter-row--full {
                 width: 100%;
             }
@@ -600,11 +602,12 @@ input[type="submit"],
 .modal-header .btn.btn-primary,
 .app__body .btn.btn-primary {
     font-size: 14px!important;
-    color: #FFFFFF!important;
-    background: #22B541!important;
+    color: #22B541!important;
+    background: #FFFFFF !important;
     border-radius: 20px;
-    font-family: 'MarkPro-Black';
+    font-family: 'MarkPro-Book';
     padding: 10px 20px!important;
+    &:hover {color:#1c9f37!important;}
 }
 
 .modal-footer .btn.btn-danger {
@@ -637,4 +640,24 @@ input[type="submit"],
 .clearBoth {
     clear: both;
     width: 100%;
+}
+
+.modal-content .modal-header .channel-create-btn {
+    background: none !important;
+    color: #22B541 !important;
+    text-decoration: none !important;
+    margin-right: 10px !important;
+    font-family: 'MarkPro-Book' !important;
+    &:hover {
+        color: #1c9f37 !important;
+    }
+}
+
+.multi-select__container .Select-control {
+    border-radius: 8px!important;
+    border: 1px solid #f0f0f0!important;
+}
+
+.multi-select__container .btn-sm {
+    line-height: 1 !important;
 }

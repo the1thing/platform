@@ -126,13 +126,14 @@ export function createDMIntroMessage(channel, centeredIntro) {
                 <p className='channel-intro-text'>
                     <FormattedHTMLMessage
                         id='intro_messages.DM'
-                        defaultMessage='This is the start of your direct message history with {teammate}.<br />Direct messages and files shared here are not shown to people outside this area.'
+                        defaultMessage='This is the start of your direct message history with {teammate}. Direct messages and files shared here are not shown to people outside this area.'
                         values={{
                             teammate: teammateName
                         }}
                     />
                 </p>
                 {createSetHeaderButton(channel)}
+                <div className='testing1'></div>
             </div>
         );
     }
@@ -145,6 +146,7 @@ export function createDMIntroMessage(channel, centeredIntro) {
                     defaultMessage='This is the start of your direct message history with this teammate. Direct messages and files shared here are not shown to people outside this area.'
                 />
             </p>
+
         </div>
     );
 }
@@ -154,16 +156,13 @@ export function createOffTopicIntroMessage(channel, centeredIntro) {
         <div className={'channel-intro ' + centeredIntro}>
             <FormattedHTMLMessage
                 id='intro_messages.offTopic'
-                defaultMessage='<h4 class="channel-intro__title">Welcome to {display_name}</h4><p class="channel-intro__content">This is the start of {display_name}, a channel for non-work-related conversations.<br/></p>'
+                defaultMessage='<h4 class="channel-intro__title">Welcome {display_name}</h4><p class="channel-intro__content">This is the start of coversations between {display_name} and 1THING.<br/></p>'
                 values={{
                     display_name: channel.display_name
                 }}
             />
             {createInviteChannelMemberButton(channel, 'channel')}
-            {createSetHeaderButton(channel)}
-             <div className='space_for_loading_image'>
-                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
-            </div>           
+            {createSetHeaderButton(channel)}        
         </div>
     );
 }
@@ -195,7 +194,7 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
     }
 
     return (
-        <div className={'channel-intro ' + centeredIntro}>
+        <div className={'channel-intro default-public-channel ' + centeredIntro}>
             <FormattedHTMLMessage
                 id='intro_messages.default'
                 defaultMessage="<h4 class='channel-intro__title'>Welcome to {display_name}</h4><p class='channel-intro__content'>This is the first channel teammates see when they sign up - use it for posting updates everyone needs to know.</p>"
@@ -203,11 +202,15 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
                     display_name: channel.display_name
                 }}
             />
-            {inviteModalLink}
-            {createSetHeaderButton(channel)}
-            <br/>
-            <div className='space_for_loading_image'>
-                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
+            <div className='oh-hello-there hide-in-mobile'>
+                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/channel_intro.png' alt='' />
+            </div>
+            <div className='oh-hello-there hide-in-desktop'>
+                <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/channel_intro_mobile.png' alt='' />
+            </div>
+            <div className='wrap_links'>
+                {inviteModalLink}
+                {createSetHeaderButton(channel)}
             </div>
         </div>
     );
@@ -229,7 +232,7 @@ export function createStandardIntroMessage(channel, centeredIntro) {
         memberMessage = (
             <FormattedMessage
                 id='intro_messages.onlyInvited'
-                defaultMessage=' Only invited members can see this private group.'
+                defaultMessage=' Only invited members can access this conversation.'
             />
         );
     } else {
@@ -274,12 +277,9 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             <span>
                 <FormattedMessage
                     id='intro_messages.creator'
-                    defaultMessage='This is the start of the {name} {type}, created by {creator} on {date}.'
+                    defaultMessage='This is the start of conversations between {name} and 1THING.'
                     values={{
-                        name: (uiName),
-                        type: (uiType),
-                        creator: (creatorName),
-                        date
+                        name: (uiName)
                     }}
                 />
             </span>
@@ -307,7 +307,7 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             <h4 className='channel-intro__title'>
                 <FormattedMessage
                     id='intro_messages.welcome'
-                    defaultMessage='Welcome to {name}'
+                    defaultMessage='Welcome {name}'
                     values={{
                         name: (uiName)
                     }}
@@ -321,9 +321,6 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             </p>
             {createInviteChannelMemberButton(channel, uiType)}
             {createSetHeaderButton(channel)}
-            <div className='space_for_loading_image'>
-                 <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/loading_image.png' alt='loading posts...'/>
-            </div>
         </div>
     );
 }

@@ -124,12 +124,7 @@ export default class EditChannelPurposeModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        <FormattedMessage
-                            id='edit_channel_purpose_modal.body'
-                            defaultMessage='Describe how this channel should be used. This text appears in the channel list in the "More..." menu and helps others decide whether to join.'
-                        />
-                    </p>
+
                     <textarea
                         ref='purpose'
                         className='form-control no-resize'

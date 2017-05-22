@@ -1,6 +1,11 @@
 @charset 'UTF-8';
-
 @media screen and (max-width: 1800px) {
+    .hide-in-mobile {
+        display: block;
+    }
+    .hide-in-desktop {
+        display: none;
+    }
     .inner-wrap {
         &.move--left,
         &.webrtc--show {
@@ -26,7 +31,6 @@
             }
         }
     }
-
     .date-separator,
     .new-separator {
         &.hovered--comment {
@@ -36,7 +40,6 @@
             }
         }
     }
-
     .backstage-content {
         margin: 46px 46px 46px 150px;
     }
@@ -46,37 +49,31 @@
     .tip-overlay {
         &.tip-overlay--chat {
             margin: -10px 0 0 -10px;
-
             .arrow {
                 left: auto;
                 right: 15px;
             }
         }
     }
-
     .help__format-text {
         display: none;
     }
-
     .inner-wrap {
         &.move--left,
         &.webrtc--show {
             .file-overlay {
                 font-size: em(18px);
-
                 .overlay__circle {
                     height: 300px;
                     margin: -150px 0 0 -150px;
                     width: 300px;
                 }
-
                 .overlay__files {
                     margin: 60px auto 15px;
                     width: 150px;
                 }
             }
         }
-
         &.move--left {
             .post {
                 &.post--root,
@@ -85,7 +82,6 @@
                         padding-right: 70px;
                     }
                 }
-
                 &.post--comment {
                     .post__header {
                         padding-right: 70px;
@@ -106,7 +102,6 @@
             }
         }
     }
-
     .channel-header {
         .search-bar__container {
             .search__form {
@@ -120,4 +115,31 @@
     .modal-lg {
         width: 700px;
     }
+    .post {
+        &:hover {
+            .col__reply {
+                background: #FFFFFF!important;
+                border: 1px solid #f0f0f0 !important;
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1) !important;
+            }
+        }
+    }
+
+    .sidebar-right__body { 
+        .post {
+            &:hover {
+                .col__reply {
+                    background: #FFFFFF!important;
+                }
+            }
+        }
+        .post .post__header .col__reply {
+            min-width: 54px !important;
+            padding: 5px 15px 5px 0 !important;
+        }
+        .col__reply .dropdown {
+            border-left: none!important;
+        }
+    }
+
 }

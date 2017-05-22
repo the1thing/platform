@@ -1,5 +1,11 @@
 @charset 'UTF-8';
 @media screen and (max-width: 768px) {
+    .hide-in-mobile {
+        display: none;
+    }
+    .hide-in-desktop {
+        display: block;
+    }
     .table-responsive {
         border: none;
     }
@@ -24,7 +30,7 @@
             bottom: 7px !important;
         }
         .post-create-body .custom-textarea {
-            padding-left: 15px !important;
+            padding-left: 20px !important;
             padding-top: 9px;
         }
         .msg-typing {
@@ -190,6 +196,10 @@
     }
     .channel-intro {
         margin: 0 0 35px;
+        &.default-public-channel {
+            background: url(https://s3.ap-south-1.amazonaws.com/1thing-logos/dots_mobile.png) left top no-repeat;
+            background-size: 100%;
+        }
     }
     .post {
         &:not(.post--compact) {
@@ -201,7 +211,7 @@
         }
         &.post--root {
             .post__header .col__reply {
-                right: -15px;
+                right: 0px;
             }
         }
         .post__dropdown {
@@ -318,6 +328,10 @@
         }
         &.post--system {
             padding: 10px 15px 0 15px;
+            .post__header .col__reply {
+                padding: 3px 0px 5px 1px!important;
+                right: -10px;
+            }
         }
         &.other--root {
             padding: 25px 15px 10px 15px;
@@ -504,12 +518,25 @@
             box-shadow: 0 3px 3px 0 rgba(200, 200, 200, 0.50);
         }
     }
+    .wrap_585px {
+        h4 span {
+            font-size: 18px!important;
+            letter-spacing: 0.3px!important;
+            line-height: 22px!important;
+        }
+    }
     .signup-team__container {
         font-size: .9em;
         margin-bottom: 30px;
-        padding: 60px 10px 0;
+        padding: 60px 0px 0 0;
+        .form-control {
+            margin: 0px !important;
+        }
         .signup-team__name {
             font-size: 2em;
+        }
+        h4 {
+            font-size: 1em;
         }
         .btn.btn-full {
             padding-left: 10px;
@@ -672,7 +699,7 @@
                         position: relative;
                         top: auto;
                         width: 100%;
-                            background: #FFF;
+                        background: #FFF;
                         &.position--top {
                             top: auto;
                         }
@@ -832,7 +859,7 @@
     .footer,
     .footer-pane,
     .footer-push {
-        height: 187px;
+        height: 120px;
     }
     .footer-pane {
         .footer-link {
@@ -850,6 +877,7 @@
         background: $primary-color;
         color: $white;
         padding: 0;
+        background: #030303!important;
         .search__form {
             @include single-transition(all, .2s, linear);
             @include translateX(0);
@@ -860,7 +888,7 @@
             width: 100%;
             margin-left: 0px;
             margin-right: 0px;
-            margin-bottom:7px;
+            margin-bottom: 7px;
             .icon--refresh {
                 @include opacity(.6);
                 color: $black;
@@ -1047,6 +1075,10 @@
         }
         .sidebar-right__body {
             height: calc(100% - 44px);
+            .post-create__container .post-create-body .custom-textarea {
+                padding-left: 42px !important;
+                // padding-top: 9px;
+            }
         }
     }
     .search-items-container {
@@ -1236,7 +1268,7 @@
                 .modal-content {
                     height: 100%;
                     background: #FFF !important;
-                        border-radius: 0 !important;
+                    border-radius: 0 !important;
                 }
             }
             .modal-footer {

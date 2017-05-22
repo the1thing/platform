@@ -89,15 +89,14 @@
     }
     .heading {
         display: inline-block;
-        font-size: 0.9em;
-        // font-weight: 600;
+        font-size: 1em;
         font-family: 'MarkPro-Bold';
         margin: 0 4px 0 0;
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: middle;
-        color: #7F7F7F!important;
+        color: #030303 !important;
     }
     .caret {
         margin-top: 3px;
@@ -189,11 +188,27 @@
     &.channel-intro--centered {
         max-width: 1020px;
     }
+    &.default-public-channel {
+        background: url(https://s3.ap-south-1.amazonaws.com/1thing-logos/dots.png) left top repeat-x;
+        background-size: 100%;
+    }
+    .wrap_links {
+        background: #FFFFFF;
+        border: 1px solid #F2F2F2;
+        border-radius: 8px;
+        font-family: OpenSans-Semibold;
+        font-size: 12px;
+        color: #030303;
+    }
     .intro-links {
         display: inline-block;
-        padding: 10px 0em 10px 20px;
-        width: 50%;
+        padding: 10px 4em 10px 20px;
+        width: auto;
+        border-radius: 6px;
         background: #FFFFFF;
+        i {
+            color: #030303!important;
+        }
         a span {
             color: #030303!important;
             font-size: 12px!important;
@@ -226,7 +241,8 @@
     .channel-intro__title {
         font-size: 24px;
         // font-weight: 600;
-        margin-top: 100px!important;
+        padding-top: 70px!important;
+        margin-top: 0px;
         margin-bottom: 15px;
         color: #030303!important;
         font-family: 'MarkPro-Black'!important;
@@ -235,8 +251,21 @@
         // @include border-radius(3px);
         background: transparent!important;
         padding: 8px 0px;
-        color: #7F7F7F!important;
+        color: #030303!important;
         font-size: 14px!important;
+    }
+    .oh-hello-there.hide-in-mobile {
+        margin: 40px 0;
+        img {
+            max-width: 800px;
+        }
+    }
+    .oh-hello-there.hide-in-desktop {
+        margin: 40px 0;
+        text-align: left;
+        img {
+            max-width: 240px;
+        }
     }
 }
 

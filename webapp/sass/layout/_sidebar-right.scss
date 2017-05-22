@@ -11,6 +11,9 @@
     &.webrtc {
         z-index: 5;
     }
+    .search__form {
+        display: none!important;
+    }
     .sidebar--right__bg {
         @include single-transition(background-color, .5s, ease);
         background-color: alpha-color($black, 0);
@@ -48,7 +51,7 @@
         }
     }
     .post-create__container {
-        background:#f6f6f6 !important;
+        background: #f6f6f6 !important;
         form {
             padding: .5em 15px 0;
         }
@@ -106,6 +109,9 @@
         background: #F6F6F6;
         // border-top: $border-gray;
         height: calc(100% - 56px);
+        .col__reply .dropdown {
+            border-left: none!important;
+        }
     }
     .sidebar__overlay {
         @include opacity(.1);
@@ -211,4 +217,12 @@ i {
     &:hover {
         color: #000000!important;
     }
+}
+
+.btn-group.open .dropdown-toggle {
+    box-shadow: none !important;
+}
+
+.post-right__container .post .post__header .col__reply {
+    top: -7px !important;
 }

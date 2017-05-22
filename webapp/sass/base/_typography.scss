@@ -8,6 +8,15 @@
 }
 
 @font-face {
+    font-family: 'MarkPro-Heavy';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.svg#MarkPro-Heavy') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Heavy.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal
+}
+
+
+@font-face {
     font-family: 'MarkPro-Light';
     src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.eot');
     src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.woff2') format('woff2'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.woff') format('woff'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.ttf') format('truetype'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.svg#MarkPro-Light') format('svg'), url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Light.eot?#iefix') format('embedded-opentype');

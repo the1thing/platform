@@ -138,12 +138,7 @@ class EditChannelHeaderModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        <FormattedMessage
-                            id='edit_channel_header_modal.description'
-                            defaultMessage='Edit the text appearing next to the channel name in the channel header.'
-                        />
-                    </p>
+
                     <textarea
                         ref='textarea'
                         className='form-control no-resize'

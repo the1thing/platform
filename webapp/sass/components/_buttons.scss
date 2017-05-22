@@ -1,28 +1,23 @@
 @charset 'UTF-8';
-
 .btn {
     @include single-transition(all, .25s, ease-in);
     @include border-radius($border-rad);
-
     &.btn-primary {
         font-size: 14px!important;
-        color: #fff!important;
-        background: #22b541!important;
+        color: #22b541 !important;
+        background: transparent !important;
         border-radius: 20px;
         font-family: MarkPro-Bold;
         padding: 10px 20px!important;
-
         &:hover,
         &:focus,
         &:active {
-            
+            color: #1c9f37 !important;
         }
     }
-
     &.btn-default {
         background: alpha-color($black, .7);
         color: $white;
-
         &:hover,
         &:focus,
         &:active {
@@ -30,31 +25,29 @@
             color: $white;
         }
     }
-
     &.btn-danger {
         color: $white;
-
         .app__body & {
             color: $white;
-
             &:hover,
             &:focus,
             &:active {
                 color: $white;
             }
         }
-
         &:hover,
         &:focus,
         &:active {
             color: $white;
         }
     }
-
     &.btn-inactive {
         background: $light-gray;
         border-color: transparent;
         color: $white;
     }
 }
-.comment-btn {display: none;}
+
+.comment-btn {
+    display: none;
+}

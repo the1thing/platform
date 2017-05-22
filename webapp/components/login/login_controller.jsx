@@ -437,14 +437,26 @@ export default class LoginController extends React.Component {
                             defaultMessage="Don't have an account? "
                         />
                         <Link
-                            to={'/signup_user_complete' + this.props.location.search}
+                            target='_blank'
+                            to={'http://1thing.io/start-a-project'}
                             className='signup-team-login'
                         >
                             <FormattedMessage
-                                id='login.create'
-                                defaultMessage='Create one now'
+                                id='login.startaproject'
+                                defaultMessage='Start a project'
                             />
                         </Link>
+                        <Link
+                            target='_blank'
+                            to={'http://1thing.io/join-our-network'}
+                            className='signup-team-login'
+                        >
+                            <FormattedMessage
+                                id='login.joinournetwork'
+                                defaultMessage='Join our network'
+                            />
+                        </Link>
+
                     </span>
                 </div>
             );

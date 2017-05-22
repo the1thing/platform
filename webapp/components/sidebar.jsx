@@ -842,7 +842,7 @@ export default class Sidebar extends React.Component {
                         </li>
                         {favoriteItems}
                     </ul>}
-                    <ul className='nav nav-pills nav-stacked'>
+                    <ul className='nav nav-pills nav-stacked public-channel-stack'>
                         <li>
                             <h4>
                                 <FormattedMessage
@@ -867,7 +867,7 @@ export default class Sidebar extends React.Component {
                         </li>
                     </ul>
 
-                    <ul className='nav nav-pills nav-stacked'>
+                    <ul className='nav nav-pills nav-stacked private-channel-stack'>
                         <li>
                             <h4>
                                 <FormattedMessage
@@ -879,7 +879,7 @@ export default class Sidebar extends React.Component {
                         </li>
                         {privateChannelItems}
                     </ul>
-                    <ul className='nav nav-pills nav-stacked'>
+                    <ul className='nav nav-pills nav-stacked people-stack'>
                         <li>
                             <h4>
                                 <FormattedMessage

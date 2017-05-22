@@ -222,7 +222,7 @@
         background: #FFFFFF!important;
         height: 100%;
         overflow-y: scroll;
-        padding: 1em 0 1em 0;
+        padding: 0em 0 1em 0;
         position: absolute;
         width: 100%;
         &.active {
@@ -832,7 +832,7 @@
                 text-overflow: ellipsis;
                 vertical-align: top;
                 white-space: nowrap;
-                color: #7F7F7F;
+                color: #030303;
                 font-family: 'MarkPro-Bold';
                 text-transform: capitalize;
             }
@@ -922,6 +922,7 @@
             top: 20px;
             li {
                 display: block;
+                &.pin_this_post {display:none;}
             }
             a {
                 padding: 5px 15px;
@@ -1189,6 +1190,7 @@
     }
     .flag-icon__container {
         display: inline-block;
+        display: none;
         font-size: 12px;
         margin-left: 7px;
         position: relative;

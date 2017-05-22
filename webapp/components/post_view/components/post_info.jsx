@@ -155,6 +155,7 @@ export default class PostInfo extends React.Component {
                 <li
                     key='unpinLink'
                     role='presentation'
+                    className='pin_this_post'
                 >
                     <a
                         href='#'
@@ -172,6 +173,7 @@ export default class PostInfo extends React.Component {
                 <li
                     key='pinLink'
                     role='presentation'
+                    className='pin_this_post'
                 >
                     <a
                         href='#'

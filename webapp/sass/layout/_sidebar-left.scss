@@ -5,10 +5,13 @@
     height: 100%;
     left: 0;
     position: fixed;
-    width: 220px;
+    width: 260px;
     z-index: 5;
     background: #1F1D1D!important;
     background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+    .status img {
+        margin-top: -3px;
+    }
     &.sidebar--padded {
         padding-top: 44px;
     }
@@ -52,11 +55,11 @@
         padding: 1em 1em 0;
     }
     .badge {
-        background-color:#FFFFFF!important;
+        background-color: #FFFFFF!important;
         position: absolute;
         right: 10px;
         top: 5px;
-        color:#000!important;
+        color: #000!important;
     }
     .nav-pills__container {
         -webkit-overflow-scrolling: touch;
@@ -91,15 +94,21 @@
             }
         }
         li {
+            transition: all .2s ease-in-out;
+            text-transform: lowercase;
+            &.active {
+                background: rgba(255, 255, 255, 0.15)!important;
+            }
             > h4 {
                 color: #7F7F7F!important;
-                font-size: 0.9em;
+                // font-size: 0.9em;
                 font-family: 'MarkPro-Bold';
                 // font-weight: 400;
                 // letter-spacing: -.3px;
+                font-size: 0.8em;
                 margin: 2em 0 .2em;
                 padding: 0 10px 0 15px;
-                // text-transform: uppercase;
+                text-transform: uppercase;
             }
             .divider {
                 & + .divider {
@@ -107,6 +116,7 @@
                 }
             }
             > a {
+                transition: all .2s ease-in-out;
                 border-radius: 0;
                 line-height: 1.5;
                 outline: none;
@@ -188,7 +198,7 @@
         margin: -4px 0 0 0;
         outline: none;
         font-family: 'Open Sans', sans-serif;
-            font-weight: 400;
+        font-weight: 400;
         padding: 0 5px;
         text-decoration: none;
         &:hover {
@@ -211,8 +221,22 @@
     width: 25px;
 }
 
-.sidebar--left .status {
-    display: none!important;
+.public-channel-stack .status,
+.private-channel-stack .status {
+    // display: none!important;
+}
+
+.nav-stacked .status i {
+    color: #7F7F7F !important;
+}
+
+.nav-stacked li:hover .status i {
+    color: #FFFFFF !important;
+    opacity: 1;
+}
+.nav-stacked li.active .status i {
+    color: #FFFFFF !important;
+    opacity: 1;
 }
 
 .sidebar--left .nav-pills__container li > a:hover {
