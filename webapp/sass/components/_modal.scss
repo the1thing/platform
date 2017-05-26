@@ -180,7 +180,6 @@
                 line-height: 26px !important;
                 position: absolute;
                 overflow: hidden;
-                
                 outline: none;
                 right: 10px;
                 width: 24px;
@@ -282,15 +281,15 @@
                 .modal-close {
                     @include single-transition(opacity, .6s);
                     @include background-size(100% 100%);
-                    @include opacity(0);
+                    @include opacity(1);
                     background-image: url('../images/close.png');
                     cursor: pointer;
-                    height: 37px;
+                    height: 25px;
                     position: absolute;
-                    right: -3px;
-                    top: -10px;
+                    right: 10px;
+                    top: 9px;
                     transition: opacity .6s;
-                    width: 37px;
+                    width: 25px;
                     z-index: 9999;
                     &.modal-close--show {
                         @include opacity(1);
@@ -386,8 +385,8 @@
                 @include single-transition(opacity,
                 .6s);
                 @include border-radius(0 0 3px 3px);
-                @include opacity(0);
-                background-color: #7f7f7f;
+                @include opacity(1);
+                background-color: #FFFFFF;
                 bottom: -40px;
                 left: 0;
                 line-height: 40px;
@@ -407,9 +406,11 @@
                 }
                 .text {
                     bottom: 0;
-                    color: $black;
+                    color: #7F7F7F;
                     margin-left: 5px;
                     vertical-align: middle;
+                    font-family: 'MarkPro-Heavy';
+                    font-size: 16px;
                 }
                 .public-link {
                     margin-right: 5px;
@@ -607,7 +608,9 @@ input[type="submit"],
     border-radius: 20px;
     font-family: 'MarkPro-Book';
     padding: 10px 20px!important;
-    &:hover {color:#1c9f37!important;}
+    &:hover {
+        color: #1c9f37!important;
+    }
 }
 
 .modal-footer .btn.btn-danger {

@@ -160,7 +160,7 @@ export default class FileAttachment extends React.Component {
                             target='_blank'
                             rel='noopener noreferrer'
                         >
-                            <span className='fa fa-download'/>
+                            <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/download.svg' alt=''/>
                         
                         <span className='post-image__type'>{fileInfo.extension.toUpperCase()}</span>
                         <span className='post-image__size'>{Utils.fileSizeToString(fileInfo.size)}</span>

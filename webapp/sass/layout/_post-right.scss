@@ -39,6 +39,11 @@
         .post__body {
             width: 100%;
         }
+        &:hover {
+            .col__reply {
+                background: transparent!important;
+            }
+        }
     }
     hr {
         border: none;
@@ -137,6 +142,13 @@
     padding-top: 10px;
     .file-preview__container {
         margin-top: 5px;
+    }
+    .post-image__columns {
+        max-width: 270px!important;
+    }
+    .post-image__column {
+        width: 270px!important;
+        height: 270px!important;
     }
 }
 

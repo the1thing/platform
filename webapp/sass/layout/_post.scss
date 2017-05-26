@@ -385,8 +385,8 @@
             max-height: 162px !important;
             padding-left: 45px !important;
             padding-right: 20px !important;
-            padding-top: 8px;
-            border: 1px solid #F0F0F0 !important;
+            padding-top: 7px;
+            border: 2px solid #c5c5c5 !important;
             border-radius: 8px !important;
             background-color: #FFFFFF !important;
             font-size: 14px !important;
@@ -404,13 +404,13 @@
             @include opacity(.8);
             @include single-transition(all, .15s);
             font-size: 16px;
-            border-radius: 8px 0 0 8px;
-            padding: 6px 11px 7px 14px;
+            border-radius: 6px 0 0 6px;
+            padding: 4px 11px 7px 14px;
             position: absolute;
-            left: 0;
-            width: 42px;
+            left: 2px;
+            width: 40px;
             cursor: pointer;
-            top: 0px;
+            top: 2px;
             z-index: 5;
             img {
                 cursor: pointer;
@@ -922,7 +922,9 @@
             top: 20px;
             li {
                 display: block;
-                &.pin_this_post {display:none;}
+                &.pin_this_post {
+                    display: none;
+                }
             }
             a {
                 padding: 5px 15px;
@@ -1042,7 +1044,8 @@
             }
             a.post-cancel {
                 font-size: 11px;
-                color: #a5a5a5 !important; }
+                color: #a5a5a5 !important;
+            }
         }
         .post-reaction-list {
             min-height: 30px;

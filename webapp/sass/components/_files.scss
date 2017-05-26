@@ -44,7 +44,8 @@
 }
 
 .file-preview__remove {
-    background: #464646 !important;
+    transition: all .2s ease-in-out;
+    background: #FFFFFF !important;
     border-radius: 20px;
     height: 20px;
     position: absolute;
@@ -52,18 +53,16 @@
     text-align: center;
     top: 2px;
     width: 20px;
-    i {
-        color: $white !important;
-        cursor: pointer;
-        font-size: 12px;
-        line-height: 20px;
-        position: relative;
-        right: auto;
-        text-shadow: 0 0 3px alpha-color($black, .7);
-        top: auto;
-        z-index: 5;
-        &:hover {
-            color: #bfbfbf !important;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    line-height: 1.25;
+    img {
+        opacity: 0.2;
+        transition: all .2s ease-in-out;
+    }
+    &:hover {
+        background: #fbfbfb !important;
+        img {
+            opacity: 1;
         }
     }
 }
@@ -142,13 +141,12 @@
     // border: 1px solid alpha-color($black, .08)!important;
     float: left;
     height: 350px;
-    margin: 0.5em 0em 0.5em 0 !important;
+    margin: 0.5em 0em 0 0 !important;
     position: relative;
     width: 350px;
     border-radius: 4px;
     overflow: hidden!important;
-    // border-radius: 8px!important;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(240, 240, 240) !important;
     &--placeholder {
         visibility: hidden;
     }
@@ -225,28 +223,42 @@
     background: #fff !important;
     >div {
         position: absolute;
-        bottom: 4px;
-        left: 7px;
-        width: 100%;
+        top: 9px;
+        right: 3px;
+        // width: 100%;
     }
     .post-image__name {
         display: block;
         margin-bottom: 3px;
         opacity: 0.5;
         font-size: 12px;
-        width: 100%;
+        width: 80%;
         margin-top: 2px;
         overflow: hidden;
     }
     .post-image__download {
-        display: none !important;
+        // display: none !important;
         @include opacity(.7);
         cursor: pointer;
         display: inline-block;
         padding-right: 7px;
+        img {
+            opacity: 0.5;
+            margin-top: -4px;
+        }
+        &:hover {
+            img {
+                opacity: 1;
+            }
+            .post-image__size {
+                color: #030303!important;
+                text-decoration: none!important;
+            }
+        }
     }
     .post-image__type {
         @include opacity(.2);
+        display: none;
         opacity: 0.5;
         font-size: 11px;
         margin-left: 4px;
@@ -257,6 +269,10 @@
         opacity: 0.5;
         font-size: 11px;
         text-transform: lowercase!important;
+        &:hover {
+            color: #030303!important;
+            text-decoration: none!important;
+        }
     }
 }
 

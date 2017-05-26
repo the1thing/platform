@@ -55,7 +55,7 @@ export default class FilePreview extends React.Component {
                         className='file-preview__remove'
                         onClick={this.handleRemove.bind(this, info.id)}
                     >
-                        <i className='fa fa-remove'/>
+                        <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/cross.svg' alt='cross' />
                     </a>
                 </div>
             );

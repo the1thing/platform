@@ -126,6 +126,7 @@
                 background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
                 .nav-stacked {
                     li:nth-child(4) {display:none;}
+                    li:nth-child(5) {display:none;}
 
                     li {margin: 10px 0;
                         &.active {

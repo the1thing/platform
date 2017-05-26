@@ -183,6 +183,8 @@
 
 .channel-intro {
     // border-bottom: 1px solid $light-gray;
+.post-profile-img__container {padding-top:70px;}
+
     margin: 0 auto 15px;
     padding: 0 11% 50px 3.5%;
     &.channel-intro--centered {
@@ -257,7 +259,7 @@
     .oh-hello-there.hide-in-mobile {
         margin: 40px 0;
         img {
-            max-width: 800px;
+            max-width: 100%;
         }
     }
     .oh-hello-there.hide-in-desktop {
