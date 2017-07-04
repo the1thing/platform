@@ -12,6 +12,7 @@
         padding: 20px 30px 10px 30px;
         border-top: 1px solid #F0F0F0!important;
         background: #FFFFFF;
+        overflow: auto;
     }
     .edit-modal-body {
         overflow: visible;
@@ -23,15 +24,16 @@
             max-height: 150px;
         }
         .edit-post-footer {
+            display: inline-block;
             font-size: 13px;
             position: relative;
             display: inline-block;
             .post-error {
-                position: relative;
+                @include opacity(.55);
+                font-size: .85em;
                 font-weight: normal;
                 margin-bottom: 0;
-                font-size: .85em;
-                @include opacity(.55);
+                position: relative;
                 top: 3px;
             }
         }
@@ -63,6 +65,25 @@
     .modal {
         color: alpha-color($black, .9);
         width: 100%;
+        .channel-switch-modal {
+            .modal-header {
+                background: transparent;
+                border: none;
+                min-height: 0;
+                padding: 0;
+
+                .close {
+                    top: 10px;
+                }
+            }
+        }
+
+        .modal--overflow {
+            .modal-body {
+                overflow: visible;
+            }
+        }
+
         &.modal-image {
             .modal-backdrop {
                 &.in {
@@ -189,6 +210,11 @@
                 &:hover {
                     @include alpha-property(background, $black, .1);
                 }
+
+                .sr-only {
+                    display: none;
+                }
+
                 span {
                     font-family: 'Open Sans', sans-serif;
                     // line-height: 10px;
@@ -254,6 +280,9 @@
                 max-width: 90vw;
                 overflow-x: hidden;
                 overflow-y: visible;
+            }
+            .post-code__container {
+                overflow: auto;
             }
             .modal-image__wrapper {
                 @include border-radius(3px);

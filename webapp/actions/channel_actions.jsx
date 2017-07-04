@@ -1,24 +1,32 @@
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import AppDispatcher from 'dispatcher/app_dispatcher.jsx';
-
 import TeamStore from 'stores/team_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 import ChannelStore from 'stores/channel_store.jsx';
 import * as ChannelUtils from 'utils/channel_utils.jsx';
 import PreferenceStore from 'stores/preference_store.jsx';
 
+import * as GlobalActions from 'actions/global_actions.jsx';
+
 import {loadProfilesForSidebar, loadNewDMIfNeeded, loadNewGMIfNeeded} from 'actions/user_actions.jsx';
 import {trackEvent} from 'actions/diagnostics_actions.jsx';
 
-import Client from 'client/web_client.jsx';
-import * as AsyncClient from 'utils/async_client.jsx';
 import * as UserAgent from 'utils/user_agent.jsx';
 import * as Utils from 'utils/utils.jsx';
-import {Constants, Preferences, ActionTypes} from 'utils/constants.jsx';
+import {Constants, Preferences} from 'utils/constants.jsx';
 
 import {browserHistory} from 'react-router/es6';
+
+import store from 'stores/redux_store.jsx';
+const dispatch = store.dispatch;
+const getState = store.getState;
+
+import * as ChannelActions from 'mattermost-redux/actions/channels';
+import {savePreferences, deletePreferences} from 'mattermost-redux/actions/preferences';
+import {Client4} from 'mattermost-redux/client';
+
+import {getMyChannelMemberships} from 'mattermost-redux/selectors/entities/channels';
 
 export function goToChannel(channel) {
     if (channel.fake) {
@@ -41,9 +49,15 @@ export function goToChannel(channel) {
 export function executeCommand(message, args, success, error) {
     let msg = message;
 
-    msg = msg.substring(0, msg.indexOf(' ')).toLowerCase() + msg.substring(msg.indexOf(' '), msg.length);
+    let cmdLength = msg.indexOf(' ');
+    if (cmdLength < 0) {
+        cmdLength = msg.length;
+    }
+    const cmd = msg.substring(0, cmdLength).toLowerCase();
+    msg = cmd + msg.substring(cmdLength, msg.length);
 
-    if (message.indexOf('/shortcuts') !== -1) {
+    switch (cmd) {
+    case '/shortcuts':
         if (UserAgent.isMobile()) {
             const err = {message: Utils.localizeMessage('create_post.shortcutsNotSupported', 'Keyboard shortcuts are not supported on your device')};
             error(err);
@@ -53,21 +67,25 @@ export function executeCommand(message, args, success, error) {
         } else if (message.indexOf('mac') !== -1) {
             msg = '/shortcuts';
         }
+        break;
+    case '/settings':
+        GlobalActions.showAccountSettingsModal();
+        return;
     }
-    Client.executeCommand(msg, args, success,
-        (err) => {
-            AsyncClient.dispatchError(err, 'executeCommand');
 
+    Client4.executeCommand(msg, args).then(success).catch(
+        (err) => {
             if (error) {
                 error(err);
             }
-        });
+        }
+    );
 }
 
 export function setChannelAsRead(channelIdParam) {
     const channelId = channelIdParam || ChannelStore.getCurrentId();
-    AsyncClient.viewChannel();
-    ChannelStore.resetCounts(channelId);
+    ChannelActions.viewChannel(channelId)(dispatch, getState);
+    ChannelStore.resetCounts([channelId]);
     ChannelStore.emitChange();
     if (channelId === ChannelStore.getCurrentId()) {
         ChannelStore.emitLastViewed(Number.MAX_VALUE, false);
@@ -75,97 +93,52 @@ export function setChannelAsRead(channelIdParam) {
 }
 
 export function addUserToChannel(channelId, userId, success, error) {
-    Client.addChannelMember(
-        channelId,
-        userId,
+    ChannelActions.addChannelMember(channelId, userId)(dispatch, getState).then(
         (data) => {
-            UserStore.removeProfileNotInChannel(channelId, userId);
-            const profile = UserStore.getProfile(userId);
-            if (profile) {
-                UserStore.saveProfileInChannel(channelId, profile);
-                UserStore.emitInChannelChange();
-            }
-            UserStore.emitNotInChannelChange();
-
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'addChannelMember');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.addChannelMember.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function removeUserFromChannel(channelId, userId, success, error) {
-    Client.removeChannelMember(
-        channelId,
-        userId,
+    ChannelActions.removeChannelMember(channelId, userId)(dispatch, getState).then(
         (data) => {
-            UserStore.removeProfileInChannel(channelId, userId);
-            const profile = UserStore.getProfile(userId);
-            if (profile) {
-                UserStore.saveProfileNotInChannel(channelId, profile);
-                UserStore.emitNotInChannelChange();
-            }
-            UserStore.emitInChannelChange();
-
-            ChannelStore.removeMemberInChannel(channelId, userId);
-            ChannelStore.emitChange();
-
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'removeChannelMember');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.removeChannelMember.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function makeUserChannelAdmin(channelId, userId, success, error) {
-    Client.updateChannelMemberRoles(
-        channelId,
-        userId,
-        'channel_user channel_admin',
-        () => {
-            getChannelMembersForUserIds(channelId, [userId]);
-
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    ChannelActions.updateChannelMemberRoles(channelId, userId, 'channel_user channel_admin')(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.updateChannelMember.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function makeUserChannelMember(channelId, userId, success, error) {
-    Client.updateChannelMemberRoles(
-        channelId,
-        userId,
-        'channel_user',
-        () => {
-            getChannelMembersForUserIds(channelId, [userId]);
-
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    ChannelActions.updateChannelMemberRoles(channelId, userId, 'channel_user')(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.updateChannelMember.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
@@ -180,11 +153,8 @@ export function openDirectChannelToUser(userId, success, error) {
         PreferenceStore.setPreference(Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, 'true');
         loadProfilesForSidebar();
 
-        AsyncClient.savePreference(
-            Preferences.CATEGORY_DIRECT_CHANNEL_SHOW,
-            userId,
-            'true'
-        );
+        const currentUserId = UserStore.getCurrentId();
+        savePreferences(currentUserId, [{user_id: currentUserId, category: Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, name: userId, value: 'true'}])(dispatch, getState);
 
         if (success) {
             success(channel, true);
@@ -193,74 +163,28 @@ export function openDirectChannelToUser(userId, success, error) {
         return;
     }
 
-    Client.createDirectChannel(
-        userId,
-        (data) => {
-            Client.getChannel(
-                data.id,
-                (data2) => {
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_CHANNEL,
-                        channel: data2.channel,
-                        member: data2.member
-                    });
-
-                    PreferenceStore.setPreference(Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, 'true');
-                    loadProfilesForSidebar();
-
-                    AsyncClient.savePreference(
-                        Preferences.CATEGORY_DIRECT_CHANNEL_SHOW,
-                        userId,
-                        'true'
-                    );
-
-                    if (success) {
-                        success(data2.channel, false);
-                    }
-                }
-            );
-        },
-        () => {
-            browserHistory.push(TeamStore.getCurrentTeamUrl() + '/channels/' + channelName);
-            if (error) {
-                error();
+    ChannelActions.createDirectChannel(UserStore.getCurrentId(), userId)(dispatch, getState).then(
+        (result) => {
+            loadProfilesForSidebar();
+            if (result.data && success) {
+                success(result.data, false);
+            } else if (result.error && error) {
+                error({id: result.error.server_error_id, ...result.error});
             }
         }
     );
 }
 
 export function openGroupChannelToUsers(userIds, success, error) {
-    Client.createGroupChannel(
-        userIds,
+    ChannelActions.createGroupChannel(userIds)(dispatch, getState).then(
         (data) => {
-            Client.getChannelMember(
-                data.id,
-                UserStore.getCurrentId(),
-                (data2) => {
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_CHANNEL,
-                        channel: data,
-                        member: data2
-                    });
-
-                    PreferenceStore.setPreference(Preferences.CATEGORY_GROUP_CHANNEL_SHOW, data.id, 'true');
-                    loadProfilesForSidebar();
-
-                    AsyncClient.savePreference(
-                        Preferences.CATEGORY_GROUP_CHANNEL_SHOW,
-                        data.id,
-                        'true'
-                    );
-
-                    if (success) {
-                        success(data);
-                    }
-                }
-            );
-        },
-        () => {
-            if (error) {
-                error();
+            loadProfilesForSidebar();
+            if (data && success) {
+                success(data, false);
+            } else if (data == null && error) {
+                browserHistory.push(TeamStore.getCurrentTeamUrl());
+                const serverError = getState().requests.channels.createChannel.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
@@ -268,26 +192,29 @@ export function openGroupChannelToUsers(userIds, success, error) {
 
 export function markFavorite(channelId) {
     trackEvent('api', 'api_channels_favorited');
-    AsyncClient.savePreference(Preferences.CATEGORY_FAVORITE_CHANNEL, channelId, 'true');
+    const currentUserId = UserStore.getCurrentId();
+    savePreferences(currentUserId, [{user_id: currentUserId, category: Preferences.CATEGORY_FAVORITE_CHANNEL, name: channelId, value: 'true'}])(dispatch, getState);
 }
 
 export function unmarkFavorite(channelId) {
     trackEvent('api', 'api_channels_unfavorited');
+    const currentUserId = UserStore.getCurrentId();
+
     const pref = {
-        user_id: UserStore.getCurrentId(),
+        user_id: currentUserId,
         category: Preferences.CATEGORY_FAVORITE_CHANNEL,
         name: channelId
     };
 
-    AsyncClient.deletePreferences([pref]);
+    deletePreferences(currentUserId, [pref])(dispatch, getState);
 }
 
 export function loadChannelsForCurrentUser() {
-    AsyncClient.getChannels().then(() => {
-        AsyncClient.getMyChannelMembers().then(() => {
+    ChannelActions.fetchMyChannelsAndMembers(TeamStore.getCurrentId())(dispatch, getState).then(
+        () => {
             loadDMsAndGMsForUnreads();
-        });
-    });
+        }
+    );
 }
 
 export function loadDMsAndGMsForUnreads() {
@@ -308,215 +235,125 @@ export function loadDMsAndGMsForUnreads() {
     }
 }
 
-export function joinChannel(channel, success, error) {
-    Client.joinChannel(
-        channel.id,
-        () => {
-            ChannelStore.removeMoreChannel(channel.id);
-            ChannelStore.storeChannel(channel);
+export async function joinChannel(channel, success, error) {
+    const {data, serverError} = await ChannelActions.joinChannel(UserStore.getCurrentId(), null, channel.id)(dispatch, getState);
 
-            if (success) {
-                success();
-            }
-        },
-        () => {
-            if (error) {
-                error();
-            }
-        }
-    );
+    if (data && success) {
+        success(data);
+    } else if (data == null && error) {
+        error({id: serverError.server_error_id, ...serverError});
+    }
 }
 
 export function updateChannel(channel, success, error) {
-    Client.updateChannel(
-        channel,
-        () => {
-            AsyncClient.getChannel(channel.id);
-
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    ChannelActions.updateChannel(channel)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.updateChannel.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function searchMoreChannels(term, success, error) {
-    Client.searchMoreChannels(
-        term,
+    ChannelActions.searchChannels(TeamStore.getCurrentId(), term)(dispatch, getState).then(
         (data) => {
-            if (success) {
-                success(data);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+            if (data && success) {
+                const myMembers = getMyChannelMemberships(getState());
+                const channels = data.filter((c) => !myMembers[c.id]);
+                success(channels);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.getChannels.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function autocompleteChannels(term, success, error) {
-    Client.autocompleteChannels(
-        term,
+    ChannelActions.searchChannels(TeamStore.getCurrentId(), term)(dispatch, getState).then(
         (data) => {
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'autocompleteChannels');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.getChannels.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function updateChannelNotifyProps(data, options, success, error) {
-    Client.updateChannelNotifyProps(Object.assign({}, data, options),
-        () => {
-            const member = ChannelStore.getMyMember(data.channel_id);
-            member.notify_props = Object.assign(member.notify_props, options);
-            ChannelStore.storeMyChannelMember(member);
-
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    ChannelActions.updateChannelNotifyProps(data.user_id, data.channel_id, Object.assign({}, data, options))(dispatch, getState).then(
+        (result) => {
+            if (result && success) {
+                success(result);
+            } else if (result == null && error) {
+                const serverError = getState().requests.channels.updateChannelNotifyProps.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function createChannel(channel, success, error) {
-    Client.createChannel(
-        channel,
+    ChannelActions.createChannel(channel)(dispatch, getState).then(
         (data) => {
-            const existing = ChannelStore.getChannelById(data.id);
-            if (existing) {
-                if (success) {
-                    success({channel: existing});
-                }
-            } else {
-                Client.getChannel(
-                    data.id,
-                    (data2) => {
-                        AppDispatcher.handleServerAction({
-                            type: ActionTypes.RECEIVED_CHANNEL,
-                            channel: data2.channel,
-                            member: data2.channel
-                        });
-
-                        if (success) {
-                            success(data2);
-                        }
-                    },
-                    (err) => {
-                        AsyncClient.dispatchError(err, 'getChannel');
-
-                        if (error) {
-                            error(err);
-                        }
-                    }
-                );
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
-            } else {
-                AsyncClient.dispatchError(err, 'createChannel');
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.createChannel.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
-export function updateChannelPurpose(channelId, purposeValue, success, error) {
-    Client.updateChannelPurpose(
-        channelId,
-        purposeValue,
-        () => {
-            AsyncClient.getChannel(channelId);
-
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+export function updateChannelPurpose(channelId, purpose, success, error) {
+    ChannelActions.patchChannel(channelId, {purpose})(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.updateChannel.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function updateChannelHeader(channelId, header, success, error) {
-    Client.updateChannelHeader(
-        channelId,
-        header,
-        (channelData) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_CHANNEL,
-                channel: channelData
-            });
-
-            if (success) {
-                success(channelData);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    ChannelActions.patchChannel(channelId, {header})(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.updateChannel.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function getChannelMembersForUserIds(channelId, userIds, success, error) {
-    Client.getChannelMembersByIds(
-        channelId,
-        userIds,
+    ChannelActions.getChannelMembersByIds(channelId, userIds)(dispatch, getState).then(
         (data) => {
-            const memberMap = {};
-            for (let i = 0; i < data.length; i++) {
-                memberMap[data[i].user_id] = data[i];
-            }
-
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_MEMBERS_IN_CHANNEL,
-                channel_id: channelId,
-                channel_members: memberMap
-            });
-
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getChannelMembersByIds');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.channels.members.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
-export function leaveChannel(channelId, success, error) {
-    Client.leaveChannel(channelId,
+export function leaveChannel(channelId, success) {
+    ChannelActions.leaveChannel(channelId)(dispatch, getState).then(
         () => {
-            loadChannelsForCurrentUser();
-
             if (ChannelUtils.isFavoriteChannelId(channelId)) {
                 unmarkFavorite(channelId);
             }
@@ -527,33 +364,16 @@ export function leaveChannel(channelId, success, error) {
             if (success) {
                 success();
             }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'handleLeave');
-
-            if (error) {
-                error(err);
-            }
         }
     );
 }
 
-export function deleteChannel(channelId, success, error) {
-    Client.deleteChannel(
-            channelId,
-            () => {
-                loadChannelsForCurrentUser();
+export async function deleteChannel(channelId, success, error) {
+    const {data, serverError} = await ChannelActions.deleteChannel(channelId)(dispatch, getState);
 
-                if (success) {
-                    success();
-                }
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'handleDelete');
-
-                if (error) {
-                    error(err);
-                }
-            }
-        );
+    if (data && success) {
+        success(data);
+    } else if (serverError && error) {
+        error({id: serverError.server_error_id, ...serverError});
+    }
 }

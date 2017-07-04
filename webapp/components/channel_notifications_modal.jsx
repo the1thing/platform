@@ -5,6 +5,7 @@ import SettingItemMin from 'components/setting_item_min.jsx';
 import SettingItemMax from 'components/setting_item_max.jsx';
 
 import $ from 'jquery';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
@@ -194,6 +195,9 @@ export default class ChannelNotificationsModal extends React.Component {
 
             const handleUpdateSection = function updateSection(e) {
                 this.updateSection('');
+                this.setState({
+                    notifyLevel: this.props.channelMember.notify_props.desktop
+                });
                 e.preventDefault();
             }.bind(this);
 
@@ -322,6 +326,9 @@ export default class ChannelNotificationsModal extends React.Component {
 
             const handleUpdateSection = function handleUpdateSection(e) {
                 this.updateSection('');
+                this.setState({
+                    unreadLevel: this.props.channelMember.notify_props.mark_unread
+                });
                 e.preventDefault();
             }.bind(this);
 
@@ -360,6 +367,9 @@ export default class ChannelNotificationsModal extends React.Component {
 
             const handleUpdateSection = function handleUpdateSection(e) {
                 this.updateSection('markUnreadLevel');
+                this.setState({
+                    unreadLevel: this.props.channelMember.notify_props.mark_unread
+                });
                 e.preventDefault();
             }.bind(this);
 
@@ -524,6 +534,9 @@ export default class ChannelNotificationsModal extends React.Component {
 
             const handleUpdateSection = function updateSection(e) {
                 this.updateSection('');
+                this.setState({
+                    pushLevel: this.props.channelMember.notify_props.push || 'default'
+                });
                 e.preventDefault();
             }.bind(this);
 
@@ -631,8 +644,8 @@ export default class ChannelNotificationsModal extends React.Component {
 }
 
 ChannelNotificationsModal.propTypes = {
-    onHide: React.PropTypes.func.isRequired,
-    channel: React.PropTypes.object.isRequired,
-    channelMember: React.PropTypes.object.isRequired,
-    currentUser: React.PropTypes.object.isRequired
+    onHide: PropTypes.func.isRequired,
+    channel: PropTypes.object.isRequired,
+    channelMember: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired
 };

@@ -4,12 +4,8 @@
 package app
 
 import (
-	"net"
 	"net/http"
-	"net/url"
-	"os"
 	"regexp"
-	"time"
 
 	l4g "github.com/alecthomas/log4go"
 	"github.com/dyatlov/go-opengraph/opengraph"
@@ -19,35 +15,7 @@ import (
 	"github.com/mattermost/platform/utils"
 )
 
-var (
-	httpClient *http.Client
-
-	httpTimeout       = time.Duration(5 * time.Second)
-	linkWithTextRegex = regexp.MustCompile(`<([^<\|]+)\|([^>]+)>`)
-)
-
-func dialTimeout(network, addr string) (net.Conn, error) {
-	return net.DialTimeout(network, addr, httpTimeout)
-}
-
-func init() {
-	p, ok := os.LookupEnv("HTTP_PROXY")
-	if ok {
-		if u, err := url.Parse(p); err == nil {
-			httpClient = &http.Client{
-				Transport: &http.Transport{
-					Proxy: http.ProxyURL(u),
-					Dial:  dialTimeout,
-				},
-			}
-			return
-		}
-	}
-
-	httpClient = &http.Client{
-		Timeout: httpTimeout,
-	}
-}
+var linkWithTextRegex = regexp.MustCompile(`<([^<\|]+)\|([^>]+)>`)
 
 func CreatePostAsUser(post *model.Post) (*model.Post, *model.AppError) {
 	// Check that channel has not been deleted
@@ -79,6 +47,12 @@ func CreatePostAsUser(post *model.Post) (*model.Post, *model.AppError) {
 		if _, ok := post.Props["from_webhook"]; !ok {
 			if result := <-Srv.Store.Channel().UpdateLastViewedAt([]string{post.ChannelId}, post.UserId); result.Err != nil {
 				l4g.Error(utils.T("api.post.create_post.last_viewed.error"), post.ChannelId, post.UserId, result.Err)
+			}
+
+			if *utils.Cfg.ServiceSettings.EnableChannelViewedMessages {
+				message := model.NewWebSocketEvent(model.WEBSOCKET_EVENT_CHANNEL_VIEWED, "", "", post.UserId, nil)
+				message.Add("channel_id", post.ChannelId)
+				go Publish(message)
 			}
 		}
 
@@ -123,6 +97,11 @@ func CreatePost(post *model.Post, teamId string, triggerWebhooks bool) (*model.P
 		return nil, result.Err
 	} else {
 		rpost = result.Data.(*model.Post)
+	}
+
+	esInterface := einterfaces.GetElasticSearchInterface()
+	if esInterface != nil && *utils.Cfg.ElasticSearchSettings.EnableIndexing {
+		go esInterface.IndexPost(rpost, teamId)
 	}
 
 	if einterfaces.GetMetricsInterface() != nil {
@@ -266,11 +245,6 @@ func UpdatePost(post *model.Post, safeUpdate bool) (*model.Post, *model.AppError
 			return nil, err
 		}
 
-		if oldPost.UserId != post.UserId {
-			err := model.NewAppError("UpdatePost", "api.post.update_post.permissions.app_error", nil, "oldUserId="+oldPost.UserId, http.StatusBadRequest)
-			return nil, err
-		}
-
 		if oldPost.DeleteAt != 0 {
 			err := model.NewAppError("UpdatePost", "api.post.update_post.permissions_details.app_error", map[string]interface{}{"PostId": post.Id}, "", http.StatusBadRequest)
 			return nil, err
@@ -307,6 +281,17 @@ func UpdatePost(post *model.Post, safeUpdate bool) (*model.Post, *model.AppError
 		return nil, result.Err
 	} else {
 		rpost := result.Data.(*model.Post)
+
+		esInterface := einterfaces.GetElasticSearchInterface()
+		if esInterface != nil && *utils.Cfg.ElasticSearchSettings.EnableIndexing {
+			go func() {
+				if rchannel := <-Srv.Store.Channel().GetForPost(rpost.Id); rchannel.Err != nil {
+					l4g.Error("Couldn't get channel %v for post %v for ElasticSearch indexing.", rpost.ChannelId, rpost.Id)
+				} else {
+					esInterface.IndexPost(rpost, rchannel.Data.(*model.Channel).TeamId)
+				}
+			}()
+		}
 
 		sendUpdatedPostEvent(rpost)
 
@@ -484,6 +469,11 @@ func DeletePost(postId string) (*model.Post, *model.AppError) {
 		go DeletePostFiles(post)
 		go DeleteFlaggedPosts(post.Id)
 
+		esInterface := einterfaces.GetElasticSearchInterface()
+		if esInterface != nil && *utils.Cfg.ElasticSearchSettings.EnableIndexing {
+			go esInterface.DeletePost(post.Id)
+		}
+
 		InvalidateCacheForChannelPosts(post.ChannelId)
 
 		return post, nil
@@ -509,27 +499,84 @@ func DeletePostFiles(post *model.Post) {
 
 func SearchPostsInTeam(terms string, userId string, teamId string, isOrSearch bool) (*model.PostList, *model.AppError) {
 	paramsList := model.ParseSearchParams(terms)
-	channels := []store.StoreChannel{}
 
-	for _, params := range paramsList {
-		params.OrTerms = isOrSearch
-		// don't allow users to search for everything
-		if params.Terms != "*" {
-			channels = append(channels, Srv.Store.Post().Search(teamId, userId, params))
+	esInterface := einterfaces.GetElasticSearchInterface()
+	if esInterface != nil && *utils.Cfg.ElasticSearchSettings.EnableSearching && utils.IsLicensed && *utils.License.Features.ElasticSearch {
+		finalParamsList := []*model.SearchParams{}
+
+		for _, params := range paramsList {
+			params.OrTerms = isOrSearch
+			// Don't allow users to search for "*"
+			if params.Terms != "*" {
+				// Convert channel names to channel IDs
+				for idx, channelName := range params.InChannels {
+					if channel, err := GetChannelByName(channelName, teamId); err != nil {
+						l4g.Error(err)
+					} else {
+						params.InChannels[idx] = channel.Id
+					}
+				}
+
+				// Convert usernames to user IDs
+				for idx, username := range params.FromUsers {
+					if user, err := GetUserByUsername(username); err != nil {
+						l4g.Error(err)
+					} else {
+						params.FromUsers[idx] = user.Id
+					}
+				}
+
+				finalParamsList = append(finalParamsList, params)
+			}
 		}
-	}
 
-	posts := model.NewPostList()
-	for _, channel := range channels {
-		if result := <-channel; result.Err != nil {
-			return nil, result.Err
+		// We only allow the user to search in channels they are a member of.
+		userChannels, err := GetChannelsForUser(teamId, userId)
+		if err != nil {
+			l4g.Error(err)
+			return nil, err
+		}
+
+		postIds, err := einterfaces.GetElasticSearchInterface().SearchPosts(userChannels, finalParamsList)
+		if err != nil {
+			return nil, err
+		}
+
+		// Get the posts
+		postList := model.NewPostList()
+		if presult := <-Srv.Store.Post().GetPostsByIds(postIds); presult.Err != nil {
+			return nil, presult.Err
 		} else {
-			data := result.Data.(*model.PostList)
-			posts.Extend(data)
+			for _, p := range presult.Data.([]*model.Post) {
+				postList.AddPost(p)
+				postList.AddOrder(p.Id)
+			}
 		}
-	}
 
-	return posts, nil
+		return postList, nil
+	} else {
+		channels := []store.StoreChannel{}
+
+		for _, params := range paramsList {
+			params.OrTerms = isOrSearch
+			// don't allow users to search for everything
+			if params.Terms != "*" {
+				channels = append(channels, Srv.Store.Post().Search(teamId, userId, params))
+			}
+		}
+
+		posts := model.NewPostList()
+		for _, channel := range channels {
+			if result := <-channel; result.Err != nil {
+				return nil, result.Err
+			} else {
+				data := result.Data.(*model.PostList)
+				posts.Extend(data)
+			}
+		}
+
+		return posts, nil
+	}
 }
 
 func GetFileInfosForPost(postId string, readFromMaster bool) ([]*model.FileInfo, *model.AppError) {
@@ -565,7 +612,7 @@ func GetFileInfosForPost(postId string, readFromMaster bool) ([]*model.FileInfo,
 func GetOpenGraphMetadata(url string) *opengraph.OpenGraph {
 	og := opengraph.NewOpenGraph()
 
-	res, err := httpClient.Get(url)
+	res, err := utils.HttpClient().Get(url)
 	if err != nil {
 		l4g.Error("GetOpenGraphMetadata request failed for url=%v with err=%v", url, err.Error())
 		return og

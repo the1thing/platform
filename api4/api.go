@@ -48,6 +48,7 @@ type Routes struct {
 	Post            *mux.Router // 'api/v4/posts/{post_id:[A-Za-z0-9]+}'
 	PostsForChannel *mux.Router // 'api/v4/channels/{channel_id:[A-Za-z0-9]+}/posts'
 	PostsForUser    *mux.Router // 'api/v4/users/{user_id:[A-Za-z0-9]+}/posts'
+	PostForUser     *mux.Router // 'api/v4/users/{user_id:[A-Za-z0-9]+}/posts/{post_id:[A-Za-z0-9]+}'
 
 	Files *mux.Router // 'api/v4/files'
 	File  *mux.Router // 'api/v4/files/{file_id:[A-Za-z0-9]+}'
@@ -64,19 +65,27 @@ type Routes struct {
 	OutgoingHooks *mux.Router // 'api/v4/hooks/outgoing'
 	OutgoingHook  *mux.Router // 'api/v4/hooks/outgoing/{hook_id:[A-Za-z0-9]+}'
 
-	Admin      *mux.Router // 'api/v4/admin'
-	OAuth      *mux.Router // 'api/v4/oauth'
+	OAuth     *mux.Router // 'api/v4/oauth'
+	OAuthApps *mux.Router // 'api/v4/oauth/apps'
+	OAuthApp  *mux.Router // 'api/v4/oauth/apps/{app_id:[A-Za-z0-9]+}'
+
+	OpenGraph *mux.Router // 'api/v4/opengraph'
+
 	SAML       *mux.Router // 'api/v4/saml'
 	Compliance *mux.Router // 'api/v4/compliance'
 	Cluster    *mux.Router // 'api/v4/cluster'
 
 	LDAP *mux.Router // 'api/v4/ldap'
 
+	Elasticsearch *mux.Router // 'api/v4/elasticsearch'
+
 	Brand *mux.Router // 'api/v4/brand'
 
 	System *mux.Router // 'api/v4/system'
 
-	Preferences *mux.Router // 'api/v4/preferences'
+	Jobs *mux.Router // 'api/v4/jobs'
+
+	Preferences *mux.Router // 'api/v4/users/{user_id:[A-Za-z0-9]+}/preferences'
 
 	License *mux.Router // 'api/v4/license'
 
@@ -86,6 +95,8 @@ type Routes struct {
 
 	Emojis *mux.Router // 'api/v4/emoji'
 	Emoji  *mux.Router // 'api/v4/emoji/{emoji_id:[A-Za-z0-9]+}'
+
+	ReactionByNameForPostForUser *mux.Router // 'api/v4/users/{user_id:[A-Za-z0-9]+}/posts/{post_id:[A-Za-z0-9]+}/reactions/{emoji_name:[A-Za-z0-9_-+]+}'
 
 	Webrtc *mux.Router // 'api/v4/webrtc'
 }
@@ -130,6 +141,7 @@ func InitApi(full bool) {
 	BaseRoutes.Post = BaseRoutes.Posts.PathPrefix("/{post_id:[A-Za-z0-9]+}").Subrouter()
 	BaseRoutes.PostsForChannel = BaseRoutes.Channel.PathPrefix("/posts").Subrouter()
 	BaseRoutes.PostsForUser = BaseRoutes.User.PathPrefix("/posts").Subrouter()
+	BaseRoutes.PostForUser = BaseRoutes.PostsForUser.PathPrefix("/{post_id:[A-Za-z0-9]+}").Subrouter()
 
 	BaseRoutes.Files = BaseRoutes.ApiRoot.PathPrefix("/files").Subrouter()
 	BaseRoutes.File = BaseRoutes.Files.PathPrefix("/{file_id:[A-Za-z0-9]+}").Subrouter()
@@ -146,8 +158,11 @@ func InitApi(full bool) {
 	BaseRoutes.OutgoingHook = BaseRoutes.OutgoingHooks.PathPrefix("/{hook_id:[A-Za-z0-9]+}").Subrouter()
 
 	BaseRoutes.SAML = BaseRoutes.ApiRoot.PathPrefix("/saml").Subrouter()
+
 	BaseRoutes.OAuth = BaseRoutes.ApiRoot.PathPrefix("/oauth").Subrouter()
-	BaseRoutes.Admin = BaseRoutes.ApiRoot.PathPrefix("/admin").Subrouter()
+	BaseRoutes.OAuthApps = BaseRoutes.OAuth.PathPrefix("/apps").Subrouter()
+	BaseRoutes.OAuthApp = BaseRoutes.OAuthApps.PathPrefix("/{app_id:[A-Za-z0-9]+}").Subrouter()
+
 	BaseRoutes.Compliance = BaseRoutes.ApiRoot.PathPrefix("/compliance").Subrouter()
 	BaseRoutes.Cluster = BaseRoutes.ApiRoot.PathPrefix("/cluster").Subrouter()
 	BaseRoutes.LDAP = BaseRoutes.ApiRoot.PathPrefix("/ldap").Subrouter()
@@ -157,11 +172,17 @@ func InitApi(full bool) {
 	BaseRoutes.License = BaseRoutes.ApiRoot.PathPrefix("/license").Subrouter()
 	BaseRoutes.Public = BaseRoutes.ApiRoot.PathPrefix("/public").Subrouter()
 	BaseRoutes.Reactions = BaseRoutes.ApiRoot.PathPrefix("/reactions").Subrouter()
+	BaseRoutes.Jobs = BaseRoutes.ApiRoot.PathPrefix("/jobs").Subrouter()
+	BaseRoutes.Elasticsearch = BaseRoutes.ApiRoot.PathPrefix("/elasticsearch").Subrouter()
 
 	BaseRoutes.Emojis = BaseRoutes.ApiRoot.PathPrefix("/emoji").Subrouter()
 	BaseRoutes.Emoji = BaseRoutes.Emojis.PathPrefix("/{emoji_id:[A-Za-z0-9]+}").Subrouter()
 
+	BaseRoutes.ReactionByNameForPostForUser = BaseRoutes.PostForUser.PathPrefix("/reactions/{emoji_name:[A-Za-z0-9\\_\\-\\+]+}").Subrouter()
+
 	BaseRoutes.Webrtc = BaseRoutes.ApiRoot.PathPrefix("/webrtc").Subrouter()
+
+	BaseRoutes.OpenGraph = BaseRoutes.ApiRoot.PathPrefix("/opengraph").Subrouter()
 
 	InitUser()
 	InitTeam()
@@ -175,13 +196,17 @@ func InitApi(full bool) {
 	InitCompliance()
 	InitCluster()
 	InitLdap()
+	InitElasticsearch()
 	InitBrand()
+	InitJob()
 	InitCommand()
 	InitStatus()
 	InitWebSocket()
 	InitEmoji()
+	InitOAuth()
 	InitReaction()
 	InitWebrtc()
+	InitOpenGraph()
 
 	app.Srv.Router.Handle("/api/v4/{anything:.*}", http.HandlerFunc(Handle404))
 

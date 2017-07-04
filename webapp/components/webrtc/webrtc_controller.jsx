@@ -5,7 +5,7 @@ import UserStore from 'stores/user_store.jsx';
 import ChannelStore from 'stores/channel_store.jsx';
 import WebrtcStore from 'stores/webrtc_store.jsx';
 
-import Client from 'client/web_client.jsx';
+import {Client4} from 'mattermost-redux/client';
 import WebSocketClient from 'client/web_websocket_client.jsx';
 import Janus from 'janus';
 
@@ -18,6 +18,8 @@ import * as WebrtcActions from 'actions/webrtc_actions.jsx';
 
 import * as Utils from 'utils/utils.jsx';
 import {Constants, UserStatuses, WebrtcActionTypes} from 'utils/constants.jsx';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
@@ -82,14 +84,14 @@ export default class WebrtcController extends React.Component {
 
         const currentUser = UserStore.getCurrentUser();
         const remoteUser = UserStore.getProfile(props.userId);
-        const remoteUserImage = Client.getUsersRoute() + '/' + remoteUser.id + '/image?time=' + remoteUser.last_picture_update;
+        const remoteUserImage = Client4.getUsersRoute() + '/' + remoteUser.id + '/image?time=' + remoteUser.last_picture_update;
 
         this.state = {
             windowWidth: Utils.windowWidth(),
             windowHeight: Utils.windowHeight(),
             channelId: ChannelStore.getCurrentId(),
             currentUser,
-            currentUserImage: Client.getUsersRoute() + '/' + currentUser.id + '/image?time=' + currentUser.last_picture_update,
+            currentUserImage: Client4.getUsersRoute() + '/' + currentUser.id + '/image?time=' + currentUser.last_picture_update,
             remoteUserImage,
             localMediaLoaded: false,
             isPaused: false,
@@ -131,7 +133,7 @@ export default class WebrtcController extends React.Component {
             (nextProps.userId !== this.props.userId) ||
             (nextProps.isCaller !== this.props.isCaller)) {
             const remoteUser = UserStore.getProfile(nextProps.userId);
-            const remoteUserImage = Client.getUsersRoute() + '/' + remoteUser.id + '/image?time=' + remoteUser.last_picture_update;
+            const remoteUserImage = Client4.getUsersRoute() + '/' + remoteUser.id + '/image?time=' + remoteUser.last_picture_update;
             this.setState({
                 error: null,
                 remoteUserImage
@@ -1235,9 +1237,9 @@ export default class WebrtcController extends React.Component {
 }
 
 WebrtcController.propTypes = {
-    currentUser: React.PropTypes.object,
-    userId: React.PropTypes.string.isRequired,
-    isCaller: React.PropTypes.bool.isRequired,
-    expanded: React.PropTypes.bool.isRequired,
-    toggleSize: React.PropTypes.func
+    currentUser: PropTypes.object,
+    userId: PropTypes.string.isRequired,
+    isCaller: PropTypes.bool.isRequired,
+    expanded: PropTypes.bool.isRequired,
+    toggleSize: PropTypes.func
 };

@@ -12,6 +12,7 @@
         "ReadTimeout": 300,
         "WriteTimeout": 300,
         "MaximumLoginAttempts": 10,
+        "GoroutineHealthThreshold": -1,
         "GoogleDeveloperKey": "",
         "EnableOAuthServiceProvider": false,
         "EnableIncomingWebhooks": true,
@@ -43,7 +44,17 @@
         "TimeBetweenUserTypingUpdatesMilliseconds": 5000,
         "EnablePostSearch": true,
         "EnableUserTypingMessages": true,
+        "EnableUserStatuses": true,
+        "EnableChannelViewedMessages": true,
         "ClusterLogTimeoutMilliseconds": 2000
+    },
+    "ElasticSearchSettings": {
+        "ConnectionUrl": "http://dockerhost:9200",
+        "Username": "elastic",
+        "Password": "changeme",
+        "EnableIndexing": false,
+        "EnableSearching": false,
+        "Sniff": true
     },
     "TeamSettings": {
         "SiteName": "1THING",
@@ -70,12 +81,14 @@
     },
     "SqlSettings": {
         "DriverName": "mysql",
-        "DataSource": "mmuser:mostest@tcp(dockerhost:3306)/mattermost_test?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s",
+        "DataSource": "mmuser:mostest@tcp(dockerhost:3306)/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
         "DataSourceReplicas": [],
+        "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
         "MaxOpenConns": 300,
         "Trace": false,
-        "AtRestEncryptKey": "8s96y35qz5ihiz7w1jcecsqp5xnnkp13"
+        "AtRestEncryptKey": "",
+        "QueryTimeout": 30
     },
     "LogSettings": {
         "EnableConsole": true,
@@ -95,6 +108,7 @@
         "Symbol": false
     },
     "FileSettings": {
+        "EnableFileAttachments": true,
         "MaxFileSize": 52428800,
         "DriverName": "local",
         "Directory": "./data/",
@@ -112,7 +126,8 @@
         "AmazonS3Bucket": "",
         "AmazonS3Region": "us-east-1",
         "AmazonS3Endpoint": "s3.amazonaws.com",
-        "AmazonS3SSL": true
+        "AmazonS3SSL": true,
+        "AmazonS3SignV2": false
     },
     "EmailSettings": {
         "EnableSignUpWithEmail": true,
@@ -128,8 +143,7 @@
         "SMTPServer": "dockerhost",
         "SMTPPort": "2500",
         "ConnectionSecurity": "",
-        "InviteSalt": "mtt8hrn4tmo5d8nz91jg3z7gr8xudb4z",
-        "PasswordResetSalt": "8j44cnpee8b46a34kpnnc6r8gy6dizts",
+        "InviteSalt": "",
         "SendPushNotifications": false,
         "PushNotificationServer": "",
         "PushNotificationContents": "generic",
@@ -157,6 +171,13 @@
         "HelpLink": "https://about.mattermost.com/default-help/",
         "ReportAProblemLink": "https://about.mattermost.com/default-report-a-problem/",
         "SupportEmail": "steve@1thing.design"
+    },
+    "AnnouncementSettings": {
+        "EnableBanner": false,
+        "BannerText": "",
+        "BannerColor": "#f2a93b",
+        "BannerTextColor": "#333333",
+        "AllowBannerDismissal": true
     },
     "GitLabSettings": {
         "Enable": false,
@@ -219,8 +240,8 @@
     },
     "SamlSettings": {
         "Enable": false,
-        "Verify": false,
-        "Encrypt": false,
+        "Verify": true,
+        "Encrypt": true,
         "IdpUrl": "",
         "IdpDescriptorUrl": "",
         "AssertionConsumerServiceURL": "",
@@ -243,8 +264,13 @@
     },
     "ClusterSettings": {
         "Enable": false,
-        "InterNodeListenAddress": ":8075",
-        "InterNodeUrls": []
+        "ClusterName": "",
+        "OverrideHostname": "",
+        "UseIpAddress": true,
+        "UseExperimentalGossip": false,
+        "ReadOnlyConfig": true,
+        "GossipPort": 8074,
+        "StreamingPort": 8075
     },
     "MetricsSettings": {
         "Enable": false,
@@ -263,5 +289,8 @@
         "TurnURI": "",
         "TurnUsername": "",
         "TurnSharedKey": ""
+    },
+    "DataRetentionSettings": {
+        "Enable": false
     }
 }

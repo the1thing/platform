@@ -17,6 +17,8 @@
             // the below z-index is used to ensure the icons
             // stays on the top and don't get hidden by the
             // search's input block
+            float: right;
+            padding-right: 0px !important;
             position: relative;
             z-index: 6;
 
@@ -64,13 +66,6 @@
         padding-top: 0;
     }
     .btn-file:hover {background:#f0f0f0!important; cursor: pointer;}
-}
-
-#post-create {
-    @include flex(0 0 auto);
-    background: $white;
-    width: 100%;
-    z-index: 3;
 }
 
 #archive-link-home {

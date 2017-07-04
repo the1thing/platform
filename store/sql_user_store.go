@@ -33,7 +33,7 @@ const (
 )
 
 type SqlUserStore struct {
-	*SqlStore
+	SqlStore
 }
 
 var profilesInChannelCache *utils.Cache = utils.NewLru(PROFILES_IN_CHANNEL_CACHE_SIZE)
@@ -48,7 +48,7 @@ func (us SqlUserStore) InvalidatProfileCacheForUser(userId string) {
 	profileByIdsCache.Remove(userId)
 }
 
-func NewSqlUserStore(sqlStore *SqlStore) UserStore {
+func NewSqlUserStore(sqlStore SqlStore) UserStore {
 	us := &SqlUserStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
@@ -183,9 +183,9 @@ func (us SqlUserStore) Update(user *model.User, trustedUpdateData bool) StoreCha
 
 			if count, err := us.GetMaster().Update(user); err != nil {
 				if IsUniqueConstraintError(err.Error(), []string{"Email", "users_email_key", "idx_users_email_unique"}) {
-					result.Err = model.NewLocAppError("SqlUserStore.Update", "store.sql_user.update.email_taken.app_error", nil, "user_id="+user.Id+", "+err.Error())
+					result.Err = model.NewAppError("SqlUserStore.Update", "store.sql_user.update.email_taken.app_error", nil, "user_id="+user.Id+", "+err.Error(), http.StatusBadRequest)
 				} else if IsUniqueConstraintError(err.Error(), []string{"Username", "users_username_key", "idx_users_username_unique"}) {
-					result.Err = model.NewLocAppError("SqlUserStore.Update", "store.sql_user.update.username_taken.app_error", nil, "user_id="+user.Id+", "+err.Error())
+					result.Err = model.NewAppError("SqlUserStore.Update", "store.sql_user.update.username_taken.app_error", nil, "user_id="+user.Id+", "+err.Error(), http.StatusBadRequest)
 				} else {
 					result.Err = model.NewLocAppError("SqlUserStore.Update", "store.sql_user.update.updating.app_error", nil, "user_id="+user.Id+", "+err.Error())
 				}
@@ -546,7 +546,7 @@ func (us SqlUserStore) GetProfilesInChannel(channelId string, offset int, limit 
 
 		var users []*model.User
 
-		query := "SELECT Users.* FROM Users, ChannelMembers WHERE ChannelMembers.ChannelId = :ChannelId AND Users.Id = ChannelMembers.UserId AND Users.DeleteAt = 0 ORDER BY Users.Username ASC LIMIT :Limit OFFSET :Offset"
+		query := "SELECT Users.* FROM Users, ChannelMembers WHERE ChannelMembers.ChannelId = :ChannelId AND Users.Id = ChannelMembers.UserId ORDER BY Users.Username ASC LIMIT :Limit OFFSET :Offset"
 
 		if _, err := us.GetReplica().Select(&users, query, map[string]interface{}{"ChannelId": channelId, "Offset": offset, "Limit": limit}); err != nil {
 			result.Err = model.NewLocAppError("SqlUserStore.GetProfilesInChannel", "store.sql_user.get_profiles.app_error", nil, err.Error())
@@ -729,20 +729,19 @@ func (us SqlUserStore) GetProfilesByUsernames(usernames []string, teamId string)
 			idQuery += ":username" + strconv.Itoa(index)
 		}
 
-		props["TeamId"] = teamId
+		var query string
+		if teamId == "" {
+			query = `SELECT * FROM Users WHERE Username IN (` + idQuery + `)`
+		} else {
+			query = `SELECT Users.* FROM Users INNER JOIN TeamMembers ON
+				Users.Id = TeamMembers.UserId AND Users.Username IN (` + idQuery + `) AND TeamMembers.TeamId = :TeamId `
+			props["TeamId"] = teamId
+		}
 
-		if _, err := us.GetReplica().Select(&users, `SELECT Users.* FROM Users INNER JOIN TeamMembers ON
-			Users.Id = TeamMembers.UserId AND Users.Username IN (`+idQuery+`) AND TeamMembers.TeamId = :TeamId `, props); err != nil {
+		if _, err := us.GetReplica().Select(&users, query, props); err != nil {
 			result.Err = model.NewLocAppError("SqlUserStore.GetProfilesByUsernames", "store.sql_user.get_profiles.app_error", nil, err.Error())
 		} else {
-			userMap := make(map[string]*model.User)
-
-			for _, u := range users {
-				u.Sanitize(map[string]bool{})
-				userMap[u.Id] = u
-			}
-
-			result.Data = userMap
+			result.Data = users
 		}
 
 		storeChannel <- result
@@ -757,7 +756,7 @@ type UserWithLastActivityAt struct {
 	LastActivityAt int64
 }
 
-func (us SqlUserStore) GetRecentlyActiveUsersForTeam(teamId string) StoreChannel {
+func (us SqlUserStore) GetRecentlyActiveUsersForTeam(teamId string, offset, limit int) StoreChannel {
 
 	storeChannel := make(StoreChannel)
 
@@ -775,21 +774,55 @@ func (us SqlUserStore) GetRecentlyActiveUsersForTeam(teamId string) StoreChannel
                 INNER JOIN Status AS s ON s.UserId = t.UserId
             WHERE t.TeamId = :TeamId
             ORDER BY s.LastActivityAt DESC
-            LIMIT 100
-            `, map[string]interface{}{"TeamId": teamId}); err != nil {
-			result.Err = model.NewLocAppError("SqlUserStore.GetRecentlyActiveUsers", "store.sql_user.get_recently_active_users.app_error", nil, err.Error())
+            LIMIT :Limit OFFSET :Offset
+            `, map[string]interface{}{"TeamId": teamId, "Offset": offset, "Limit": limit}); err != nil {
+			result.Err = model.NewAppError("SqlUserStore.GetRecentlyActiveUsers", "store.sql_user.get_recently_active_users.app_error", nil, err.Error(), http.StatusInternalServerError)
 		} else {
 
-			userMap := make(map[string]*model.User)
+			userList := []*model.User{}
 
 			for _, userWithLastActivityAt := range users {
 				u := userWithLastActivityAt.User
 				u.Sanitize(map[string]bool{})
 				u.LastActivityAt = userWithLastActivityAt.LastActivityAt
-				userMap[u.Id] = &u
+				userList = append(userList, &u)
 			}
 
-			result.Data = userMap
+			result.Data = userList
+		}
+
+		storeChannel <- result
+		close(storeChannel)
+	}()
+
+	return storeChannel
+}
+
+func (us SqlUserStore) GetNewUsersForTeam(teamId string, offset, limit int) StoreChannel {
+
+	storeChannel := make(StoreChannel)
+
+	go func() {
+		result := StoreResult{}
+
+		var users []*model.User
+
+		if _, err := us.GetReplica().Select(&users, `
+            SELECT
+                u.*
+            FROM Users AS u
+                INNER JOIN TeamMembers AS t ON u.Id = t.UserId
+            WHERE t.TeamId = :TeamId
+            ORDER BY u.CreateAt DESC
+            LIMIT :Limit OFFSET :Offset
+            `, map[string]interface{}{"TeamId": teamId, "Offset": offset, "Limit": limit}); err != nil {
+			result.Err = model.NewAppError("SqlUserStore.GetNewUsersForTeam", "store.sql_user.get_new_users.app_error", nil, err.Error(), http.StatusInternalServerError)
+		} else {
+			for _, u := range users {
+				u.Sanitize(map[string]bool{})
+			}
+
+			result.Data = users
 		}
 
 		storeChannel <- result
@@ -815,7 +848,8 @@ func (us SqlUserStore) GetProfileByIds(userIds []string, allowFromCache bool) St
 		if allowFromCache {
 			for _, userId := range userIds {
 				if cacheItem, ok := profileByIdsCache.Get(userId); ok {
-					u := cacheItem.(*model.User)
+					u := &model.User{}
+					*u = *cacheItem.(*model.User)
 					users = append(users, u)
 				} else {
 					remainingUserIds = append(remainingUserIds, userId)
@@ -856,7 +890,9 @@ func (us SqlUserStore) GetProfileByIds(userIds []string, allowFromCache bool) St
 			for _, u := range users {
 				u.Sanitize(map[string]bool{})
 
-				profileByIdsCache.AddWithExpiresInSecs(u.Id, u, PROFILE_BY_IDS_CACHE_SEC)
+				cpy := &model.User{}
+				*cpy = *u
+				profileByIdsCache.AddWithExpiresInSecs(cpy.Id, cpy, PROFILE_BY_IDS_CACHE_SEC)
 			}
 
 			result.Data = users

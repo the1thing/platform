@@ -1,8 +1,47 @@
 @charset 'UTF-8';
 
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 25px;
+}
+
+h3 {
+    font-size: 22px;
+}
+
+h4 {
+    font-size: 19px;
+}
+
+h5 {
+    font-size: 15px;
+}
+
+h6 {
+    font-size: 1em;
+}
+
+.markdown__link {
+}
+
 .markdown__heading {
     font-weight: 700;
     line-height: 1.5;
+    margin: 10px 0;
+
+    &:first-child {
+        margin: 5px 0 10px;
+    }
+
+    .emoticon {
+        min-height: 1.5em;
+        min-width: 1.5em;
+        vertical-align: top;
+    }
 }
 
 .markdown__paragraph-inline {
@@ -16,7 +55,7 @@
 #post-list {
     .markdown-inline-img {
         -moz-force-broken-image-icon: 1;
-        height: 500px;
+        margin: 5px 0;
         max-height: 500px;
     }
 }
@@ -58,6 +97,7 @@
 .post-code__language {
     @include opacity(0);
     @include transition(opacity, .6s);
+    @include unselectable;
     background: #21586d;
     border-radius: 0 0 0 2px;
     color: $white;

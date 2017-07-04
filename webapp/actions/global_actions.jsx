@@ -4,15 +4,13 @@
 import AppDispatcher from 'dispatcher/app_dispatcher.jsx';
 
 import ChannelStore from 'stores/channel_store.jsx';
-import PostStore from 'stores/post_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 import BrowserStore from 'stores/browser_store.jsx';
 import ErrorStore from 'stores/error_store.jsx';
 import TeamStore from 'stores/team_store.jsx';
-import PreferenceStore from 'stores/preference_store.jsx';
 import SearchStore from 'stores/search_store.jsx';
 
-import {handleNewPost, loadPosts, loadPostsBefore, loadPostsAfter} from 'actions/post_actions.jsx';
+import {handleNewPost} from 'actions/post_actions.jsx';
 import {loadProfilesForSidebar} from 'actions/user_actions.jsx';
 import {loadChannelsForCurrentUser} from 'actions/channel_actions.jsx';
 import {stopPeriodicStatusUpdates} from 'actions/status_actions.jsx';
@@ -21,9 +19,8 @@ import {trackEvent} from 'actions/diagnostics_actions.jsx';
 
 import Constants from 'utils/constants.jsx';
 const ActionTypes = Constants.ActionTypes;
+import EventTypes from 'utils/event_types.jsx';
 
-import Client from 'client/web_client.jsx';
-import * as AsyncClient from 'utils/async_client.jsx';
 import WebSocketClient from 'client/web_websocket_client.jsx';
 import {sortTeamsByDisplayName} from 'utils/team_utils.jsx';
 import * as Utils from 'utils/utils.jsx';
@@ -32,37 +29,47 @@ import en from 'i18n/en.json';
 import * as I18n from 'i18n/i18n.jsx';
 import {browserHistory} from 'react-router/es6';
 
+// Redux actions
+import store from 'stores/redux_store.jsx';
+const dispatch = store.dispatch;
+const getState = store.getState;
+
+import {Client4} from 'mattermost-redux/client';
+
+import {removeUserFromTeam} from 'mattermost-redux/actions/teams';
+import {viewChannel, getChannelStats, getMyChannelMember, getChannelAndMyMember, createDirectChannel, joinChannel} from 'mattermost-redux/actions/channels';
+import {getPostThread} from 'mattermost-redux/actions/posts';
+
 export function emitChannelClickEvent(channel) {
     function userVisitedFakeChannel(chan, success, fail) {
+        const currentUserId = UserStore.getCurrentId();
         const otherUserId = Utils.getUserIdFromChannelName(chan);
-        Client.createDirectChannel(
-            otherUserId,
+        createDirectChannel(currentUserId, otherUserId)(dispatch, getState).then(
             (data) => {
-                success(data);
-            },
-            () => {
-                fail();
+                if (data) {
+                    success(data);
+                } else {
+                    fail();
+                }
             }
         );
     }
     function switchToChannel(chan) {
         const channelMember = ChannelStore.getMyMember(chan.id);
-        const getMyChannelMemberPromise = AsyncClient.getChannelMember(chan.id, UserStore.getCurrentId());
+        const getMyChannelMemberPromise = getMyChannelMember(chan.id)(dispatch, getState);
         const oldChannelId = ChannelStore.getCurrentId();
 
         getMyChannelMemberPromise.then(() => {
-            AsyncClient.getChannelStats(chan.id, true);
-            AsyncClient.viewChannel(chan.id, oldChannelId);
-            loadPosts(chan.id);
+            getChannelStats(chan.id)(dispatch, getState);
+            viewChannel(chan.id, oldChannelId)(dispatch, getState);
+
+            // Mark previous and next channel as read
+            ChannelStore.resetCounts([chan.id, oldChannelId]);
         });
 
         // Subtract mentions for the team
         const {msgs, mentions} = ChannelStore.getUnreadCounts()[chan.id] || {msgs: 0, mentions: 0};
         TeamStore.subtractUnread(chan.team_id, msgs, mentions);
-
-        // Mark previous and next channel as read
-        ChannelStore.resetCounts(oldChannelId);
-        ChannelStore.resetCounts(chan.id);
 
         BrowserStore.setGlobalItem(chan.team_id, chan.id);
 
@@ -94,126 +101,54 @@ export function emitChannelClickEvent(channel) {
     }
 }
 
-export function emitInitialLoad(callback) {
-    Client.getInitialLoad(
-            (data) => {
-                global.window.mm_config = data.client_cfg;
-                global.window.mm_license = data.license_cfg;
-
-                if (global.window && global.window.analytics) {
-                    global.window.analytics.identify(global.window.mm_config.DiagnosticId, {}, {
-                        context: {
-                            ip: '0.0.0.0'
-                        },
-                        page: {
-                            path: '',
-                            referrer: '',
-                            search: '',
-                            title: '',
-                            url: ''
-                        },
-                        anonymousId: '00000000000000000000000000'
-                    });
-                }
-
-                UserStore.setNoAccounts(data.no_accounts);
-
-                if (data.user && data.user.id) {
-                    global.window.mm_user = data.user;
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_ME,
-                        me: data.user
-                    });
-                }
-
-                if (data.preferences) {
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_PREFERENCES,
-                        preferences: data.preferences
-                    });
-                }
-
-                if (data.teams) {
-                    var teams = {};
-                    data.teams.forEach((team) => {
-                        teams[team.id] = team;
-                    });
-
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_ALL_TEAMS,
-                        teams
-                    });
-                }
-
-                if (data.team_members) {
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_MY_TEAM_MEMBERS,
-                        team_members: data.team_members
-                    });
-                }
-
-                if (data.direct_profiles) {
-                    AppDispatcher.handleServerAction({
-                        type: ActionTypes.RECEIVED_DIRECT_PROFILES,
-                        profiles: data.direct_profiles
-                    });
-                }
-
-                if (callback) {
-                    callback();
-                }
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getInitialLoad');
-
-                if (callback) {
-                    callback();
-                }
-            }
-        );
-}
-
-export function doFocusPost(channelId, postId, data) {
+export async function doFocusPost(channelId, postId, data) {
     AppDispatcher.handleServerAction({
         type: ActionTypes.RECEIVED_FOCUSED_POST,
         postId,
         channelId,
         post_list: data
     });
+
+    dispatch({
+        type: ActionTypes.RECEIVED_FOCUSED_POST,
+        data: postId,
+        channelId
+    });
+
+    const member = getState().entities.channels.myMembers[channelId];
+    if (member == null) {
+        await joinChannel(UserStore.getCurrentId(), null, channelId)(dispatch, getState);
+    }
+
     loadChannelsForCurrentUser();
-    AsyncClient.getChannelStats(channelId);
-    loadPostsBefore(postId, 0, Constants.POST_FOCUS_CONTEXT_RADIUS, true);
-    loadPostsAfter(postId, 0, Constants.POST_FOCUS_CONTEXT_RADIUS, true);
+    getChannelStats(channelId)(dispatch, getState);
 }
 
 export function emitPostFocusEvent(postId, onSuccess) {
     loadChannelsForCurrentUser();
-    Client.getPermalinkTmp(
-        postId,
+    getPostThread(postId)(dispatch, getState).then(
         (data) => {
-            if (!data) {
-                return;
-            }
-            const channelId = data.posts[data.order[0]].channel_id;
-            doFocusPost(channelId, postId, data);
-
-            if (onSuccess) {
-                onSuccess();
-            }
-        },
-        () => {
-            let link = `${TeamStore.getCurrentTeamRelativeUrl()}/channels/`;
-            const channel = ChannelStore.getCurrent();
-            if (channel) {
-                link += channel.name;
+            if (data) {
+                const channelId = data.posts[data.order[0]].channel_id;
+                doFocusPost(channelId, postId, data).then(() => {
+                    if (onSuccess) {
+                        onSuccess();
+                    }
+                });
             } else {
-                link += 'town-square';
+                let link = `${TeamStore.getCurrentTeamRelativeUrl()}/channels/`;
+                const channel = ChannelStore.getCurrent();
+                if (channel) {
+                    link += channel.name;
+                } else {
+                    link += 'town-square';
+                }
+
+                const message = encodeURIComponent(Utils.localizeMessage('permalink.error.access', 'Permalink belongs to a deleted message or to a channel to which you do not have access.'));
+                const title = encodeURIComponent(Utils.localizeMessage('permalink.error.title', 'Message Not Found'));
+
+                browserHistory.push('/error?message=' + message + '&title=' + title + '&link=' + encodeURIComponent(link));
             }
-
-            const message = encodeURIComponent(Utils.localizeMessage('permalink.error.access', 'Permalink belongs to a deleted message or to a channel to which you do not have access.'));
-            const title = encodeURIComponent(Utils.localizeMessage('permalink.error.title', 'Message Not Found'));
-
-            browserHistory.push('/error?message=' + message + '&title=' + title + '&link=' + encodeURIComponent(link));
         }
     );
 }
@@ -222,27 +157,21 @@ export function emitCloseRightHandSide() {
     SearchStore.storeSearchResults(null, false, false);
     SearchStore.emitSearchChange();
 
-    PostStore.storeSelectedPostId(null);
-    PostStore.emitSelectedPostChange(false, false);
+    dispatch({
+        type: ActionTypes.SELECT_POST,
+        postId: ''
+    });
 }
 
 export function emitPostFocusRightHandSideFromSearch(post, isMentionSearch) {
-    Client.getPost(
-        post.channel_id,
-        post.id,
-        (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_POSTS,
-                id: post.channel_id,
-                numRequested: 0,
-                post_list: data
-            });
-
+    getPostThread(post.id)(dispatch, getState).then(
+        () => {
             AppDispatcher.handleServerAction({
                 type: ActionTypes.RECEIVED_POST_SELECTED,
                 postId: Utils.getRootId(post),
                 from_search: SearchStore.getSearchTerm(),
-                from_flagged_posts: SearchStore.getIsFlaggedPosts()
+                from_flagged_posts: SearchStore.getIsFlaggedPosts(),
+                from_pinned_posts: SearchStore.getIsPinnedPosts()
             });
 
             AppDispatcher.handleServerAction({
@@ -250,47 +179,12 @@ export function emitPostFocusRightHandSideFromSearch(post, isMentionSearch) {
                 results: null,
                 is_mention_search: isMentionSearch
             });
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getPost');
         }
     );
 }
 
 export function emitLeaveTeam() {
-    Client.removeUserFromTeam(
-        TeamStore.getCurrentId(),
-        UserStore.getCurrentId(),
-        () => {
-            // DO nothing.  The websocket should cause a re-direct
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'removeUserFromTeam');
-        }
-    );
-}
-
-export function emitLoadMorePostsEvent() {
-    const id = ChannelStore.getCurrentId();
-    loadMorePostsTop(id, false);
-}
-
-export function emitLoadMorePostsFocusedTopEvent() {
-    const id = PostStore.getFocusedPostId();
-    loadMorePostsTop(id, true);
-}
-
-export function loadMorePostsTop(id, isFocusPost) {
-    const earliestPostId = PostStore.getEarliestPostFromPage(id).id;
-    if (PostStore.requestVisibilityIncrease(id, Constants.POST_CHUNK_SIZE)) {
-        loadPostsBefore(earliestPostId, 0, Constants.POST_CHUNK_SIZE, isFocusPost);
-    }
-}
-
-export function emitLoadMorePostsFocusedBottomEvent() {
-    const id = PostStore.getFocusedPostId();
-    const latestPostId = PostStore.getLatestPost(id).id;
-    loadPostsAfter(latestPostId, 0, Constants.POST_CHUNK_SIZE, Boolean(id));
+    removeUserFromTeam(TeamStore.getCurrentId(), UserStore.getCurrentId())(dispatch, getState);
 }
 
 export function emitUserPostedEvent(post) {
@@ -307,10 +201,10 @@ export function emitUserCommentedEvent(post) {
     });
 }
 
-export function emitPostDeletedEvent(post) {
-    AppDispatcher.handleServerAction({
-        type: ActionTypes.POST_DELETED,
-        post
+export function showAccountSettingsModal() {
+    AppDispatcher.handleViewAction({
+        type: ActionTypes.TOGGLE_ACCOUNT_SETTINGS_MODAL,
+        value: true
     });
 }
 
@@ -320,6 +214,14 @@ export function showDeletePostModal(post, commentCount = 0) {
         value: true,
         post,
         commentCount
+    });
+}
+
+export function showChannelHeaderUpdateModal(channel) {
+    AppDispatcher.handleViewAction({
+        type: ActionTypes.TOGGLE_CHANNEL_HEADER_UPDATE_MODAL,
+        value: true,
+        channel
     });
 }
 
@@ -403,9 +305,31 @@ export function emitPreferenceChangedEvent(preference) {
         preference
     });
 
-    if (preference.category === Constants.Preferences.CATEGORY_DIRECT_CHANNEL_SHOW) {
+    if (addedNewDmUser(preference)) {
         loadProfilesForSidebar();
     }
+}
+
+export function emitPreferencesChangedEvent(preferences) {
+    AppDispatcher.handleServerAction({
+        type: Constants.ActionTypes.RECEIVED_PREFERENCES,
+        preferences
+    });
+
+    if (preferences.findIndex(addedNewDmUser) !== -1) {
+        loadProfilesForSidebar();
+    }
+}
+
+function addedNewDmUser(preference) {
+    return preference.category === Constants.Preferences.CATEGORY_DIRECT_CHANNEL_SHOW && preference.value === 'true';
+}
+
+export function emitPreferencesDeletedEvent(preferences) {
+    AppDispatcher.handleServerAction({
+        type: Constants.ActionTypes.DELETED_PREFERENCES,
+        preferences
+    });
 }
 
 export function emitRemovePost(post) {
@@ -432,17 +356,16 @@ export function sendEphemeralPost(message, channelId) {
 }
 
 export function newLocalizationSelected(locale) {
-    if (locale === 'en') {
+    const localeInfo = I18n.getLanguageInfo(locale);
+
+    if (locale === 'en' || !localeInfo) {
         AppDispatcher.handleServerAction({
             type: ActionTypes.RECEIVED_LOCALE,
             locale,
             translations: en
         });
     } else {
-        const localeInfo = I18n.getLanguageInfo(locale) || I18n.getLanguageInfo(global.window.mm_config.DefaultClientLocale);
-
-        Client.getTranslations(
-            localeInfo.url,
+        Client4.getTranslations(localeInfo.url).then(
             (data, res) => {
                 let translations = data;
                 if (!data && res.text) {
@@ -453,27 +376,31 @@ export function newLocalizationSelected(locale) {
                     locale,
                     translations
                 });
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getTranslations');
             }
+        ).catch(
+            () => {} //eslint-disable-line no-empty-function
         );
     }
 }
 
+export function loadCurrentLocale() {
+    const user = UserStore.getCurrentUser();
+
+    if (user && user.locale) {
+        newLocalizationSelected(user.locale);
+    } else {
+        loadDefaultLocale();
+    }
+}
+
 export function loadDefaultLocale() {
-    const defaultLocale = global.window.mm_config.DefaultClientLocale;
-    let locale = global.window.mm_user ? global.window.mm_user.locale || defaultLocale : defaultLocale;
+    let locale = global.window.mm_config.DefaultClientLocale;
 
     if (!I18n.getLanguageInfo(locale)) {
         locale = 'en';
     }
-    return newLocalizationSelected(locale);
-}
 
-export function viewLoggedIn() {
-    // Clear pending posts (shouldn't have pending posts if we are loading)
-    PostStore.clearPendingPosts();
+    return newLocalizationSelected(locale);
 }
 
 let lastTimeTypingSent = 0;
@@ -497,14 +424,15 @@ export function emitRemoteUserTypingEvent(channelId, userId, postParentId) {
 }
 
 export function emitUserLoggedOutEvent(redirectTo = '/', shouldSignalLogout = true) {
-    Client.logout(
+    Client4.logout().then(
         () => {
             if (shouldSignalLogout) {
                 BrowserStore.signalLogout();
             }
 
             clientLogout(redirectTo);
-        },
+        }
+    ).catch(
         () => {
             browserHistory.push(redirectTo);
         }
@@ -514,12 +442,10 @@ export function emitUserLoggedOutEvent(redirectTo = '/', shouldSignalLogout = tr
 export function clientLogout(redirectTo = '/') {
     BrowserStore.clear();
     ErrorStore.clearLastError();
-    PreferenceStore.clear();
-    UserStore.clear();
-    TeamStore.clear();
     ChannelStore.clear();
     stopPeriodicStatusUpdates();
     WebsocketActions.close();
+    document.cookie = 'MMUSERID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     window.location.href = redirectTo;
 }
 
@@ -608,14 +534,13 @@ export function redirectUserToDefaultTeam() {
         if (channel) {
             redirect(teams[teamId].name, channel);
         } else if (channelId) {
-            Client.setTeamId(teamId);
-            Client.getChannel(
-                channelId,
+            getChannelAndMyMember(channelId)(dispatch, getState).then(
                 (data) => {
-                    redirect(teams[teamId].name, data.channel.name);
-                },
-                () => {
-                    redirect(teams[teamId].name, 'town-square');
+                    if (data) {
+                        redirect(teams[teamId].name, data.channel.name);
+                    } else {
+                        redirect(teams[teamId].name, 'town-square');
+                    }
                 }
             );
         } else {
@@ -626,30 +551,8 @@ export function redirectUserToDefaultTeam() {
     }
 }
 
-requestOpenGraphMetadata.openGraphMetadataOnGoingRequests = {};  // Format: {<url>: true}
-export function requestOpenGraphMetadata(url) {
-    if (global.mm_config.EnableLinkPreviews !== 'true') {
-        return;
-    }
-
-    const onself = requestOpenGraphMetadata;
-
-    if (!onself.openGraphMetadataOnGoingRequests[url]) {
-        onself.openGraphMetadataOnGoingRequests[url] = true;
-
-        Client.getOpenGraphMetadata(url,
-            (data) => {
-                AppDispatcher.handleServerAction({
-                    type: ActionTypes.RECIVED_OPEN_GRAPH_METADATA,
-                    url,
-                    data
-                });
-                delete onself.openGraphMetadataOnGoingRequests[url];
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getOpenGraphMetadata');
-                delete onself.openGraphMetadataOnGoingRequests[url];
-            }
-        );
-    }
+export function postListScrollChange() {
+    AppDispatcher.handleViewAction({
+        type: EventTypes.POST_LIST_SCROLL_CHANGE
+    });
 }

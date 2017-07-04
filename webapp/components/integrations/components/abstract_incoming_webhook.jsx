@@ -2,6 +2,7 @@
 // See License.txt for license information.
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import BackstageHeader from 'components/backstage/components/backstage_header.jsx';
 import ChannelSelect from 'components/channel_select.jsx';
@@ -13,7 +14,7 @@ import {Link} from 'react-router/es6';
 export default class AbstractIncomingWebhook extends React.Component {
     static get propTypes() {
         return {
-            team: React.PropTypes.object
+            team: PropTypes.object
         };
     }
 

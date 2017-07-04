@@ -42,6 +42,10 @@ func (wr *WebSocketRouter) ServeWebSocket(conn *WebConn, r *model.WebSocketReque
 	}
 
 	if r.Action == model.WEBSOCKET_AUTHENTICATION_CHALLENGE {
+		if conn.SessionToken != "" {
+			return
+		}
+
 		token, ok := r.Data["token"].(string)
 		if !ok {
 			conn.WebSocket.Close()
@@ -53,7 +57,10 @@ func (wr *WebSocketRouter) ServeWebSocket(conn *WebConn, r *model.WebSocketReque
 		if err != nil {
 			conn.WebSocket.Close()
 		} else {
-			go SetStatusOnline(session.UserId, session.Id, false)
+			go func() {
+				SetStatusOnline(session.UserId, session.Id, false)
+				UpdateLastActivityAtIfNeeded(*session)
+			}()
 
 			conn.SessionToken = session.Token
 			conn.UserId = session.UserId

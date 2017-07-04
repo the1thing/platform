@@ -12,10 +12,21 @@
     overflow: auto;
     padding: 0 20px;
 
+    .color-picker__popover {
+        position: absolute;
+        right: 0;
+        top: 40px;
+        z-index: 5;
+    }
+
     .dropdown-menu {
         .divider {
             @include opacity(1);
         }
+    }
+
+    .filtered-user-list {
+        height: calc(100vh - 120px);
     }
 
     .Select-value-label {
@@ -257,7 +268,6 @@
 
     .member-list-holder {
         background: $white;
-        margin-bottom: 4em;
         overflow: visible;
         padding: 5px 0;
 

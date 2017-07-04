@@ -14,7 +14,7 @@ import SettingsGroup from './settings_group.jsx';
 
 import * as Utils from 'utils/utils.jsx';
 
-import {samlCertificateStatus, uploadCertificateFile, removeCertificateFile} from 'actions/admin_actions.jsx';
+import * as AdminActions from 'actions/admin_actions.jsx';
 
 export default class SamlSettings extends AdminSettings {
     constructor(props) {
@@ -74,7 +74,7 @@ export default class SamlSettings extends AdminSettings {
     }
 
     componentWillMount() {
-        samlCertificateStatus(
+        AdminActions.samlCertificateStatus(
             (data) => {
                 const files = {};
                 if (!data.IdpCertificateFile) {
@@ -94,38 +94,50 @@ export default class SamlSettings extends AdminSettings {
     }
 
     uploadCertificate(id, file, callback) {
-        uploadCertificateFile(
-            file,
-            () => {
-                const fileName = file.name;
-                this.handleChange(id, fileName);
-                this.setState({[id]: fileName, [`${id}Error`]: null});
-                if (callback && typeof callback === 'function') {
-                    callback();
-                }
-            },
-            (error) => {
-                if (callback && typeof callback === 'function') {
-                    callback(error.message);
-                }
+        const complete = () => {
+            const fileName = file.name;
+            this.handleChange(id, fileName);
+            this.setState({[id]: fileName, [`${id}Error`]: null});
+            if (callback && typeof callback === 'function') {
+                callback();
             }
-        );
+        };
+
+        function fail(error) {
+            if (callback && typeof callback === 'function') {
+                callback(error.message);
+            }
+        }
+
+        if (id === 'idpCertificateFile') {
+            AdminActions.uploadIdpSamlCertificate(file, complete, fail);
+        } else if (id === 'publicCertificateFile') {
+            AdminActions.uploadPublicSamlCertificate(file, complete, fail);
+        } else if (id === 'privateKeyFile') {
+            AdminActions.uploadPrivateSamlCertificate(file, complete, fail);
+        }
     }
 
     removeCertificate(id, callback) {
-        removeCertificateFile(
-            this.state[id],
-            () => {
-                this.handleChange(id, '');
-                this.setState({[id]: null, [`${id}Error`]: null});
-            },
-            (error) => {
-                if (callback && typeof callback === 'function') {
-                    callback();
-                }
-                this.setState({[id]: null, [`${id}Error`]: error.message});
+        const complete = () => {
+            this.handleChange(id, '');
+            this.setState({[id]: null, [`${id}Error`]: null});
+        };
+
+        const fail = (error) => {
+            if (callback && typeof callback === 'function') {
+                callback();
             }
-        );
+            this.setState({[id]: null, [`${id}Error`]: error.message});
+        };
+
+        if (id === 'idpCertificateFile') {
+            AdminActions.removeIdpSamlCertificate(complete, fail);
+        } else if (id === 'publicCertificateFile') {
+            AdminActions.removePublicSamlCertificate(complete, fail);
+        } else if (id === 'privateKeyFile') {
+            AdminActions.removePrivateSamlCertificate(complete, fail);
+        }
     }
 
     renderTitle() {
@@ -368,7 +380,7 @@ export default class SamlSettings extends AdminSettings {
                     helpText={
                         <FormattedMessage
                             id='admin.saml.verifyDescription'
-                            defaultMessage='When true, Mattermost verifies that the signature sent from the SAML Response matches the Service Provider Login URL'
+                            defaultMessage='When false, Mattermost will not verify that the signature sent from a SAML Response matches the Service Provider Login URL. Not recommended for production environments. For testing only.'
                         />
                     }
                     value={this.state.verify}
@@ -405,7 +417,7 @@ export default class SamlSettings extends AdminSettings {
                     helpText={
                         <FormattedMessage
                             id='admin.saml.encryptDescription'
-                            defaultMessage='When true, Mattermost will decrypt SAML Assertions encrypted with your Service Provider Public Certificate.'
+                            defaultMessage='When false, Mattermost will not decrypt SAML Assertions encrypted with your Service Provider Public Certificate. Not recommended for production environments. For testing only.'
                         />
                     }
                     value={this.state.encrypt}

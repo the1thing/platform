@@ -13,8 +13,7 @@ import WebrtcStore from 'stores/webrtc_store.jsx';
 import AboutBuildModal from './about_build_modal.jsx';
 import SidebarHeaderDropdownButton from './sidebar_header_dropdown_button.jsx';
 import TeamMembersModal from './team_members_modal.jsx';
-import UserSettingsModal from './user_settings/user_settings_modal.jsx';
-import AddUsersToTeam from './add_users_to_team.jsx';
+import AddUsersToTeam from 'components/add_users_to_team';
 
 import {Constants, WebrtcActionTypes} from 'utils/constants.jsx';
 
@@ -22,14 +21,16 @@ import {Dropdown} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
 import {Link} from 'react-router/es6';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 export default class SidebarHeaderDropdown extends React.Component {
     static propTypes = {
-        teamType: React.PropTypes.string,
-        teamDisplayName: React.PropTypes.string,
-        teamName: React.PropTypes.string,
-        currentUser: React.PropTypes.object
+        teamType: PropTypes.string,
+        teamDisplayName: PropTypes.string,
+        teamName: PropTypes.string,
+        currentUser: PropTypes.object
     };
 
     static defaultProps = {
@@ -43,7 +44,7 @@ export default class SidebarHeaderDropdown extends React.Component {
 
         this.handleAboutModal = this.handleAboutModal.bind(this);
         this.aboutModalDismissed = this.aboutModalDismissed.bind(this);
-        this.toggleAccountSettingsModal = this.toggleAccountSettingsModal.bind(this);
+        this.showAccountSettingsModal = this.showAccountSettingsModal.bind(this);
         this.showAddUsersToTeamModal = this.showAddUsersToTeamModal.bind(this);
         this.hideAddUsersToTeamModal = this.hideAddUsersToTeamModal.bind(this);
         this.showInviteMemberModal = this.showInviteMemberModal.bind(this);
@@ -52,7 +53,6 @@ export default class SidebarHeaderDropdown extends React.Component {
         this.hideTeamMembersModal = this.hideTeamMembersModal.bind(this);
 
         this.onTeamChange = this.onTeamChange.bind(this);
-        this.openAccountSettings = this.openAccountSettings.bind(this);
 
         this.renderCustomEmojiLink = this.renderCustomEmojiLink.bind(this);
 
@@ -64,7 +64,6 @@ export default class SidebarHeaderDropdown extends React.Component {
             showAboutModal: false,
             showDropdown: false,
             showTeamMembersModal: false,
-            showUserSettingsModal: false,
             showAddUsersToTeamModal: false
         };
     }
@@ -76,9 +75,14 @@ export default class SidebarHeaderDropdown extends React.Component {
         }
     }
 
-    toggleDropdown(e) {
-        if (e) {
-            e.preventDefault();
+    toggleDropdown(val) {
+        if (typeof (val) === 'boolean') {
+            this.setState({showDropdown: val});
+            return;
+        }
+
+        if (val && val.preventDefault) {
+            val.preventDefault();
         }
 
         this.setState({showDropdown: !this.state.showDropdown});
@@ -97,13 +101,12 @@ export default class SidebarHeaderDropdown extends React.Component {
         this.setState({showAboutModal: false});
     }
 
-    toggleAccountSettingsModal(e) {
+    showAccountSettingsModal(e) {
         e.preventDefault();
 
-        this.setState({
-            showUserSettingsModal: !this.state.showUserSettingsModal,
-            showDropdown: false
-        });
+        this.setState({showDropdown: false});
+
+        GlobalActions.showAccountSettingsModal();
     }
 
     showAddUsersToTeamModal(e) {
@@ -153,26 +156,19 @@ export default class SidebarHeaderDropdown extends React.Component {
 
     componentDidMount() {
         TeamStore.addChangeListener(this.onTeamChange);
-        document.addEventListener('keydown', this.openAccountSettings);
     }
 
     onTeamChange() {
         this.setState({
             teamMembers: TeamStore.getMyTeamMembers(),
-            teamListings: TeamStore.getTeamListings()
+            teamListings: TeamStore.getTeamListings(),
+            showDropdown: false
         });
     }
 
     componentWillUnmount() {
         $(ReactDOM.findDOMNode(this.refs.dropdown)).off('hide.bs.dropdown');
         TeamStore.removeChangeListener(this.onTeamChange);
-        document.removeEventListener('keydown', this.openAccountSettings);
-    }
-
-    openAccountSettings(e) {
-        if (Utils.cmdOrCtrlPressed(e) && e.shiftKey && e.keyCode === Constants.KeyCodes.A) {
-            this.toggleAccountSettingsModal(e);
-        }
     }
 
     renderCustomEmojiLink() {
@@ -183,6 +179,7 @@ export default class SidebarHeaderDropdown extends React.Component {
         return (
             <li>
                 <Link
+                    id='customEmoji'
                     onClick={this.handleClick}
                     to={'/' + this.props.teamName + '/emoji'}
                 >
@@ -219,6 +216,7 @@ export default class SidebarHeaderDropdown extends React.Component {
             inviteLink = (
                 <li>
                     <a
+                        id='sendEmailInvite'
                         href='#'
                         onClick={this.showInviteMemberModal}
                     >
@@ -249,6 +247,7 @@ export default class SidebarHeaderDropdown extends React.Component {
                 teamLink = (
                     <li>
                         <a
+                            id='getTeamInviteLink'
                             href='#'
                             onClick={this.showGetTeamInviteLinkModal}
                         >
@@ -285,6 +284,7 @@ export default class SidebarHeaderDropdown extends React.Component {
             teamSettings = (
                 <li>
                     <a
+                        id='teamSettings'
                         href='#'
                         data-toggle='modal'
                         data-target='#team_settings'
@@ -326,6 +326,7 @@ export default class SidebarHeaderDropdown extends React.Component {
             integrationsLink = (
                 <li>
                     <Link
+                        id='Integrations'
                         to={'/' + this.props.teamName + '/integrations'}
                         onClick={this.handleClick}
                     >
@@ -362,6 +363,7 @@ export default class SidebarHeaderDropdown extends React.Component {
             teams.push(
                 <li key='newTeam_li'>
                     <Link
+                        id='createTeam'
                         key='newTeam_a'
                         to='/create_team'
                         onClick={this.handleClick}
@@ -391,6 +393,7 @@ export default class SidebarHeaderDropdown extends React.Component {
             teams.push(
                 <li key='joinTeam_li'>
                     <Link
+                        id='joinAnotherTeam'
                         onClick={this.handleClick}
                         to='/select_team'
                     >
@@ -406,6 +409,7 @@ export default class SidebarHeaderDropdown extends React.Component {
         teams.push(
             <li key='leaveTeam_li'>
                 <a
+                    id='leaveTeam'
                     href='#'
                     onClick={GlobalActions.showLeaveTeamModal}
                 >
@@ -491,12 +495,27 @@ export default class SidebarHeaderDropdown extends React.Component {
             );
         }
 
+        const keyboardShortcutsLink = (
+            <li>
+                <Link
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    to='https://about.mattermost.com/default-keyboard_shortcut_link/'
+                >
+                    <FormattedMessage
+                        id='navbar_dropdown.keyboardShortcuts'
+                        defaultMessage='Keyboard Shortcuts'
+                    />
+                </Link>
+            </li>
+        );
+
         const accountSettings = (
             <li>
                 <a
                     id='accountSettings'
                     href='#'
-                    onClick={this.toggleAccountSettingsModal}
+                    onClick={this.showAccountSettingsModal}
                 >
                     <FormattedMessage
                         id='navbar_dropdown.accountSettings'
@@ -571,8 +590,8 @@ export default class SidebarHeaderDropdown extends React.Component {
         return (
             <Dropdown
                 id='sidebar-header-dropdown'
-                defaultOpen={this.state.showDropdown}
-                onClose={this.toggleDropdown}
+                open={this.state.showDropdown}
+                onToggle={this.toggleDropdown}
                 className='sidebar-header-dropdown'
                 pullRight={true}
             >
@@ -595,12 +614,14 @@ export default class SidebarHeaderDropdown extends React.Component {
                     {customEmoji}
                     {sysAdminDivider}
                     {sysAdminLink}
+                    {helpDivider}
+                    {helpLink}
+                    {keyboardShortcutsLink}
+                    {reportLink}
+                    {nativeAppLink}
+                    {about}
                     {logoutDivider}
                     {logout}
-                    <UserSettingsModal
-                        show={this.state.showUserSettingsModal}
-                        onModalDismissed={() => this.setState({showUserSettingsModal: false})}
-                    />
                     {teamMembersModal}
                     <AboutBuildModal
                         show={this.state.showAboutModal}

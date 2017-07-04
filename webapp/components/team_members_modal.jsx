@@ -1,12 +1,14 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import MemberListTeam from './member_list_team.jsx';
+import MemberListTeam from 'components/member_list_team';
 import TeamStore from 'stores/team_store.jsx';
 
 import {FormattedMessage} from 'react-intl';
 
 import {Modal} from 'react-bootstrap';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 
@@ -77,7 +79,7 @@ export default class TeamMembersModal extends React.Component {
 }
 
 TeamMembersModal.propTypes = {
-    onHide: React.PropTypes.func.isRequired,
-    isAdmin: React.PropTypes.bool.isRequired,
-    onLoad: React.PropTypes.func
+    onHide: PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
+    onLoad: PropTypes.func
 };

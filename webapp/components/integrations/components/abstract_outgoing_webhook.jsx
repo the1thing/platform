@@ -2,6 +2,9 @@
 // See License.txt for license information.
 
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import TeamStore from 'stores/team_store.jsx';
 
 import {localizeMessage} from 'utils/utils.jsx';
 
@@ -15,7 +18,7 @@ import SpinnerButton from 'components/spinner_button.jsx';
 export default class AbstractOutgoingWebhook extends React.Component {
     static get propTypes() {
         return {
-            team: React.PropTypes.object
+            team: PropTypes.object
         };
     }
 
@@ -129,6 +132,7 @@ export default class AbstractOutgoingWebhook extends React.Component {
         }
 
         const hook = {
+            team_id: TeamStore.getCurrentId(),
             channel_id: this.state.channelId,
             trigger_words: triggerWords,
             trigger_when: parseInt(this.state.triggerWhen, 10),

@@ -1,14 +1,16 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import $ from 'jquery';
-import Constants from 'utils/constants.jsx';
-import * as Utils from 'utils/utils.jsx';
 import 'bootstrap-colorpicker';
-
+import $ from 'jquery';
+import PropTypes from 'prop-types';
+import React from 'react';
 import {Popover, OverlayTrigger} from 'react-bootstrap';
+import {defineMessages, FormattedMessage, intlShape, injectIntl} from 'react-intl';
 
-import {intlShape, injectIntl, defineMessages, FormattedMessage} from 'react-intl';
+import Constants from 'utils/constants.jsx';
+import * as UserAgent from 'utils/user_agent.jsx';
+import * as Utils from 'utils/utils.jsx';
 
 const messages = defineMessages({
     sidebarBg: {
@@ -101,20 +103,20 @@ const messages = defineMessages({
     }
 });
 
-import React from 'react';
-
 const HEX_CODE_LENGTH = 7;
 
 class CustomThemeChooser extends React.Component {
     constructor(props) {
         super(props);
+        this.selectTheme = this.selectTheme.bind(this);
 
-        this.onPickerChange = this.onPickerChange.bind(this);
-        this.pasteBoxChange = this.pasteBoxChange.bind(this);
-        this.toggleContent = this.toggleContent.bind(this);
-        this.onCodeThemeChange = this.onCodeThemeChange.bind(this);
+        const copyTheme = Object.assign({}, this.props.theme);
+        delete copyTheme.type;
+        delete copyTheme.image;
 
-        this.state = {};
+        this.state = {
+            copyTheme: JSON.stringify(copyTheme)
+        };
     }
 
     componentDidMount() {
@@ -148,19 +150,21 @@ class CustomThemeChooser extends React.Component {
         }
     }
 
-    onPickerChange(e) {
+    onPickerChange = (e) => {
         const inputBox = e.target.childNodes[0];
         if (document.activeElement === inputBox && inputBox.value.length !== HEX_CODE_LENGTH) {
             return;
         }
 
         const theme = this.props.theme;
-        theme[e.target.id] = e.color.toHex();
-        theme.type = 'custom';
-        this.props.updateTheme(theme);
+        if (theme[e.target.id] !== e.color.toHex()) {
+            theme[e.target.id] = e.color.toHex();
+            theme.type = 'custom';
+            this.props.updateTheme(theme);
+        }
     }
 
-    pasteBoxChange(e) {
+    pasteBoxChange = (e) => {
         let text = '';
 
         if (window.clipboardData && window.clipboardData.getData) { // IE
@@ -180,26 +184,55 @@ class CustomThemeChooser extends React.Component {
             return;
         }
 
+        this.setState({
+            copyTheme: JSON.stringify(theme)
+        });
+
         theme.type = 'custom';
         this.props.updateTheme(theme);
     }
 
-    onChangeHandle(e) {
+    onChangeHandle = (e) => {
         e.stopPropagation();
     }
 
-    toggleContent(e) {
-        e.stopPropagation();
-        if ($(e.target).hasClass('theme-elements__header')) {
-            $(e.target).next().slideToggle();
-            $(e.target).toggleClass('open');
+    selectTheme() {
+        const textarea = this.refs.textarea;
+        textarea.focus();
+        textarea.setSelectionRange(0, this.state.copyTheme.length);
+    }
+
+    toggleSidebarStyles = (e) => {
+        e.preventDefault();
+
+        $(this.refs.sidebarStylesHeader).toggleClass('open');
+        this.toggleSection(this.refs.sidebarStyles);
+    }
+
+    toggleCenterChannelStyles = (e) => {
+        e.preventDefault();
+
+        $(this.refs.centerChannelStylesHeader).toggleClass('open');
+        this.toggleSection(this.refs.centerChannelStyles);
+    }
+
+    toggleLinkAndButtonStyles = (e) => {
+        e.preventDefault();
+
+        $(this.refs.linkAndButtonStylesHeader).toggleClass('open');
+        this.toggleSection(this.refs.linkAndButtonStyles);
+    }
+
+    toggleSection(node) {
+        if (UserAgent.isIos()) {
+            // iOS doesn't support jQuery animations
+            $(node).toggleClass('open');
         } else {
-            $(e.target).closest('.theme-elements__header').next().slideToggle();
-            $(e.target).closest('.theme-elements__header').toggleClass('open');
+            $(node).slideToggle();
         }
     }
 
-    onCodeThemeChange(e) {
+    onCodeThemeChange = (e) => {
         const theme = this.props.theme;
         theme.codeTheme = e.target.value;
         this.props.updateTheme(theme);
@@ -338,10 +371,6 @@ class CustomThemeChooser extends React.Component {
             }
         });
 
-        const copyTheme = Object.assign({}, theme);
-        delete copyTheme.type;
-        delete copyTheme.image;
-
         const pasteBox = (
             <div className='col-sm-12'>
                 <label className='custom-label'>
@@ -351,10 +380,12 @@ class CustomThemeChooser extends React.Component {
                     />
                 </label>
                 <textarea
+                    ref='textarea'
                     className='form-control'
-                    value={JSON.stringify(copyTheme)}
+                    value={this.state.copyTheme}
                     onPaste={this.pasteBoxChange}
                     onChange={this.onChangeHandle}
+                    onClick={this.selectTheme}
                 />
             </div>
         );
@@ -363,8 +394,9 @@ class CustomThemeChooser extends React.Component {
             <div className='appearance-section padding-top'>
                 <div className='theme-elements row'>
                     <div
+                        ref='sidebarStylesHeader'
                         className='theme-elements__header'
-                        onClick={this.toggleContent}
+                        onClick={this.toggleSidebarStyles}
                     >
                         <FormattedMessage
                             id='user.settings.custom_theme.sidebarTitle'
@@ -375,14 +407,18 @@ class CustomThemeChooser extends React.Component {
                             <i className='fa fa-minus'/>
                         </div>
                     </div>
-                    <div className='theme-elements__body'>
+                    <div
+                        ref='sidebarStyles'
+                        className='theme-elements__body'
+                    >
                         {sidebarElements}
                     </div>
                 </div>
                 <div className='theme-elements row'>
                     <div
+                        ref='centerChannelStylesHeader'
                         className='theme-elements__header'
-                        onClick={this.toggleContent}
+                        onClick={this.toggleCenterChannelStyles}
                     >
                         <FormattedMessage
                             id='user.settings.custom_theme.centerChannelTitle'
@@ -393,14 +429,18 @@ class CustomThemeChooser extends React.Component {
                             <i className='fa fa-minus'/>
                         </div>
                     </div>
-                    <div className='theme-elements__body'>
+                    <div
+                        ref='centerChannelStyles'
+                        className='theme-elements__body'
+                    >
                         {centerChannelElements}
                     </div>
                 </div>
                 <div className='theme-elements row form-group'>
                     <div
+                        ref='linkAndButtonStylesHeader'
                         className='theme-elements__header'
-                        onClick={this.toggleContent}
+                        onClick={this.toggleLinkAndButtonStyles}
                     >
                         <FormattedMessage
                             id='user.settings.custom_theme.linkButtonTitle'
@@ -411,7 +451,10 @@ class CustomThemeChooser extends React.Component {
                             <i className='fa fa-minus'/>
                         </div>
                     </div>
-                    <div className='theme-elements__body'>
+                    <div
+                        ref='linkAndButtonStyles'
+                        className='theme-elements__body'
+                    >
                         {linkAndButtonElements}
                     </div>
                 </div>
@@ -425,8 +468,8 @@ class CustomThemeChooser extends React.Component {
 
 CustomThemeChooser.propTypes = {
     intl: intlShape.isRequired,
-    theme: React.PropTypes.object.isRequired,
-    updateTheme: React.PropTypes.func.isRequired
+    theme: PropTypes.object.isRequired,
+    updateTheme: PropTypes.func.isRequired
 };
 
 export default injectIntl(CustomThemeChooser);

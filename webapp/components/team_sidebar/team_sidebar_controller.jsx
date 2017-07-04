@@ -6,15 +6,21 @@ import TeamButton from './components/team_button.jsx';
 import TeamStore from 'stores/team_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 
-import * as AsyncClient from 'utils/async_client.jsx';
 import {sortTeamsByDisplayName} from 'utils/team_utils.jsx';
 import * as Utils from 'utils/utils.jsx';
 
 import $ from 'jquery';
+import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
 export default class TeamSidebar extends React.Component {
+    static propTypes = {
+        actions: PropTypes.shape({
+            getTeams: PropTypes.func.isRequired
+        }).isRequired
+    }
+
     constructor(props) {
         super(props);
 
@@ -44,7 +50,7 @@ export default class TeamSidebar extends React.Component {
         window.addEventListener('resize', this.handleResize);
         TeamStore.addChangeListener(this.onChange);
         TeamStore.addUnreadChangeListener(this.onChange);
-        AsyncClient.getAllTeamListings();
+        this.props.actions.getTeams(0, 200);
         this.setStyles();
     }
 
@@ -102,6 +108,9 @@ export default class TeamSidebar extends React.Component {
         for (const index in this.state.teamMembers) {
             if (this.state.teamMembers.hasOwnProperty(index)) {
                 const teamMember = this.state.teamMembers[index];
+                if (teamMember.delete_at > 0) {
+                    continue;
+                }
                 const teamId = teamMember.team_id;
                 myTeams.push(Object.assign({
                     unread: teamMember.msg_count > 0,

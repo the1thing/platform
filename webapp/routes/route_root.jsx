@@ -133,7 +133,7 @@ export default {
                         {
                             path: 'admin_console',
                             getComponents: (location, callback) => {
-                                System.import('components/admin_console/admin_console.jsx').then(RouteUtils.importComponentSuccess(callback));
+                                System.import('components/admin_console').then(RouteUtils.importComponentSuccess(callback));
                             },
                             indexRoute: {onEnter: (nextState, replace) => replace('/admin_console/system_analytics')},
                             getChildRoutes: (location, callback) => {
@@ -149,7 +149,7 @@ export default {
                                     {
                                         path: 'select_team',
                                         getComponents: (location, callback) => {
-                                            System.import('components/select_team/select_team.jsx').then(RouteUtils.importComponentSuccess(callback));
+                                            System.import('components/select_team').then(RouteUtils.importComponentSuccess(callback));
                                         }
                                     },
                                     {

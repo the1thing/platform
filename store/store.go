@@ -34,6 +34,7 @@ type Store interface {
 	Post() PostStore
 	User() UserStore
 	Audit() AuditStore
+	ClusterDiscovery() ClusterDiscoveryStore
 	Compliance() ComplianceStore
 	Session() SessionStore
 	OAuth() OAuthStore
@@ -42,16 +43,18 @@ type Store interface {
 	Command() CommandStore
 	Preference() PreferenceStore
 	License() LicenseStore
-	PasswordRecovery() PasswordRecoveryStore
+	Token() TokenStore
 	Emoji() EmojiStore
 	Status() StatusStore
 	FileInfo() FileInfoStore
 	Reaction() ReactionStore
+	JobStatus() JobStatusStore
 	MarkSystemRanUnitTests()
 	Close()
 	DropAllTables()
 	TotalMasterDbConnections() int
 	TotalReadDbConnections() int
+	TotalSearchDbConnections() int
 }
 
 type TeamStore interface {
@@ -96,12 +99,14 @@ type ChannelStore interface {
 	InvalidateChannelByName(teamId, name string)
 	GetFromMaster(id string) StoreChannel
 	Delete(channelId string, time int64) StoreChannel
+	Restore(channelId string, time int64) StoreChannel
 	SetDeleteAt(channelId string, deleteAt int64, updateAt int64) StoreChannel
 	PermanentDeleteByTeam(teamId string) StoreChannel
 	PermanentDelete(channelId string) StoreChannel
 	GetByName(team_id string, name string, allowFromCache bool) StoreChannel
 	GetByNameIncludeDeleted(team_id string, name string, allowFromCache bool) StoreChannel
 	GetDeletedByName(team_id string, name string) StoreChannel
+	GetDeleted(team_id string, offset int, limit int) StoreChannel
 	GetChannels(teamId string, userId string) StoreChannel
 	GetMoreChannels(teamId string, userId string, offset int, limit int) StoreChannel
 	GetPublicChannelsForTeam(teamId string, offset int, limit int) StoreChannel
@@ -162,6 +167,7 @@ type PostStore interface {
 	InvalidateLastPostTimeCache(channelId string)
 	GetPostsCreatedAt(channelId string, time int64) StoreChannel
 	Overwrite(post *model.Post) StoreChannel
+	GetPostsByIds(postIds []string) StoreChannel
 }
 
 type UserStore interface {
@@ -202,7 +208,8 @@ type UserStore interface {
 	AnalyticsActiveCount(time int64) StoreChannel
 	GetUnreadCount(userId string) StoreChannel
 	GetUnreadCountForChannel(userId string, channelId string) StoreChannel
-	GetRecentlyActiveUsersForTeam(teamId string) StoreChannel
+	GetRecentlyActiveUsersForTeam(teamId string, offset, limit int) StoreChannel
+	GetNewUsersForTeam(teamId string, offset, limit int) StoreChannel
 	Search(teamId string, term string, options map[string]bool) StoreChannel
 	SearchNotInTeam(notInTeamId string, term string, options map[string]bool) StoreChannel
 	SearchInChannel(channelId string, term string, options map[string]bool) StoreChannel
@@ -232,6 +239,15 @@ type AuditStore interface {
 	Save(audit *model.Audit) StoreChannel
 	Get(user_id string, offset int, limit int) StoreChannel
 	PermanentDeleteByUser(userId string) StoreChannel
+}
+
+type ClusterDiscoveryStore interface {
+	Save(discovery *model.ClusterDiscovery) StoreChannel
+	Delete(discovery *model.ClusterDiscovery) StoreChannel
+	Exists(discovery *model.ClusterDiscovery) StoreChannel
+	GetAll(discoveryType, clusterName string) StoreChannel
+	SetLastPingAt(discovery *model.ClusterDiscovery) StoreChannel
+	Cleanup() StoreChannel
 }
 
 type ComplianceStore interface {
@@ -322,18 +338,18 @@ type LicenseStore interface {
 	Get(id string) StoreChannel
 }
 
-type PasswordRecoveryStore interface {
-	SaveOrUpdate(recovery *model.PasswordRecovery) StoreChannel
-	Delete(userId string) StoreChannel
-	Get(userId string) StoreChannel
-	GetByCode(code string) StoreChannel
+type TokenStore interface {
+	Save(recovery *model.Token) StoreChannel
+	Delete(token string) StoreChannel
+	GetByToken(token string) StoreChannel
+	Cleanup()
 }
 
 type EmojiStore interface {
 	Save(emoji *model.Emoji) StoreChannel
 	Get(id string, allowFromCache bool) StoreChannel
 	GetByName(name string) StoreChannel
-	GetAll() StoreChannel
+	GetList(offset, limit int) StoreChannel
 	Delete(id string, time int64) StoreChannel
 }
 
@@ -366,4 +382,12 @@ type ReactionStore interface {
 	InvalidateCache()
 	GetForPost(postId string, allowFromCache bool) StoreChannel
 	DeleteAllWithEmojiName(emojiName string) StoreChannel
+}
+
+type JobStatusStore interface {
+	SaveOrUpdate(status *model.JobStatus) StoreChannel
+	Get(id string) StoreChannel
+	GetAllByType(jobType string) StoreChannel
+	GetAllByTypePage(jobType string, offset int, limit int) StoreChannel
+	Delete(id string) StoreChannel
 }

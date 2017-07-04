@@ -8,12 +8,14 @@
     }
     .post-right-comments-container {
         position: relative;
+
         padding-bottom: 30px;
         .post {
             &:first-child {
                 padding-top: 15px;
             }
         }
+ 
     }
     .help_format_text {
         bottom: -63px;
@@ -32,6 +34,7 @@
             .col__reply {
                 background: transparent !important;
                 border: none !important;
+                right: 5px;
                 text-align: right;
                 top: 0;
             }
@@ -87,6 +90,12 @@
             @include opacity(.7);
             margin-right: 10px;
             padding: 6px 0;
+        }
+
+        .emoji-picker {
+            position: absolute;
+            top: -361px;
+            right: 0px;
         }
     }
 }

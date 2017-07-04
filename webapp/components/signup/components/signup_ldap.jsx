@@ -5,10 +5,12 @@ import FormError from 'components/form_error.jsx';
 
 import * as GlobalActions from 'actions/global_actions.jsx';
 import {addUserToTeamFromInvite} from 'actions/team_actions.jsx';
-import {webLoginByLdap} from 'actions/user_actions.jsx';
+import {loadMe, webLoginByLdap} from 'actions/user_actions.jsx';
 import {trackEvent} from 'actions/diagnostics_actions.jsx';
 
 import * as Utils from 'utils/utils.jsx';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
@@ -19,7 +21,7 @@ import logoImage from 'images/logo.png';
 export default class SignupLdap extends React.Component {
     static get propTypes() {
         return {
-            location: React.PropTypes.object
+            location: PropTypes.object
         };
     }
 
@@ -97,7 +99,7 @@ export default class SignupLdap extends React.Component {
     }
 
     finishSignup() {
-        GlobalActions.emitInitialLoad(
+        loadMe().then(
             () => {
                 const query = this.props.location.query;
                 GlobalActions.loadDefaultLocale();

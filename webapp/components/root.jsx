@@ -3,9 +3,11 @@
 
 import * as GlobalActions from 'actions/global_actions.jsx';
 import LocalizationStore from 'stores/localization_store.jsx';
-import Client from 'client/web_client.jsx';
+import {Client4} from 'mattermost-redux/client';
 
 import {IntlProvider} from 'react-intl';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 import FastClick from 'fastclick';
@@ -20,8 +22,8 @@ export default class Root extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            locale: 'en',
-            translations: null
+            locale: LocalizationStore.getLocale(),
+            translations: LocalizationStore.getTranslations()
         };
 
         this.localizationChanged = this.localizationChanged.bind(this);
@@ -83,7 +85,7 @@ export default class Root extends React.Component {
     localizationChanged() {
         const locale = LocalizationStore.getLocale();
 
-        Client.setAcceptLanguage(locale);
+        Client4.setAcceptLanguage(locale);
         this.setState({locale, translations: LocalizationStore.getTranslations()});
     }
 
@@ -94,7 +96,7 @@ export default class Root extends React.Component {
             } else if (UserStore.getCurrentUser()) {
                 GlobalActions.redirectUserToDefaultTeam();
             } else {
-                browserHistory.push('/login');
+                browserHistory.push('/login' + window.location.search);
             }
         }
     }
@@ -113,7 +115,7 @@ export default class Root extends React.Component {
         LocalizationStore.addChangeListener(this.localizationChanged);
 
         // Get our localizaiton
-        GlobalActions.loadDefaultLocale();
+        GlobalActions.loadCurrentLocale();
     }
 
     componentWillUnmount() {
@@ -136,9 +138,10 @@ export default class Root extends React.Component {
         );
     }
 }
+
 Root.defaultProps = {
 };
 
 Root.propTypes = {
-    children: React.PropTypes.object
+    children: PropTypes.object
 };

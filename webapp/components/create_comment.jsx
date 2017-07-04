@@ -23,13 +23,15 @@ import * as PostActions from 'actions/post_actions.jsx';
 import Constants from 'utils/constants.jsx';
 
 import {FormattedMessage} from 'react-intl';
+import {RootCloseWrapper} from 'react-overlays';
 import {browserHistory} from 'react-router/es6';
 
 const ActionTypes = Constants.ActionTypes;
 const KeyCodes = Constants.KeyCodes;
 
-import {REACTION_PATTERN} from './create_post.jsx';
 
+import {REACTION_PATTERN, EMOJI_PATTERN} from './create_post.jsx';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class CreateComment extends React.Component {
@@ -56,6 +58,8 @@ export default class CreateComment extends React.Component {
         this.showPostDeletedModal = this.showPostDeletedModal.bind(this);
         this.hidePostDeletedModal = this.hidePostDeletedModal.bind(this);
         this.handlePostError = this.handlePostError.bind(this);
+        this.handleEmojiClick = this.handleEmojiClick.bind(this);
+
 
         PostStore.clearCommentDraftUploads();
         MessageHistoryStore.resetHistoryIndex('comment');
@@ -69,14 +73,46 @@ export default class CreateComment extends React.Component {
             submitting: false,
             ctrlSend: PreferenceStore.getBool(Constants.Preferences.CATEGORY_ADVANCED_SETTINGS, 'send_on_ctrl_enter'),
             showPostDeletedModal: false,
-            enableAddButton
+            enableAddButton,
+            showEmojiPicker: false,
+            emojiPickerEnabled: Utils.isFeatureEnabled(Constants.PRE_RELEASE_FEATURES.EMOJI_PICKER_PREVIEW)
+
         };
 
         this.lastBlurAt = 0;
     }
 
+
+    toggleEmojiPicker = () => {
+        this.setState({showEmojiPicker: !this.state.showEmojiPicker});
+    }
+
+    handleEmojiClick(emoji) {
+        const emojiAlias = emoji.name || emoji.aliases[0];
+
+        if (!emojiAlias) {
+            //Oops.. There went something wrong
+            return;
+        }
+
+        if (this.state.message === '') {
+            this.setState({message: ':' + emojiAlias + ': '});
+        } else {
+            //check whether there is already a blank at the end of the current message
+            const newMessage = (/\s+$/.test(this.state.message)) ?
+            this.state.message + ':' + emojiAlias + ': ' : this.state.message + ' :' + emojiAlias + ': ';
+
+            this.setState({message: newMessage});
+        }
+
+        this.setState({showEmojiPicker: false});
+
+        this.focusTextbox();
+    }
+
     componentDidMount() {
         PreferenceStore.addChangeListener(this.onPreferenceChange);
+
         this.focusTextbox();
     }
 
@@ -107,11 +143,7 @@ export default class CreateComment extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        if (this.state.uploadsInProgress.length > 0) {
-            return;
-        }
-
-        if (this.state.submitting) {
+        if (this.state.uploadsInProgress.length > 0 || this.state.submitting) {
             return;
         }
 
@@ -172,7 +204,11 @@ export default class CreateComment extends React.Component {
             (data) => {
                 this.setState({submitting: false});
                 if (data.goto_location && data.goto_location.length > 0) {
-                    browserHistory.push(data.goto_location);
+                    if (data.goto_location.startsWith('/') || data.goto_location.includes(window.location.hostname)) {
+                        browserHistory.push(data.goto_location);
+                    } else {
+                        window.open(data.goto_location);
+                    }
                 }
             },
             (err) => {
@@ -198,14 +234,23 @@ export default class CreateComment extends React.Component {
         post.channel_id = this.props.channelId;
         post.root_id = this.props.rootId;
         post.parent_id = this.props.rootId;
-        post.file_ids = this.state.fileInfos.map((info) => info.id);
         post.pending_post_id = `${userId}:${time}`;
         post.user_id = userId;
         post.create_at = time;
 
         GlobalActions.emitUserCommentedEvent(post);
 
-        PostActions.queuePost(post, false, null,
+
+        const emojiResult = post.message.match(EMOJI_PATTERN);
+        if (emojiResult) {
+            // parse message and emit emoji event
+            emojiResult.forEach((emoji) => {
+                PostActions.emitEmojiPosted(emoji);
+            });
+        }
+
+        PostActions.createPost(post, this.state.fileInfos, null,
+
             (err) => {
                 if (err.id === 'api.post.create_post.root_id.app_error') {
                     this.showPostDeletedModal();
@@ -502,6 +547,17 @@ export default class CreateComment extends React.Component {
             addButtonClass += ' disabled';
         }
 
+        let emojiPicker = null;
+        if (this.state.showEmojiPicker) {
+            emojiPicker = (
+                <RootCloseWrapper onRootClose={this.toggleEmojiPicker}>
+                    <EmojiPicker
+                        onEmojiClick={this.handleEmojiClick}
+                        onHide={this.toggleEmojiPicker}
+                    />
+                </RootCloseWrapper>
+            );
+        }
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className='post-create'>
@@ -532,6 +588,10 @@ export default class CreateComment extends React.Component {
                                 onUploadError={this.handleUploadError}
                                 postType='comment'
                                 channelId={this.props.channelId}
+                                onEmojiClick={this.toggleEmojiPicker}
+                                emojiEnabled={this.state.emojiPickerEnabled}
+                                navBarName='rhs'
+
                             />
                         </div>
                     </div>
@@ -562,7 +622,7 @@ export default class CreateComment extends React.Component {
 }
 
 CreateComment.propTypes = {
-    channelId: React.PropTypes.string.isRequired,
-    rootId: React.PropTypes.string.isRequired,
-    latestPostId: React.PropTypes.string
+    channelId: PropTypes.string.isRequired,
+    rootId: PropTypes.string.isRequired,
+    latestPostId: PropTypes.string
 };

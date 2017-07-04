@@ -11,6 +11,8 @@ import Constants from 'utils/constants.jsx';
 import {FormattedMessage} from 'react-intl';
 import {updateTeam} from 'actions/team_actions.jsx';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 class GeneralTab extends React.Component {
@@ -86,7 +88,7 @@ class GeneralTab extends React.Component {
 
         var state = {serverError: '', clientError: ''};
 
-        var data = this.props.team;
+        var data = {...this.props.team};
         data.allow_open_invite = this.state.allow_open_invite;
         updateTeam(data,
             () => {
@@ -119,7 +121,7 @@ class GeneralTab extends React.Component {
             return;
         }
 
-        var data = this.props.team;
+        var data = {...this.props.team};
         data.display_name = this.state.name;
         updateTeam(data,
             () => {
@@ -152,7 +154,7 @@ class GeneralTab extends React.Component {
             return;
         }
 
-        var data = this.props.team;
+        var data = {...this.props.team};
         data.invite_id = this.state.invite_id;
         updateTeam(data,
             () => {
@@ -189,7 +191,7 @@ class GeneralTab extends React.Component {
             return;
         }
 
-        var data = this.props.team;
+        var data = {...this.props.team};
         data.description = this.state.description;
         updateTeam(data,
             () => {
@@ -592,9 +594,9 @@ class GeneralTab extends React.Component {
 }
 
 GeneralTab.propTypes = {
-    updateSection: React.PropTypes.func.isRequired,
-    team: React.PropTypes.object.isRequired,
-    activeSection: React.PropTypes.string.isRequired
+    updateSection: PropTypes.func.isRequired,
+    team: PropTypes.object.isRequired,
+    activeSection: PropTypes.string.isRequired
 };
 
 export default GeneralTab;

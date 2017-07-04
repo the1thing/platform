@@ -13,13 +13,15 @@ import {adminResetMfa} from 'actions/admin_actions.jsx';
 
 import {FormattedMessage} from 'react-intl';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 export default class SystemUsersDropdown extends React.Component {
     static propTypes = {
-        user: React.PropTypes.object.isRequired,
-        doPasswordReset: React.PropTypes.func.isRequired,
-        doManageTeams: React.PropTypes.func.isRequired
+        user: PropTypes.object.isRequired,
+        doPasswordReset: PropTypes.func.isRequired,
+        doManageTeams: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -27,7 +29,9 @@ export default class SystemUsersDropdown extends React.Component {
 
         this.handleMakeMember = this.handleMakeMember.bind(this);
         this.handleMakeActive = this.handleMakeActive.bind(this);
-        this.handleMakeNotActive = this.handleMakeNotActive.bind(this);
+        this.handleShowDeactivateMemberModal = this.handleShowDeactivateMemberModal.bind(this);
+        this.handleDeactivateMember = this.handleDeactivateMember.bind(this);
+        this.handleDeactivateCancel = this.handleDeactivateCancel.bind(this);
         this.handleMakeSystemAdmin = this.handleMakeSystemAdmin.bind(this);
         this.handleManageTeams = this.handleManageTeams.bind(this);
         this.handleResetPassword = this.handleResetPassword.bind(this);
@@ -35,10 +39,12 @@ export default class SystemUsersDropdown extends React.Component {
         this.handleDemoteSystemAdmin = this.handleDemoteSystemAdmin.bind(this);
         this.handleDemoteSubmit = this.handleDemoteSubmit.bind(this);
         this.handleDemoteCancel = this.handleDemoteCancel.bind(this);
+        this.renderDeactivateMemberModal = this.renderDeactivateMemberModal.bind(this);
 
         this.state = {
             serverError: null,
             showDemoteModal: false,
+            showDeactivateMemberModal: false,
             user: null,
             role: null
         };
@@ -68,15 +74,6 @@ export default class SystemUsersDropdown extends React.Component {
     handleMakeActive(e) {
         e.preventDefault();
         updateActive(this.props.user.id, true, null,
-            (err) => {
-                this.setState({serverError: err.message});
-            }
-        );
-    }
-
-    handleMakeNotActive(e) {
-        e.preventDefault();
-        updateActive(this.props.user.id, false, null,
             (err) => {
                 this.setState({serverError: err.message});
             }
@@ -150,6 +147,68 @@ export default class SystemUsersDropdown extends React.Component {
         }
     }
 
+    handleShowDeactivateMemberModal(e) {
+        e.preventDefault();
+
+        this.setState({showDeactivateMemberModal: true});
+    }
+
+    handleDeactivateMember() {
+        updateActive(this.props.user.id, false, null,
+            (err) => {
+                this.setState({serverError: err.message});
+            }
+        );
+
+        this.setState({showDeactivateMemberModal: false});
+    }
+
+    handleDeactivateCancel() {
+        this.setState({showDeactivateMemberModal: false});
+    }
+
+    renderDeactivateMemberModal() {
+        const title = (
+            <FormattedMessage
+                id='deactivate_member_modal.title'
+                defaultMessage='Deactivate {username}'
+                values={{
+                    username: this.props.user.username
+                }}
+            />
+        );
+
+        const message = (
+            <FormattedMessage
+                id='deactivate_member_modal.desc'
+                defaultMessage='This action deactivates {username}. They will be logged out and not have access to any teams or channels on this system. Are you sure you want to deactivate {username}?'
+                values={{
+                    username: this.props.user.username
+                }}
+            />
+        );
+
+        const confirmButtonClass = 'btn btn-danger';
+        const deactivateMemberButton = (
+            <FormattedMessage
+                id='deactivate_member_modal.deactivate'
+                defaultMessage='Deactivate'
+            />
+        );
+
+        return (
+            <ConfirmModal
+                show={this.state.showDeactivateMemberModal}
+                title={title}
+                message={message}
+                confirmButtonClass={confirmButtonClass}
+                confirmButtonText={deactivateMemberButton}
+                onConfirm={this.handleDeactivateMember}
+                onCancel={this.handleDeactivateCancel}
+            />
+        );
+    }
+
     render() {
         let serverError = null;
         if (this.state.serverError) {
@@ -213,6 +272,7 @@ export default class SystemUsersDropdown extends React.Component {
             makeSystemAdmin = (
                 <li role='presentation'>
                     <a
+                        id='makeSystemAdmin'
                         role='menuitem'
                         href='#'
                         onClick={this.handleMakeSystemAdmin}
@@ -231,6 +291,7 @@ export default class SystemUsersDropdown extends React.Component {
             makeMember = (
                 <li role='presentation'>
                     <a
+                        id='makeMember'
                         role='menuitem'
                         href='#'
                         onClick={this.handleMakeMember}
@@ -257,13 +318,14 @@ export default class SystemUsersDropdown extends React.Component {
                     className={menuClass}
                 >
                     <a
+                        id='activate'
                         role='menuitem'
                         href='#'
                         onClick={this.handleMakeActive}
                     >
                         <FormattedMessage
                             id='admin.user_item.makeActive'
-                            defaultMessage='Make Active'
+                            defaultMessage='Activate'
                         />
                     </a>
                 </li>
@@ -278,13 +340,14 @@ export default class SystemUsersDropdown extends React.Component {
                     className={menuClass}
                 >
                     <a
+                        id='deactivate'
                         role='menuitem'
                         href='#'
-                        onClick={this.handleMakeNotActive}
+                        onClick={this.handleShowDeactivateMemberModal}
                     >
                         <FormattedMessage
                             id='admin.user_item.makeInactive'
-                            defaultMessage='Make Inactive'
+                            defaultMessage='Deactivate'
                         />
                     </a>
                 </li>
@@ -296,6 +359,7 @@ export default class SystemUsersDropdown extends React.Component {
             manageTeams = (
                 <li role='presentation'>
                     <a
+                        id='manageTeams'
                         role='menuitem'
                         href='#'
                         onClick={this.handleManageTeams}
@@ -314,6 +378,7 @@ export default class SystemUsersDropdown extends React.Component {
             mfaReset = (
                 <li role='presentation'>
                     <a
+                        id='removeMFA'
                         role='menuitem'
                         href='#'
                         onClick={this.handleResetMfa}
@@ -332,6 +397,7 @@ export default class SystemUsersDropdown extends React.Component {
             passwordReset = (
                 <li role='presentation'>
                     <a
+                        id='switchEmailPassword'
                         role='menuitem'
                         href='#'
                         onClick={this.handleResetPassword}
@@ -347,6 +413,7 @@ export default class SystemUsersDropdown extends React.Component {
             passwordReset = (
                 <li role='presentation'>
                     <a
+                        id='resetPassword'
                         role='menuitem'
                         href='#'
                         onClick={this.handleResetPassword}
@@ -400,12 +467,14 @@ export default class SystemUsersDropdown extends React.Component {
                     show={this.state.showDemoteModal}
                     title={title}
                     message={message}
-                    confirmButton={confirmButton}
+                    confirmButtonText={confirmButton}
                     onConfirm={this.handleDemoteSubmit}
                     onCancel={this.handleDemoteCancel}
                 />
             );
         }
+
+        const deactivateMemberModal = this.renderDeactivateMemberModal();
 
         let displayedName = Utils.getDisplayName(user);
         if (displayedName !== user.username) {
@@ -415,6 +484,7 @@ export default class SystemUsersDropdown extends React.Component {
         return (
             <div className='dropdown member-drop'>
                 <a
+                    id='memberDropdown'
                     href='#'
                     className='dropdown-toggle theme'
                     type='button'
@@ -437,6 +507,7 @@ export default class SystemUsersDropdown extends React.Component {
                     {passwordReset}
                 </ul>
                 {makeDemoteModal}
+                {deactivateMemberModal}
                 {serverError}
             </div>
         );

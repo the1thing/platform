@@ -6,6 +6,8 @@ import PreferenceStore from 'stores/preference_store.jsx';
 import Constants from 'utils/constants.jsx';
 import * as Utils from 'utils/utils.jsx';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
@@ -110,6 +112,21 @@ export default class EditChannelPurposeModal extends React.Component {
             );
         }
 
+        let channelPurposeModal = (
+            <FormattedMessage
+                id='edit_channel_purpose_modal.body'
+                defaultMessage='Describe how this channel should be used. This text appears in the channel list in the "More..." menu and helps others decide whether to join.'
+            />
+        );
+        if (this.props.channel.type === 'P') {
+            channelPurposeModal = (
+                <FormattedMessage
+                    id='edit_channel_private_purpose_modal.body'
+                    defaultMessage='This text appears in the \"View Info\" modal of the private channel.'
+                />
+            );
+        }
+
         return (
             <Modal
                 className='modal-edit-channel-purpose'
@@ -124,7 +141,9 @@ export default class EditChannelPurposeModal extends React.Component {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
+                    <p>
+                        {channelPurposeModal}
+                    </p>
                     <textarea
                         ref='purpose'
                         className='form-control no-resize'
@@ -164,6 +183,6 @@ export default class EditChannelPurposeModal extends React.Component {
 }
 
 EditChannelPurposeModal.propTypes = {
-    channel: React.PropTypes.object,
-    onModalDismissed: React.PropTypes.func.isRequired
+    channel: PropTypes.object,
+    onModalDismissed: PropTypes.func.isRequired
 };

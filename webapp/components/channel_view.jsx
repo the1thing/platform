@@ -2,14 +2,22 @@
 // See License.txt for license information.
 
 import $ from 'jquery';
+import PropTypes from 'prop-types';
 import React from 'react';
 
+import Constants from 'utils/constants.jsx';
+import * as UserAgent from 'utils/user_agent.jsx';
 import ChannelHeader from 'components/channel_header.jsx';
 import FileUploadOverlay from 'components/file_upload_overlay.jsx';
 import CreatePost from 'components/create_post.jsx';
-import PostViewCache from 'components/post_view/post_view_cache.jsx';
+import PostView from 'components/post_view';
+import TutorialView from 'components/tutorial/tutorial_view.jsx';
+const TutorialSteps = Constants.TutorialSteps;
+const Preferences = Constants.Preferences;
 
 import ChannelStore from 'stores/channel_store.jsx';
+import PreferenceStore from 'stores/preference_store.jsx';
+import UserStore from 'stores/user_store.jsx';
 
 import * as Utils from 'utils/utils.jsx';
 
@@ -23,11 +31,10 @@ export default class ChannelView extends React.Component {
 
         this.state = this.getStateFromStores(props);
     }
-    getStateFromStores(props) {
-        const channel = ChannelStore.getByName(props.params.channel);
-        const channelId = channel ? channel.id : '';
+    getStateFromStores() {
         return {
-            channelId
+            channelId: ChannelStore.getCurrentId(),
+            tutorialStep: PreferenceStore.getInt(Preferences.TUTORIAL_STEP, UserStore.getCurrentId(), 999)
         };
     }
     isStateValid() {
@@ -40,6 +47,11 @@ export default class ChannelView extends React.Component {
         ChannelStore.addChangeListener(this.updateState);
 
         $('body').addClass('app__body');
+
+        // IE Detection
+        if (UserAgent.isInternetExplorer() || UserAgent.isEdge()) {
+            $('body').addClass('browser--ie');
+        }
     }
     componentWillUnmount() {
         ChannelStore.removeChangeListener(this.updateState);
@@ -61,6 +73,10 @@ export default class ChannelView extends React.Component {
         return false;
     }
     render() {
+        if (this.state.tutorialStep <= TutorialSteps.INTRO_SCREENS) {
+            return (<TutorialView/>);
+        }
+
         return (
             <div
                 id='app-content'
@@ -70,7 +86,9 @@ export default class ChannelView extends React.Component {
                 <ChannelHeader
                     channelId={this.state.channelId}
                 />
-                <PostViewCache/>
+                <PostView
+                    channelId={this.state.channelId}
+                />
                 <div
                     className='post-create__container'
                     id='post-create'
@@ -85,5 +103,5 @@ ChannelView.defaultProps = {
 };
 
 ChannelView.propTypes = {
-    params: React.PropTypes.object.isRequired
+    params: PropTypes.object.isRequired
 };

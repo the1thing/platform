@@ -1,7 +1,7 @@
 // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import keyMirror from 'key-mirror/keyMirror.js';
+import keyMirror from 'key-mirror';
 
 import audioIcon from 'images/icons/audio.png';
 import videoIcon from 'images/icons/video.png';
@@ -37,8 +37,6 @@ export const Preferences = {
     CATEGORY_DIRECT_CHANNEL_SHOW: 'direct_channel_show',
     CATEGORY_GROUP_CHANNEL_SHOW: 'group_channel_show',
     CATEGORY_DISPLAY_SETTINGS: 'display_settings',
-    DISPLAY_PREFER_NICKNAME: 'nickname_full_name',
-    DISPLAY_PREFER_FULL_NAME: 'full_name',
     CATEGORY_ADVANCED_SETTINGS: 'advanced_settings',
     TUTORIAL_STEP: 'tutorial_step',
     CHANNEL_DISPLAY_MODE: 'channel_display_mode',
@@ -87,11 +85,14 @@ export const ActionTypes = keyMirror({
     RECEIVED_EDIT_POST: null,
     RECEIVED_SEARCH: null,
     RECEIVED_SEARCH_TERM: null,
+    SELECT_POST: null,
     RECEIVED_POST_SELECTED: null,
     RECEIVED_MENTION_DATA: null,
     RECEIVED_ADD_MENTION: null,
     RECEIVED_POST_PINNED: null,
     RECEIVED_POST_UNPINNED: null,
+    INCREASE_POST_VISIBILITY: null,
+    LOADING_POSTS: null,
 
     RECEIVED_PROFILES: null,
     RECEIVED_PROFILES_IN_TEAM: null,
@@ -163,6 +164,7 @@ export const ActionTypes = keyMirror({
 
     USER_TYPING: null,
 
+    TOGGLE_ACCOUNT_SETTINGS_MODAL: null,
     TOGGLE_IMPORT_THEME_MODAL: null,
     TOGGLE_INVITE_MEMBER_MODAL: null,
     TOGGLE_LEAVE_TEAM_MODAL: null,
@@ -171,6 +173,8 @@ export const ActionTypes = keyMirror({
     TOGGLE_GET_TEAM_INVITE_LINK_MODAL: null,
     TOGGLE_GET_PUBLIC_LINK_MODAL: null,
     TOGGLE_DM_MODAL: null,
+    TOGGLE_QUICK_SWITCH_MODAL: null,
+    TOGGLE_CHANNEL_HEADER_UPDATE_MODAL: null,
 
     SUGGESTION_PRETEXT_CHANGED: null,
     SUGGESTION_RECEIVED_SUGGESTIONS: null,
@@ -218,6 +222,7 @@ export const SocketEvents = {
     POST_DELETED: 'post_deleted',
     CHANNEL_CREATED: 'channel_created',
     CHANNEL_DELETED: 'channel_deleted',
+    CHANNEL_UPDATED: 'channel_updated',
     CHANNEL_VIEWED: 'channel_viewed',
     DIRECT_ADDED: 'direct_added',
     NEW_USER: 'new_user',
@@ -229,12 +234,15 @@ export const SocketEvents = {
     USER_UPDATED: 'user_updated',
     TYPING: 'typing',
     PREFERENCE_CHANGED: 'preference_changed',
+    PREFERENCES_CHANGED: 'preferences_changed',
+    PREFERENCES_DELETED: 'preferences_deleted',
     EPHEMERAL_MESSAGE: 'ephemeral_message',
     STATUS_CHANGED: 'status_change',
     HELLO: 'hello',
     WEBRTC: 'webrtc',
     REACTION_ADDED: 'reaction_added',
-    REACTION_REMOVED: 'reaction_removed'
+    REACTION_REMOVED: 'reaction_removed',
+    EMOJI_ADDED: 'emoji_added'
 };
 
 export const TutorialSteps = {
@@ -285,6 +293,15 @@ export const ErrorPageTypes = {
     LOCAL_STORAGE: 'local_storage'
 };
 
+export const ErrorBarTypes = {
+    LICENSE_EXPIRING: 'error_bar.license_expiring',
+    LICENSE_EXPIRED: 'error_bar.license_expired',
+    LICENSE_PAST_GRACE: 'error_bar.past_grace',
+    PREVIEW_MODE: 'error_bar.preview_mode',
+    SITE_URL: 'error_bar.site_url',
+    WEBSOCKET_PORT_ERROR: 'channel_loader.socketError'
+};
+
 export const Constants = {
     Preferences,
     SocketEvents,
@@ -295,6 +312,9 @@ export const Constants = {
     TutorialSteps,
     PostTypes,
     ErrorPageTypes,
+    ErrorBarTypes,
+
+    MAX_POST_VISIBILITY: 1000000,
 
     IGNORE_POST_TYPES: [PostTypes.JOIN_LEAVE, PostTypes.JOIN_CHANNEL, PostTypes.LEAVE_CHANNEL, PostTypes.REMOVE_FROM_CHANNEL, PostTypes.ADD_TO_CHANNEL, PostTypes.ADD_REMOVE],
 
@@ -325,6 +345,7 @@ export const Constants = {
     },
 
     SPECIAL_MENTIONS: ['all', 'channel', 'here'],
+    NOTIFY_ALL_MEMBERS: 5,
     CHARACTER_LIMIT: 4000,
     IMAGE_TYPES: ['jpg', 'gif', 'bmp', 'png', 'jpeg'],
     AUDIO_TYPES: ['mp3', 'wav', 'wma', 'm4a', 'flac', 'aac', 'ogg'],
@@ -362,6 +383,8 @@ export const Constants = {
     MAX_UPLOAD_FILES: 5,
     THUMBNAIL_WIDTH: 128,
     THUMBNAIL_HEIGHT: 100,
+    PROFILE_WIDTH: 128,
+    PROFILE_HEIGHT: 128,
     WEB_VIDEO_WIDTH: 640,
     WEB_VIDEO_HEIGHT: 480,
     MOBILE_VIDEO_WIDTH: 480,
@@ -432,33 +455,35 @@ export const Constants = {
     ONLINE_ICON_SVG: "<img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/online_icon.svg' alt=''>",
     AWAY_ICON_SVG: "<img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/away_icon.svg' alt=''>",
     OFFLINE_ICON_SVG: "<img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/offile_icon.svg' alt=''>",
+
     MENU_ICON: "<svg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'width='4px' height='16px' viewBox='0 0 8 32' enable-background='new 0 0 8 32' xml:space='preserve'> <g> <circle cx='4' cy='4.062' r='4'/> <circle cx='4' cy='16' r='4'/> <circle cx='4' cy='28' r='4'/> </g> </svg>",
     COMMENT_ICON: "<svg version='1.1' id='Layer_2' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'width='15px' height='15px' viewBox='1 1.5 15 15' enable-background='new 1 1.5 15 15' xml:space='preserve'> <g> <g> <path fill='#211B1B' d='M14,1.5H3c-1.104,0-2,0.896-2,2v8c0,1.104,0.896,2,2,2h1.628l1.884,3l1.866-3H14c1.104,0,2-0.896,2-2v-8 C16,2.396,15.104,1.5,14,1.5z M15,11.5c0,0.553-0.447,1-1,1H8l-1.493,2l-1.504-1.991L5,12.5H3c-0.552,0-1-0.447-1-1v-8 c0-0.552,0.448-1,1-1h11c0.553,0,1,0.448,1,1V11.5z'/> </g> </g> </svg>",
     REPLY_ICON: "<svg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'viewBox='-158 242 18 18' style='enable-background:new -158 242 18 18;' xml:space='preserve'> <path d='M-142.2,252.6c-2-3-4.8-4.7-8.3-4.8v-3.3c0-0.2-0.1-0.3-0.2-0.3s-0.3,0-0.4,0.1l-6.9,6.2c-0.1,0.1-0.1,0.2-0.1,0.3 c0,0.1,0,0.2,0.1,0.3l6.9,6.4c0.1,0.1,0.3,0.1,0.4,0.1c0.1-0.1,0.2-0.2,0.2-0.4v-3.8c4.2,0,7.4,0.4,9.6,4.4c0.1,0.1,0.2,0.2,0.3,0.2'/> </svg>",
     SCROLL_BOTTOM_ICON: "<svg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px'viewBox='-239 239 21 23' style='enable-background:new -239 239 21 23;' xml:space='preserve'> <path d='M-239,241.4l2.4-2.4l8.1,8.2l8.1-8.2l2.4,2.4l-10.5,10.6L-239,241.4z M-228.5,257.2l8.1-8.2l2.4,2.4l-10.5,10.6l-10.5-10.6 l2.4-2.4L-228.5,257.2z'/> </svg>",
     VIDEO_ICON: "<svg width='55%'height='100%'viewBox='0 0 13 8'> <g transform='matrix(1,0,0,1,-507,-146)'> <g transform='matrix(0.0133892,0,0,0.014499,500.635,142.838)'> <path d='M1158,547.286L1158,644.276C1158,684.245 1125.55,716.694 1085.58,716.694L579.341,716.694C539.372,716.694 506.922,684.245 506.922,644.276L506.922,306.322C506.922,266.353 539.371,233.904 579.341,233.903L1085.58,233.903C1125.55,233.904 1158,266.353 1158,306.322L1158,402.939L1359.75,253.14C1365.83,248.362 1373.43,245.973 1382.56,245.973C1386.61,245.973 1390.83,246.602 1395.22,247.859C1408.4,252.134 1414.99,259.552 1414.99,270.113L1414.99,680.485C1414.99,691.046 1408.4,698.464 1395.22,702.739C1390.83,703.996 1386.61,704.624 1382.56,704.624C1373.43,704.624 1365.83,702.236 1359.75,697.458L1158,547.286Z'/> </g> </g> </svg>",
-    PIN_ICON: "<svg width='16px' height='16px'  viewBox='0 0 25 25' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='1.414'><path d='M24.78 9.236L15.863.316l-1.487 4.46-4.46 4.46L8.43 7.75 3.972 9.235l4.458 4.458L.776 24.388l10.627-7.72 4.46 4.46 1.485-4.46-1.486-1.485 4.46-4.46 4.46-1.487z' fill-rule='nonzero'/></svg>",
+    PIN_ICON: "<svg width='19px' height='19px'  viewBox='0 0 25 25' xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' clip-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='1.414'><path d='M24.78 9.236L15.863.316l-1.487 4.46-4.46 4.46L8.43 7.75 3.972 9.235l4.458 4.458L.776 24.388l10.627-7.72 4.46 4.46 1.485-4.46-1.486-1.485 4.46-4.46 4.46-1.487z' fill-rule='nonzero'/></svg>",
+    LEAVE_TEAM_SVG: "<svg width='100%' height='100%' viewBox='0 0 164 164' version='1.1' xmlns='http://www.w3.org/2000/svg'    xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve' style='fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round; stroke-miterlimit:1.41421;'> <path d='M26.023,164L26.023,7.035L26.022,0.32L137.658,0.32L137.658,164L124.228,164L124.228, 13.749L39.452,13.749L39.452,164L26.023, 164ZM118.876,164L118.876,18.619L58.137,32.918L58.137,149.701L118.876,164Z'/></svg>",
     THEMES: {
         default: {
             type: 'Organization',
             sidebarBg: '#2071a7',
-            sidebarText: '#fff',
-            sidebarUnreadText: '#fff',
+            sidebarText: '#ffffff',
+            sidebarUnreadText: '#ffffff',
             sidebarTextHoverBg: '#136197',
-            sidebarTextActiveBorder: '#7AB0D6',
-            sidebarTextActiveColor: '#FFFFFF',
+            sidebarTextActiveBorder: '#7ab0d6',
+            sidebarTextActiveColor: '#ffffff',
             sidebarHeaderBg: '#2f81b7',
-            sidebarHeaderTextColor: '#FFFFFF',
-            onlineIndicator: '#7DBE00',
-            awayIndicator: '#DCBD4E',
-            mentionBj: '#FBFBFB',
-            mentionColor: '#2071A7',
+            sidebarHeaderTextColor: '#ffffff',
+            onlineIndicator: '#7dbe00',
+            awayIndicator: '#dcbd4e',
+            mentionBj: '#fbfbfb',
+            mentionColor: '#2071f7',
             centerChannelBg: '#f2f4f8',
             centerChannelColor: '#333333',
-            newMessageSeparator: '#FF8800',
+            newMessageSeparator: '#ff8800',
             linkColor: '#2f81b7',
             buttonBg: '#1dacfc',
-            buttonColor: '#FFFFFF',
+            buttonColor: '#ffffff',
             errorTextColor: '#a94442',
             mentionHighlightBg: '#f3e197',
             mentionHighlightLink: '#2f81b7',
@@ -471,20 +496,20 @@ export const Constants = {
             sidebarText: '#333333',
             sidebarUnreadText: '#333333',
             sidebarTextHoverBg: '#e6f2fa',
-            sidebarTextActiveBorder: '#378FD2',
+            sidebarTextActiveBorder: '#378fd2',
             sidebarTextActiveColor: '#111111',
-            sidebarHeaderBg: '#3481B9',
+            sidebarHeaderBg: '#3481b9',
             sidebarHeaderTextColor: '#ffffff',
-            onlineIndicator: '#7DBE00',
-            awayIndicator: '#DCBD4E',
+            onlineIndicator: '#7dbe00',
+            awayIndicator: '#dcbd4e',
             mentionBj: '#2389d7',
             mentionColor: '#ffffff',
             centerChannelBg: '#ffffff',
             centerChannelColor: '#333333',
-            newMessageSeparator: '#FF8800',
+            newMessageSeparator: '#ff8800',
             linkColor: '#2389d7',
-            buttonBg: '#23A2FF',
-            buttonColor: '#FFFFFF',
+            buttonBg: '#23a2ff',
+            buttonColor: '#ffffff',
             errorTextColor: '#a94442',
             mentionHighlightBg: '#f3e197',
             mentionHighlightLink: '#2f81b7',
@@ -493,53 +518,53 @@ export const Constants = {
         },
         mattermostDark: {
             type: 'Mattermost Dark',
-            sidebarBg: '#1B2C3E',
-            sidebarText: '#fff',
-            sidebarUnreadText: '#fff',
-            sidebarTextHoverBg: '#4A5664',
-            sidebarTextActiveBorder: '#66B9A7',
-            sidebarTextActiveColor: '#FFFFFF',
-            sidebarHeaderBg: '#1B2C3E',
-            sidebarHeaderTextColor: '#FFFFFF',
+            sidebarBg: '#1b2c3e',
+            sidebarText: '#ffffff',
+            sidebarUnreadText: '#ffffff',
+            sidebarTextHoverBg: '#4a5664',
+            sidebarTextActiveBorder: '#66b9a7',
+            sidebarTextActiveColor: '#ffffff',
+            sidebarHeaderBg: '#1b2c3e',
+            sidebarHeaderTextColor: '#ffffff',
             onlineIndicator: '#65dcc8',
             awayIndicator: '#c1b966',
-            mentionBj: '#B74A4A',
-            mentionColor: '#FFFFFF',
-            centerChannelBg: '#2F3E4E',
-            centerChannelColor: '#DDDDDD',
+            mentionBj: '#b74a4a',
+            mentionColor: '#ffffff',
+            centerChannelBg: '#2f3e4e',
+            centerChannelColor: '#dddddd',
             newMessageSeparator: '#5de5da',
-            linkColor: '#A4FFEB',
-            buttonBg: '#4CBBA4',
-            buttonColor: '#FFFFFF',
+            linkColor: '#a4ffeb',
+            buttonBg: '#4cbba4',
+            buttonColor: '#ffffff',
             errorTextColor: '#ff6461',
             mentionHighlightBg: '#984063',
-            mentionHighlightLink: '#A4FFEB',
+            mentionHighlightLink: '#a4ffeb',
             codeTheme: 'solarized-dark',
             image: mattermostDarkThemeImage
         },
         windows10: {
             type: 'Windows Dark',
             sidebarBg: '#171717',
-            sidebarText: '#fff',
-            sidebarUnreadText: '#fff',
+            sidebarText: '#ffffff',
+            sidebarUnreadText: '#ffffff',
             sidebarTextHoverBg: '#302e30',
-            sidebarTextActiveBorder: '#196CAF',
-            sidebarTextActiveColor: '#FFFFFF',
+            sidebarTextActiveBorder: '#196caf',
+            sidebarTextActiveColor: '#ffffff',
             sidebarHeaderBg: '#1f1f1f',
-            sidebarHeaderTextColor: '#FFFFFF',
+            sidebarHeaderTextColor: '#ffffff',
             onlineIndicator: '#399fff',
             awayIndicator: '#c1b966',
             mentionBj: '#0177e7',
-            mentionColor: '#FFFFFF',
-            centerChannelBg: '#1F1F1F',
-            centerChannelColor: '#DDDDDD',
-            newMessageSeparator: '#CC992D',
-            linkColor: '#0D93FF',
+            mentionColor: '#ffffff',
+            centerChannelBg: '#1f1f1f',
+            centerChannelColor: '#dddddd',
+            newMessageSeparator: '#cc992d',
+            linkColor: '#0d93ff',
             buttonBg: '#0177e7',
-            buttonColor: '#FFFFFF',
+            buttonColor: '#ffffff',
             errorTextColor: '#ff6461',
             mentionHighlightBg: '#784098',
-            mentionHighlightLink: '#A4FFEB',
+            mentionHighlightLink: '#a4ffeb',
             codeTheme: 'monokai',
             image: windows10ThemeImage
         }
@@ -683,20 +708,6 @@ export const Constants = {
         }
     ],
     DEFAULT_CODE_THEME: 'github',
-    FONTS: {
-        'Droid Serif': 'font--droid_serif',
-        'Roboto Slab': 'font--roboto_slab',
-        Lora: 'font--lora',
-        Arvo: 'font--arvo',
-        'Open Sans': 'font--open_sans',
-        Roboto: 'font--roboto',
-        'PT Sans': 'font--pt_sans',
-        Lato: 'font--lato',
-        'Source Sans Pro': 'font--source_sans_pro',
-        'Exo 2': 'font--exo_2',
-        Ubuntu: 'font--ubuntu'
-    },
-    DEFAULT_FONT: 'Open Sans',
     KeyCodes: {
         BACKSPACE: 8,
         TAB: 9,
@@ -907,7 +918,6 @@ export const Constants = {
     MAX_POSITION_LENGTH: 35,
     MIN_TRIGGER_LENGTH: 1,
     MAX_TRIGGER_LENGTH: 128,
-    MAX_TEXTSETTING_LENGTH: 1024,
     MAX_SITENAME_LENGTH: 30,
     TIME_SINCE_UPDATE_INTERVAL: 30000,
     MIN_HASHTAG_LINK_LENGTH: 3,
@@ -941,7 +951,16 @@ export const Constants = {
     AUTOCOMPLETE_TIMEOUT: 100,
     ANIMATION_TIMEOUT: 1000,
     SEARCH_TIMEOUT_MILLISECONDS: 100,
-    DIAGNOSTICS_SEGMENT_KEY: 'fwb7VPbFeQ7SKp3wHm1RzFUuXZudqVok'
+    DIAGNOSTICS_SEGMENT_KEY: 'fwb7VPbFeQ7SKp3wHm1RzFUuXZudqVok',
+    TEST_ID_COUNT: 0,
+    CENTER: 'center',
+    RHS: 'rhs',
+    RHS_ROOT: 'rhsroot',
+    TEAMMATE_NAME_DISPLAY: {
+        SHOW_USERNAME: 'username',
+        SHOW_NICKNAME_FULLNAME: 'nickname_full_name',
+        SHOW_FULLNAME: 'full_name'
+    }
 };
 
 export default Constants;

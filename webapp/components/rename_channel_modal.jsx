@@ -2,6 +2,7 @@
 // See License.txt for license information.
 
 import ReactDOM from 'react-dom';
+import {browserHistory} from 'react-router/es6';
 import * as Utils from 'utils/utils.jsx';
 import Constants from 'utils/constants.jsx';
 import {cleanUpUrlable, getShortenedURL} from 'utils/url.jsx';
@@ -43,6 +44,8 @@ const holders = defineMessages({
         defaultMessage: 'lowercase alphanumeric characters'
     }
 });
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 
@@ -164,8 +167,10 @@ export class RenameChannelModal extends React.Component {
         }
 
         updateChannel(channel,
-            () => {
+            (data) => {
                 this.handleHide();
+                const team = TeamStore.get(data.team_id);
+                browserHistory.push('/' + team.name + '/channels/' + data.name);
             },
             (err) => {
                 this.setState({
@@ -319,9 +324,9 @@ export class RenameChannelModal extends React.Component {
 
 RenameChannelModal.propTypes = {
     intl: intlShape.isRequired,
-    show: React.PropTypes.bool.isRequired,
-    onHide: React.PropTypes.func.isRequired,
-    channel: React.PropTypes.object.isRequired
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
+    channel: PropTypes.object.isRequired
 };
 
 export default injectIntl(RenameChannelModal);

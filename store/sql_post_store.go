@@ -17,7 +17,7 @@ import (
 )
 
 type SqlPostStore struct {
-	*SqlStore
+	SqlStore
 }
 
 const (
@@ -36,7 +36,7 @@ func ClearPostCaches() {
 	lastPostsCache.Purge()
 }
 
-func NewSqlPostStore(sqlStore *SqlStore) PostStore {
+func NewSqlPostStore(sqlStore SqlStore) PostStore {
 	s := &SqlPostStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
@@ -46,6 +46,7 @@ func NewSqlPostStore(sqlStore *SqlStore) PostStore {
 		table.ColMap("ChannelId").SetMaxSize(26)
 		table.ColMap("RootId").SetMaxSize(26)
 		table.ColMap("ParentId").SetMaxSize(26)
+		table.ColMap("OriginalId").SetMaxSize(26)
 		table.ColMap("Message").SetMaxSize(4000)
 		table.ColMap("Type").SetMaxSize(26)
 		table.ColMap("Hashtags").SetMaxSize(1000)
@@ -317,7 +318,7 @@ func (s SqlPostStore) Get(id string) StoreChannel {
 		var post model.Post
 		err := s.GetReplica().SelectOne(&post, "SELECT * FROM Posts WHERE Id = :Id AND DeleteAt = 0", map[string]interface{}{"Id": id})
 		if err != nil {
-			result.Err = model.NewLocAppError("SqlPostStore.GetPost", "store.sql_post.get.app_error", nil, "id="+id+err.Error())
+			result.Err = model.NewAppError("SqlPostStore.GetPost", "store.sql_post.get.app_error", nil, "id="+id+err.Error(), http.StatusNotFound)
 			storeChannel <- result
 			close(storeChannel)
 			return
@@ -370,7 +371,7 @@ func (s SqlPostStore) GetSingle(id string) StoreChannel {
 		var post model.Post
 		err := s.GetReplica().SelectOne(&post, "SELECT * FROM Posts WHERE Id = :Id AND DeleteAt = 0", map[string]interface{}{"Id": id})
 		if err != nil {
-			result.Err = model.NewLocAppError("SqlPostStore.GetSingle", "store.sql_post.get.app_error", nil, "id="+id+err.Error())
+			result.Err = model.NewAppError("SqlPostStore.GetSingle", "store.sql_post.get.app_error", nil, "id="+id+err.Error(), http.StatusNotFound)
 		}
 
 		result.Data = &post
@@ -1065,7 +1066,7 @@ func (s SqlPostStore) Search(teamId string, userId string, params *model.SearchP
 
 		list := model.NewPostList()
 
-		_, err := s.GetReplica().Select(&posts, searchQuery, queryParams)
+		_, err := s.GetSearchReplica().Select(&posts, searchQuery, queryParams)
 		if err != nil {
 			l4g.Warn(utils.T("store.sql_post.search.warn"), err.Error())
 			// Don't return the error to the caller as it is of no use to the user. Instead return an empty set of search results.
@@ -1277,6 +1278,33 @@ func (s SqlPostStore) GetPostsCreatedAt(channelId string, time int64) StoreChann
 
 		if err != nil {
 			result.Err = model.NewAppError("SqlPostStore.GetPostsCreatedAt", "store.sql_post.get_posts_created_att.app_error", nil, "channelId="+channelId+err.Error(), http.StatusInternalServerError)
+		} else {
+			result.Data = posts
+		}
+
+		storeChannel <- result
+		close(storeChannel)
+	}()
+
+	return storeChannel
+}
+
+func (s SqlPostStore) GetPostsByIds(postIds []string) StoreChannel {
+	storeChannel := make(StoreChannel, 1)
+
+	go func() {
+		result := StoreResult{}
+
+		inClause := `'` + strings.Join(postIds, `', '`) + `'`
+
+		query := `SELECT * FROM Posts WHERE Id in (` + inClause + `) and DeleteAt = 0 ORDER BY CreateAt DESC`
+
+		var posts []*model.Post
+		_, err := s.GetReplica().Select(&posts, query, map[string]interface{}{})
+
+		if err != nil {
+			l4g.Error(err)
+			result.Err = model.NewAppError("SqlPostStore.GetPostsCreatedAt", "store.sql_post.get_posts_by_ids.app_error", nil, "", http.StatusInternalServerError)
 		} else {
 			result.Data = posts
 		}

@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Spinpunch, Inc. All Rights Reserved.
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import SettingItemMax from '../setting_item_max.jsx';
@@ -9,6 +9,7 @@ import Constants from 'utils/constants.jsx';
 
 import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 import {updateUser} from 'actions/user_actions.jsx';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export default class ManageLanguage extends React.Component {
@@ -33,12 +34,10 @@ export default class ManageLanguage extends React.Component {
     changeLanguage(e) {
         e.preventDefault();
 
-        var user = this.props.user;
-        var locale = this.state.locale;
-
-        user.locale = locale;
-
-        this.submitUser(user);
+        this.submitUser({
+            ...this.props.user,
+            locale: this.state.locale
+        });
     }
     submitUser(user) {
         updateUser(user, Constants.UserUpdateEvents.LANGUAGE,
@@ -134,6 +133,6 @@ export default class ManageLanguage extends React.Component {
 }
 
 ManageLanguage.propTypes = {
-    user: React.PropTypes.object.isRequired,
-    updateSection: React.PropTypes.func.isRequired
+    user: PropTypes.object.isRequired,
+    updateSection: PropTypes.func.isRequired
 };

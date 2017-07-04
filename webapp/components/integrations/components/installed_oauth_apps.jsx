@@ -2,6 +2,7 @@
 // See License.txt for license information.
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import UserStore from 'stores/user_store.jsx';
 import IntegrationStore from 'stores/integration_store.jsx';
@@ -15,7 +16,7 @@ import InstalledOAuthApp from './installed_oauth_app.jsx';
 export default class InstalledOAuthApps extends React.Component {
     static get propTypes() {
         return {
-            team: React.PropTypes.object
+            team: PropTypes.object
         };
     }
 
@@ -26,11 +27,9 @@ export default class InstalledOAuthApps extends React.Component {
 
         this.deleteOAuthApp = this.deleteOAuthApp.bind(this);
 
-        const userId = UserStore.getCurrentId();
-
         this.state = {
-            oauthApps: IntegrationStore.getOAuthApps(userId),
-            loading: !IntegrationStore.hasReceivedOAuthApps(userId)
+            oauthApps: IntegrationStore.getOAuthApps(),
+            loading: !IntegrationStore.hasReceivedOAuthApps()
         };
     }
 
@@ -38,7 +37,7 @@ export default class InstalledOAuthApps extends React.Component {
         IntegrationStore.addChangeListener(this.handleIntegrationChange);
 
         if (window.mm_config.EnableOAuthServiceProvider === 'true') {
-            OAuthActions.listOAuthApps(UserStore.getCurrentId());
+            OAuthActions.listOAuthApps(() => this.setState({loading: false}));
         }
     }
 
@@ -47,17 +46,13 @@ export default class InstalledOAuthApps extends React.Component {
     }
 
     handleIntegrationChange() {
-        const userId = UserStore.getCurrentId();
-
         this.setState({
-            oauthApps: IntegrationStore.getOAuthApps(userId),
-            loading: !IntegrationStore.hasReceivedOAuthApps(userId)
+            oauthApps: IntegrationStore.getOAuthApps()
         });
     }
 
     deleteOAuthApp(app) {
-        const userId = UserStore.getCurrentId();
-        OAuthActions.deleteOAuthApp(app.id, userId);
+        OAuthActions.deleteOAuthApp(app.id);
     }
 
     oauthAppCompare(a, b) {

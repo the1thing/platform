@@ -6,6 +6,7 @@ package app
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/mattermost/platform/einterfaces"
@@ -90,6 +91,10 @@ func DoLogin(w http.ResponseWriter, r *http.Request, user *model.User, deviceId 
 		bname = "unknown"
 	}
 
+	if strings.Contains(r.UserAgent(), "Mattermost") {
+		bname = "Desktop App"
+	}
+
 	if bversion == "" {
 		bversion = "0.0"
 	}
@@ -122,13 +127,23 @@ func DoLogin(w http.ResponseWriter, r *http.Request, user *model.User, deviceId 
 		Secure:   secure,
 	}
 
+	userCookie := &http.Cookie{
+		Name:    model.SESSION_COOKIE_USER,
+		Value:   user.Id,
+		Path:    "/",
+		MaxAge:  maxAge,
+		Expires: expiresAt,
+		Secure:  secure,
+	}
+
 	http.SetCookie(w, sessionCookie)
+	http.SetCookie(w, userCookie)
 
 	return session, nil
 }
 
 func GetProtocol(r *http.Request) string {
-	if r.Header.Get(model.HEADER_FORWARDED_PROTO) == "https" {
+	if r.Header.Get(model.HEADER_FORWARDED_PROTO) == "https" || r.TLS != nil {
 		return "https"
 	} else {
 		return "http"

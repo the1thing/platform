@@ -2,9 +2,11 @@
 // See License.txt for license information.
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import * as AsyncClient from 'utils/async_client.jsx';
 import * as Utils from 'utils/utils.jsx';
+
+import {addCommand} from 'actions/integration_actions.jsx';
 
 import BackstageHeader from 'components/backstage/components/backstage_header.jsx';
 import {FormattedMessage} from 'react-intl';
@@ -19,7 +21,7 @@ const REQUEST_GET = 'G';
 export default class AddCommand extends React.Component {
     static get propTypes() {
         return {
-            team: React.PropTypes.object
+            team: PropTypes.object
         };
     }
 
@@ -82,7 +84,8 @@ export default class AddCommand extends React.Component {
             method: this.state.method,
             username: this.state.username,
             icon_url: this.state.iconUrl,
-            auto_complete: this.state.autocomplete
+            auto_complete: this.state.autocomplete,
+            team_id: this.props.team.id
         };
 
         if (command.auto_complete) {
@@ -163,7 +166,7 @@ export default class AddCommand extends React.Component {
             return;
         }
 
-        AsyncClient.addCommand(
+        addCommand(
             command,
             (data) => {
                 browserHistory.push('/' + this.props.team.name + '/integrations/commands/confirm?type=commands&id=' + data.id);

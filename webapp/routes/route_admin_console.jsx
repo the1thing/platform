@@ -32,7 +32,6 @@ import ExternalServiceSettings from 'components/admin_console/external_service_s
 import WebrtcSettings from 'components/admin_console/webrtc_settings.jsx';
 import DatabaseSettings from 'components/admin_console/database_settings.jsx';
 import StorageSettings from 'components/admin_console/storage_settings.jsx';
-import ImageSettings from 'components/admin_console/image_settings.jsx';
 import CustomBrandSettings from 'components/admin_console/custom_brand_settings.jsx';
 import CustomEmojiSettings from 'components/admin_console/custom_emoji_settings.jsx';
 import LinkPreviewsSettings from 'components/admin_console/link_previews_settings.jsx';
@@ -41,11 +40,11 @@ import NativeAppLinkSettings from 'components/admin_console/native_app_link_sett
 import ComplianceSettings from 'components/admin_console/compliance_settings.jsx';
 import RateSettings from 'components/admin_console/rate_settings.jsx';
 import DeveloperSettings from 'components/admin_console/developer_settings.jsx';
-import SystemUsers from 'components/admin_console/system_users/system_users.jsx';
-import TeamAnalytics from 'components/analytics/team_analytics.jsx';
+import SystemUsers from 'components/admin_console/system_users';
+import TeamAnalytics from 'components/analytics/team_analytics';
 import LicenseSettings from 'components/admin_console/license_settings.jsx';
-import Audits from 'components/admin_console/audits.jsx';
-import Logs from 'components/admin_console/logs.jsx';
+import Audits from 'components/admin_console/audits';
+import Logs from 'components/admin_console/server_logs';
 
 export default (
     <Route>
@@ -165,10 +164,6 @@ export default (
             <Route
                 path='storage'
                 component={StorageSettings}
-            />
-            <Route
-                path='images'
-                component={ImageSettings}
             />
         </Route>
         <Route path='customization'>

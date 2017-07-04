@@ -1,115 +1,116 @@
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import AppDispatcher from 'dispatcher/app_dispatcher.jsx';
-
 import PreferenceStore from 'stores/preference_store.jsx';
 import TeamStore from 'stores/team_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 import ChannelStore from 'stores/channel_store.jsx';
 
 import {getChannelMembersForUserIds} from 'actions/channel_actions.jsx';
+import {loadCurrentLocale, clientLogout} from 'actions/global_actions.jsx';
 import {loadStatusesForProfilesList, loadStatusesForProfilesMap} from 'actions/status_actions.jsx';
 
 import {getDirectChannelName, getUserIdFromChannelName} from 'utils/utils.jsx';
 
-import * as AsyncClient from 'utils/async_client.jsx';
-import Client from 'client/web_client.jsx';
-
 import {Constants, ActionTypes, Preferences} from 'utils/constants.jsx';
 import {browserHistory} from 'react-router/es6';
 
-export function switchFromLdapToEmail(email, password, token, ldapPassword, onSuccess, onError) {
-    Client.ldapToEmail(
-        email,
-        password,
-        token,
-        ldapPassword,
-        (data) => {
-            if (data.follow_link) {
-                window.location.href = data.follow_link;
-            }
+import store from 'stores/redux_store.jsx';
+const dispatch = store.dispatch;
+const getState = store.getState;
 
-            if (onSuccess) {
-                onSuccess(data);
-            }
-        },
-        onError
-    );
+import * as Selectors from 'mattermost-redux/selectors/entities/users';
+import {getBool} from 'mattermost-redux/selectors/entities/preferences';
+
+import * as UserActions from 'mattermost-redux/actions/users';
+import {Client4} from 'mattermost-redux/client';
+
+import {getClientConfig, getLicenseConfig} from 'mattermost-redux/actions/general';
+import {getTeamMembersByIds, getMyTeamMembers, getMyTeamUnreads} from 'mattermost-redux/actions/teams';
+import {getChannelAndMyMember} from 'mattermost-redux/actions/channels';
+import {savePreferences as savePreferencesRedux, deletePreferences} from 'mattermost-redux/actions/preferences';
+
+import {Preferences as PreferencesRedux} from 'mattermost-redux/constants';
+
+export async function loadMe() {
+    await UserActions.loadMe()(dispatch, getState);
+
+    if (window.mm_config) {
+        loadCurrentLocale();
+    }
 }
 
-export function loadProfilesAndTeamMembers(offset, limit, teamId = TeamStore.getCurrentId(), success, error) {
-    Client.getProfilesInTeam(
-        teamId,
-        offset,
-        limit,
-        (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_PROFILES_IN_TEAM,
-                profiles: data,
-                team_id: teamId,
-                offset,
-                count: Object.keys(data).length
-            });
+export function loadMeAndConfig(callback) {
+    getClientConfig()(store.dispatch, store.getState).then((config) => {
+        global.window.mm_config = config;
 
-            loadTeamMembersForProfilesMap(data, teamId, success, error);
-            loadStatusesForProfilesMap(data);
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getProfilesInTeam');
+        if (global.window && global.window.analytics) {
+            global.window.analytics.identify(global.window.mm_config.DiagnosticId, {}, {
+                context: {
+                    ip: '0.0.0.0'
+                },
+                page: {
+                    path: '',
+                    referrer: '',
+                    search: '',
+                    title: '',
+                    url: ''
+                },
+                anonymousId: '00000000000000000000000000'
+            });
+        }
+
+        Promise.all([
+            loadMe(),
+            getLicenseConfig()(store.dispatch, store.getState).then(
+                (license) => {
+                    global.window.mm_license = license;
+                }
+            )
+        ]).then(callback);
+    });
+}
+
+export function switchFromLdapToEmail(email, password, token, ldapPassword, success, error) {
+    UserActions.switchLdapToEmail(ldapPassword, email, password, token)(dispatch, getState).then(
+        (data) => {
+            if (data) {
+                if (data.follow_link) {
+                    clientLogout(data.follow_link);
+                }
+                if (success) {
+                    success(data);
+                }
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.switchLogin.error;
+                error({id: serverError.server_error_id, ...serverError});
+            }
         }
     );
 }
 
-export function loadProfilesAndTeamMembersAndChannelMembers(offset, limit, teamId = TeamStore.getCurrentId(), channelId = ChannelStore.getCurrentId(), success, error) {
-    Client.getProfilesInChannel(
-        channelId,
-        offset,
-        limit,
+export function loadProfilesAndTeamMembers(page, perPage, teamId = TeamStore.getCurrentId(), success) {
+    UserActions.getProfilesInTeam(teamId, page, perPage)(dispatch, getState).then(
         (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_PROFILES_IN_CHANNEL,
-                profiles: data,
-                channel_id: channelId,
-                offset,
-                count: Object.keys(data).length
-            });
+            loadTeamMembersForProfilesList(data, teamId, success);
+            loadStatusesForProfilesList(data);
+        }
+    );
+}
 
-            loadTeamMembersForProfilesMap(
+export function loadProfilesAndTeamMembersAndChannelMembers(page, perPage, teamId = TeamStore.getCurrentId(), channelId = ChannelStore.getCurrentId(), success, error) {
+    UserActions.getProfilesInChannel(channelId, page, perPage)(dispatch, getState).then(
+        (data) => {
+            loadTeamMembersForProfilesList(
                 data,
                 teamId,
                 () => {
-                    loadChannelMembersForProfilesMap(data, channelId, success, error);
-                    loadStatusesForProfilesMap(data);
-                });
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getProfilesInChannel');
+                    loadChannelMembersForProfilesList(data, channelId, success, error);
+                    loadStatusesForProfilesList(data);
+                }
+            );
         }
     );
-}
-
-export function loadTeamMembersForProfilesMap(profiles, teamId = TeamStore.getCurrentId(), success, error) {
-    const membersToLoad = {};
-    for (const pid in profiles) {
-        if (!profiles.hasOwnProperty(pid)) {
-            continue;
-        }
-
-        if (!TeamStore.hasActiveMemberInTeam(teamId, pid)) {
-            membersToLoad[pid] = true;
-        }
-    }
-
-    const list = Object.keys(membersToLoad);
-    if (list.length === 0) {
-        if (success) {
-            success({});
-        }
-        return;
-    }
-
-    loadTeamMembersForProfiles(list, teamId, success, error);
 }
 
 export function loadTeamMembersForProfilesList(profiles, teamId = TeamStore.getCurrentId(), success, error) {
@@ -133,54 +134,26 @@ export function loadTeamMembersForProfilesList(profiles, teamId = TeamStore.getC
     loadTeamMembersForProfiles(list, teamId, success, error);
 }
 
-export function loadProfilesWithoutTeam(page, perPage, success, error) {
-    Client.getProfilesWithoutTeam(
-        page,
-        perPage,
+export function loadProfilesWithoutTeam(page, perPage, success) {
+    UserActions.getProfilesWithoutTeam(page, perPage)(dispatch, getState).then(
         (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_PROFILES_WITHOUT_TEAM,
-                profiles: data,
-                page
-            });
-
             loadStatusesForProfilesMap(data);
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getProfilesWithoutTeam');
 
-            if (error) {
-                error(err);
+            if (success) {
+                success(data);
             }
         }
     );
 }
 
 function loadTeamMembersForProfiles(userIds, teamId, success, error) {
-    Client.getTeamMembersByIds(
-        teamId,
-        userIds,
+    getTeamMembersByIds(teamId, userIds)(dispatch, getState).then(
         (data) => {
-            const memberMap = {};
-            for (let i = 0; i < data.length; i++) {
-                memberMap[data[i].user_id] = data[i];
-            }
-
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_MEMBERS_IN_TEAM,
-                team_id: teamId,
-                team_members: memberMap
-            });
-
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getTeamMembersByIds');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.teams.getTeamMembers.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
@@ -242,15 +215,16 @@ function populateDMChannelsWithProfiles(userIds) {
     for (let i = 0; i < userIds.length; i++) {
         const channelName = getDirectChannelName(currentUserId, userIds[i]);
         const channel = ChannelStore.getByName(channelName);
-        if (channel) {
+        const profilesInChannel = Selectors.getUserIdsInChannels(getState())[channel.id] || new Set();
+        if (channel && !profilesInChannel.has(userIds[i])) {
             UserStore.saveUserIdInChannel(channel.id, userIds[i]);
         }
     }
 }
 
-function populateChannelWithProfiles(channelId, userIds) {
-    for (let i = 0; i < userIds.length; i++) {
-        UserStore.saveUserIdInChannel(channelId, userIds[i]);
+function populateChannelWithProfiles(channelId, users) {
+    for (let i = 0; i < users.length; i++) {
+        UserStore.saveUserIdInChannel(channelId, users[i].id);
     }
     UserStore.emitInChannelChange();
 }
@@ -266,7 +240,8 @@ export function loadNewDMIfNeeded(channelId) {
         const pref = PreferenceStore.getBool(Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, false);
         if (pref === false) {
             PreferenceStore.setPreference(Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, 'true');
-            AsyncClient.savePreference(Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, userId, 'true');
+            const currentUserId = UserStore.getCurrentId();
+            savePreferencesRedux(currentUserId, [{user_id: currentUserId, category: Preferences.CATEGORY_DIRECT_CHANNEL_SHOW, name: userId, value: 'true'}])(dispatch, getState);
             loadProfilesForDM();
         }
     }
@@ -275,21 +250,13 @@ export function loadNewDMIfNeeded(channelId) {
     if (channel) {
         checkPreference(channel);
     } else {
-        Client.getChannel(
-            channelId,
+        getChannelAndMyMember(channelId)(dispatch, getState).then(
             (data) => {
-                AppDispatcher.handleServerAction({
-                    type: ActionTypes.RECEIVED_CHANNEL,
-                    channel: data.channel,
-                    member: data.member
-                });
-
-                checkPreference(data.channel);
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getChannel');
+                if (data) {
+                    checkPreference(data.channel);
+                }
             }
-       );
+        );
     }
 }
 
@@ -298,7 +265,8 @@ export function loadNewGMIfNeeded(channelId) {
         const pref = PreferenceStore.getBool(Preferences.CATEGORY_GROUP_CHANNEL_SHOW, channelId, false);
         if (pref === false) {
             PreferenceStore.setPreference(Preferences.CATEGORY_GROUP_CHANNEL_SHOW, channelId, 'true');
-            AsyncClient.savePreference(Preferences.CATEGORY_GROUP_CHANNEL_SHOW, channelId, 'true');
+            const currentUserId = UserStore.getCurrentId();
+            savePreferencesRedux(currentUserId, [{user_id: currentUserId, category: Preferences.CATEGORY_GROUP_CHANNEL_SHOW, name: channelId, value: 'true'}])(dispatch, getState);
             loadProfilesForGM();
         }
     }
@@ -307,21 +275,11 @@ export function loadNewGMIfNeeded(channelId) {
     if (channel) {
         checkPreference();
     } else {
-        Client.getChannel(
-            channelId,
-            (data) => {
-                AppDispatcher.handleServerAction({
-                    type: ActionTypes.RECEIVED_CHANNEL,
-                    channel: data.channel,
-                    member: data.member
-                });
-
+        getChannelAndMyMember(channelId)(dispatch, getState).then(
+            () => {
                 checkPreference();
-            },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getChannel');
             }
-       );
+        );
     }
 }
 
@@ -360,23 +318,16 @@ export function loadProfilesForGM() {
             });
         }
 
-        Client.getProfilesInChannel(
-            channel.id,
-            0,
-            Constants.MAX_USERS_IN_GM,
+        UserActions.getProfilesInChannel(channel.id, 0, Constants.MAX_USERS_IN_GM)(dispatch, getState).then(
             (data) => {
-                AppDispatcher.handleServerAction({
-                    type: ActionTypes.RECEIVED_PROFILES,
-                    profiles: data
-                });
-
-                populateChannelWithProfiles(channel.id, Object.keys(data));
+                populateChannelWithProfiles(channel.id, data);
             }
         );
     }
 
     if (newPreferences.length > 0) {
-        AsyncClient.savePreferences(newPreferences);
+        const currentUserId = UserStore.getCurrentId();
+        savePreferencesRedux(currentUserId, newPreferences)(dispatch, getState);
     }
 }
 
@@ -416,40 +367,33 @@ export function loadProfilesForDM() {
     }
 
     if (newPreferences.length > 0) {
-        AsyncClient.savePreferences(newPreferences);
+        const currentUserId = UserStore.getCurrentId();
+        savePreferencesRedux(currentUserId, newPreferences)(dispatch, getState);
     }
 
     if (profilesToLoad.length > 0) {
-        Client.getProfilesByIds(
-            profilesToLoad,
-            (data) => {
-                AppDispatcher.handleServerAction({
-                    type: ActionTypes.RECEIVED_PROFILES,
-                    profiles: data
-                });
-
-                // Use membersToLoad so we get all the DM profiles even if they were already loaded
+        UserActions.getProfilesByIds(profilesToLoad)(dispatch, getState).then(
+            () => {
                 populateDMChannelsWithProfiles(profileIds);
             },
-            (err) => {
-                AsyncClient.dispatchError(err, 'getProfilesByIds');
-            }
         );
     } else {
         populateDMChannelsWithProfiles(profileIds);
     }
 }
 
-export function saveTheme(teamId, theme, onSuccess, onError) {
-    AsyncClient.savePreference(
-        Preferences.CATEGORY_THEME,
-        teamId,
-        JSON.stringify(theme),
+export function saveTheme(teamId, theme, cb) {
+    const currentUserId = UserStore.getCurrentId();
+    const preference = [{
+        user_id: currentUserId,
+        category: Preferences.CATEGORY_THEME,
+        name: teamId,
+        value: JSON.stringify(theme)
+    }];
+
+    savePreferencesRedux(currentUserId, preference)(dispatch, getState).then(
         () => {
-            onThemeSaved(teamId, theme, onSuccess);
-        },
-        (err) => {
-            onError(err);
+            onThemeSaved(teamId, theme, cb);
         }
     );
 }
@@ -479,221 +423,144 @@ function onThemeSaved(teamId, theme, onSuccess) {
 
     if (toDelete.length > 0) {
         // we're saving a new global theme so delete any team-specific ones
-        AsyncClient.deletePreferences(toDelete);
-
-        // delete them locally before we hear from the server so that the UI flow is smoother
-        AppDispatcher.handleServerAction({
-            type: ActionTypes.DELETED_PREFERENCES,
-            preferences: toDelete
-        });
+        const currentUserId = UserStore.getCurrentId();
+        deletePreferences(currentUserId, toDelete)(dispatch, getState);
     }
 
     onSuccess();
 }
 
-export function searchUsers(term, teamId = TeamStore.getCurrentId(), options = {}, success, error) {
-    Client.searchUsers(
-        term,
-        teamId,
-        options,
+export function searchUsers(term, teamId = TeamStore.getCurrentId(), options = {}, success) {
+    UserActions.searchProfiles(term, {team_id: teamId, ...options})(dispatch, getState).then(
         (data) => {
             loadStatusesForProfilesList(data);
 
             if (success) {
                 success(data);
             }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'searchUsers');
-
-            if (error) {
-                error(err);
-            }
         }
     );
 }
 
-export function searchUsersNotInTeam(term, teamId = TeamStore.getCurrentId(), options = {}, success, error) {
-    Client.searchUsersNotInTeam(
-        term,
-        teamId,
-        options,
+export function searchUsersNotInTeam(term, teamId = TeamStore.getCurrentId(), options = {}, success) {
+    UserActions.searchProfiles(term, {not_in_team_id: teamId, ...options})(dispatch, getState).then(
         (data) => {
             loadStatusesForProfilesList(data);
 
             if (success) {
                 success(data);
             }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'searchUsersNotInTeam');
+        }
+    );
+}
 
-            if (error) {
-                error(err);
+export function autocompleteUsersInChannel(username, channelId, success) {
+    const channel = ChannelStore.get(channelId);
+    const teamId = channel ? channel.team_id : TeamStore.getCurrentId();
+    UserActions.autocompleteUsers(username, teamId, channelId)(dispatch, getState).then(
+        (data) => {
+            if (success) {
+                success(data);
             }
         }
     );
 }
 
-export function autocompleteUsersInChannel(username, channelId, success, error) {
-    Client.autocompleteUsersInChannel(
-        username,
-        channelId,
+export function autocompleteUsersInTeam(username, success) {
+    UserActions.autocompleteUsers(username, TeamStore.getCurrentId())(dispatch, getState).then(
         (data) => {
             if (success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'autocompleteUsersInChannel');
-
-            if (error) {
-                error(err);
             }
         }
     );
 }
 
-export function autocompleteUsersInTeam(username, success, error) {
-    Client.autocompleteUsersInTeam(
-        username,
+export function autocompleteUsers(username, success) {
+    UserActions.autocompleteUsers(username)(dispatch, getState).then(
         (data) => {
             if (success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'autocompleteUsersInTeam');
-
-            if (error) {
-                error(err);
             }
         }
     );
 }
 
-export function autocompleteUsers(username, success, error) {
-    Client.autocompleteUsers(
-        username,
+export function updateUser(user, type, success, error) {
+    UserActions.updateMe(user)(dispatch, getState).then(
         (data) => {
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'autocompleteUsers');
-
-            if (error) {
-                error(err);
-            }
-        }
-    );
-}
-
-export function updateUser(username, type, success, error) {
-    Client.updateUser(
-        username,
-        type,
-        (data) => {
-            if (success) {
-                success(data);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
-            } else {
-                AsyncClient.dispatchError(err, 'updateUser');
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateMe.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function generateMfaSecret(success, error) {
-    Client.generateMfaSecret(
+    UserActions.generateMfaSecret()(dispatch, getState).then(
         (data) => {
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'generateMfaSecret');
-
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.generateMfaSecret.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
-export function updateUserNotifyProps(data, success, error) {
-    Client.updateUserNotifyProps(
-      data,
-      () => {
-          AsyncClient.getMe();
-
-          if (success) {
-              success();
-          }
-      },
-      (err) => {
-          if (error) {
-              error(err);
-          }
-      }
+export function updateUserNotifyProps(props, success, error) {
+    UserActions.updateMe({notify_props: props})(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateMe.error;
+                error({id: serverError.server_error_id, ...serverError});
+            }
+        }
     );
 }
 
 export function updateUserRoles(userId, newRoles, success, error) {
-    Client.updateUserRoles(
-        userId,
-        newRoles,
-        () => {
-            AsyncClient.getUser(
-                userId,
-                success,
-                error
-            );
-        },
-        error
+    UserActions.updateUserRoles(userId, newRoles)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
+            }
+        }
     );
 }
 
 export function activateMfa(code, success, error) {
-    Client.updateMfa(
-        code,
-        true,
-        () => {
-            AsyncClient.getMe();
-
-            if (success) {
-                success();
+    UserActions.updateUserMfa(UserStore.getCurrentId(), true, code)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         },
-        (err) => {
-            if (error) {
-                error(err);
-            }
-        }
     );
 }
 
 export function deactivateMfa(success, error) {
-    Client.updateMfa(
-        '',
-        false,
-        () => {
-            AsyncClient.getMe();
-
-            if (success) {
-                success();
+    UserActions.updateUserMfa(UserStore.getCurrentId(), false)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         },
-        (err) => {
-            if (error) {
-                error(err);
-            }
-        }
     );
 }
 
@@ -703,265 +570,270 @@ export function checkMfa(loginId, success, error) {
         return;
     }
 
-    Client.checkMfa(
-        loginId,
+    UserActions.checkMfa(loginId)(dispatch, getState).then(
         (data) => {
-            if (success) {
-                success(data && data.mfa_required === 'true');
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+            if (data != null && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.checkMfa.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function updateActive(userId, active, success, error) {
-    Client.updateActive(userId, active,
+    UserActions.updateUserActive(userId, active)(dispatch, getState).then(
         (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_PROFILE,
-                profile: data
-            });
-
-            if (success) {
+            if (data && success) {
                 success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
-        },
-        error
+        }
     );
 }
 
 export function updatePassword(userId, currentPassword, newPassword, success, error) {
-    Client.updatePassword(userId, currentPassword, newPassword,
-        () => {
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
-            }
-        }
-    );
-}
-
-export function verifyEmail(uid, hid, success, error) {
-    Client.verifyEmail(
-        uid,
-        hid,
+    UserActions.updateUserPassword(userId, currentPassword, newPassword)(dispatch, getState).then(
         (data) => {
-            if (success) {
+            if (data && success) {
                 success(data);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
-export function resetPassword(code, password, success, error) {
-    Client.resetPassword(
-        code,
-        password,
-        () => {
-            browserHistory.push('/login?extra=' + ActionTypes.PASSWORD_CHANGE);
-
-            if (success) {
-                success();
+export function verifyEmail(token, success, error) {
+    UserActions.verifyUserEmail(token)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.verifyEmail.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+        }
+    );
+}
+
+export function resetPassword(token, password, success, error) {
+    UserActions.resetUserPassword(token, password)(dispatch, getState).then(
+        (data) => {
+            if (data) {
+                browserHistory.push('/login?extra=' + ActionTypes.PASSWORD_CHANGE);
+                if (success) {
+                    success(data);
+                }
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.passwordReset.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function resendVerification(email, success, error) {
-    Client.resendVerification(
-        email,
-        () => {
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    UserActions.sendVerificationEmail(email)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.verifyEmail.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function loginById(userId, password, mfaToken, success, error) {
-    Client.loginById(
-        userId,
-        password,
-        mfaToken,
-        () => {
-            if (success) {
+    UserActions.loginById(userId, password, mfaToken)(dispatch, getState).then(
+        (ok) => {
+            if (ok && success) {
                 success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+            } else if (!ok && error) {
+                const serverError = getState().requests.users.login.error;
+                if (serverError.server_error_id === 'api.context.mfa_required.app_error') {
+                    if (success) {
+                        success();
+                    }
+                    return;
+                }
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function createUserWithInvite(user, data, emailHash, inviteId, success, error) {
-    Client.createUserWithInvite(
-        user,
-        data,
-        emailHash,
-        inviteId,
-        (response) => {
-            if (success) {
-                success(response);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    UserActions.createUser(user, data, emailHash, inviteId)(dispatch, getState).then(
+        (resp) => {
+            if (resp && success) {
+                success(resp);
+            } else if (resp == null && error) {
+                const serverError = getState().requests.users.create.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function webLogin(loginId, password, token, success, error) {
-    Client.webLogin(
-        loginId,
-        password,
-        token,
-        () => {
-            if (success) {
+    UserActions.login(loginId, password, token)(dispatch, getState).then(
+        (ok) => {
+            if (ok && success) {
                 success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+            } else if (!ok && error) {
+                const serverError = getState().requests.users.login.error;
+                if (serverError.server_error_id === 'api.context.mfa_required.app_error') {
+                    if (success) {
+                        success();
+                    }
+                    return;
+                }
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function webLoginByLdap(loginId, password, token, success, error) {
-    Client.webLoginByLdap(
-        loginId,
-        password,
-        token,
-        (data) => {
-            if (success) {
-                success(data);
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    UserActions.login(loginId, password, token, true)(dispatch, getState).then(
+        (ok) => {
+            if (ok && success) {
+                success();
+            } else if (!ok && error) {
+                const serverError = getState().requests.users.login.error;
+                if (serverError.server_error_id === 'api.context.mfa_required.app_error') {
+                    if (success) {
+                        success();
+                    }
+                    return;
+                }
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
 export function getAuthorizedApps(success, error) {
-    Client.getAuthorizedApps(
+    Client4.getAuthorizedOAuthApps(getState().entities.users.currentUserId).then(
         (authorizedApps) => {
             if (success) {
                 success(authorizedApps);
             }
-        },
+        }
+    ).catch(
         (err) => {
             if (error) {
                 error(err);
             }
-        });
+        }
+    );
 }
 
 export function deauthorizeOAuthApp(appId, success, error) {
-    Client.deauthorizeOAuthApp(
-        appId,
+    Client4.deauthorizeOAuthApp(appId).then(
         () => {
             if (success) {
                 success();
             }
-        },
+        }
+    ).catch(
         (err) => {
             if (error) {
                 error(err);
             }
-        });
+        }
+    );
 }
 
 export function uploadProfileImage(userPicture, success, error) {
-    Client.uploadProfileImage(
-        userPicture,
-        () => {
-            AsyncClient.getMe();
-            if (success) {
-                success();
-            }
-        },
-        (err) => {
-            if (error) {
-                error(err);
+    UserActions.uploadProfileImage(Selectors.getCurrentUserId(getState()), userPicture)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.updateUser.error;
+                error({id: serverError.server_error_id, ...serverError});
             }
         }
     );
 }
 
-export function loadProfiles(offset = UserStore.getPagingOffset(), limit = Constants.PROFILE_CHUNK_SIZE, success, error) {
-    Client.getProfiles(
-        offset,
-        limit,
+export function loadProfiles(page, perPage, success) {
+    UserActions.getProfiles(page, perPage)(dispatch, getState).then(
         (data) => {
-            AppDispatcher.handleServerAction({
-                type: ActionTypes.RECEIVED_PROFILES,
-                profiles: data
-            });
-
             if (success) {
                 success(data);
             }
-        },
-        (err) => {
-            AsyncClient.dispatchError(err, 'getProfiles');
-
-            if (error) {
-                error(err);
-            }
         }
     );
 }
 
-export function getMissingProfiles(ids, success, error) {
+export function getMissingProfiles(ids) {
     const missingIds = ids.filter((id) => !UserStore.hasProfile(id));
 
     if (missingIds.length === 0) {
         return;
     }
 
-    AsyncClient.getProfilesByIds(missingIds, success, error);
+    UserActions.getProfilesByIds(missingIds)(dispatch, getState);
 }
 
 export function loadMyTeamMembers() {
-    Client.getMyTeamMembers((data) => {
-        AppDispatcher.handleServerAction({
-            type: ActionTypes.RECEIVED_MY_TEAM_MEMBERS,
-            team_members: data
-        });
-        AsyncClient.getMyTeamsUnread();
-    }, (err) => {
-        AsyncClient.dispatchError(err, 'getMyTeamMembers');
-    });
+    getMyTeamMembers()(dispatch, getState).then(
+        () => {
+            getMyTeamUnreads()(dispatch, getState);
+        }
+    );
+}
+
+export function savePreferences(prefs, callback) {
+    const currentUserId = UserStore.getCurrentId();
+    savePreferencesRedux(currentUserId, prefs)(dispatch, getState).then(
+        () => callback()
+    );
+}
+
+export async function savePreference(category, name, value) {
+    const currentUserId = UserStore.getCurrentId();
+    return savePreferencesRedux(currentUserId, [{user_id: currentUserId, category, name, value}])(dispatch, getState);
+}
+
+export function autoResetStatus() {
+    return async (doDispatch, doGetState) => {
+        const {currentUserId} = getState().entities.users;
+        const userStatus = await UserActions.getStatus(currentUserId)(doDispatch, doGetState);
+
+        if (!userStatus.manual) {
+            return userStatus;
+        }
+
+        const autoReset = getBool(getState(), PreferencesRedux.CATEGORY_AUTO_RESET_MANUAL_STATUS, currentUserId, false);
+
+        if (autoReset) {
+            UserActions.setStatus({user_id: currentUserId, status: 'online'})(doDispatch, doGetState);
+            return userStatus;
+        }
+
+        return userStatus;
+    };
+}
+
+export function sendPasswordResetEmail(email, success, error) {
+    UserActions.sendPasswordResetEmail(email)(dispatch, getState).then(
+        (data) => {
+            if (data && success) {
+                success(data);
+            } else if (data == null && error) {
+                const serverError = getState().requests.users.passwordReset.error;
+                error({id: serverError.server_error_id, ...serverError});
+            }
+        }
+    );
 }

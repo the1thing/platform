@@ -1,9 +1,11 @@
 // Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
-import FileStore from 'stores/file_store.jsx';
 import ReactDOM from 'react-dom';
 import * as Utils from 'utils/utils.jsx';
+import {getFileUrl} from 'mattermost-redux/utils/file_utils';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 
@@ -37,7 +39,7 @@ export default class FilePreview extends React.Component {
                 previewImage = (
                     <img
                         className='file-preview__image'
-                        src={FileStore.getFileUrl(info.id)}
+                        src={getFileUrl(info.id)}
                     />
                 );
             } else {
@@ -99,7 +101,7 @@ FilePreview.defaultProps = {
     uploadsInProgress: []
 };
 FilePreview.propTypes = {
-    onRemove: React.PropTypes.func.isRequired,
-    fileInfos: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-    uploadsInProgress: React.PropTypes.array
+    onRemove: PropTypes.func.isRequired,
+    fileInfos: PropTypes.arrayOf(PropTypes.object).isRequired,
+    uploadsInProgress: PropTypes.array
 };

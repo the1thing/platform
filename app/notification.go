@@ -4,7 +4,6 @@
 package app
 
 import (
-	"crypto/tls"
 	"fmt"
 	"html"
 	"html/template"
@@ -12,9 +11,11 @@ import (
 	"net/http"
 	"net/url"
 	"path/filepath"
+	"regexp"
 	"sort"
 	"strings"
 	"time"
+	"unicode"
 
 	l4g "github.com/alecthomas/log4go"
 	"github.com/mattermost/platform/einterfaces"
@@ -62,7 +63,10 @@ func SendNotifications(post *model.Post, team *model.Team, channel *model.Channe
 			otherUserId = userIds[0]
 		}
 
-		mentionedUserIds[otherUserId] = true
+		if _, ok := profileMap[otherUserId]; ok {
+			mentionedUserIds[otherUserId] = true
+		}
+
 		if post.Props["from_webhook"] == "true" {
 			mentionedUserIds[post.UserId] = true
 		}
@@ -81,7 +85,7 @@ func SendNotifications(post *model.Post, team *model.Team, channel *model.Channe
 
 				for _, threadPost := range list.Posts {
 					profile := profileMap[threadPost.UserId]
-					if profile.NotifyProps["comments"] == "any" || (profile.NotifyProps["comments"] == "root" && threadPost.Id == list.Order[0]) {
+					if profile != nil && (profile.NotifyProps["comments"] == "any" || (profile.NotifyProps["comments"] == "root" && threadPost.Id == list.Order[0])) {
 						mentionedUserIds[threadPost.UserId] = true
 					}
 				}
@@ -95,8 +99,10 @@ func SendNotifications(post *model.Post, team *model.Team, channel *model.Channe
 
 		if len(potentialOtherMentions) > 0 {
 			if result := <-Srv.Store.User().GetProfilesByUsernames(potentialOtherMentions, team.Id); result.Err == nil {
-				outOfChannelMentions := result.Data.(map[string]*model.User)
-				go sendOutOfChannelMentions(sender, post, team.Id, outOfChannelMentions)
+				outOfChannelMentions := result.Data.([]*model.User)
+				if channel.Type != model.CHANNEL_GROUP {
+					go sendOutOfChannelMentions(sender, post, team.Id, outOfChannelMentions)
+				}
 			}
 		}
 
@@ -216,23 +222,6 @@ func SendNotifications(post *model.Post, team *model.Team, channel *model.Channe
 				CreateAt:  post.CreateAt + 1,
 			},
 		)
-	}
-
-	if hereNotification {
-		statuses := GetAllStatuses()
-		for _, status := range statuses {
-			if status.UserId == post.UserId {
-				continue
-			}
-
-			_, profileFound := profileMap[status.UserId]
-			_, alreadyMentioned := mentionedUserIds[status.UserId]
-
-			if status.Status == model.STATUS_ONLINE && profileFound && !alreadyMentioned {
-				mentionedUsersList = append(mentionedUsersList, status.UserId)
-				updateMentionChans = append(updateMentionChans, Srv.Store.Channel().IncrementMentionCount(post.ChannelId, status.UserId))
-			}
-		}
 	}
 
 	// Make sure all mention updates are complete to prevent race
@@ -487,10 +476,24 @@ func sendPushNotification(post *model.Post, user *model.User, channel *model.Cha
 	} else {
 		msg.Badge = int(badge.Data.(int64))
 	}
+
 	msg.Type = model.PUSH_TYPE_MESSAGE
 	msg.TeamId = channel.TeamId
 	msg.ChannelId = channel.Id
 	msg.ChannelName = channel.Name
+	msg.SenderId = post.UserId
+
+	if ou, ok := post.Props["override_username"]; ok && ou != nil {
+		msg.OverrideUsername = ou.(string)
+	}
+
+	if oi, ok := post.Props["override_icon_url"]; ok && oi != nil {
+		msg.OverrideIconUrl = oi.(string)
+	}
+
+	if fw, ok := post.Props["from_webhook"]; ok && fw != nil {
+		msg.FromWebhook = fw.(string)
+	}
 
 	if *utils.Cfg.EmailSettings.PushNotificationContents == model.FULL_NOTIFICATION {
 		if channel.Type == model.CHANNEL_DIRECT {
@@ -510,11 +513,23 @@ func sendPushNotification(post *model.Post, user *model.User, channel *model.Cha
 		}
 	}
 
-	l4g.Debug(utils.T("api.post.send_notifications_and_forget.push_notification.debug"), msg.DeviceId, msg.Message)
+	// If the post only has images then push an appropriate message
+	if len(post.Message) == 0 && post.FileIds != nil && len(post.FileIds) > 0 {
+		if channel.Type == model.CHANNEL_DIRECT {
+			msg.Message = senderName + userLocale("api.post.send_notifications_and_forget.push_image_only_dm")
+		} else {
+			msg.Message = senderName + userLocale("api.post.send_notifications_and_forget.push_image_only") + channelName
+		}
+	}
+
+	l4g.Debug("Sending push notification for user %v with msg of '%v'", user.Id, msg.Message)
 
 	for _, session := range sessions {
 		tmpMessage := *model.PushNotificationFromJson(strings.NewReader(msg.ToJson()))
 		tmpMessage.SetDeviceIdAndPlatform(session.DeviceId)
+
+		l4g.Debug("Sending push notification to device %v for user %v with msg of '%v'", tmpMessage.DeviceId, user.Id, msg.Message)
+
 		go sendToPushProxy(tmpMessage, session)
 
 		if einterfaces.GetMetricsInterface() != nil {
@@ -556,14 +571,9 @@ func ClearPushNotification(userId string, channelId string) *model.AppError {
 func sendToPushProxy(msg model.PushNotification, session *model.Session) {
 	msg.ServerId = utils.CfgDiagnosticId
 
-	tr := &http.Transport{
-		TLSClientConfig:   &tls.Config{InsecureSkipVerify: *utils.Cfg.ServiceSettings.EnableInsecureOutgoingConnections},
-		DisableKeepAlives: true,
-	}
-	httpClient := &http.Client{Transport: tr}
 	request, _ := http.NewRequest("POST", *utils.Cfg.EmailSettings.PushNotificationServer+model.API_URL_SUFFIX_V1+"/send_push", strings.NewReader(msg.ToJson()))
 
-	if resp, err := httpClient.Do(request); err != nil {
+	if resp, err := utils.HttpClient().Do(request); err != nil {
 		l4g.Error("Device push reported as error for UserId=%v SessionId=%v message=%v", session.UserId, session.Id, err.Error())
 	} else {
 		pushResponse := model.PushResponseFromJson(resp.Body)
@@ -592,13 +602,13 @@ func getMobileAppSessions(userId string) ([]*model.Session, *model.AppError) {
 	}
 }
 
-func sendOutOfChannelMentions(sender *model.User, post *model.Post, teamId string, profiles map[string]*model.User) *model.AppError {
-	if len(profiles) == 0 {
+func sendOutOfChannelMentions(sender *model.User, post *model.Post, teamId string, users []*model.User) *model.AppError {
+	if len(users) == 0 {
 		return nil
 	}
 
 	var usernames []string
-	for _, user := range profiles {
+	for _, user := range users {
 		usernames = append(usernames, user.Username)
 	}
 	sort.Strings(usernames)
@@ -646,7 +656,12 @@ func GetExplicitMentions(message string, keywords map[string][]string) (map[stri
 		}
 	}
 
-	for _, word := range strings.Fields(message) {
+	message = removeCodeFromMessage(message)
+
+	for _, word := range strings.FieldsFunc(message, func(c rune) bool {
+		// Split on any whitespace or punctuation that can't be part of an at mention
+		return !(c == '.' || c == '-' || c == '_' || c == '@' || unicode.IsLetter(c) || unicode.IsNumber(c))
+	}) {
 		isMention := false
 
 		if word == "@here" {
@@ -673,11 +688,14 @@ func GetExplicitMentions(message string, keywords map[string][]string) (map[stri
 			isMention = true
 		}
 
-		if !isMention {
-			// No matches were found with the string split just on whitespace so try further splitting
-			// the message on punctuation
+		if isMention {
+			continue
+		}
+
+		if strings.ContainsAny(word, ".-") {
+			// This word contains a character that may be the end of a sentence, so split further
 			splitWords := strings.FieldsFunc(word, func(c rune) bool {
-				return model.SplitRunes[c]
+				return c == '.' || c == '-'
 			})
 
 			for _, splitWord := range splitWords {
@@ -706,10 +724,34 @@ func GetExplicitMentions(message string, keywords map[string][]string) (map[stri
 					potentialOthersMentioned = append(potentialOthersMentioned, username)
 				}
 			}
+		} else if _, ok := systemMentions[word]; !ok && strings.HasPrefix(word, "@") {
+			username := word[1:]
+			potentialOthersMentioned = append(potentialOthersMentioned, username)
 		}
 	}
 
 	return mentioned, potentialOthersMentioned, hereMentioned, channelMentioned, allMentioned
+}
+
+// Matches a line containing only ``` and a potential language definition, any number of lines not containing ```,
+// and then either a line containing only ``` or the end of the text
+var codeBlockPattern = regexp.MustCompile("(?m)^[^\\S\n]*\\`\\`\\`.*$[\\s\\S]+?(^[^\\S\n]*\\`\\`\\`$|\\z)")
+
+// Matches a backquote, either some text or any number of non-empty lines, and then a final backquote
+var inlineCodePattern = regexp.MustCompile("(?m)\\`(?:.+?|.*?\n(.*?\\S.*?\n)*.*?)\\`")
+
+// Strips pre-formatted text and code blocks from a Markdown string by replacing them with whitespace
+func removeCodeFromMessage(message string) string {
+	if strings.Contains(message, "```") {
+		message = codeBlockPattern.ReplaceAllString(message, "")
+	}
+
+	// Replace with a space to prevent cases like "user`code`name" from turning into "username"
+	if strings.Contains(message, "`") {
+		message = inlineCodePattern.ReplaceAllString(message, " ")
+	}
+
+	return message
 }
 
 // Given a map of user IDs to profiles, returns a list of mention
@@ -740,6 +782,11 @@ func GetMentionKeywordsInChannel(profiles map[string]*model.User) map[string][]s
 		if int64(len(profiles)) < *utils.Cfg.TeamSettings.MaxNotificationsPerChannel && profile.NotifyProps["channel"] == "true" {
 			keywords["@channel"] = append(keywords["@channel"], profile.Id)
 			keywords["@all"] = append(keywords["@all"], profile.Id)
+
+			status := GetStatusFromCache(profile.Id)
+			if status != nil && status.Status == model.STATUS_ONLINE {
+				keywords["@here"] = append(keywords["@here"], profile.Id)
+			}
 		}
 	}
 

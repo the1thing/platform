@@ -9,10 +9,11 @@ import IntegrationStore from 'stores/integration_store.jsx';
 import TeamStore from 'stores/team_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 
-import {loadIncomingHooks} from 'actions/integration_actions.jsx';
+import {loadIncomingHooks, deleteIncomingHook} from 'actions/integration_actions.jsx';
 
-import * as AsyncClient from 'utils/async_client.jsx';
 import * as Utils from 'utils/utils.jsx';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
@@ -20,9 +21,9 @@ import {FormattedMessage} from 'react-intl';
 export default class InstalledIncomingWebhooks extends React.Component {
     static get propTypes() {
         return {
-            team: React.PropTypes.object,
-            user: React.PropTypes.object,
-            isAdmin: React.PropTypes.bool
+            team: PropTypes.object,
+            user: PropTypes.object,
+            isAdmin: PropTypes.bool
         };
     }
 
@@ -47,7 +48,7 @@ export default class InstalledIncomingWebhooks extends React.Component {
         UserStore.addChangeListener(this.handleUserChange);
 
         if (window.mm_config.EnableIncomingWebhooks === 'true') {
-            loadIncomingHooks();
+            loadIncomingHooks(() => this.setState({loading: false}));
         }
     }
 
@@ -60,8 +61,7 @@ export default class InstalledIncomingWebhooks extends React.Component {
         const teamId = TeamStore.getCurrentId();
 
         this.setState({
-            incomingWebhooks: IntegrationStore.getIncomingWebhooks(teamId),
-            loading: !IntegrationStore.hasReceivedIncomingWebhooks(teamId)
+            incomingWebhooks: IntegrationStore.getIncomingWebhooks(teamId)
         });
     }
 
@@ -72,7 +72,7 @@ export default class InstalledIncomingWebhooks extends React.Component {
     }
 
     deleteIncomingWebhook(incomingWebhook) {
-        AsyncClient.deleteIncomingHook(incomingWebhook.id);
+        deleteIncomingHook(incomingWebhook.id);
     }
 
     incomingWebhookCompare(a, b) {

@@ -8,10 +8,12 @@ import {trackEvent} from 'actions/diagnostics_actions.jsx';
 
 import BrowserStore from 'stores/browser_store.jsx';
 import {getInviteInfo} from 'actions/team_actions.jsx';
-import {loginById, createUserWithInvite} from 'actions/user_actions.jsx';
+import {loadMe, loginById, createUserWithInvite} from 'actions/user_actions.jsx';
 
 import * as Utils from 'utils/utils.jsx';
 import Constants from 'utils/constants.jsx';
+
+import PropTypes from 'prop-types';
 
 import React from 'react';
 import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
@@ -22,7 +24,7 @@ import logoImage from 'images/logo.png';
 export default class SignupEmail extends React.Component {
     static get propTypes() {
         return {
-            location: React.PropTypes.object
+            location: PropTypes.object
         };
     }
 
@@ -107,20 +109,6 @@ export default class SignupEmail extends React.Component {
         };
     }
 
-    finishSignup() {
-        GlobalActions.emitInitialLoad(
-            () => {
-                const query = this.props.location.query;
-                GlobalActions.loadDefaultLocale();
-                if (query.redirect_to) {
-                    browserHistory.push(query.redirect_to);
-                } else {
-                    GlobalActions.redirectUserToDefaultTeam();
-                }
-            }
-        );
-    }
-
     handleSignupSuccess(user, data) {
         trackEvent('signup', 'signup_user_02_complete');
         loginById(
@@ -132,7 +120,7 @@ export default class SignupEmail extends React.Component {
                     BrowserStore.setGlobalItem(this.state.hash, JSON.stringify({usedBefore: true}));
                 }
 
-                GlobalActions.emitInitialLoad(
+                loadMe().then(
                     () => {
                         const query = this.props.location.query;
                         if (query.redirect_to) {
@@ -333,6 +321,7 @@ export default class SignupEmail extends React.Component {
                         </strong></h5>
                         <div className={emailDivStyle}>
                             <input
+                                id='email'
                                 type='email'
                                 ref='email'
                                 className='form-control'
@@ -357,6 +346,7 @@ export default class SignupEmail extends React.Component {
                         </strong></h5>
                         <div className={nameDivStyle}>
                             <input
+                                id='name'
                                 type='text'
                                 ref='name'
                                 className='form-control'
@@ -378,6 +368,7 @@ export default class SignupEmail extends React.Component {
                         </strong></h5>
                         <div className={passwordDivStyle}>
                             <input
+                                id='password'
                                 type='password'
                                 ref='password'
                                 className='form-control'
@@ -390,6 +381,7 @@ export default class SignupEmail extends React.Component {
                     </div>
                     <p className='margin--extra'>
                         <button
+                            id='createAccountButton'
                             type='submit'
                             onClick={this.handleSubmit}
                             className='btn-primary btn'

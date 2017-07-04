@@ -1,4 +1,11 @@
 @charset 'UTF-8';
+.radio,
+.checkbox {
+    &.margin-bottom--none {
+        margin-bottom: 0;
+    }
+}
+
 .form-horizontal {
     .modal-intro {
         margin: -10px 0 30px;
@@ -62,8 +69,13 @@
     .checkbox-inline {
         color: $red;
     }
+
     .control-label {
         color: inherit;
+    .form__label {
+        &.control-label {
+            color: inherit !important;
+        }
     }
     &.radio,
     &.checkbox,

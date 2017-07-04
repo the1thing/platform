@@ -19,6 +19,7 @@ const (
 type ApiParams struct {
 	UserId         string
 	TeamId         string
+	InviteId       string
 	ChannelId      string
 	PostId         string
 	FileId         string
@@ -26,14 +27,20 @@ type ApiParams struct {
 	HookId         string
 	ReportId       string
 	EmojiId        string
+	AppId          string
 	Email          string
 	Username       string
 	TeamName       string
 	ChannelName    string
 	PreferenceName string
+	EmojiName      string
 	Category       string
+	Service        string
+	JobId          string
+	JobType        string
 	Page           int
 	PerPage        int
+	Permanent      bool
 }
 
 func ApiParamsFromRequest(r *http.Request) *ApiParams {
@@ -47,6 +54,10 @@ func ApiParamsFromRequest(r *http.Request) *ApiParams {
 
 	if val, ok := props["team_id"]; ok {
 		params.TeamId = val
+	}
+
+	if val, ok := props["invite_id"]; ok {
+		params.InviteId = val
 	}
 
 	if val, ok := props["channel_id"]; ok {
@@ -77,6 +88,10 @@ func ApiParamsFromRequest(r *http.Request) *ApiParams {
 		params.EmojiId = val
 	}
 
+	if val, ok := props["app_id"]; ok {
+		params.AppId = val
+	}
+
 	if val, ok := props["email"]; ok {
 		params.Email = val
 	}
@@ -97,14 +112,34 @@ func ApiParamsFromRequest(r *http.Request) *ApiParams {
 		params.Category = val
 	}
 
+	if val, ok := props["service"]; ok {
+		params.Service = val
+	}
+
 	if val, ok := props["preference_name"]; ok {
 		params.PreferenceName = val
+	}
+
+	if val, ok := props["emoji_name"]; ok {
+		params.EmojiName = val
+	}
+
+	if val, ok := props["job_id"]; ok {
+		params.JobId = val
+	}
+
+	if val, ok := props["job_type"]; ok {
+		params.JobType = val
 	}
 
 	if val, err := strconv.Atoi(r.URL.Query().Get("page")); err != nil || val < 0 {
 		params.Page = PAGE_DEFAULT
 	} else {
 		params.Page = val
+	}
+
+	if val, err := strconv.ParseBool(r.URL.Query().Get("permanent")); err != nil {
+		params.Permanent = val
 	}
 
 	if val, err := strconv.Atoi(r.URL.Query().Get("per_page")); err != nil || val < 0 {

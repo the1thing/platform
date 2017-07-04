@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 // Copyright (c) 2017-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
@@ -11,11 +13,11 @@ import * as Utils from 'utils/utils.jsx';
 
 export default class ManageTeamsDropdown extends React.Component {
     static propTypes = {
-        user: React.PropTypes.object.isRequired,
-        teamMember: React.PropTypes.object.isRequired,
-        onError: React.PropTypes.func.isRequired,
-        onMemberChange: React.PropTypes.func.isRequired,
-        onMemberRemove: React.PropTypes.func.isRequired
+        user: PropTypes.object.isRequired,
+        teamMember: PropTypes.object.isRequired,
+        onError: PropTypes.func.isRequired,
+        onMemberChange: PropTypes.func.isRequired,
+        onMemberRemove: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -91,7 +93,10 @@ export default class ManageTeamsDropdown extends React.Component {
         let makeTeamAdmin = null;
         if (!isTeamAdmin) {
             makeTeamAdmin = (
-                <MenuItem onSelect={this.makeTeamAdmin}>
+                <MenuItem
+                    id='makeTeamAdmin'
+                    onSelect={this.makeTeamAdmin}
+                >
                     <FormattedMessage
                         id='admin.user_item.makeTeamAdmin'
                         defaultMessage='Make Team Admin'
@@ -103,7 +108,10 @@ export default class ManageTeamsDropdown extends React.Component {
         let makeMember = null;
         if (isTeamAdmin) {
             makeMember = (
-                <MenuItem onSelect={this.makeMember}>
+                <MenuItem
+                    id='makeMember'
+                    onSelect={this.makeMember}
+                >
                     <FormattedMessage
                         id='admin.user_item.makeMember'
                         defaultMessage='Make Member'
@@ -124,7 +132,10 @@ export default class ManageTeamsDropdown extends React.Component {
                 <Dropdown.Menu>
                     {makeTeamAdmin}
                     {makeMember}
-                    <MenuItem onSelect={this.removeFromTeam}>
+                    <MenuItem
+                        id='removeFromTeam'
+                        onSelect={this.removeFromTeam}
+                    >
                         <FormattedMessage
                             id='team_members_dropdown.leave_team'
                             defaultMessage='Remove from Team'

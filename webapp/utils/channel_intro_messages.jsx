@@ -2,7 +2,7 @@
 // See License.txt for license information.
 
 import * as Utils from './utils.jsx';
-import ChannelInviteModal from 'components/channel_invite_modal.jsx';
+import ChannelInviteModal from 'components/channel_invite_modal';
 import EditChannelHeaderModal from 'components/edit_channel_header_modal.jsx';
 import ToggleModalButton from 'components/toggle_modal_button.jsx';
 import UserProfile from 'components/user_profile.jsx';
@@ -11,8 +11,11 @@ import UserStore from 'stores/user_store.jsx';
 import TeamStore from 'stores/team_store.jsx';
 import Constants from 'utils/constants.jsx';
 import * as GlobalActions from 'actions/global_actions.jsx';
-import Client from 'client/web_client.jsx';
 import ProfilePicture from 'components/profile_picture.jsx';
+
+import {Client4} from 'mattermost-redux/client';
+
+import {showManagementOptions} from './channel_utils.jsx';
 
 import React from 'react';
 import {FormattedMessage, FormattedHTMLMessage, FormattedDate} from 'react-intl';
@@ -49,7 +52,7 @@ export function createGMIntroMessage(channel, centeredIntro) {
             pictures.push(
                 <ProfilePicture
                     key={'introprofilepicture' + profile.id}
-                    src={Client.getUsersRoute() + '/' + profile.id + '/image?time=' + profile.last_picture_update}
+                    src={Client4.getUsersRoute() + '/' + profile.id + '/image?time=' + profile.last_picture_update}
                     width='50'
                     height='50'
                     user={profile}
@@ -109,7 +112,7 @@ export function createDMIntroMessage(channel, centeredIntro) {
             <div className={'channel-intro ' + centeredIntro}>
                 <div className='post-profile-img__container channel-intro-img'>
                     <ProfilePicture
-                        src={Client.getUsersRoute() + '/' + teammate.id + '/image?time=' + teammate.last_picture_update}
+                        src={Client4.getUsersRoute() + '/' + teammate.id + '/image?time=' + teammate.last_picture_update}
                         width='50'
                         height='50'
                         user={teammate}
@@ -152,6 +155,23 @@ export function createDMIntroMessage(channel, centeredIntro) {
 }
 
 export function createOffTopicIntroMessage(channel, centeredIntro) {
+
+    var uiType = (
+        <FormattedMessage
+            id='intro_messages.channel'
+            defaultMessage='channel'
+        />
+    );
+
+    const isAdmin = TeamStore.isTeamAdminForCurrentTeam() || UserStore.isSystemAdminForCurrentUser();
+    const isSystemAdmin = UserStore.isSystemAdminForCurrentUser();
+    const isChannelAdmin = ChannelStore.isChannelAdminForCurrentChannel();
+
+    let setHeaderButton = createSetHeaderButton(channel);
+    if (!showManagementOptions(channel, isAdmin, isSystemAdmin, isChannelAdmin)) {
+        setHeaderButton = null;
+    }
+ 
     return (
         <div className={'channel-intro ' + centeredIntro}>
             <FormattedHTMLMessage
@@ -161,8 +181,10 @@ export function createOffTopicIntroMessage(channel, centeredIntro) {
                     display_name: channel.display_name
                 }}
             />
-            {createInviteChannelMemberButton(channel, 'channel')}
-            {createSetHeaderButton(channel)}        
+
+            {createInviteChannelMemberButton(channel, uiType)}
+            {setHeaderButton}
+
         </div>
     );
 }
@@ -184,6 +206,7 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
 
     const isAdmin = TeamStore.isTeamAdminForCurrentTeam() || UserStore.isSystemAdminForCurrentUser();
     const isSystemAdmin = UserStore.isSystemAdminForCurrentUser();
+    const isChannelAdmin = ChannelStore.isChannelAdminForCurrentChannel();
 
     if (global.window.mm_license.IsLicensed === 'true') {
         if (global.window.mm_config.RestrictTeamInvite === Constants.PERMISSIONS_SYSTEM_ADMIN && !isSystemAdmin) {
@@ -191,6 +214,11 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
         } else if (global.window.mm_config.RestrictTeamInvite === Constants.PERMISSIONS_TEAM_ADMIN && !isAdmin) {
             inviteModalLink = null;
         }
+    }
+
+    let setHeaderButton = createSetHeaderButton(channel);
+    if (!showManagementOptions(channel, isAdmin, isSystemAdmin, isChannelAdmin)) {
+        setHeaderButton = null;
     }
 
     return (
@@ -202,6 +230,7 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
                     display_name: channel.display_name
                 }}
             />
+
             <div className='oh-hello-there hide-in-mobile'>
                 <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/channel_intro.png' alt='' />
             </div>
@@ -209,9 +238,10 @@ export function createDefaultIntroMessage(channel, centeredIntro) {
                 <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/channel_intro_mobile.png' alt='' />
             </div>
             <div className='wrap_links'>
-                {inviteModalLink}
-                {createSetHeaderButton(channel)}
+            {inviteModalLink}
+            {setHeaderButton}
             </div>
+
         </div>
     );
 }
@@ -302,6 +332,15 @@ export function createStandardIntroMessage(channel, centeredIntro) {
         );
     }
 
+    const isAdmin = TeamStore.isTeamAdminForCurrentTeam() || UserStore.isSystemAdminForCurrentUser();
+    const isSystemAdmin = UserStore.isSystemAdminForCurrentUser();
+    const isChannelAdmin = ChannelStore.isChannelAdminForCurrentChannel();
+
+    let setHeaderButton = createSetHeaderButton(channel);
+    if (!showManagementOptions(channel, isAdmin, isSystemAdmin, isChannelAdmin)) {
+        setHeaderButton = null;
+    }
+
     return (
         <div className={'channel-intro ' + centeredIntro}>
             <h4 className='channel-intro__title'>
@@ -320,7 +359,7 @@ export function createStandardIntroMessage(channel, centeredIntro) {
                 <br/>
             </p>
             {createInviteChannelMemberButton(channel, uiType)}
-            {createSetHeaderButton(channel)}
+            {setHeaderButton}
         </div>
     );
 }

@@ -12,6 +12,9 @@ import (
 )
 
 func TestSendChangeUsernameEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var emailTo string = "test@example.com"
@@ -60,19 +63,22 @@ func TestSendChangeUsernameEmail(t *testing.T) {
 }
 
 func TestSendEmailChangeVerifyEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
-	var userId string = "5349853498543jdfvndf9834"
 	var newUserEmail string = "newtest@example.com"
 	var locale string = "en"
 	var siteURL string = ""
 	var expectedPartialMessage string = "You updated your email"
 	var expectedSubject string = "[" + utils.Cfg.TeamSettings.SiteName + "] Verify new email address"
+	var token string = "TEST_TOKEN"
 
 	//Delete all the messages before check the sample email
 	utils.DeleteMailBox(newUserEmail)
 
-	if err := SendEmailChangeVerifyEmail(userId, newUserEmail, locale, siteURL); err != nil {
+	if err := SendEmailChangeVerifyEmail(newUserEmail, locale, siteURL, token); err != nil {
 		t.Log(err)
 		t.Fatal("Should send change username email")
 	} else {
@@ -111,6 +117,9 @@ func TestSendEmailChangeVerifyEmail(t *testing.T) {
 }
 
 func TestSendEmailChangeEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var oldEmail string = "test@example.com"
@@ -158,19 +167,22 @@ func TestSendEmailChangeEmail(t *testing.T) {
 }
 
 func TestSendVerifyEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
-	var userId string = "5349853498543jdfvndf9834"
 	var userEmail string = "test@example.com"
 	var locale string = "en"
 	var siteURL string = ""
 	var expectedPartialMessage string = "Please verify your email address by clicking below"
 	var expectedSubject string = "[" + utils.Cfg.TeamSettings.SiteName + "] Email Verification"
+	var token string = "TEST_TOKEN"
 
 	//Delete all the messages before check the sample email
 	utils.DeleteMailBox(userEmail)
 
-	if err := SendVerifyEmail(userId, userEmail, locale, siteURL); err != nil {
+	if err := SendVerifyEmail(userEmail, locale, siteURL, token); err != nil {
 		t.Log(err)
 		t.Fatal("Should send change username email")
 	} else {
@@ -209,6 +221,9 @@ func TestSendVerifyEmail(t *testing.T) {
 }
 
 func TestSendSignInChangeEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var email string = "test@example.com"
@@ -216,7 +231,7 @@ func TestSendSignInChangeEmail(t *testing.T) {
 	var siteURL string = ""
 	var method string = "AD/LDAP"
 	var expectedPartialMessage string = "You updated your sign-in method on Mattermost to " + method + "."
-	var expectedSubject string = "[" + utils.Cfg.TeamSettings.SiteName + "] You updated your sign-in method on " + utils.Cfg.TeamSettings.SiteName
+	var expectedSubject string = "[" + utils.Cfg.TeamSettings.SiteName + "] Your sign-in method has been updated"
 
 	//Delete all the messages before check the sample email
 	utils.DeleteMailBox(email)
@@ -256,6 +271,9 @@ func TestSendSignInChangeEmail(t *testing.T) {
 }
 
 func TestSendWelcomeEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var userId string = "32432nkjnijn432uj32"
@@ -349,6 +367,9 @@ func TestSendWelcomeEmail(t *testing.T) {
 }
 
 func TestSendPasswordChangeEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var email string = "test@example.com"
@@ -396,6 +417,9 @@ func TestSendPasswordChangeEmail(t *testing.T) {
 }
 
 func TestSendMfaChangeEmail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	Setup()
 
 	var email string = "test@example.com"
@@ -480,6 +504,9 @@ func TestSendMfaChangeEmail(t *testing.T) {
 }
 
 func TestSendInviteEmails(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	th := Setup().InitBasic()
 
 	var email1 string = "test1@example.com"
@@ -555,6 +582,9 @@ func TestSendInviteEmails(t *testing.T) {
 }
 
 func TestSendPasswordReset(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
 	th := Setup().InitBasic()
 
 	var siteURL string = "http://test.mattermost.io"
@@ -582,14 +612,22 @@ func TestSendPasswordReset(t *testing.T) {
 					t.Log(resultsEmail.Body.Text)
 					t.Fatal("Wrong Body message")
 				}
-				var recoveryKey *model.PasswordRecovery
-				if result := <-Srv.Store.PasswordRecovery().Get(th.BasicUser.Id); result.Err != nil {
+				loc := strings.Index(resultsEmail.Body.Text, "token=")
+				if loc == -1 {
+					t.Log(resultsEmail.Body.Text)
+					t.Fatal("Code not found in email")
+				}
+				loc += 6
+				recoveryTokenString := resultsEmail.Body.Text[loc : loc+model.TOKEN_SIZE]
+				var recoveryToken *model.Token
+				if result := <-Srv.Store.Token().GetByToken(recoveryTokenString); result.Err != nil {
+					t.Log(recoveryTokenString)
 					t.Fatal(result.Err)
 				} else {
-					recoveryKey = result.Data.(*model.PasswordRecovery)
-					if !strings.Contains(resultsEmail.Body.Text, recoveryKey.Code) {
+					recoveryToken = result.Data.(*model.Token)
+					if !strings.Contains(resultsEmail.Body.Text, recoveryToken.Token) {
 						t.Log(resultsEmail.Body.Text)
-						t.Log(recoveryKey.Code)
+						t.Log(recoveryToken.Token)
 						t.Fatal("Received wrong recovery code")
 					}
 				}

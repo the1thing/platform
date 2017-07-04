@@ -7,6 +7,8 @@ import {localizeMessage} from 'utils/utils.jsx';
 import Constants from 'utils/constants.jsx';
 const KeyCodes = Constants.KeyCodes;
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import ReactSelect from 'react-select';
 import {FormattedMessage} from 'react-intl';
@@ -129,6 +131,18 @@ export default class MultiSelect extends React.Component {
             );
         }
 
+        let buttonSubmitText;
+        if (this.props.buttonSubmitText) {
+            buttonSubmitText = this.props.buttonSubmitText;
+        } else if (this.props.maxValues != null) {
+            buttonSubmitText = (
+                <FormattedMessage
+                    id='multiselect.go'
+                    defaultMessage='Go'
+                />
+            );
+        }
+
         let optionsToDisplay = [];
         let nextButton;
         let previousButton;
@@ -216,19 +230,10 @@ export default class MultiSelect extends React.Component {
                             className='btn btn-primary btn-sm'
                             onClick={this.props.handleSubmit}
                         >
-                            <FormattedMessage
-                                id='multiselect.go'
-                                defaultMessage='Go'
-                            />
+                            {buttonSubmitText}
                         </button>
                     </div>
                     <div className='multi-select__help'>
-                        <div className='hidden-xs'>
-                            <FormattedMessage
-                                id='multiselect.instructions'
-                                defaultMessage='Use up/down arrows to navigate and enter to select'
-                            />
-                        </div>
                         {numRemainingText}
                         {noteTextContainer}
                     </div>
@@ -253,17 +258,18 @@ export default class MultiSelect extends React.Component {
 }
 
 MultiSelect.propTypes = {
-    options: React.PropTypes.arrayOf(React.PropTypes.object),
-    optionRenderer: React.PropTypes.func,
-    values: React.PropTypes.arrayOf(React.PropTypes.object),
-    valueRenderer: React.PropTypes.func,
-    handleInput: React.PropTypes.func,
-    handleDelete: React.PropTypes.func,
-    perPage: React.PropTypes.number,
-    handlePageChange: React.PropTypes.func,
-    handleAdd: React.PropTypes.func,
-    handleSubmit: React.PropTypes.func,
-    noteText: React.PropTypes.node,
-    maxValues: React.PropTypes.number,
-    numRemainingText: React.PropTypes.node
+    options: PropTypes.arrayOf(PropTypes.object),
+    optionRenderer: PropTypes.func,
+    values: PropTypes.arrayOf(PropTypes.object),
+    valueRenderer: PropTypes.func,
+    handleInput: PropTypes.func,
+    handleDelete: PropTypes.func,
+    perPage: PropTypes.number,
+    handlePageChange: PropTypes.func,
+    handleAdd: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    noteText: PropTypes.node,
+    maxValues: PropTypes.number,
+    numRemainingText: PropTypes.node,
+    buttonSubmitText: PropTypes.node
 };

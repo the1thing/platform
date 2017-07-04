@@ -46,7 +46,7 @@ func TestUserStoreSave(t *testing.T) {
 		t.Fatal("should be unique username")
 	}
 
-	for i := 0; i < 50; i++ {
+	for i := 0; i < 49; i++ {
 		u1.Id = ""
 		u1.Email = model.NewId()
 		u1.Username = model.NewId()
@@ -836,25 +836,67 @@ func TestUserStoreGetProfilesByUsernames(t *testing.T) {
 	if r1 := <-store.User().GetProfilesByUsernames([]string{u1.Username, u2.Username}, teamId); r1.Err != nil {
 		t.Fatal(r1.Err)
 	} else {
-		users := r1.Data.(map[string]*model.User)
+		users := r1.Data.([]*model.User)
 		if len(users) != 2 {
 			t.Fatal("invalid returned users")
 		}
 
-		if users[u1.Id].Id != u1.Id {
-			t.Fatal("invalid returned user")
+		if users[0].Id != u1.Id && users[1].Id != u1.Id {
+			t.Fatal("invalid returned user 1")
+		}
+
+		if users[0].Id != u2.Id && users[1].Id != u2.Id {
+			t.Fatal("invalid returned user 2")
 		}
 	}
 
 	if r1 := <-store.User().GetProfilesByUsernames([]string{u1.Username}, teamId); r1.Err != nil {
 		t.Fatal(r1.Err)
 	} else {
-		users := r1.Data.(map[string]*model.User)
+		users := r1.Data.([]*model.User)
 		if len(users) != 1 {
 			t.Fatal("invalid returned users")
 		}
 
-		if users[u1.Id].Id != u1.Id {
+		if users[0].Id != u1.Id {
+			t.Fatal("invalid returned user")
+		}
+	}
+
+	team2Id := model.NewId()
+
+	u3 := &model.User{}
+	u3.Email = model.NewId()
+	u3.Username = "username3" + model.NewId()
+	Must(store.User().Save(u3))
+	Must(store.Team().SaveMember(&model.TeamMember{TeamId: team2Id, UserId: u3.Id}))
+
+	if r1 := <-store.User().GetProfilesByUsernames([]string{u1.Username, u3.Username}, ""); r1.Err != nil {
+		t.Fatal(r1.Err)
+	} else {
+		users := r1.Data.([]*model.User)
+		if len(users) != 2 {
+			t.Fatal("invalid returned users")
+		}
+
+		if users[0].Id != u1.Id && users[1].Id != u1.Id {
+			t.Fatal("invalid returned user 1")
+		}
+
+		if users[0].Id != u3.Id && users[1].Id != u3.Id {
+			t.Fatal("invalid returned user 3")
+		}
+	}
+
+	if r1 := <-store.User().GetProfilesByUsernames([]string{u1.Username, u3.Username}, teamId); r1.Err != nil {
+		t.Fatal(r1.Err)
+	} else {
+		users := r1.Data.([]*model.User)
+		if len(users) != 1 {
+			t.Fatal("invalid returned users")
+		}
+
+		if users[0].Id != u1.Id {
 			t.Fatal("invalid returned user")
 		}
 	}
@@ -1249,7 +1291,22 @@ func TestUserStoreGetRecentlyActiveUsersForTeam(t *testing.T) {
 	tid := model.NewId()
 	Must(store.Team().SaveMember(&model.TeamMember{TeamId: tid, UserId: u1.Id}))
 
-	if r1 := <-store.User().GetRecentlyActiveUsersForTeam(tid); r1.Err != nil {
+	if r1 := <-store.User().GetRecentlyActiveUsersForTeam(tid, 0, 100); r1.Err != nil {
+		t.Fatal(r1.Err)
+	}
+}
+
+func TestUserStoreGetNewUsersForTeam(t *testing.T) {
+	Setup()
+
+	u1 := &model.User{}
+	u1.Email = model.NewId()
+	Must(store.User().Save(u1))
+	Must(store.Status().SaveOrUpdate(&model.Status{UserId: u1.Id, Status: model.STATUS_ONLINE, Manual: false, LastActivityAt: model.GetMillis(), ActiveChannel: ""}))
+	tid := model.NewId()
+	Must(store.Team().SaveMember(&model.TeamMember{TeamId: tid, UserId: u1.Id}))
+
+	if r1 := <-store.User().GetNewUsersForTeam(tid, 0, 100); r1.Err != nil {
 		t.Fatal(r1.Err)
 	}
 }
@@ -1459,7 +1516,7 @@ func TestUserStoreSearch(t *testing.T) {
 	c1 := model.Channel{}
 	c1.TeamId = tid
 	c1.DisplayName = "NameName"
-	c1.Name = "a" + model.NewId() + "b"
+	c1.Name = "zz" + model.NewId() + "b"
 	c1.Type = model.CHANNEL_OPEN
 	c1 = *Must(store.Channel().Save(&c1)).(*model.Channel)
 

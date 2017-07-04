@@ -22,6 +22,7 @@ func InitEmoji() {
 	BaseRoutes.Emojis.Handle("", ApiSessionRequired(getEmojiList)).Methods("GET")
 	BaseRoutes.Emoji.Handle("", ApiSessionRequired(deleteEmoji)).Methods("DELETE")
 	BaseRoutes.Emoji.Handle("", ApiSessionRequired(getEmoji)).Methods("GET")
+	BaseRoutes.Emoji.Handle("/image", ApiSessionRequiredTrustRequester(getEmojiImage)).Methods("GET")
 }
 
 func createEmoji(c *Context, w http.ResponseWriter, r *http.Request) {
@@ -54,9 +55,14 @@ func createEmoji(c *Context, w http.ResponseWriter, r *http.Request) {
 	m := r.MultipartForm
 	props := m.Value
 
+	if len(props["emoji"]) == 0 {
+		c.SetInvalidParam("emoji")
+		return
+	}
+
 	emoji := model.EmojiFromJson(strings.NewReader(props["emoji"][0]))
 	if emoji == nil {
-		c.SetInvalidParam("createEmoji")
+		c.SetInvalidParam("emoji")
 		return
 	}
 
@@ -75,7 +81,7 @@ func getEmojiList(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	listEmoji, err := app.GetEmojiList()
+	listEmoji, err := app.GetEmojiList(c.Params.Page, c.Params.PerPage)
 	if err != nil {
 		c.Err = err
 		return
@@ -128,4 +134,31 @@ func getEmoji(c *Context, w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Write([]byte(emoji.ToJson()))
 	}
+}
+
+func getEmojiImage(c *Context, w http.ResponseWriter, r *http.Request) {
+	c.RequireEmojiId()
+	if c.Err != nil {
+		return
+	}
+
+	if !*utils.Cfg.ServiceSettings.EnableCustomEmoji {
+		c.Err = model.NewAppError("getEmojiImage", "api.emoji.disabled.app_error", nil, "", http.StatusNotImplemented)
+		return
+	}
+
+	if len(utils.Cfg.FileSettings.DriverName) == 0 {
+		c.Err = model.NewAppError("getEmojiImage", "api.emoji.storage.app_error", nil, "", http.StatusNotImplemented)
+		return
+	}
+
+	image, imageType, err := app.GetEmojiImage(c.Params.EmojiId)
+	if err != nil {
+		c.Err = err
+		return
+	}
+
+	w.Header().Set("Content-Type", "image/"+imageType)
+	w.Header().Set("Cache-Control", "max-age=2592000, public")
+	w.Write(image)
 }

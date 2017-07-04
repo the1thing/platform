@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
@@ -8,8 +10,8 @@ import {FormattedMessage} from 'react-intl';
 export default class SaveButton extends React.Component {
     static get propTypes() {
         return {
-            saving: React.PropTypes.bool.isRequired,
-            disabled: React.PropTypes.bool
+            saving: PropTypes.bool.isRequired,
+            disabled: PropTypes.bool
         };
     }
 
@@ -50,6 +52,7 @@ export default class SaveButton extends React.Component {
         return (
             <button
                 type='submit'
+                id='saveSetting'
                 className={className}
                 disabled={disabled}
                 {...props}

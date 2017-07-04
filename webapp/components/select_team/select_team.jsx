@@ -5,9 +5,8 @@ import UserStore from 'stores/user_store.jsx';
 import TeamStore from 'stores/team_store.jsx';
 import * as UserAgent from 'utils/user_agent.jsx';
 import * as Utils from 'utils/utils.jsx';
-import ErrorBar from 'components/error_bar.jsx';
+import AnnouncementBar from 'components/announcement_bar';
 import LoadingScreen from 'components/loading_screen.jsx';
-import * as AsyncClient from 'utils/async_client.jsx';
 import * as GlobalActions from 'actions/global_actions.jsx';
 import SelectTeamItem from './components/select_team_item.jsx';
 
@@ -15,10 +14,17 @@ import {Link} from 'react-router/es6';
 
 import {FormattedMessage} from 'react-intl';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import logoImage from 'images/logo.png';
 
 export default class SelectTeam extends React.Component {
+    static propTypes = {
+        actions: PropTypes.shape({
+            getTeams: PropTypes.func.isRequired
+        }).isRequired
+    }
 
     constructor(props) {
         super(props);
@@ -33,7 +39,7 @@ export default class SelectTeam extends React.Component {
 
     componentDidMount() {
         TeamStore.addChangeListener(this.onTeamChange);
-        AsyncClient.getAllTeamListings();
+        this.props.actions.getTeams(0, 200);
     }
 
     componentWillUnmount() {
@@ -78,7 +84,6 @@ export default class SelectTeam extends React.Component {
                     <SelectTeamItem
                         key={'team_' + openTeam.name}
                         team={openTeam}
-                        url={`/signup_user_complete/?id=${openTeam.invite_id}`}
                         onTeamClick={this.handleTeamClick}
                         loading={this.state.loadingTeamId === openTeam.id}
                     />
@@ -212,7 +217,7 @@ export default class SelectTeam extends React.Component {
         }
         return (
             <div>
-                <ErrorBar/>
+                <AnnouncementBar/>
                 <div className='signup-header'>
                     {headerButton}
                 </div>

@@ -2,7 +2,7 @@
 // See License.txt for license information.
 
 import LoginMfa from './components/login_mfa.jsx';
-import ErrorBar from 'components/error_bar.jsx';
+import AnnouncementBar from 'components/announcement_bar';
 import FormError from 'components/form_error.jsx';
 
 import * as GlobalActions from 'actions/global_actions.jsx';
@@ -11,8 +11,7 @@ import {checkMfa, webLogin} from 'actions/user_actions.jsx';
 import BrowserStore from 'stores/browser_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 
-import Client from 'client/web_client.jsx';
-import * as AsyncClient from 'utils/async_client.jsx';
+import {Client4} from 'mattermost-redux/client';
 import * as TextFormatting from 'utils/text_formatting.jsx';
 
 import * as Utils from 'utils/utils.jsx';
@@ -21,14 +20,16 @@ import Constants from 'utils/constants.jsx';
 import {FormattedMessage} from 'react-intl';
 import {browserHistory, Link} from 'react-router/es6';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 import logoImage from 'images/logo.png';
 
 export default class LoginController extends React.Component {
     static get propTypes() {
         return {
-            location: React.PropTypes.object.isRequired,
-            params: React.PropTypes.object.isRequired
+            location: PropTypes.object.isRequired,
+            params: PropTypes.object.isRequired
         };
     }
 
@@ -69,8 +70,6 @@ export default class LoginController extends React.Component {
         if (this.props.location.query.extra === Constants.SIGNIN_VERIFIED && this.props.location.query.email) {
             this.refs.password.focus();
         }
-
-        AsyncClient.checkVersion();
     }
 
     preSubmit(e) {
@@ -209,19 +208,15 @@ export default class LoginController extends React.Component {
     }
 
     finishSignin(team) {
-        GlobalActions.emitInitialLoad(
-            () => {
-                const query = this.props.location.query;
-                GlobalActions.loadDefaultLocale();
-                if (query.redirect_to) {
-                    browserHistory.push(query.redirect_to);
-                } else if (team) {
-                    browserHistory.push(`/${team.name}`);
-                } else {
-                    GlobalActions.redirectUserToDefaultTeam();
-                }
-            }
-        );
+        const query = this.props.location.query;
+        GlobalActions.loadCurrentLocale();
+        if (query.redirect_to && query.redirect_to.match(/^\//)) {
+            browserHistory.push(query.redirect_to);
+        } else if (team) {
+            browserHistory.push(`/${team.name}`);
+        } else {
+            GlobalActions.redirectUserToDefaultTeam();
+        }
     }
 
     handleLoginIdChange(e) {
@@ -245,7 +240,7 @@ export default class LoginController extends React.Component {
             return (
                 <div>
                     <img
-                        src={Client.getAdminRoute() + '/get_brand_image'}
+                        src={Client4.getBrandImageUrl(0)}
                     />
                     <p dangerouslySetInnerHTML={{__html: TextFormatting.formatText(text)}}/>
                 </div>
@@ -439,6 +434,7 @@ export default class LoginController extends React.Component {
                         <Link
                             target='_blank'
                             to={'http://1thing.io/start-a-project'}
+                            id='signup'
                             className='signup-team-login'
                         >
                             <FormattedMessage
@@ -506,14 +502,16 @@ export default class LoginController extends React.Component {
                 <a
                     className='btn btn-custom-login gitlab'
                     key='gitlab'
-                    href={Client.getOAuthRoute() + '/gitlab/login' + this.props.location.search}
+                    href={Client4.getUrl() + '/oauth/gitlab/login' + this.props.location.search}
                 >
-                    <span className='icon'/>
                     <span>
-                        <FormattedMessage
-                            id='login.gitlab'
-                            defaultMessage='GitLab'
-                        />
+                        <span className='icon'/>
+                        <span>
+                            <FormattedMessage
+                                id='login.gitlab'
+                                defaultMessage='GitLab'
+                            />
+                        </span>
                     </span>
                 </a>
             );
@@ -524,14 +522,16 @@ export default class LoginController extends React.Component {
                 <a
                     className='btn btn-custom-login google'
                     key='google'
-                    href={Client.getOAuthRoute() + '/google/login' + this.props.location.search}
+                    href={Client4.getUrl() + '/oauth/google/login' + this.props.location.search}
                 >
-                    <span className='icon'/>
                     <span>
-                        <FormattedMessage
-                            id='login.google'
-                            defaultMessage='Google Apps'
-                        />
+                        <span className='icon'/>
+                        <span>
+                            <FormattedMessage
+                                id='login.google'
+                                defaultMessage='Google Apps'
+                            />
+                        </span>
                     </span>
                 </a>
             );
@@ -542,14 +542,16 @@ export default class LoginController extends React.Component {
                 <a
                     className='btn btn-custom-login office365'
                     key='office365'
-                    href={Client.getOAuthRoute() + '/office365/login' + this.props.location.search}
+                    href={Client4.getUrl() + '/oauth/office365/login' + this.props.location.search}
                 >
-                    <span className='icon'/>
                     <span>
-                        <FormattedMessage
-                            id='login.office365'
-                            defaultMessage='Office 365'
-                        />
+                        <span className='icon'/>
+                        <span>
+                            <FormattedMessage
+                                id='login.office365'
+                                defaultMessage='Office 365'
+                            />
+                        </span>
                     </span>
                 </a>
             );
@@ -562,9 +564,11 @@ export default class LoginController extends React.Component {
                     key='saml'
                     href={'/login/sso/saml' + this.props.location.search}
                 >
-                    <span className='icon fa fa-lock fa--margin-top'/>
                     <span>
-                        {global.window.mm_config.SamlLoginButtonText}
+                        <span className='icon fa fa-lock fa--margin-top'/>
+                        <span>
+                            {global.window.mm_config.SamlLoginButtonText}
+                        </span>
                     </span>
                 </a>
             );
@@ -626,7 +630,7 @@ export default class LoginController extends React.Component {
 
         return (
             <div>
-                <ErrorBar/>
+                <AnnouncementBar/>
                 <div className='col-sm-10 col-sm-offset-1'>
                 <header>    
                 <div className='logo_on_header'>
@@ -637,10 +641,6 @@ export default class LoginController extends React.Component {
                         <img
                             className='login-team-logo hide-on-mobile'
                             src='http://1thing.io/img/build/full-logo.svg'
-                        />
-                        <img
-                            className='login-team-logo-mobile hide-on-desktop'
-                            src='http://1thing.io/img/build/thumbnail.png'
                         />
                         </a>
 

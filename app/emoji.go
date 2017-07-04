@@ -6,7 +6,6 @@ package app
 import (
 	"bytes"
 	"image"
-	"image/color/palette"
 	"image/draw"
 	"image/gif"
 	_ "image/jpeg"
@@ -20,6 +19,7 @@ import (
 	"github.com/disintegration/imaging"
 	"github.com/mattermost/platform/model"
 	"github.com/mattermost/platform/utils"
+	"image/color/palette"
 )
 
 const (
@@ -58,12 +58,16 @@ func CreateEmoji(sessionUserId string, emoji *model.Emoji, multiPartImageData *m
 	if result := <-Srv.Store.Emoji().Save(emoji); result.Err != nil {
 		return nil, result.Err
 	} else {
+		message := model.NewWebSocketEvent(model.WEBSOCKET_EVENT_EMOJI_ADDED, "", "", "", nil)
+		message.Add("emoji", emoji.ToJson())
+
+		Publish(message)
 		return result.Data.(*model.Emoji), nil
 	}
 }
 
-func GetEmojiList() ([]*model.Emoji, *model.AppError) {
-	if result := <-Srv.Store.Emoji().GetAll(); result.Err != nil {
+func GetEmojiList(page, perPage int) ([]*model.Emoji, *model.AppError) {
+	if result := <-Srv.Store.Emoji().GetList(page*perPage, perPage); result.Err != nil {
 		return nil, result.Err
 	} else {
 		return result.Data.([]*model.Emoji), nil
@@ -145,6 +149,27 @@ func GetEmoji(emojiId string) (*model.Emoji, *model.AppError) {
 		return nil, result.Err
 	} else {
 		return result.Data.(*model.Emoji), nil
+	}
+}
+
+func GetEmojiImage(emojiId string) (imageByte []byte, imageType string, err *model.AppError) {
+	if result := <-Srv.Store.Emoji().Get(emojiId, true); result.Err != nil {
+		return nil, "", result.Err
+	} else {
+		var img []byte
+
+		if data, err := ReadFile(getEmojiImagePath(emojiId)); err != nil {
+			return nil, "", model.NewAppError("getEmojiImage", "api.emoji.get_image.read.app_error", nil, err.Error(), http.StatusNotFound)
+		} else {
+			img = data
+		}
+
+		_, imageType, err := image.DecodeConfig(bytes.NewReader(img))
+		if err != nil {
+			return nil, "", model.NewAppError("getEmojiImage", "api.emoji.get_image.decode.app_error", nil, err.Error(), http.StatusInternalServerError)
+		}
+
+		return img, imageType, nil
 	}
 }
 

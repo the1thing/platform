@@ -18,6 +18,8 @@ import {FormattedMessage, FormattedHTMLMessage} from 'react-intl';
 var ActionTypes = Constants.ActionTypes;
 import {Tooltip, OverlayTrigger, Popover} from 'react-bootstrap';
 
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 export default class SearchBar extends React.Component {
@@ -36,6 +38,7 @@ export default class SearchBar extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.searchMentions = this.searchMentions.bind(this);
         this.getFlagged = this.getFlagged.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 
         const state = this.getSearchTermStateFromStores();
         state.focused = false;
@@ -74,17 +77,8 @@ export default class SearchBar extends React.Component {
             if (!Utils.areObjectsEqual(newState, this.state)) {
                 this.setState(newState);
             }
-            if (doSearch && newState && newState.searchTerm.length) {
-                performSearch(
-                    newState.searchTerm,
-                    isMentionSearch,
-                    () => {
-                        this.handleSearchOnSuccess();
-                    },
-                    () => {
-                        this.handleSearchOnError();
-                    }
-                );
+            if (doSearch) {
+                this.handleSearch(newState.searchTerm, isMentionSearch);
             }
         }
     }
@@ -114,6 +108,10 @@ export default class SearchBar extends React.Component {
             type: ActionTypes.RECEIVED_POST_SELECTED,
             postId: null
         });
+    }
+
+    handleKeyDown() {
+        // This is just to prevent a JS error
     }
 
     handleChange(e) {
@@ -252,10 +250,11 @@ export default class SearchBar extends React.Component {
         let mentionBtn;
         let flagBtn;
         if (this.props.showMentionFlagBtns) {
+            var mentionBtnClass = SearchStore.isMentionSearch ? 'active' : '';
+
             mentionBtn = (
                 <div
                     className='dropdown channel-header__links'
-                    style={{float: 'left', marginTop: '1px'}}
                 >
                     <OverlayTrigger
                         delayShow={Constants.OVERLAY_TIME_DELAY}
@@ -266,6 +265,7 @@ export default class SearchBar extends React.Component {
                             href='#'
                             type='button'
                             onClick={this.searchMentions}
+                            className={mentionBtnClass}
                         >
                             {'@'}
                         </a>
@@ -273,10 +273,11 @@ export default class SearchBar extends React.Component {
                 </div>
             );
 
+            var flagBtnClass = SearchStore.isFlaggedPosts ? 'active' : '';
+
             flagBtn = (
                 <div
                     className='dropdown channel-header__links'
-                    style={{float: 'left', marginTop: '1px'}}
                 >
                     <OverlayTrigger
                         delayShow={Constants.OVERLAY_TIME_DELAY}
@@ -287,6 +288,7 @@ export default class SearchBar extends React.Component {
                             href='#'
                             type='button'
                             onClick={this.getFlagged}
+                            className={flagBtnClass}
                         >
                             <span
                                 className='icon icon__flag'
@@ -329,6 +331,7 @@ export default class SearchBar extends React.Component {
                         onFocus={this.handleUserFocus}
                         onBlur={this.handleUserBlur}
                         onChange={this.handleChange}
+                        onKeyDown={this.handleKeyDown}
                         listComponent={SearchSuggestionList}
                         providers={this.suggestionProviders}
                         type='search'
@@ -362,7 +365,7 @@ SearchBar.defaultProps = {
 };
 
 SearchBar.propTypes = {
-    showMentionFlagBtns: React.PropTypes.bool,
-    isCommentsPage: React.PropTypes.bool,
-    isFocus: React.PropTypes.bool
+    showMentionFlagBtns: PropTypes.bool,
+    isCommentsPage: PropTypes.bool,
+    isFocus: PropTypes.bool
 };

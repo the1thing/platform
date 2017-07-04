@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 // Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
@@ -9,7 +11,7 @@ import {FormattedMessage} from 'react-intl';
 
 export default class EmojiPickerPreview extends React.Component {
     static propTypes = {
-        emoji: React.PropTypes.object
+        emoji: PropTypes.object
     }
 
     render() {
@@ -27,7 +29,6 @@ export default class EmojiPickerPreview extends React.Component {
                 previewImage = (<span className='sprite-preview'><img
                     src='/static/emoji/img_trans.gif'
                     className={'  emojisprite-preview emoji-' + emoji.filename + ' '}
-                    align='absmiddle'
                                                                  /></span>);
             } else {
                 // This is a custom emoji that matches the model on the server
@@ -44,7 +45,7 @@ export default class EmojiPickerPreview extends React.Component {
                     <div className='emoji-picker__preview-image-box'>
                         {previewImage}
                     </div>
-                    <div className='emoji-picker__preview-detail-box'>
+                    <div className='emoji-picker__preview-image-label-box'>
                         <span className='emoji-picker__preview-name'>{name}</span>
                         <span
                             className='emoji-picker__preview-aliases'

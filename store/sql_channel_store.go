@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	l4g "github.com/alecthomas/log4go"
-	"github.com/go-gorp/gorp"
+	"github.com/mattermost/gorp"
 	"github.com/mattermost/platform/einterfaces"
 	"github.com/mattermost/platform/model"
 	"github.com/mattermost/platform/utils"
@@ -35,7 +35,7 @@ const (
 )
 
 type SqlChannelStore struct {
-	*SqlStore
+	SqlStore
 }
 
 var channelMemberCountsCache = utils.NewLru(CHANNEL_MEMBERS_COUNTS_CACHE_SIZE)
@@ -52,7 +52,7 @@ func ClearChannelCaches() {
 	channelByNameCache.Purge()
 }
 
-func NewSqlChannelStore(sqlStore *SqlStore) ChannelStore {
+func NewSqlChannelStore(sqlStore SqlStore) ChannelStore {
 	s := &SqlChannelStore{sqlStore}
 
 	for _, db := range sqlStore.GetAllConns() {
@@ -440,6 +440,10 @@ func (s SqlChannelStore) Delete(channelId string, time int64) StoreChannel {
 	return s.SetDeleteAt(channelId, time, time)
 }
 
+func (s SqlChannelStore) Restore(channelId string, time int64) StoreChannel {
+	return s.SetDeleteAt(channelId, 0, time)
+}
+
 func (s SqlChannelStore) SetDeleteAt(channelId string, deleteAt int64, updateAt int64) StoreChannel {
 	storeChannel := make(StoreChannel, 1)
 
@@ -803,6 +807,31 @@ func (s SqlChannelStore) GetDeletedByName(teamId string, name string) StoreChann
 			}
 		} else {
 			result.Data = &channel
+		}
+
+		storeChannel <- result
+		close(storeChannel)
+	}()
+
+	return storeChannel
+}
+
+func (s SqlChannelStore) GetDeleted(teamId string, offset int, limit int) StoreChannel {
+	storeChannel := make(StoreChannel, 1)
+
+	go func() {
+		result := StoreResult{}
+
+		channels := &model.ChannelList{}
+
+		if _, err := s.GetReplica().Select(channels, "SELECT * FROM Channels WHERE (TeamId = :TeamId OR TeamId = '') AND DeleteAt != 0 ORDER BY DisplayName LIMIT :Limit OFFSET :Offset", map[string]interface{}{"TeamId": teamId, "Limit": limit, "Offset": offset}); err != nil {
+			if err == sql.ErrNoRows {
+				result.Err = model.NewLocAppError("SqlChannelStore.GetDeleted", "store.sql_channel.get_deleted.missing.app_error", nil, "teamId="+teamId+", "+err.Error())
+			} else {
+				result.Err = model.NewLocAppError("SqlChannelStore.GetDeleted", "store.sql_channel.get_deleted.existing.app_error", nil, "teamId="+teamId+", "+err.Error())
+			}
+		} else {
+			result.Data = channels
 		}
 
 		storeChannel <- result

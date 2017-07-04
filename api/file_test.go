@@ -99,6 +99,18 @@ func TestUploadFile(t *testing.T) {
 		t.Fatalf("file preview should've been saved in %v", expectedPreviewPath)
 	}
 
+	enableFileAttachments := *utils.Cfg.FileSettings.EnableFileAttachments
+	defer func() {
+		*utils.Cfg.FileSettings.EnableFileAttachments = enableFileAttachments
+	}()
+	*utils.Cfg.FileSettings.EnableFileAttachments = false
+
+	if data, err := readTestFile("test.png"); err != nil {
+		t.Fatal(err)
+	} else if _, err = Client.UploadPostAttachment(data, channel.Id, "test.png"); err == nil {
+		t.Fatal("should have errored")
+	}
+
 	// Wait a bit for files to ready
 	time.Sleep(2 * time.Second)
 
@@ -793,7 +805,7 @@ func TestGetInfoForFilename(t *testing.T) {
 }
 
 func readTestFile(name string) ([]byte, error) {
-	path := utils.FindDir("tests")
+	path, _ := utils.FindDir("tests")
 	file, err := os.Open(path + "/" + name)
 	if err != nil {
 		return nil, err
@@ -808,13 +820,21 @@ func readTestFile(name string) ([]byte, error) {
 	}
 }
 
+func s3New(endpoint, accessKey, secretKey string, secure bool, signV2 bool) (*s3.Client, error) {
+	if signV2 {
+		return s3.NewV2(endpoint, accessKey, secretKey, secure)
+	}
+	return s3.NewV4(endpoint, accessKey, secretKey, secure)
+}
+
 func cleanupTestFile(info *model.FileInfo) error {
 	if utils.Cfg.FileSettings.DriverName == model.IMAGE_DRIVER_S3 {
 		endpoint := utils.Cfg.FileSettings.AmazonS3Endpoint
 		accessKey := utils.Cfg.FileSettings.AmazonS3AccessKeyId
 		secretKey := utils.Cfg.FileSettings.AmazonS3SecretAccessKey
 		secure := *utils.Cfg.FileSettings.AmazonS3SSL
-		s3Clnt, err := s3.New(endpoint, accessKey, secretKey, secure)
+		signV2 := *utils.Cfg.FileSettings.AmazonS3SignV2
+		s3Clnt, err := s3New(endpoint, accessKey, secretKey, secure, signV2)
 		if err != nil {
 			return err
 		}

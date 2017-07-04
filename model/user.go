@@ -36,6 +36,7 @@ const (
 	USER_AUTH_DATA_MAX_LENGTH = 128
 	USER_NAME_MAX_LENGTH      = 64
 	USER_NAME_MIN_LENGTH      = 1
+	USER_PASSWORD_MAX_LENGTH  = 72
 )
 
 type User struct {
@@ -128,6 +129,10 @@ func (u *User) IsValid() *AppError {
 
 	if len(u.Password) > 0 && u.AuthData != nil && len(*u.AuthData) > 0 {
 		return InvalidUserError("auth_data_pwd", u.Id)
+	}
+
+	if len(u.Password) > USER_PASSWORD_MAX_LENGTH {
+		return InvalidUserError("password_limit", u.Id)
 	}
 
 	return nil
@@ -335,7 +340,6 @@ func (u *User) ClearNonProfileFields() {
 	u.Props = StringMap{}
 	u.NotifyProps = StringMap{}
 	u.LastPasswordUpdate = 0
-	u.LastPictureUpdate = 0
 	u.FailedAttempts = 0
 }
 
@@ -379,26 +383,16 @@ func (u *User) GetFullName() string {
 	}
 }
 
-func (u *User) GetDisplayName() string {
-	if u.Nickname != "" {
-		return u.Nickname
-	} else if fullName := u.GetFullName(); fullName != "" {
-		return fullName
-	} else {
-		return u.Username
-	}
-}
-
-func (u *User) GetDisplayNameForPreference(nameFormat string) string {
+func (u *User) GetDisplayName(nameFormat string) string {
 	displayName := u.Username
 
-	if nameFormat == PREFERENCE_VALUE_DISPLAY_NAME_NICKNAME {
+	if nameFormat == SHOW_NICKNAME_FULLNAME {
 		if u.Nickname != "" {
 			displayName = u.Nickname
 		} else if fullName := u.GetFullName(); fullName != "" {
 			displayName = fullName
 		}
-	} else if nameFormat == PREFERENCE_VALUE_DISPLAY_NAME_FULL {
+	} else if nameFormat == SHOW_FULLNAME {
 		if fullName := u.GetFullName(); fullName != "" {
 			displayName = fullName
 		}
@@ -453,31 +447,25 @@ func IsInRole(userRoles string, inRole string) bool {
 		if r == inRole {
 			return true
 		}
-
 	}
 
 	return false
 }
 
 func (u *User) IsSSOUser() bool {
-	if u.AuthService != "" && u.AuthService != USER_AUTH_SERVICE_EMAIL {
-		return true
-	}
-	return false
+	return u.AuthService != "" && u.AuthService != USER_AUTH_SERVICE_EMAIL
 }
 
 func (u *User) IsOAuthUser() bool {
-	if u.AuthService == USER_AUTH_SERVICE_GITLAB {
-		return true
-	}
-	return false
+	return u.AuthService == USER_AUTH_SERVICE_GITLAB
 }
 
 func (u *User) IsLDAPUser() bool {
-	if u.AuthService == USER_AUTH_SERVICE_LDAP {
-		return true
-	}
-	return false
+	return u.AuthService == USER_AUTH_SERVICE_LDAP
+}
+
+func (u *User) IsSAMLUser() bool {
+	return u.AuthService == USER_AUTH_SERVICE_SAML
 }
 
 // UserFromJson will decode the input and return a User
