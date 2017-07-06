@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import PropTypes from 'prop-types';
@@ -70,7 +70,7 @@ export default class PostBody extends React.PureComponent {
         let comment = '';
         let postClass = '';
 
-        if (parentPost && this.props.parentPostUser) {
+        if (parentPost) {
             const profile = this.props.parentPostUser;
 
             let apostrophe = '';
@@ -158,13 +158,11 @@ export default class PostBody extends React.PureComponent {
                 id={`${post.id}_message`}
                 className={postClass}
             >
-
                 {failedOptions}
                 <PostMessageView
                     lastPostCount={this.props.lastPostCount}
                     post={this.props.post}
                 />
-
             </div>
         );
 
@@ -192,13 +190,9 @@ export default class PostBody extends React.PureComponent {
                 <div className={'post__body ' + mentionHighlightClass}>
                     {messageWithAdditionalContent}
                     {fileAttachmentHolder}
-                    <ReactionListContainer
-                        post={post}
-                        currentUserId={this.props.currentUser.id}
-                    />
+                    <ReactionListContainer post={post}/>
                 </div>
             </div>
         );
     }
 }
-

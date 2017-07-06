@@ -6,12 +6,9 @@ import MemberListChannel from 'components/member_list_channel';
 import TeamStore from 'stores/team_store.jsx';
 import UserStore from 'stores/user_store.jsx';
 import ChannelStore from 'stores/channel_store.jsx';
-
 import {canManageMembers} from 'utils/channel_utils.jsx';
 import {Constants} from 'utils/constants.jsx';
-
 import PropTypes from 'prop-types';
-
 import React from 'react';
 import {Modal} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';

@@ -44,17 +44,9 @@
         "TimeBetweenUserTypingUpdatesMilliseconds": 5000,
         "EnablePostSearch": true,
         "EnableUserTypingMessages": true,
-        "EnableUserStatuses": true,
         "EnableChannelViewedMessages": true,
+        "EnableUserStatuses": true,
         "ClusterLogTimeoutMilliseconds": 2000
-    },
-    "ElasticSearchSettings": {
-        "ConnectionUrl": "http://dockerhost:9200",
-        "Username": "elastic",
-        "Password": "changeme",
-        "EnableIndexing": false,
-        "EnableSearching": false,
-        "Sniff": true
     },
     "TeamSettings": {
         "SiteName": "1THING",
@@ -77,17 +69,18 @@
         "RestrictPrivateChannelManageMembers": "all",
         "UserStatusAwayTimeout": 300,
         "MaxChannelsPerTeam": 2000,
-        "MaxNotificationsPerChannel": 1000
+        "MaxNotificationsPerChannel": 1000,
+        "TeammateNameDisplay": "full_name"
     },
     "SqlSettings": {
         "DriverName": "mysql",
-        "DataSource": "mmuser:mostest@tcp(dockerhost:3306)/mattermost_test?charset=utf8mb4,utf8&readTimeout=30s&writeTimeout=30s",
+        "DataSource": "mmuser:mostest@tcp(dockerhost:3306)/mattermost_test?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s",
         "DataSourceReplicas": [],
         "DataSourceSearchReplicas": [],
         "MaxIdleConns": 20,
         "MaxOpenConns": 300,
         "Trace": false,
-        "AtRestEncryptKey": "",
+        "AtRestEncryptKey": "5wn5uwifw3iej65pbm4nx1fq35bowxiz",
         "QueryTimeout": 30
     },
     "LogSettings": {
@@ -114,12 +107,6 @@
         "Directory": "./data/",
         "EnablePublicLink": false,
         "PublicLinkSalt": "1oidkhjpy4p54jwfrgwk7nhkzgwrq6ug",
-        "ThumbnailWidth": 1000,
-        "ThumbnailHeight": 800,
-        "PreviewWidth": 2000,
-        "PreviewHeight": 0,
-        "ProfileWidth": 128,
-        "ProfileHeight": 128,
         "InitialFont": "markprobold.ttf",
         "AmazonS3AccessKeyId": "",
         "AmazonS3SecretAccessKey": "",
@@ -143,7 +130,7 @@
         "SMTPServer": "dockerhost",
         "SMTPPort": "2500",
         "ConnectionSecurity": "",
-        "InviteSalt": "",
+        "InviteSalt": "foxhnpjgmh9r8tnnke53j6816qd91px5",
         "SendPushNotifications": false,
         "PushNotificationServer": "",
         "PushNotificationContents": "generic",
@@ -170,6 +157,9 @@
         "AboutLink": "https://about.mattermost.com/default-about/",
         "HelpLink": "https://about.mattermost.com/default-help/",
         "ReportAProblemLink": "https://about.mattermost.com/default-report-a-problem/",
+        "AdministratorsGuideLink": "https://about.mattermost.com/administrators-guide/",
+        "TroubleshootingForumLink": "https://about.mattermost.com/troubleshooting-forum/",
+        "CommercialSupportLink": "https://about.mattermost.com/commercial-support/",
         "SupportEmail": "steve@1thing.design"
     },
     "AnnouncementSettings": {
@@ -289,6 +279,14 @@
         "TurnURI": "",
         "TurnUsername": "",
         "TurnSharedKey": ""
+    },
+    "ElasticSearchSettings": {
+        "ConnectionUrl": "http://dockerhost:9200",
+        "Username": "elastic",
+        "Password": "changeme",
+        "EnableIndexing": false,
+        "EnableSearching": false,
+        "Sniff": true
     },
     "DataRetentionSettings": {
         "Enable": false

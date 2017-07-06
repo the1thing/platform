@@ -160,7 +160,7 @@
     text-align: center;
     top: 0;
     width: 100%;
-    z-index: 11;
+    z-index: 6;
     .overlay__indent {
         @include clearfix;
         @include alpha-property(background-color, $black, .6);
@@ -217,27 +217,6 @@
     .inactive {
         display: none;
     }
-
-    .post-list__loading {
-        @include opacity(.5);
-        font-size: .9em;
-        font-style: italic;
-        padding: 1em 0;
-        text-align: center;
-
-        i {
-            margin-right: 2px;
-        }
-
-        &.post-list__loading-search {
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
     .post-list-holder-by-time {
         -webkit-overflow-scrolling: touch;
         background: #FFFFFF!important;
@@ -349,11 +328,20 @@
 }
 
 .post-create__container {
-
-    // @include flex(0 0 auto);
-    // width: 100%;
-    // z-index: 9;
-
+    background: #FFFFFF!important;
+    .icon--emoji-picker {
+        position: absolute;
+        right: -100px;
+        top: 0px;
+    }
+    .btn-file {
+        overflow: visible;
+    }
+    .emoji-picker {
+        position: absolute;
+        top: -361px;
+        right: 0;
+    }
     label {
         font-weight: normal;
     }
@@ -368,48 +356,10 @@
     .center {
         max-width: 1028px;
     }
- 
     .post-create {
         &.scroll {
             .btn-file {
                 right: 10px;
- 
-
-    .custom-textarea {
-        bottom: 0;
-        max-height: 162px;
-        padding-top: 8px;
-        overflow: hidden;
-        resize: none;
-
-        &:not(.custom-textarea--emoji-picker) {
-            padding-right: 35px;
-        }
-
-        &.custom-textarea--emoji-picker {
-            padding-right: 60px;
-        }
-    }
-
-    .emoji-picker {
-        position: absolute;
-        top: -361px;
-        right: 0px;
-    }
-
-    .post-create.scroll {
-        .btn-file {
-            right: 10px;
-        }
-
-        .custom-textarea {
-            -ms-overflow-style: auto;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-
-            &:not(.custom-textarea--emoji-picker) {
-                padding-right: 43px;
- 
             }
             .custom-textarea {
                 -ms-overflow-style: auto;
@@ -582,16 +532,9 @@
         .comment-icon__container,
         .post__reply,
         .post__remove,
-        .reacticon__container,
         .permalink-icon {
             visibility: visible;
         }
- 
-        .post__header {
-            .col__reply {
-                z-index: 7;
-            }
-        } 
         .post__body {
             background: #FAFAFA !important;
         }
@@ -758,12 +701,6 @@
             font-size: .87em;
         }
     }
- 
-
-    .emoticon {
-        vertical-align: top;
-    }
- 
     p {
         font-size: 14px;
         line-height: 1.6em;
@@ -806,24 +743,6 @@
         }
     }
     &.same--root {
-        &.post--pinned {
-            h1,
-            h2 {
-                &:first-child {
-                    margin-top: 15px;
-                }
-            }
-
-            h3,
-            h4,
-            h5,
-            h6 {
-                &:first-child {
-                    margin-top: 20px;
-                }
-            }
-        }
-
         &.same--user {
             padding: 0;
             &:hover,
@@ -910,15 +829,10 @@
         max-width: 1000px;
     }
     .post__header {
+        list-style: none;
         margin-bottom: 2px;
         padding: 0;
- 
         li {
-             display: inline-block;
-            vertical-align: top;
-        }
-
-        > div {
             display: inline-block;
             vertical-align: top;
         }
@@ -1071,7 +985,7 @@
             // margin-bottom: .4em;
         }
         p + p {
-            margin: 0.5em 0 0;
+            margin: 1.2em 0 0;
         }
         img {
             max-height: 400px;
@@ -1079,8 +993,7 @@
         ul,
         ol {
             font-size: 13.5px;
-            margin-bottom: .11em;
-            margin-top: 3px;
+            margin-bottom: .4em;
             padding-left: 20px;
             p {
                 margin-bottom: 0;
@@ -1122,11 +1035,11 @@
         }
         ul + p,
         ol + p {
-            margin-top: .6em;
+            margin-top: 1em;
         }
         p + ul,
         p + ol {
-            margin-top: .6em;
+            margin-top: 1em;
         }
         .pending-post-actions {
             // background: alpha-color($black, .7);
@@ -1148,7 +1061,7 @@
             }
         }
         .post-reaction-list {
-            min-height: 30px;
+            // min-height: 30px;
         }
         .post-reaction {
             @include user-select(none);

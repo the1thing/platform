@@ -11,9 +11,14 @@
     background: #1F1D1D!important;
     background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
     .status img {
-        margin-top: -3px;
+        margin-top: 4px;
+        margin-left: 4px;  
     }
  
+ .people-stack .status img {
+        margin-top: -2px;
+        margin-left: 0px;  
+    }
 
     .error-bar--fixed & {
         height: calc(100% - 22px);
@@ -54,6 +59,7 @@
         padding-bottom: 0;
         position: absolute;
         width: 100%;
+        background:transparent !important;
 
         button {
             @include single-transition(all, .15s, ease-in);
@@ -62,6 +68,7 @@
             text-align: center;
             text-decoration: none;
             width: 100%;
+            color: rgb(255, 255, 255) !important;
 
             > span {
                 @include single-transition(all, .15s, ease-in);
@@ -71,6 +78,8 @@
             }
 
             &:hover {
+                background:transparent !important;
+                color: rgb(255, 255, 255) !important;
                 span {
                     @include opacity(1);
                 }

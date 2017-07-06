@@ -5,10 +5,8 @@
     border-bottom: 1px solid #F0F0F0;
     font-size: 14px;
     line-height: 56px;
-    position: relative;
     width: 100%;
     background: #FFFFFF!important;
-    z-index: 9;
     .member-popover__trigger,
     .pinned-posts-button {
         cursor: pointer;
@@ -21,7 +19,7 @@
         font-family: 'MarkPro-Black';
         white-space: nowrap;
         .fa {
-            font-size: 19px;
+            font-size: 16px;
         }
     }
     .member-popover__container,
@@ -44,16 +42,6 @@
             &:before {
                 color: #000000!important;
             }
-        & + div {
-            display: none;
-        }
-    }
-
-    .member-popover__trigger {
-        .fa {
-            margin-left: 4px;
-            position: relative;
-            top: 2px;
         }
     }
     .pinned-posts-button svg {
@@ -63,7 +51,6 @@
         &:hover {
             fill: #000000 !important;
         }
-
     }
     &.alt {
         margin: 0;
@@ -72,8 +59,6 @@
             &.header-list__right {
                 padding-right: 4px;
                 visibility: hidden;
-                white-space: nowrap;
-
             }
         }
         td {
@@ -298,9 +283,10 @@
         }
     }
     .team__header {
-        @include legacy-pie-clearfix;
+                @include legacy-pie-clearfix;
         @include display-flex();
         @include flex-direction(row-reverse);
+        @include legacy-pie-clearfix;
         padding: 9px 10px;
         position: relative;
         background: transparent !important;
@@ -384,12 +370,14 @@
             @include border-radius(36px);
             float: left;
             height: 36px;
+            margin-right: 6px;
             width: 36px;
         }
         .header__info {
-            @include clearfix;
-            @include flex-grow(1);
-            color: $white;
+            overflow: hidden;
+            -webkit-flex-grow: 1;
+            flex-grow: 1;
+            color: #fff;
             padding-left: 8px;
             position: relative;
         }
@@ -456,12 +444,11 @@
 .app__body {
     .channel-header__links {
         visibility: hidden;
-        display: inline-block;
         font-family: 'Open Sans', sans-serif;
         font-size: 22px;
         height: 30px;
         line-height: 26px;
-        margin-right: 1px;
+        margin-right: 3px;
         text-align: center;
         width: 30px;
         th {
@@ -498,19 +485,10 @@
                 svg {
                     fill: #000000!important;
                 }
-                @include opacity(0.7);
             }
             &:focus {
                 color: #000000!important;
                 fill: #000000!important;
-            }
-
-            &.active {
-                color: $primary-color;
-                @include opacity(1);
-                .icon {
-                    fill: $primary-color;
-                }
             }
         }
     }

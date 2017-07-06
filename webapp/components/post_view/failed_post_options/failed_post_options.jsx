@@ -45,7 +45,6 @@ export default class FailedPostOptions extends React.Component {
             () => {
                 this.submitting = false;
             },
-failed_post_options.jsx
             (err) => {
                 if (err.id === 'api.post.create_post.root_id.app_error') {
                     this.showPostDeletedModal();

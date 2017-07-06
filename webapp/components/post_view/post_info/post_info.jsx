@@ -1,4 +1,4 @@
-// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
+    // Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import PostTime from 'components/post_view/post_time.jsx';
@@ -198,9 +198,9 @@ export default class PostInfo extends React.PureComponent {
                         ref='dotMenu'
                         className='col col__reply'
                     >
-                        {dotMenu}
+                        {comments}    
                         {react}
-                        {comments}
+                        {dotMenu}
                     </div>
                 );
             }

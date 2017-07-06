@@ -13,6 +13,7 @@
         right: -1px;
         top: auto;
         width: 10px;
+        background:#FFF !important;
         .modal & {
             bottom: -6px;
         }
@@ -20,7 +21,7 @@
         img {
             max-width: 100%!important;
             width: 10px!important;
-            height: 10px!important;
+            height: 10px!important;           
         }
         &.status-edit {
             text-align: center;
@@ -30,6 +31,12 @@
                 font-size: 10px;
                 position: relative;
                 top: 4px;
+            }
+            &:hover i {
+                @include opacity(1);
+                font-size: 10px;
+                position: relative;
+                top: 4px;    
             }
         }
         svg {

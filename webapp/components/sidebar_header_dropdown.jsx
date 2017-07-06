@@ -610,16 +610,9 @@ export default class SidebarHeaderDropdown extends React.Component {
                     {manageLink}
                     {teams}
                     {backstageDivider}
-                    {integrationsLink}
                     {customEmoji}
                     {sysAdminDivider}
                     {sysAdminLink}
-                    {helpDivider}
-                    {helpLink}
-                    {keyboardShortcutsLink}
-                    {reportLink}
-                    {nativeAppLink}
-                    {about}
                     {logoutDivider}
                     {logout}
                     {teamMembersModal}

@@ -473,44 +473,6 @@ export default class SidebarRightMenu extends React.Component {
                 <div className='nav-pills__container'>
                     {tutorialTip}
                     <ul className='nav nav-pills nav-stacked'>
-                        <li>
-                            <a
-                                href='#'
-                                onClick={this.searchMentions}
-                            >
-                                <i className='icon mentions'>{'@'}</i>
-                                <FormattedMessage
-                                    id='sidebar_right_menu.recentMentions'
-                                    defaultMessage='Recent Mentions'
-                                />
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href='#'
-                                onClick={this.getFlagged}
-                            >
-                                <i className='icon fa fa-flag'/>
-                                <FormattedMessage
-                                    id='sidebar_right_menu.flagged'
-                                    defaultMessage='Flagged Posts'
-                                />
-                            </a>
-                        </li>
-                        <li className='divider'/>
-                        <li>
-                            <a
-                                href='#'
-                                onClick={() => GlobalActions.showAccountSettingsModal()}
-                            >
-                                <i className='icon fa fa-cog'/>
-                                <FormattedMessage
-                                    id='sidebar_right_menu.accountSettings'
-                                    defaultMessage='Account Settings'
-                                />
-                            </a>
-                        </li>
-                        <li className='divider'/>
 
                         {inviteLink}
                         {teamLink}
@@ -518,11 +480,6 @@ export default class SidebarRightMenu extends React.Component {
                         {teamDivider}
                         {teamSettingsLink}
                         {manageLink}
-                        {createTeam}
-                        {joinAnotherTeamLink}
-                        {leaveTeam}
-                        {consoleDivider}
-                        {consoleLink}
                         <li className='divider'/>
                         <li>
                             <a
