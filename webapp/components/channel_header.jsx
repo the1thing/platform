@@ -929,7 +929,7 @@ export default class ChannelHeader extends React.Component {
                             <th>
                                 {webrtc}
                             </th>
-                            <th>
+                            <th className="header-list__right">
                                 {popoverListMembers}
                             </th>
                             <th>

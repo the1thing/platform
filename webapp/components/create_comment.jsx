@@ -579,6 +579,7 @@ export default class CreateComment extends React.Component {
                                 id='reply_textbox'
                                 ref='textbox'
                             />
+                            <span className="btn btn-file">
                             <FileUpload
                                 ref='fileUpload'
                                 getFileCount={this.getFileCount}
@@ -591,8 +592,8 @@ export default class CreateComment extends React.Component {
                                 onEmojiClick={this.toggleEmojiPicker}
                                 emojiEnabled={this.state.emojiPickerEnabled}
                                 navBarName='rhs'
-
                             />
+                            </span>
                         </div>
                     </div>
                     <MsgTyping

@@ -425,6 +425,8 @@
             cursor: pointer;
             top: 2px;
             z-index: 5;
+            max-width: 40px;
+            overflow: hidden;
             img {
                 cursor: pointer;
                 height: 14px;
@@ -519,6 +521,7 @@
         .dropdown,
         .comment-icon__container,
         .flag-icon__container,
+        .reacticon__container,
         .post__reply,
         .post__remove {
             visibility: visible;
@@ -531,6 +534,7 @@
         .dropdown,
         .comment-icon__container,
         .post__reply,
+        .reacticon__container,
         .post__remove,
         .permalink-icon {
             visibility: visible;
@@ -951,8 +955,8 @@
             top: -3px;
             color: #BDBDBD;
             font-weight: bolder;
-            font-size: 20px;
-            line-height: 20px;
+            font-size: 16px;
+            line-height: 16px;
             letter-spacing: 2px;
         }
     }
@@ -1169,6 +1173,14 @@
             top: 3px;
             width: 18px;
         }
+    }
+    .reacticon__container {
+        visibility: hidden;
+        display: inline-block;
+        margin-left: 5px;
+        padding-left: 11px;
+        padding-right: 5px;
+        border-left: 1px solid #F0F0F0;
     }
     .comment-icon__container {
         display: inline-block;

@@ -11,8 +11,12 @@
     background: #1F1D1D!important;
     background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
     .status img {
-        margin-top: 4px;
-        margin-left: 4px;  
+        margin-top: 1px;
+        margin-left: 1px;  
+    }
+    .status-edit img, .status-edit svg, .status-edit i  {
+        margin-top: -2px;
+        margin-left: 0px;
     }
  
  .people-stack .status img {
@@ -263,12 +267,11 @@
  
 
     .status-wrapper {
-        .status {
-            bottom: -9px;
-            height: 18px;
-            right: -5px;
-            width: 18px;
-
+    .status {
+            bottom: -6px;
+            height: 12px;
+            right: 5px;
+            width: 12px;
             svg {
                 top: 3px;
                 max-height: 12px;

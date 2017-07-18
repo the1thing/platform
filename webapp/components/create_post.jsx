@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2015-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import ReactDOM from 'react-dom';
@@ -8,6 +8,7 @@ import FileUpload from './file_upload.jsx';
 import FilePreview from './file_preview.jsx';
 import PostDeletedModal from './post_deleted_modal.jsx';
 import TutorialTip from './tutorial/tutorial_tip.jsx';
+import EmojiPickerOverlay from 'components/emoji_picker/emoji_picker_overlay.jsx';
 
 import AppDispatcher from 'dispatcher/app_dispatcher.jsx';
 import * as GlobalActions from 'actions/global_actions.jsx';
@@ -27,7 +28,6 @@ import ConfirmModal from './confirm_modal.jsx';
 import Constants from 'utils/constants.jsx';
 
 import {FormattedHTMLMessage, FormattedMessage} from 'react-intl';
-import {RootCloseWrapper} from 'react-overlays';
 import {browserHistory} from 'react-router/es6';
 
 const Preferences = Constants.Preferences;
@@ -36,8 +36,10 @@ const ActionTypes = Constants.ActionTypes;
 const KeyCodes = Constants.KeyCodes;
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const REACTION_PATTERN = /^(\+|-):([^:\s]+):\s*$/;
+export const EMOJI_PATTERN = /:[A-Za-z-_0-9]*:/g;
 
 export default class CreatePost extends React.Component {
     constructor(props) {
@@ -57,6 +59,8 @@ export default class CreatePost extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onPreferenceChange = this.onPreferenceChange.bind(this);
         this.getFileCount = this.getFileCount.bind(this);
+        this.getFileUploadTarget = this.getFileUploadTarget.bind(this);
+        this.getCreatePostControls = this.getCreatePostControls.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.sendMessage = this.sendMessage.bind(this);
@@ -92,7 +96,6 @@ export default class CreatePost extends React.Component {
             showPostDeletedModal: false,
             enableSendButton: false,
             showEmojiPicker: false,
-            emojiPickerEnabled: Utils.isFeatureEnabled(Constants.PRE_RELEASE_FEATURES.EMOJI_PICKER_PREVIEW),
             showConfirmModal: false,
             totalMembers: members
         };
@@ -104,9 +107,12 @@ export default class CreatePost extends React.Component {
         this.setState({postError});
     }
 
-
     toggleEmojiPicker = () => {
         this.setState({showEmojiPicker: !this.state.showEmojiPicker});
+    }
+
+    hideEmojiPicker = () => {
+        this.setState({showEmojiPicker: false});
     }
 
     doSubmit(e) {
@@ -246,7 +252,6 @@ export default class CreatePost extends React.Component {
 
         GlobalActions.emitUserPostedEvent(post);
 
-
         // parse message and emit emoji event
         const emojiResult = post.message.match(EMOJI_PATTERN);
         if (emojiResult) {
@@ -255,8 +260,8 @@ export default class CreatePost extends React.Component {
             });
         }
 
-        PostActions.createPost(post, this.state.fileInfos, null,
-
+        PostActions.createPost(post, this.state.fileInfos,
+            () => GlobalActions.postListScrollChange(true),
             (err) => {
                 if (err.id === 'api.post.create_post.root_id.app_error') {
                     // this should never actually happen since you can't reply from this textbox
@@ -495,6 +500,14 @@ export default class CreatePost extends React.Component {
         return draft.fileInfos.length + draft.uploadsInProgress.length;
     }
 
+    getFileUploadTarget() {
+        return this.refs.textbox;
+    }
+
+    getCreatePostControls() {
+        return this.refs.createPostControls;
+    }
+
     handleKeyDown(e) {
         if (this.state.ctrlSend && e.keyCode === KeyCodes.ENTER && e.ctrlKey === true) {
             this.postMsgKeyPress(e);
@@ -688,21 +701,44 @@ export default class CreatePost extends React.Component {
             sendButtonClass += ' disabled';
         }
 
-        let emojiPicker = null;
-        if (this.state.showEmojiPicker) {
-            emojiPicker = (
-                <RootCloseWrapper onRootClose={this.toggleEmojiPicker}>
-                    <EmojiPicker
-                        onHide={this.toggleEmojiPicker}
-                        onEmojiClick={this.handleEmojiClick}
-                    />
-                </RootCloseWrapper>
-            );
-        }
-
         let attachmentsDisabled = '';
         if (global.window.mm_config.EnableFileAttachments === 'false') {
             attachmentsDisabled = ' post-create--attachment-disabled';
+        }
+
+        const fileUpload = (
+            <FileUpload
+                ref='fileUpload'
+                getFileCount={this.getFileCount}
+                getTarget={this.getFileUploadTarget}
+                onFileUploadChange={this.handleFileUploadChange}
+                onUploadStart={this.handleUploadStart}
+                onFileUpload={this.handleFileUploadComplete}
+                onUploadError={this.handleUploadError}
+                postType='post'
+                channelId=''
+            />
+        );
+
+        let emojiPicker = null;
+        if (window.mm_config.EnableEmojiPicker === 'true') {
+            emojiPicker = (
+                <span>
+                    <EmojiPickerOverlay
+                        show={this.state.showEmojiPicker}
+                        container={this.props.getChannelView}
+                        target={this.getCreatePostControls}
+                        onHide={this.hideEmojiPicker}
+                        onEmojiClick={this.handleEmojiClick}
+                        rightOffset={15}
+                        topOffset={-7}
+                    />
+                    <span
+                        className={'fa fa-smile-o icon--emoji-picker emoji-main'}
+                        onClick={this.toggleEmojiPicker}
+                    />
+                </span>
+            );
         }
 
         return (
@@ -723,38 +759,20 @@ export default class CreatePost extends React.Component {
                                 handlePostError={this.handlePostError}
                                 value={this.state.message}
                                 onBlur={this.handleBlur}
+                                emojiEnabled={window.mm_config.EnableEmojiPicker === 'true'}
                                 createMessage={Utils.localizeMessage('create_post.write', 'Write a message...')}
                                 channelId={this.state.channelId}
                                 id='post_textbox'
                                 ref='textbox'
                             />
-                            <FileUpload
-                                ref='fileUpload'
-                                getFileCount={this.getFileCount}
-                                getTarget={this.getFileUploadTarget}
-                                onFileUploadChange={this.handleFileUploadChange}
-                                onUploadStart={this.handleUploadStart}
-                                onFileUpload={this.handleFileUploadComplete}
-                                onUploadError={this.handleUploadError}
-                                postType='post'
-                                channelId=''
-                                onEmojiClick={this.toggleEmojiPicker}
-                                emojiEnabled={this.state.emojiPickerEnabled}
-                                navBarName='main'
-                            />
-
-                            {emojiPicker}
+                            <span
+                                ref='createPostControls'
+                                className='btn btn-file'
+                            >
+                                {fileUpload}
+                                {emojiPicker}
+                            </span>
                         </div>
-                        <FileUpload
-                            ref='fileUpload'
-                            getFileCount={this.getFileCount}
-                            onFileUploadChange={this.handleFileUploadChange}
-                            onUploadStart={this.handleUploadStart}
-                            onFileUpload={this.handleFileUploadComplete}
-                            onUploadError={this.handleUploadError}
-                            postType='post'
-                            channelId=''
-                        />
                         <a
                             className={sendButtonClass}
                             onClick={this.handleSubmit}
@@ -789,3 +807,7 @@ export default class CreatePost extends React.Component {
         );
     }
 }
+
+CreatePost.propTypes = {
+    getChannelView: PropTypes.func
+};

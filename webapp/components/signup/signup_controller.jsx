@@ -50,7 +50,7 @@ export default class SignupController extends React.Component {
                 );
             }
         }
-
+        
         this.state = {
             loading,
             serverError,
