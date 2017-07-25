@@ -766,10 +766,14 @@ export default class CreatePost extends React.Component {
                                 ref='textbox'
                             />
                             <span
-                                ref='createPostControls'
                                 className='btn btn-file'
                             >
                                 {fileUpload}
+                            </span>
+                            <span
+                                ref='createPostControls'
+                                className='emoji-icon-in-create-post'
+                            >
                                 {emojiPicker}
                             </span>
                         </div>

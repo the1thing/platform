@@ -309,14 +309,13 @@ export default class Sidebar extends React.Component {
                     curIndex = i;
                 }
             }
-            let nextChannel = allChannels[curIndex];
             let nextIndex = curIndex;
             if (e.keyCode === Constants.KeyCodes.DOWN) {
                 nextIndex = curIndex + 1;
             } else if (e.keyCode === Constants.KeyCodes.UP) {
                 nextIndex = curIndex - 1;
             }
-            nextChannel = allChannels[Utils.mod(nextIndex, allChannels.length)];
+            const nextChannel = allChannels[Utils.mod(nextIndex, allChannels.length)];
             ChannelActions.goToChannel(nextChannel);
             this.updateScrollbarOnChannelChange(nextChannel);
             this.isSwitchingChannel = false;
@@ -342,7 +341,6 @@ export default class Sidebar extends React.Component {
                     curIndex = i;
                 }
             }
-            let nextChannel = allChannels[curIndex];
             let nextIndex = curIndex;
             let count = 0;
             let increment = 0;
@@ -359,7 +357,7 @@ export default class Sidebar extends React.Component {
                 unreadCounts = ChannelStore.getUnreadCount(allChannels[nextIndex].id);
             }
             if (unreadCounts.msgs !== 0 || unreadCounts.mentions !== 0) {
-                nextChannel = allChannels[nextIndex];
+                const nextChannel = allChannels[nextIndex];
                 ChannelActions.goToChannel(nextChannel);
                 this.updateScrollbarOnChannelChange(nextChannel);
             }
@@ -520,7 +518,7 @@ export default class Sidebar extends React.Component {
             linkClass = 'active';
         }
 
-        let rowClass = 'sidebar-channel';
+        let rowClass = 'sidebar-item';
 
         var unread = false;
         if (channelMember) {
@@ -542,7 +540,7 @@ export default class Sidebar extends React.Component {
         var badge = null;
         if (channelMember) {
             if (unreadCount.mentions) {
-                badge = <span className='badge pull-right small'>{unreadCount.mentions}</span>;
+                badge = <span className='badge'>{unreadCount.mentions}</span>;
                 this.badgesActive = true;
             }
         } else if (this.state.loadingDMChannel === index && channel.type === Constants.DM_CHANNEL) {
@@ -554,13 +552,15 @@ export default class Sidebar extends React.Component {
             );
         }
 
-        if (msgCount > 0) {
+        if (unreadCount.mentions > 0) {
             rowClass += ' has-badge';
         }
 
         let displayName = channel.display_name;
 
         var icon = null;
+        const globeIcon = Constants.GLOBE_ICON_SVG;
+        const lockIcon = Constants.LOCK_ICON_SVG;
         if (channel.type === Constants.OPEN_CHANNEL) {
             icon = <div className='status'><i className='fa fa-globe'/></div>;
         } else if (channel.type === Constants.PRIVATE_CHANNEL) {
@@ -589,6 +589,7 @@ export default class Sidebar extends React.Component {
         if (handleClose && !badge) {
             closeButton = (
                 <OverlayTrigger
+                    trigger={['hover', 'focus']}
                     delayShow={1000}
                     placement='top'
                     overlay={removeTooltip}
@@ -630,7 +631,7 @@ export default class Sidebar extends React.Component {
                     onClick={this.trackChannelSelectedEvent}
                 >
                     {icon}
-                    {displayName}
+                    <span className='sidebar-item__name'>{displayName}</span>
                     {badge}
                     {closeButton}
                 </Link>
@@ -644,6 +645,8 @@ export default class Sidebar extends React.Component {
     }
 
     render() {
+        const switchChannelIcon = Constants.SWITCH_CHANNEL_ICON_SVG;
+
         // Check if we have all info needed to render
         if (this.state.currentTeam == null || this.state.currentUser == null) {
             return (<div/>);
@@ -749,8 +752,8 @@ export default class Sidebar extends React.Component {
 
         let createPublicChannelIcon = (
             <OverlayTrigger
+                trigger={['hover', 'focus']}
                 delayShow={500}
-                trigger='hover'
                 placement='top'
                 overlay={createChannelTootlip}
             >
@@ -767,9 +770,9 @@ export default class Sidebar extends React.Component {
 
         let createPrivateChannelIcon = (
             <OverlayTrigger
+                trigger={['hover', 'focus']}
                 delayShow={500}
                 placement='top'
-                trigger='hover'
                 overlay={createGroupTootlip}
             >
                 <a
@@ -866,7 +869,7 @@ export default class Sidebar extends React.Component {
                             <h4>
                                 <FormattedMessage
                                     id='sidebar.favorite'
-                                    defaultMessage='Favorites'
+                                    defaultMessage='FAVORITE CHANNELS'
                                 />
                             </h4>
                         </li>
@@ -877,7 +880,7 @@ export default class Sidebar extends React.Component {
                             <h4>
                                 <FormattedMessage
                                     id='sidebar.channels'
-                                    defaultMessage='Channels'
+                                    defaultMessage='PUBLIC CHANNELS'
                                 />
                                 {createPublicChannelIcon}
                             </h4>
@@ -903,7 +906,7 @@ export default class Sidebar extends React.Component {
                             <h4>
                                 <FormattedMessage
                                     id='sidebar.pg'
-                                    defaultMessage='Private Channels'
+                                    defaultMessage='PRIVATE CHANNELS'
                                 />
                                 {createPrivateChannelIcon}
                             </h4>
@@ -915,7 +918,7 @@ export default class Sidebar extends React.Component {
                             <h4>
                                 <FormattedMessage
                                     id='sidebar.direct'
-                                    defaultMessage='Direct Messages'
+                                    defaultMessage='DIRECT MESSAGES'
                                 />
                             </h4>
                         </li>

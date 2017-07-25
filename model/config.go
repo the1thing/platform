@@ -143,6 +143,7 @@ type ServiceSettings struct {
 	EnableOnlyAdminIntegrations              *bool
 	EnablePostUsernameOverride               bool
 	EnablePostIconOverride                   bool
+	EnableAPIv3                              *bool
 	EnableLinkPreviews                       *bool
 	EnableTesting                            bool
 	EnableDeveloper                          *bool
@@ -159,6 +160,7 @@ type ServiceSettings struct {
 	WebsocketPort                            *int
 	WebserverMode                            *string
 	EnableCustomEmoji                        *bool
+	EnableEmojiPicker                        *bool
 	RestrictCustomEmojiCreation              *string
 	RestrictPostDelete                       *string
 	AllowEditPost                            *string
@@ -435,6 +437,11 @@ type DataRetentionSettings struct {
 	Enable *bool
 }
 
+type JobSettings struct {
+	RunJobs      *bool
+	RunScheduler *bool
+}
+
 type Config struct {
 	ServiceSettings       ServiceSettings
 	TeamSettings          TeamSettings
@@ -461,6 +468,7 @@ type Config struct {
 	WebrtcSettings        WebrtcSettings
 	ElasticSearchSettings ElasticSearchSettings
 	DataRetentionSettings DataRetentionSettings
+	JobSettings           JobSettings
 }
 
 func (o *Config) ToJson() string {
@@ -562,6 +570,11 @@ func (o *Config) SetDefaults() {
 
 	if o.ServiceSettings.LicenseFileLocation == nil {
 		o.ServiceSettings.LicenseFileLocation = new(string)
+	}
+
+	if o.ServiceSettings.EnableAPIv3 == nil {
+		o.ServiceSettings.EnableAPIv3 = new(bool)
+		*o.ServiceSettings.EnableAPIv3 = true
 	}
 
 	if o.ServiceSettings.EnableLinkPreviews == nil {
@@ -709,11 +722,6 @@ func (o *Config) SetDefaults() {
 	if o.TeamSettings.MaxNotificationsPerChannel == nil {
 		o.TeamSettings.MaxNotificationsPerChannel = new(int64)
 		*o.TeamSettings.MaxNotificationsPerChannel = 1000
-	}
-
-	if o.TeamSettings.TeammateNameDisplay == nil {
-		o.TeamSettings.TeammateNameDisplay = new(string)
-		*o.TeamSettings.TeammateNameDisplay = SHOW_FULLNAME
 	}
 
 	if o.EmailSettings.EnableSignInWithEmail == nil {
@@ -1027,7 +1035,12 @@ func (o *Config) SetDefaults() {
 
 	if o.ServiceSettings.EnableCustomEmoji == nil {
 		o.ServiceSettings.EnableCustomEmoji = new(bool)
-		*o.ServiceSettings.EnableCustomEmoji = true
+		*o.ServiceSettings.EnableCustomEmoji = false
+	}
+
+	if o.ServiceSettings.EnableEmojiPicker == nil {
+		o.ServiceSettings.EnableEmojiPicker = new(bool)
+		*o.ServiceSettings.EnableEmojiPicker = false
 	}
 
 	if o.ServiceSettings.RestrictCustomEmojiCreation == nil {
@@ -1225,6 +1238,15 @@ func (o *Config) SetDefaults() {
 		*o.SamlSettings.LocaleAttribute = SAML_SETTINGS_DEFAULT_LOCALE_ATTRIBUTE
 	}
 
+	if o.TeamSettings.TeammateNameDisplay == nil {
+		o.TeamSettings.TeammateNameDisplay = new(string)
+		*o.TeamSettings.TeammateNameDisplay = SHOW_USERNAME
+
+		if *o.SamlSettings.Enable || *o.LdapSettings.Enable {
+			*o.TeamSettings.TeammateNameDisplay = SHOW_FULLNAME
+		}
+	}
+
 	if o.NativeAppSettings.AppDownloadLink == nil {
 		o.NativeAppSettings.AppDownloadLink = new(string)
 		*o.NativeAppSettings.AppDownloadLink = NATIVEAPP_SETTINGS_DEFAULT_APP_DOWNLOAD_LINK
@@ -1363,6 +1385,16 @@ func (o *Config) SetDefaults() {
 	if o.DataRetentionSettings.Enable == nil {
 		o.DataRetentionSettings.Enable = new(bool)
 		*o.DataRetentionSettings.Enable = false
+	}
+
+	if o.JobSettings.RunJobs == nil {
+		o.JobSettings.RunJobs = new(bool)
+		*o.JobSettings.RunJobs = true
+	}
+
+	if o.JobSettings.RunScheduler == nil {
+		o.JobSettings.RunScheduler = new(bool)
+		*o.JobSettings.RunScheduler = true
 	}
 
 	o.defaultWebrtcSettings()
@@ -1631,8 +1663,6 @@ func (o *Config) Sanitize() {
 		o.SqlSettings.DataSourceSearchReplicas[i] = FAKE_SETTING
 	}
 
-	*o.ElasticSearchSettings.ConnectionUrl = FAKE_SETTING
-	*o.ElasticSearchSettings.Username = FAKE_SETTING
 	*o.ElasticSearchSettings.Password = FAKE_SETTING
 }
 

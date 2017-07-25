@@ -22,6 +22,7 @@
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
         "EnableLinkPreviews": true,
+        "EnableAPIv3": true,
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
@@ -37,6 +38,7 @@
         "WebsocketPort": 80,
         "WebserverMode": "gzip",
         "EnableCustomEmoji": false,
+        "EnableEmojiPicker": true,
         "RestrictCustomEmojiCreation": "all",
         "RestrictPostDelete": "all",
         "AllowEditPost": "always",
@@ -290,5 +292,9 @@
     },
     "DataRetentionSettings": {
         "Enable": false
+    },
+    "JobSettings": {
+        "RunJobs": true,
+        "RunScheduler": true
     }
 }

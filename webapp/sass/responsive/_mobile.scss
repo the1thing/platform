@@ -1,5 +1,12 @@
 @charset 'UTF-8';
 @media screen and (max-width: 768px) {
+    .icon--emoji-picker, .reacticon__container {
+        display: none !important;
+    }
+    .navbar-search
+    {
+        display:none !important;
+    }
     .hide-in-mobile {
         display: none;
     }

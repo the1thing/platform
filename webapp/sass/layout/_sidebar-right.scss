@@ -113,7 +113,7 @@
         background: #F6F6F6;
         // border-top: $border-gray;
         height: calc(100% - 56px);
-        margin-top:-4px;
+        margin-top:-2px;
         .col__reply .dropdown {
             border-left: none!important;
         }
@@ -231,3 +231,4 @@ i {
 .post-right__container .post .post__header .col__reply {
     top: -7px !important;
 }
+.sidebar-collapse__container {display:none;}

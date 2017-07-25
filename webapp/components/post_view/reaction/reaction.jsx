@@ -224,6 +224,7 @@ export default class Reaction extends React.PureComponent {
 
         return (
             <OverlayTrigger
+                trigger={['hover', 'focus']}
                 delayShow={1000}
                 placement='top'
                 shouldUpdatePosition={true}

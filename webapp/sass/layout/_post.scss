@@ -329,10 +329,17 @@
 
 .post-create__container {
     background: #FFFFFF!important;
+    .emoji-icon-in-create-post {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    }
     .icon--emoji-picker {
         position: absolute;
-        right: -100px;
-        top: 0px;
+        right: 10px;
+        top: 11px;
+        cursor: pointer;
+        font-size: 18px;
     }
     .btn-file {
         overflow: visible;
@@ -418,7 +425,7 @@
             @include single-transition(all, .15s);
             font-size: 16px;
             border-radius: 6px 0 0 6px;
-            padding: 4px 11px 7px 14px;
+            padding: 5px 10px 6px 14px;
             position: absolute;
             left: 2px;
             width: 40px;
@@ -427,6 +434,11 @@
             z-index: 5;
             max-width: 40px;
             overflow: hidden;
+            .icon--attachment {
+                top: -1px;
+                position: relative;
+                left: -2px;
+            }
             img {
                 cursor: pointer;
                 height: 14px;
@@ -836,7 +848,7 @@
         list-style: none;
         margin-bottom: 2px;
         padding: 0;
-        li {
+        .col {
             display: inline-block;
             vertical-align: top;
         }
@@ -985,6 +997,7 @@
         padding: 0.5em 1em 0.5em 1em;
         width: 100%;
         word-wrap: break-word;
+        clear: both;
         div {
             // margin-bottom: .4em;
         }

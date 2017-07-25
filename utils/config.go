@@ -462,6 +462,7 @@ func getClientConfig(c *model.Config) map[string]string {
 	props["SQLDriverName"] = c.SqlSettings.DriverName
 
 	props["EnableCustomEmoji"] = strconv.FormatBool(*c.ServiceSettings.EnableCustomEmoji)
+	props["EnableEmojiPicker"] = strconv.FormatBool(*c.ServiceSettings.EnableEmojiPicker)
 	props["RestrictCustomEmojiCreation"] = *c.ServiceSettings.RestrictCustomEmojiCreation
 	props["MaxFileSize"] = strconv.FormatInt(*c.FileSettings.MaxFileSize, 10)
 
@@ -533,11 +534,6 @@ func getClientConfig(c *model.Config) map[string]string {
 			props["PasswordRequireUppercase"] = strconv.FormatBool(*c.PasswordSettings.Uppercase)
 			props["PasswordRequireNumber"] = strconv.FormatBool(*c.PasswordSettings.Number)
 			props["PasswordRequireSymbol"] = strconv.FormatBool(*c.PasswordSettings.Symbol)
-		}
-
-		if *License.Features.ElasticSearch {
-			props["ElasticSearchEnableIndexing"] = strconv.FormatBool(*c.ElasticSearchSettings.EnableIndexing)
-			props["ElasticSearchEnableSearching"] = strconv.FormatBool(*c.ElasticSearchSettings.EnableSearching)
 		}
 
 		if *License.Features.Announcement {
@@ -615,12 +611,6 @@ func Desanitize(cfg *model.Config) {
 		cfg.SqlSettings.AtRestEncryptKey = Cfg.SqlSettings.AtRestEncryptKey
 	}
 
-	if *cfg.ElasticSearchSettings.ConnectionUrl == model.FAKE_SETTING {
-		*cfg.ElasticSearchSettings.ConnectionUrl = *Cfg.ElasticSearchSettings.ConnectionUrl
-	}
-	if *cfg.ElasticSearchSettings.Username == model.FAKE_SETTING {
-		*cfg.ElasticSearchSettings.Username = *Cfg.ElasticSearchSettings.Username
-	}
 	if *cfg.ElasticSearchSettings.Password == model.FAKE_SETTING {
 		*cfg.ElasticSearchSettings.Password = *Cfg.ElasticSearchSettings.Password
 	}

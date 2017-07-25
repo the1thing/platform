@@ -4,7 +4,6 @@
     border-left: none;
     border-bottom: 1px solid #F0F0F0;
     font-size: 14px;
-    line-height: 56px;
     width: 100%;
     background: #FFFFFF!important;
     .member-popover__trigger,
@@ -495,4 +494,13 @@
             }
         }
     }
+}
+
+.channel-header.alt th {
+    vertical-align: top;
+}
+
+#channel-header {line-height:56px;}
+.channel-header__description {
+   visibility: hidden;
 }

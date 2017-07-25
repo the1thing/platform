@@ -452,16 +452,16 @@
     "translation": "Email has not been configured, no invite(s) sent"
   },
   {
-    "id": "api.command.invite_people.invite_off",
-    "translation": "User creation has been disabled on this server, no invite(s) sent"
-  },
-  {
     "id": "api.command.invite_people.fail",
     "translation": "Encountered an error sending email invite(s)"
   },
   {
     "id": "api.command.invite_people.hint",
     "translation": "[name@domain.com ...]"
+  },
+  {
+    "id": "api.command.invite_people.invite_off",
+    "translation": "User creation has been disabled on this server, no invite(s) sent"
   },
   {
     "id": "api.command.invite_people.name",
@@ -498,6 +498,38 @@
   {
     "id": "api.command_away.success",
     "translation": "You are now away"
+  },
+  {
+    "id": "api.command_channel_header.channel.app_error",
+    "translation": "Error to retrieve the current channel."
+  },
+  {
+    "id": "api.command_channel_header.desc",
+    "translation": "Edit the channel header"
+  },
+  {
+    "id": "api.command_channel_header.hint",
+    "translation": "[text]"
+  },
+  {
+    "id": "api.command_channel_header.message.app_error",
+    "translation": "Text must be provided with the /header command."
+  },
+  {
+    "id": "api.command_channel_header.name",
+    "translation": "header"
+  },
+  {
+    "id": "api.command_channel_header.permission.app_error",
+    "translation": "You do not have the appropriate permissions to edit the channel header."
+  },
+  {
+    "id": "api.command_channel_header.update_channel.app_error",
+    "translation": "Error to update the current channel."
+  },
+  {
+    "id": "api.command_channel_header.update_channel.success",
+    "translation": "Channel header successfully updated."
   },
   {
     "id": "api.command_collapse.desc",
@@ -540,38 +572,6 @@
     "translation": "echo"
   },
   {
-    "id": "api.command_channel_header.desc",
-    "translation": "Edit the channel header"
-  },
-  {
-    "id": "api.command_channel_header.hint",
-    "translation": "[text]"
-  },
-  {
-    "id": "api.command_channel_header.name",
-    "translation": "header"
-  },
-  {
-    "id": "api.command_channel_header.message.app_error",
-    "translation": "Text must be provided with the /header command."
-  },
-  {
-    "id": "api.command_channel_header.channel.app_error",
-    "translation": "Error to retrieve the current channel."
-  },
-  {
-    "id": "api.command_channel_header.permission.app_error",
-    "translation": "You do not have the appropriate permissions to edit the channel header."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.app_error",
-    "translation": "Error to update the current channel."
-  },
-  {
-    "id": "api.command_channel_header.update_channel.success",
-    "translation": "Channel header successfully updated."
-  },
-  {
     "id": "api.command_expand.desc",
     "translation": "Turn off auto-collapsing of image previews"
   },
@@ -586,6 +586,14 @@
   {
     "id": "api.command_expand_collapse.fail.app_error",
     "translation": "An error occurred while expanding previews"
+  },
+  {
+    "id": "api.command_help.desc",
+    "translation": "Open the Mattermost help page"
+  },
+  {
+    "id": "api.command_help.name",
+    "translation": "help"
   },
   {
     "id": "api.command_join.desc",
@@ -698,6 +706,22 @@
   {
     "id": "api.command_open.name",
     "translation": "open"
+  },
+  {
+    "id": "api.command_search.desc",
+    "translation": "Search text in messages"
+  },
+  {
+    "id": "api.command_search.hint",
+    "translation": "[text]"
+  },
+  {
+    "id": "api.command_search.name",
+    "translation": "search"
+  },
+  {
+    "id": "api.command_search.unsupported.app_error",
+    "translation": "The search command is not supported on your device"
   },
   {
     "id": "api.command_settings.desc",
@@ -876,14 +900,6 @@
     "translation": "shrug"
   },
   {
-    "id": "api.command_help.desc",
-    "translation": "Open the Mattermost help page"
-  },
-  {
-    "id": "api.command_help.name",
-    "translation": "help"
-  },
-  {
     "id": "api.compliance.init.debug",
     "translation": "Initializing compliance API routes"
   },
@@ -894,6 +910,10 @@
   {
     "id": "api.context.404.app_error",
     "translation": "Sorry, we could not find the page."
+  },
+  {
+    "id": "api.context.v3_disabled.app_error",
+    "translation": "API version 3 has been disabled on this server. Please use API version 4. See https://api.mattermost.com for details."
   },
   {
     "id": "api.context.invalid_body_param.app_error",
@@ -2124,6 +2144,10 @@
     "translation": "This person is already on your team"
   },
   {
+    "id": "api.team.invite_members.invalid_email.app_error",
+    "translation": "The following email addresses do not belong to an accepted domain: {{.Addresses}}. Please contact your System Administrator for details."
+  },
+  {
     "id": "api.team.invite_members.member",
     "translation": "member"
   },
@@ -2142,10 +2166,6 @@
   {
     "id": "api.team.invite_members.send.error",
     "translation": "Failed to send invite email successfully err=%v"
-  },
-  {
-    "id": "api.team.invite_members.invalid_email.app_error",
-    "translation": "The following email addresses do not belong to an accepted domain: {{.Addresses}}. Please contact your System Administrator for details."
   },
   {
     "id": "api.team.invite_members.sending.info",
@@ -3020,16 +3040,16 @@
     "translation": "Error importing channel. Team with name \"{{.TeamName}}\" could not be found."
   },
   {
-    "id": "app.import.import_direct_channel.member_not_found.error",
-    "translation": "Could not find channel member when importing direct channel"
-  },
-  {
     "id": "app.import.import_direct_channel.create_direct_channel.error",
     "translation": "Failed to create direct channel"
   },
   {
     "id": "app.import.import_direct_channel.create_group_channel.error",
     "translation": "Failed to create group channel"
+  },
+  {
+    "id": "app.import.import_direct_channel.member_not_found.error",
+    "translation": "Could not find channel member when importing direct channel"
   },
   {
     "id": "app.import.import_direct_channel.update_header_failed.error",
@@ -3040,11 +3060,11 @@
     "translation": "Could not find channel member when importing direct channel post"
   },
   {
-    "id": "app.import.import_direct_channel.create_direct_channel.error",
+    "id": "app.import.import_direct_post.create_direct_channel.error",
     "translation": "Failed to get direct channel"
   },
   {
-    "id": "app.import.import_direct_channel.create_group_channel.error",
+    "id": "app.import.import_direct_post.create_group_channel.error",
     "translation": "Failed to get group channel"
   },
   {
@@ -3136,6 +3156,10 @@
     "translation": "Missing required channel property: type."
   },
   {
+    "id": "app.import.validate_direct_channel_import_data.header_length.error",
+    "translation": "Direct channel header is too long"
+  },
+  {
     "id": "app.import.validate_direct_channel_import_data.members_required.error",
     "translation": "Missing required direct channel property: members"
   },
@@ -3146,10 +3170,6 @@
   {
     "id": "app.import.validate_direct_channel_import_data.members_too_many.error",
     "translation": "Direct channel members list contains too many items"
-  },
-  {
-    "id": "app.import.validate_direct_channel_import_data.header_length.error",
-    "translation": "Direct channel header is too long"
   },
   {
     "id": "app.import.validate_direct_post_import_data.channel_members_required.error",
@@ -3164,24 +3184,24 @@
     "translation": "Direct post channel members list contains too many items"
   },
   {
-    "id": "app.import.validate_direct_post_import_data.user_missing.error",
-    "translation": "Missing required direct post property: user"
-  },
-  {
-    "id": "app.import.validate_direct_post_import_data.message_missing.error",
-    "translation": "Missing required direct post property: message"
-  },
-  {
-    "id": "app.import.validate_direct_post_import_data.message_length.error",
-    "translation": "Message is too long"
-  },
-  {
     "id": "app.import.validate_direct_post_import_data.create_at_missing.error",
     "translation": "Missing required direct post property: create_at"
   },
   {
     "id": "app.import.validate_direct_post_import_data.create_at_zero.error",
     "translation": "CreateAt must be greater than 0"
+  },
+  {
+    "id": "app.import.validate_direct_post_import_data.message_length.error",
+    "translation": "Message is too long"
+  },
+  {
+    "id": "app.import.validate_direct_post_import_data.message_missing.error",
+    "translation": "Missing required direct post property: message"
+  },
+  {
+    "id": "app.import.validate_direct_post_import_data.user_missing.error",
+    "translation": "Missing required direct post property: user"
   },
   {
     "id": "app.import.validate_post_import_data.channel_missing.error",
@@ -3472,6 +3492,18 @@
     "translation": "Compliance export started for job '{{.JobName}}' at '{{.FilePath}}'"
   },
   {
+    "id": "ent.elasticsearch.delete_post.error",
+    "translation": "Failed to delete the post"
+  },
+  {
+    "id": "ent.elasticsearch.index_post.error",
+    "translation": "Failed to index the post"
+  },
+  {
+    "id": "ent.elasticsearch.not_started.error",
+    "translation": "Elasticsearch is not started"
+  },
+  {
     "id": "ent.elasticsearch.search_posts.disabled",
     "translation": "ElasticSearch searching is disabled on this server"
   },
@@ -3484,24 +3516,28 @@
     "translation": "Failed to decode search results"
   },
   {
-    "id": "ent.elasticsearch.start.connect_failed",
+    "id": "ent.elasticsearch.create_client.connect_failed",
     "translation": "Setting up ElasticSearch Client Failed"
   },
   {
-    "id": "ent.elasticsearch.start.index_create_failed",
+    "id": "ent.elasticsearch.create_index_if_not_exists.index_create_failed",
     "translation": "Failed to create ElasticSearch index"
   },
   {
-    "id": "ent.elasticsearch.start.index_exists_failed",
+    "id": "ent.elasticsearch.create_index_if_not_exists.index_exists_failed",
     "translation": "Failed to establish whether ElasticSearch index exists"
   },
   {
-    "id": "ent.elasticsearch.start.index_mapping_failed",
+    "id": "ent.elasticsearch.create_index_if_not_exists.index_mapping_failed",
     "translation": "Failed to setup ElasticSearch index mapping"
   },
   {
     "id": "ent.elasticsearch.start.index_settings_failed",
     "translation": "Failed to set ElasticSearch index settings"
+  },
+  {
+    "id": "ent.elasticsearch.test_config.connect_failed",
+    "translation": "Connecting to Elasticsearch server failed."
   },
   {
     "id": "ent.elasticsearch.test_config.indexing_disabled.error",
@@ -3510,6 +3546,10 @@
   {
     "id": "ent.elasticsearch.test_config.license.error",
     "translation": "License does not support Elasticsearch."
+  },
+  {
+    "id": "ent.elasticsearch.test_config.reenter_password",
+    "translation": "The Elasticsearch Server URL or Username has changed. Please re-enter the Elasticsearch password to test connection."
   },
   {
     "id": "ent.emoji.licence_disable.app_error",
@@ -3722,6 +3762,14 @@
   {
     "id": "error.not_found.title",
     "translation": "Page not found"
+  },
+  {
+    "id": "jobs.set_job_error.update.error",
+    "translation": "Failed to set job status to error"
+  },
+  {
+    "id": "jobs.request_cancellation.status.error",
+    "translation": "Could not request cancellation for job that is not in a cancelable state."
   },
   {
     "id": "manaultesting.get_channel_id.no_found.debug",
@@ -5272,24 +5320,24 @@
     "translation": "We couldn't save or update the file info"
   },
   {
-    "id": "store.sql_job_status.delete_by_type.app_error",
-    "translation": "We couldn't delete the job status"
+    "id": "store.sql_job.delete.app_error",
+    "translation": "We couldn't delete the job"
   },
   {
-    "id": "store.sql_job_status.get.app_error",
-    "translation": "We couldn't get the job status"
+    "id": "store.sql_job.get.app_error",
+    "translation": "We couldn't get the job"
   },
   {
-    "id": "store.sql_job_status.get_all.app_error",
-    "translation": "We couldn't get all job statuses"
+    "id": "store.sql_job.get_all.app_error",
+    "translation": "We couldn't get the jobs"
   },
   {
-    "id": "store.sql_job_status.save.app_error",
-    "translation": "We couldn't save the job status"
+    "id": "store.sql_job.save.app_error",
+    "translation": "We couldn't save the job"
   },
   {
-    "id": "store.sql_job_status.update.app_error",
-    "translation": "We couldn't update the job status"
+    "id": "store.sql_job.update.app_error",
+    "translation": "We couldn't update the job"
   },
   {
     "id": "store.sql_license.get.app_error",
@@ -5438,6 +5486,10 @@
   {
     "id": "store.sql_post.get_posts_around.get_parent.app_error",
     "translation": "We couldn't get the parent posts for the channel"
+  },
+  {
+    "id": "store.sql_post.get_posts_batch_for_indexing.get.app_error",
+    "translation": "We couldn't get the posts batch for indexing"
   },
   {
     "id": "store.sql_post.get_posts_by_ids.app_error",
@@ -5868,16 +5920,16 @@
     "translation": "We found multiple users matching your credentials and were unable to log you in. Please contact an administrator."
   },
   {
+    "id": "store.sql_user.get_new_users.app_error",
+    "translation": "We encountered an error while finding the new users"
+  },
+  {
     "id": "store.sql_user.get_profiles.app_error",
     "translation": "We encountered an error while finding user profiles"
   },
   {
     "id": "store.sql_user.get_recently_active_users.app_error",
     "translation": "We encountered an error while finding the recently active users"
-  },
-  {
-    "id": "store.sql_user.get_new_users.app_error",
-    "translation": "We encountered an error while finding the new users"
   },
   {
     "id": "store.sql_user.get_sysadmin_profiles.app_error",

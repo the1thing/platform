@@ -55,14 +55,18 @@ export default class PostBodyAdditionalContent extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            embedVisible: nextProps.previewCollapsed.startsWith('false'),
-            link: Utils.extractFirstLink(nextProps.post.message)
-        });
+        if (nextProps.previewCollapsed !== this.props.previewCollapsed || nextProps.post.message !== this.props.post.message) {
+            this.setState({
+                embedVisible: nextProps.previewCollapsed.startsWith('false'),
+                link: Utils.extractFirstLink(nextProps.post.message)
+            });
+        }
     }
 
     toggleEmbedVisibility() {
-        this.setState({embedVisible: !this.state.embedVisible});
+        this.setState((prevState) => {
+            return {embedVisible: !prevState.embedVisible};
+        });
     }
 
     getSlackAttachment() {

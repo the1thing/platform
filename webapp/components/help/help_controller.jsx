@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-// Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2016-present Workspace, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import React from 'react';
