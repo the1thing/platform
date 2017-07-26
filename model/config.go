@@ -552,7 +552,7 @@ func (o *Config) SetDefaults() {
 
 	if o.FileSettings.InitialFont == "" {
 		// Defaults to "luximbi.ttf"
-		o.FileSettings.InitialFont = "markprobold.ttf"
+		o.FileSettings.InitialFont = "Ubuntu-B.ttf"
 	}
 
 	if o.FileSettings.Directory == "" {

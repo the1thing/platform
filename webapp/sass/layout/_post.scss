@@ -855,6 +855,7 @@
         .col__name {
             font-weight: 600;
             margin-right: 7px;
+            float:left;
             .user-popover {
                 @include clearfix;
                 max-width: 200px;
@@ -1284,6 +1285,7 @@
 .bot-indicator,
 .post__pinned-badge {
     border-radius: 2px;
+    float:left;
     font-family: inherit;
     font-size: 10px;
     font-weight: 600;

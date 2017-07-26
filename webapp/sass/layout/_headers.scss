@@ -140,7 +140,7 @@
     display: table;
     table-layout: fixed;
     width: 100%;
-    > div {
+    >div {
         display: block;
         white-space: nowrap;
         word-break: break-word;
@@ -182,7 +182,9 @@
 
 .channel-intro {
     // border-bottom: 1px solid $light-gray;
-.post-profile-img__container {padding-top:70px;}
+    .post-profile-img__container {
+        padding-top: 70px;
+    }
 
     margin: 0 auto 15px;
     padding: 0 11% 50px 3.5%;
@@ -240,8 +242,7 @@
         }
     }
     .channel-intro__title {
-        font-size: 24px;
-        // font-weight: 600;
+        font-size: 24px; // font-weight: 600;
         padding-top: 70px!important;
         margin-top: 0px;
         margin-bottom: 15px;
@@ -277,19 +278,18 @@
     .divider {
         border-top: 1px solid transparent;
         margin: 0.5em 0;
-        & + .divider {
+        &+.divider {
             display: none;
         }
     }
     .team__header {
-                @include legacy-pie-clearfix;
+        @include legacy-pie-clearfix;
         @include display-flex();
         @include flex-direction(row-reverse);
         @include legacy-pie-clearfix;
         padding: 9px 10px;
         position: relative;
-        background: transparent !important;
-        // background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+        background: transparent !important; // background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
         // border-bottom: 1px solid #F0F0F0;
         &:before {
             @include single-transition(all, .05s, linear);
@@ -300,8 +300,7 @@
             position: absolute;
             top: 0;
             width: 100%;
-        }
-        // &:hover {
+        } // &:hover {
         //     &:before {
         //         @include alpha-property(background, $black, .1);
         //     }
@@ -440,10 +439,12 @@
     margin: 1px 10px 0 0;
 }
 
+.channel-header__icon {
+    visibility: hidden !important;
+}
+
 .app__body {
-    .channel-header__icon {
-        visibility: hidden;
-    }
+
     .channel-header__links {
         visibility: hidden;
         font-family: 'Open Sans', sans-serif;
@@ -475,7 +476,7 @@
                 width: 19px;
             }
         }
-        > a {
+        >a {
             // @include opacity(.6);
             @include single-transition(all, .1s, ease-in);
             color: #BDBDBD!important;
@@ -500,7 +501,10 @@
     vertical-align: top;
 }
 
-#channel-header {line-height:56px;}
+#channel-header {
+    line-height: 56px;
+}
+
 .channel-header__description {
-   visibility: hidden;
+    visibility: hidden;
 }

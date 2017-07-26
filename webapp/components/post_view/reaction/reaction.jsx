@@ -1,11 +1,13 @@
-// Copyright (c) 2016 Mattermost, Inc. All Rights Reserved.
+// Copyright (c) 2016-present Mattermost, Inc. All Rights Reserved.
 // See License.txt for license information.
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 import {FormattedMessage} from 'react-intl';
+
 import * as Utils from 'utils/utils.jsx';
+
 export default class Reaction extends React.PureComponent {
     static propTypes = {
 
@@ -98,18 +100,11 @@ export default class Reaction extends React.PureComponent {
             if (user.id === this.props.currentUserId) {
                 currentUserReacted = true;
             } else {
-                const displayName = Utils.displayUsername(reaction.user_id);
-
-                if (displayName) {
-                    users.push(displayName);
-                } else {
-                    // Just count users that we don't have loaded
-                    otherUsers += 1;
-                }
+                users.push(Utils.displayUsernameForUser(user));
             }
         }
 
-        // sort users in alphabetical order with "you" being first if the current user reacted
+        // Sort users in alphabetical order with "you" being first if the current user reacted
         users.sort();
         if (currentUserReacted) {
             users.unshift(Utils.localizeMessage('reaction.you', 'You'));
