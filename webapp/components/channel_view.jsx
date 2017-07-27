@@ -85,9 +85,6 @@ export default class ChannelView extends React.Component {
     }
 
     render() {
-        if (this.state.tutorialStep <= TutorialSteps.INTRO_SCREENS) {
-            return (<TutorialView/>);
-        }
 
         return (
             <div

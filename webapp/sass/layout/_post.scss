@@ -126,7 +126,8 @@
     }
     .separator__text {
         @include border-radius(8px);
-        background: #ffffff;
+        // background: #ffffff;
+        background: rgb(242, 244, 248) !important;
         color: #7F7F7F!important;
         font-family: 'MarkPro-Book';
         display: inline-block;
