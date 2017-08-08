@@ -255,12 +255,16 @@
             margin-right: .5rem;
             position: relative;
             top: 1px;
+            color:#FFF !important;
         }
         div {
             @include border-radius(50px);
             cursor: pointer;
             display: inline-block;
+            background:#000 !important;
+            font-size: 12px;
             padding: 5px 10px;
+            box-shadow: 0px 1px 1px 1px rgba(109, 109, 109, 0.5);
         }
         &.visible {
             @include opacity(1);
