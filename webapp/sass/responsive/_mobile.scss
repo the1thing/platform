@@ -213,7 +213,7 @@
             .bot-indicator {
                 left: 6px;
                 position: absolute;
-                top: 31px;
+                top: 34px;
             }
         }
         &.post--root {
@@ -260,7 +260,7 @@
                     top: 1px;
                 }
                 .post__content {
-                    padding: 0px;
+                        padding: 0px!important;
                 }
             }
         }
@@ -781,9 +781,14 @@
                     height: 16px;
                     width: 4px;
                 }
+                button.navbar-toggle span.icon__menu {
+                    top: -3px;
+                    position: relative;
+                }
             }
             .navbar-toggle {
                 display: block;
+                background: none !important;
             }
             .navbar-brand {
                 white-space: nowrap;
@@ -974,6 +979,9 @@
         }
         .badge {
             top: 13px;
+        }
+        .sidebar__switcher {
+            background:#000 !important;
         }
         .team__header {
             @include clearfix;

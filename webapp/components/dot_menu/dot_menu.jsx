@@ -216,7 +216,6 @@ export default class DotMenu extends Component {
                             {dotMenuReply}
                             {dotMenuFlag}
                             {dotMenuPermalink}
-                            {dotMenuPin}
                             {dotMenuDelete}
                             {dotMenuEdit}
                         </ul>
