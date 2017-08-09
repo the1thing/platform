@@ -217,6 +217,7 @@
             }
         }
         &.post--root {
+            padding: 25px 15px 10px !important;
             .post__header .col__reply {
                 right: 0px;
             }
@@ -265,7 +266,7 @@
             }
         }
         .post__content {
-            padding: 0px;
+            padding: 0px!important;
         }
         .post__header {
             margin-bottom: 0;
