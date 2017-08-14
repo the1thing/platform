@@ -10,7 +10,7 @@ body {
     height: 100%;
     position: relative;
     width: 100%;
-   font-family: 'MarkPro-Book'; 
+   font-family: 'EkMukta-Regular'; 
     &.error-bar--fixed {
         padding-top: 22px;
     }
@@ -67,4 +67,10 @@ img {
     &.rounded {
         @include border-radius(100%);
     }
+}
+
+a:focus {
+    outline:0 !important;
+    border:none;
+
 }

@@ -407,18 +407,7 @@ export default class SidebarHeaderDropdown extends React.Component {
         }
 
         teams.push(
-            <li key='leaveTeam_li'>
-                <a
-                    id='leaveTeam'
-                    href='#'
-                    onClick={GlobalActions.showLeaveTeamModal}
-                >
-                    <FormattedMessage
-                        id='navbar_dropdown.leave'
-                        defaultMessage='Leave Team'
-                    />
-                </a>
-            </li>
+
         );
 
         let helpLink = null;
@@ -610,6 +599,7 @@ export default class SidebarHeaderDropdown extends React.Component {
                     {manageLink}
                     {teams}
                     {backstageDivider}
+                    {integrationsLink}
                     {customEmoji}
                     {sysAdminDivider}
                     {sysAdminLink}

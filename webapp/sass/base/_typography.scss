@@ -1,4 +1,90 @@
 @charset 'UTF-8';
+
+@font-face {
+    font-family: 'EkMukta-ExtraBold';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraBold.svg#EkMukta-ExtraBold') format('svg');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-Regular';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Regular.svg#EkMukta-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-Medium';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Medium.svg#EkMukta-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-Light';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Light.svg#EkMukta-Light') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-ExtraLight';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-ExtraLight.svg#EkMukta-ExtraLight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-Bold';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-Bold.svg#EkMukta-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'EkMukta-SemiBold';
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.eot');
+    src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.eot?#iefix') format('embedded-opentype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.woff2') format('woff2'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.woff') format('woff'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.ttf') format('truetype'),
+    url('https://s3.ap-south-1.amazonaws.com/1thing-logos/ek-mukta-font/EkMukta-SemiBold.svg#EkMukta-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
 @font-face {
     font-family: 'MarkPro-Book';
     src: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/markpro_font/MarkPro-Book.eot');
@@ -95,83 +181,112 @@ body {
     font-weight: normal;
 }
 
+
 /* open-sans-300 - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 300;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans Light'), local('OpenSans-Light'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
+
+
 /* open-sans-300italic - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 300;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans Light Italic'), local('OpenSansLight-Italic'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-300italic.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
+
+
 /* open-sans-regular - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans'), local('OpenSans'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-regular.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
+
+
 /* open-sans-italic - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 400;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans Italic'), local('OpenSans-Italic'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-italic.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
+
+
 /* open-sans-600 - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 600;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans Semibold'), local('OpenSans-Semibold'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
+
+
 /* open-sans-600italic - latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese */
+
 @font-face {
     font-family: 'Open Sans';
     font-style: italic;
     font-weight: 600;
-    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.eot');
+    /* IE9 Compat Modes */
     src: local('Open Sans Semibold Italic'), local('OpenSans-SemiboldItalic'),
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.woff2') format('woff2'), /* Super Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.woff') format('woff'), /* Modern Browsers */
     url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.ttf') format('truetype'), /* Safari, Android, iOS */
-    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.svg#OpenSans') format('svg'); /* Legacy iOS */
+    url('../fonts/open-sans-v13-latin-ext_latin_cyrillic-ext_greek-ext_greek_cyrillic_vietnamese-600italic.svg#OpenSans') format('svg');
+    /* Legacy iOS */
 }
 
 .app__body.font--open_sans {

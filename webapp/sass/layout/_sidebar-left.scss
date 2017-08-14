@@ -5,28 +5,30 @@
     height: 100%;
     left: 0;
     position: fixed;
-    width: 260px;
-    z-index: 5;
-    // padding-left:10px;
-    background: #1F1D1D!important;
-    background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+    width: 292px;
+    z-index: 5; // padding-left:10px;
+    background: #285674!important;
+    background-image: linear-gradient(-40deg, #43C6AC 0%, #191654 100%) !important;
+
     .status img {
         margin-top: 1px;
-        margin-left: 1px;  
+        margin-left: 1px;
     }
-    .status-edit img, .status-edit svg, .status-edit i  {
+    .status-edit img,
+    .status-edit svg,
+    .status-edit i {
         margin-top: -2px;
         margin-left: 0px;
     }
- 
- .people-stack .status img {
+
+    .people-stack .status img {
         margin-top: -2px;
-        margin-left: 0px;  
+        margin-left: 0px;
     }
 
     .error-bar--fixed & {
         height: calc(100% - 22px);
-    } 
+    }
     &.sidebar--padded {
         padding-top: 44px;
     }
@@ -61,12 +63,13 @@
         bottom: 0;
         display: block;
         padding-bottom: 0;
+        display: none;
         position: absolute;
         width: 100%;
-        background:transparent !important;
+        background: transparent !important;
 
         button {
-             background:transparent !important;
+            background: transparent !important;
             @include single-transition(all, .15s, ease-in);
             display: block;
             height: 42px;
@@ -75,7 +78,7 @@
             width: 100%;
             color: rgb(255, 255, 255) !important;
 
-            > span {
+            >span {
                 @include single-transition(all, .15s, ease-in);
                 @include opacity(.6);
                 position: relative;
@@ -83,7 +86,7 @@
             }
 
             &:hover {
-                background:transparent !important;
+                background: transparent !important;
                 color: rgb(255, 255, 255) !important;
                 span {
                     @include opacity(1);
@@ -115,13 +118,19 @@
     .badge {
         background-color: #FFFFFF!important;
         position: absolute;
+        border-radius: 50%;
+        font-family: "EkMukta-Light";
         right: 10px;
-        top: 5px;
-        color: #000!important;
+        font-size: 10px;
+        top: 5px; // color: transparent!important;
+        color: #000 !important;
+        width: 16px;
+        height: 16px;
+        padding: 3px 0;
     }
     .nav-pills__container {
         -webkit-overflow-scrolling: touch;
-        height: calc(100% - 99px);
+        height: calc(100% - 70px);
         overflow: auto;
         position: relative;
     }
@@ -130,21 +139,23 @@
         font-size: 13.5px;
         left: 15px;
         margin: 0 auto;
-        padding: 3px 0 4px;
+        padding: 3px 0 1px 0;
         position: fixed;
         text-align: center;
         width: 190px;
         z-index: 1;
+        font-family: "EkMukta-Light";
+        color: #030303 !important;
     }
     .nav-pills__unread-indicator-top {
-        top: 66px;
+        top: 76px;
     }
     .nav-pills__unread-indicator-bottom {
-        bottom: 50px;
+        bottom: 10px;
     }
     .nav {
         &.nav-stacked {
-            > li + li {
+            >li+li {
                 margin: 0;
             }
             li:first-child {
@@ -155,25 +166,23 @@
             transition: all .2s ease-in-out;
             text-transform: lowercase;
             &.active {
-                background: rgba(255, 255, 255, 0.15)!important;
+                background: rgba(0, 0, 0, 0.1) !important;
             }
-            > h4 {
-                color: #7F7F7F!important;
-                // font-size: 0.9em;
-                font-family: 'MarkPro-Bold';
-                // font-weight: 400;
+            >h4 {
+                color: #FFFFFF!important; // font-size: 0.9em;
+                font-family: 'EkMukta-Light'; // font-weight: 400;
                 // letter-spacing: -.3px;
-                font-size: 0.8em;
+                font-size: 14px;
                 margin: 2em 0 .2em;
                 padding: 0 10px 0 15px;
-                text-transform: uppercase;
+                text-transform: unset;
             }
             .divider {
-                & + .divider {
+                &+.divider {
                     display: none;
                 }
             }
-            > a {
+            >a {
                 transition: all .2s ease-in-out;
                 border-radius: 0;
                 line-height: 1.5;
@@ -182,8 +191,8 @@
                 padding: 5px 10px 5px 15px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-                color: #7F7F7F!important;
-                font-family: 'MarkPro-Book';
+                color: rgba(255, 255, 255, 0.5)!important;
+                font-family: 'EkMukta-Regular';
                 &.has-badge {
                     padding-right: 30px;
                 }
@@ -210,15 +219,15 @@
                     }
                 }
                 &.unread-title {
-                    font-weight: 600;
-                    color: #7f7f7f!important;
-                    font-family: MarkPro-Bold;
+                    font-weight: 400;
+                    color: #FFFFFF!important;
+                    font-family: 'EkMukta-Regular';
                 }
             }
             &.active {
                 a {
                     &:before {
-                        background: #22B541 !important;
+                        background: #FFFFFF !important;
                         content: '';
                         height: 50%;
                         left: 0;
@@ -231,14 +240,14 @@
                 a:hover,
                 a:focus {
                     // @include alpha-property(background-color, $black, .1);
-                    border-radius: 0;
-                    // font-weight: 400;
+                    border-radius: 0; // font-weight: 400;
                     background: transparent!important;
                     color: #FFFFFF!important;
                     position: relative;
                     &.unread-title {
-                        font-weight: 600;
+                        font-weight: 400;
                         color: #FFFFFF!important;
+                        font-family: 'EkMukta-Regular';
                     }
                 }
             }
@@ -263,12 +272,12 @@
             color: #FFFFFF !important;
         }
     }
- 
+
     @import "../components/status-icon";
- 
+
 
     .status-wrapper {
-    .status {
+        .status {
             bottom: -6px;
             height: 12px;
             right: 5px;
@@ -299,7 +308,6 @@
             }
         }
     }
- 
 }
 
 .channel-loading-gif {
@@ -328,12 +336,13 @@
     color: #FFFFFF !important;
     opacity: 1;
 }
+
 .nav-stacked li.active .status i {
     color: #FFFFFF !important;
     opacity: 1;
 }
 
-.sidebar--left .nav-pills__container li > a:hover {
+.sidebar--left .nav-pills__container li>a:hover {
     color: #FFFFFF!important;
     background: transparent!important;
 }

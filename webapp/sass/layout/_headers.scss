@@ -15,7 +15,7 @@
         text-align: center;
         color: #7F7F7F;
         font-size: 1.5rem;
-        font-family: 'MarkPro-Black';
+        font-family: 'EkMukta-ExtraBold';
         white-space: nowrap;
         .fa {
             font-size: 16px;
@@ -88,10 +88,11 @@
     }
     .heading {
         display: inline-block;
-        font-size: 1em;
-        font-family: 'MarkPro-Bold';
+        font-size: 24px;
+        font-family: 'EkMukta-Light';
         margin: 0 4px 0 0;
         max-width: 100%;
+        font-weight: 100;
         overflow: hidden;
         text-overflow: ellipsis;
         vertical-align: middle;
@@ -384,7 +385,7 @@
             width: 100%;
             display: block;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 400;
             max-width: 85%;
             overflow: hidden;
             text-decoration: none;
@@ -396,16 +397,19 @@
             line-height: 22px;
             margin-top: -2px;
             text-transform: uppercase;
-            letter-spacing: 8px;
+            // letter-spacing: 8px;
+            font-family: 'EkMukta-Regular';
+            font-size: 24px;
             color: #FFFFFF!important;
+                padding: 5px 0;
         }
         .user__name {
             @include single-transition(all, .1s, linear);
             @include alpha-property(color, $white, .8);
-            font-size: 14px;
-            color: #7F7F7F!important;
-            font-family: 'MarkPro-Bold';
-            font-weight: 400;
+            font-size: 18px;
+            color: #FFFFFF!important;
+            font-family: 'EkMukta-Light';
+            // font-weight: 400;
             line-height: 18px;
         }
     }

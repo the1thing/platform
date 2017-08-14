@@ -674,18 +674,18 @@ func DeactivateMfa(userId string) *model.AppError {
 
 func CreateProfileImage(username string, userId string) ([]byte, *model.AppError) {
 	colors := []color.NRGBA{
-		{157, 81, 81, 100},
-		{18, 68, 99, 100},
+		{0, 0, 0, 255},
+		{0, 0, 0, 255},
 	}
 
 	h := fnv.New32a()
 	h.Write([]byte(userId))
 	seed := h.Sum32()
 
-	initial := string(strings.ToUpper(username)[0])
+	initial := string(strings.ToLower(username)[0])
 
 	fontDir, _ := utils.FindDir("fonts")
-	fontBytes, err := ioutil.ReadFile(fontDir + utils.Cfg.FileSettings.InitialFont)
+	fontBytes, err := ioutil.ReadFile(fontDir + "EkMukta-Light.ttf")
 	if err != nil {
 		return nil, model.NewLocAppError("CreateProfileImage", "api.user.create_profile_image.default_font.app_error", nil, err.Error())
 	}
@@ -707,7 +707,7 @@ func CreateProfileImage(username string, userId string) ([]byte, *model.AppError
 	c.SetDst(dstImg)
 	c.SetSrc(srcImg)
 
-	pt := freetype.Pt(IMAGE_PROFILE_PIXEL_DIMENSION/6, IMAGE_PROFILE_PIXEL_DIMENSION*2/3)
+	pt := freetype.Pt(50, 85)
 	_, err = c.DrawString(initial, pt)
 	if err != nil {
 		return nil, model.NewLocAppError("CreateProfileImage", "api.user.create_profile_image.initial.app_error", nil, err.Error())
