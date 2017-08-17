@@ -6,13 +6,13 @@
         text-align: center;
         width: 72px;
         z-index: 5;
-        background: #285674!important;
-        background-image: linear-gradient(40deg, #43C6AC 0%, #191654 100%)!important;
-        border-right: 1px solid rgba(0, 0, 0, 0.03)!important;
+        background: #221F1F!important;
+        background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
         .team-wrapper {
             -webkit-overflow-scrolling: touch; // background-color: alpha-color($black, .2);
             height: 100%;
             overflow: auto; // padding-top: 15px;
+            background: rgba(34,31,31,0.1);
             .team-container {
                 display: table;
                 margin: 20px 0;
@@ -94,7 +94,7 @@
                 }
                 &.unread {
                     .team-btn {
-                        border:1px solid #FFFFFF;
+                        border: 1px solid #FFFFFF;
                         background: rgba(255, 255, 255, 0.2);
                     }
                     .team-btn:after {

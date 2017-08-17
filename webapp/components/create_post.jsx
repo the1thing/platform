@@ -734,9 +734,13 @@ export default class CreatePost extends React.Component {
                         topOffset={-7}
                     />
                     <span
-                        className={'fa fa-smile-o icon--emoji-picker emoji-main'}
+                        className={'icon--emoji-picker emoji-main'}
                         onClick={this.toggleEmojiPicker}
-                    />
+                    >
+                    <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/emoji-icon.svg"/>
+
+                    </span>
+
                 </span>
             );
         }
@@ -750,6 +754,15 @@ export default class CreatePost extends React.Component {
                 onSubmit={this.handleSubmit}
             >
                 <div className={'post-create' + attachmentsDisabled}>
+
+                    <div className={postFooterClassName}>
+
+                        {serverError}
+                        {postError}
+                        {preview}
+                        
+                    </div>
+
                     <div className='post-create-body'>
                         <div className='post-body__cell'>
                             <Textbox
@@ -784,16 +797,13 @@ export default class CreatePost extends React.Component {
                             <i className='fa fa-paper-plane'/>
                         </a>
                         {tutorialTip}
-                    </div>
-                    <div className={postFooterClassName}>
                         <MsgTyping
                             channelId={this.state.channelId}
                             parentId=''
                         />
-                        {postError}
-                        {preview}
-                        {serverError}
+
                     </div>
+
                 </div>
                 <PostDeletedModal
                     show={this.state.showPostDeletedModal}

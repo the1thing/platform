@@ -707,7 +707,7 @@ func CreateProfileImage(username string, userId string) ([]byte, *model.AppError
 	c.SetDst(dstImg)
 	c.SetSrc(srcImg)
 
-	pt := freetype.Pt(50, 85)
+	pt := freetype.Pt(45, 85)
 	_, err = c.DrawString(initial, pt)
 	if err != nil {
 		return nil, model.NewLocAppError("CreateProfileImage", "api.user.create_profile_image.initial.app_error", nil, err.Error())

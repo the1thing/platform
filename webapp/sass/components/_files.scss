@@ -1,14 +1,22 @@
 @charset 'UTF-8';
 .file-preview__container {
-    height: 100px !important;
-    margin: 1px 0 10px;
-    // padding:10px 0;
-    max-height: 100px;
+    // height: 100px !important;
+    margin: 1px 0 0 0px;
+    padding-bottom: 10px;
+    min-height: 100px;
     overflow-x: auto;
     overflow-y: hidden;
     position: relative;
     white-space: nowrap;
     width: 100%;
+    border-bottom: 1px solid #F0F0F0;
+
+    .text_to_upload_images {
+        font-size: 24px;
+        color: #030303;
+        font-family: "EkMukta-Light";
+        margin: 10px 0 8px 0;
+    }
 }
 
 .file-preview {
@@ -19,7 +27,7 @@
     margin: 0 0 0 10px;
     position: relative;
     width: 100px;
-    border-radius: 8px;
+    border-radius: 4px;
     &:first-child {
         margin-left: 0;
     }
@@ -53,10 +61,10 @@
     text-align: center;
     top: 2px;
     width: 20px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid $light-gray; // box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     line-height: 1.25;
     img {
-        opacity: 0.2;
+        opacity: 0.8;
         transition: all .2s ease-in-out;
     }
     &:hover {
@@ -134,7 +142,7 @@
 }
 
 .post-image__columns {
-    width: 350px;
+    width: 450px;
 }
 
 .post-image__column {
@@ -143,7 +151,7 @@
     height: 350px;
     margin: 0.5em 0em 0 0 !important;
     position: relative;
-    width: 350px;
+    width: 450px;
     border-radius: 4px;
     overflow: hidden!important;
     border: 1px solid rgb(240, 240, 240) !important;
@@ -170,8 +178,7 @@
     border-radius: 4px 4px 0 0 !important;
     width: 100%;
     border: none;
-    background-size: cover;
-    // border: 1px solid rgba(0, 0, 0, 0.08)!important;
+    background-size: cover; // border: 1px solid rgba(0, 0, 0, 0.08)!important;
     &.small {
         background-position: center;
     }
@@ -202,9 +209,9 @@
 .post-image__thumbnail {
     cursor: -webkit-zoom-in !important;
     float: left;
-    height: 90%;
+    height: 100%;
     width: 100%;
-    border-bottom: 1px solid #dedede;
+    // border-bottom: 1px solid #dedede;
 }
 
 .post-image__details {
@@ -224,8 +231,7 @@
     >div {
         position: absolute;
         top: 9px;
-        right: 3px;
-        // width: 100%;
+        right: 3px; // width: 100%;
     }
     .post-image__name {
         display: block;
@@ -299,8 +305,7 @@
         border-right: 1px solid $light-gray;
         height: 270px;
         vertical-align: center;
-        width: 320px;
-        // helper to center the image icon in the preview window
+        width: 320px; // helper to center the image icon in the preview window
         .file-details__preview-helper {
             display: inline-block;
             height: 100%;

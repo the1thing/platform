@@ -30,9 +30,11 @@ export default class LoadingScreen extends React.Component {
                 style={{position: this.props.position}}
             >
                 <div className='loading__content'>
+{/*                    
                     <h3>
                         {message}
                     </h3>
+                    */}
                     <div className='round round-1'/>
                     <div className='round round-2'/>
                     <div className='round round-3'/>

@@ -7,9 +7,8 @@
     position: fixed;
     width: 292px;
     z-index: 5; // padding-left:10px;
-    background: #285674!important;
-    background-image: linear-gradient(-40deg, #43C6AC 0%, #191654 100%) !important;
-
+    background: #00A0B0!important;
+    background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
     .status img {
         margin-top: 1px;
         margin-left: 1px;
@@ -22,7 +21,7 @@
     }
 
     .people-stack .status img {
-        margin-top: -2px;
+            margin-top: -5px;
         margin-left: 0px;
     }
 
@@ -164,7 +163,6 @@
         }
         li {
             transition: all .2s ease-in-out;
-            text-transform: lowercase;
             &.active {
                 background: rgba(0, 0, 0, 0.1) !important;
             }
@@ -175,7 +173,6 @@
                 font-size: 14px;
                 margin: 2em 0 .2em;
                 padding: 0 10px 0 15px;
-                text-transform: unset;
             }
             .divider {
                 &+.divider {
@@ -188,11 +185,14 @@
                 line-height: 1.5;
                 outline: none;
                 overflow: hidden;
-                padding: 5px 10px 5px 15px;
+                padding: 7px 10px 6px 15px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: rgba(255, 255, 255, 0.5)!important;
                 font-family: 'EkMukta-Regular';
+                .sidebar-item__name {
+                    font-size: 18px;
+                }
                 &.has-badge {
                     padding-right: 30px;
                 }
@@ -212,7 +212,7 @@
                         font-weight: 600;
                         position: absolute;
                         right: 15px;
-                        top: -1px;
+                        top: 6px;
                         &:hover {
                             @include opacity(1);
                         }
@@ -225,17 +225,6 @@
                 }
             }
             &.active {
-                a {
-                    &:before {
-                        background: #FFFFFF !important;
-                        content: '';
-                        height: 50%;
-                        left: 0;
-                        position: absolute;
-                        top: 8px;
-                        width: 4px;
-                    }
-                }
                 a,
                 a:hover,
                 a:focus {
@@ -256,8 +245,9 @@
     .modal-title {
         line-height: 2em;
     }
+    #createPublicChannel {display: none;}
     .add-channel-btn {
-        color: #BDBDBD !important;
+        color: #FFFFFF !important;
         float: right;
         font-size: 23px;
         font-weight: 700;
@@ -329,7 +319,7 @@
 }
 
 .nav-stacked .status i {
-    color: #7F7F7F !important;
+    color: rgba(255,255,255,0.4) !important;
 }
 
 .nav-stacked li:hover .status i {

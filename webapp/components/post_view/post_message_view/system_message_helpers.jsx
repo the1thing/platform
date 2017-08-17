@@ -38,7 +38,7 @@ function renderLeaveChannelMessage(post, options) {
         />
     );
 }
-
+{/*
 function renderAddToChannelMessage(post, options) {
     const username = renderUsername(post.props.username, options);
     const addedUsername = renderUsername(post.props.addedUsername, options);
@@ -53,7 +53,7 @@ function renderAddToChannelMessage(post, options) {
         />
     );
 }
-
+*/}
 function renderRemoveFromChannelMessage(post, options) {
     const removedUsername = renderUsername(post.props.removedUsername, options);
 
@@ -214,7 +214,7 @@ function renderChannelDeletedMessage(post, options) {
 const systemMessageRenderers = {
     [PostTypes.JOIN_CHANNEL]: renderJoinChannelMessage,
     [PostTypes.LEAVE_CHANNEL]: renderLeaveChannelMessage,
-    [PostTypes.ADD_TO_CHANNEL]: renderAddToChannelMessage,
+    //[PostTypes.ADD_TO_CHANNEL]: renderAddToChannelMessage,
     [PostTypes.REMOVE_FROM_CHANNEL]: renderRemoveFromChannelMessage,
     [PostTypes.HEADER_CHANGE]: renderHeaderChangeMessage,
     [PostTypes.DISPLAYNAME_CHANGE]: renderDisplayNameChangeMessage,

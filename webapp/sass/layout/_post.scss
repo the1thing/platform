@@ -35,7 +35,7 @@
         z-index: 2;
     }
     .help__text {
-        bottom: -16px;
+        bottom: -10px;
         cursor: pointer;
         font-size: 10px;
         position: absolute;
@@ -61,9 +61,8 @@
     @include single-transition(all, .5s, ease, .5s);
     display: inline-block;
     font-size: 10px;
-    color:#7F7F7F;
-    font-family: "EkMukta-Regular";
-    // margin-right: 10px;
+    color: #7F7F7F;
+    font-family: "EkMukta-Regular"; // margin-right: 10px;
     vertical-align: bottom;
     white-space: nowrap;
     b,
@@ -240,6 +239,9 @@
         margin: 5px 0 10px;
         outline: none;
         text-align: center;
+        text-decoration: underline;
+        color: #0D65D8 !important;
+        font-family: "EkMukta-Regular";
     }
     .new-messages__button {
         @include opacity(0);
@@ -347,9 +349,11 @@
     .icon--emoji-picker {
     position: absolute;
     right: 10px;
-    top: 13px;
+    top: 4px;
     cursor: pointer;
     font-size: 24px;
+    width: 30px;
+    height: 30px;
     }
     .btn-file {
         overflow: visible;
@@ -415,10 +419,10 @@
             max-height: 162px !important;
             min-height: 48px;
             padding-left: 45px !important;
-            padding-right: 20px !important;
+            padding-right: 50px !important;
             padding-top: 9px;
             padding-bottom: 0px;
-                line-height: 30px;
+            line-height: 30px;
             vertical-align: middle;
             border: none !important;
             border-radius: 8px !important;
@@ -455,14 +459,16 @@
             }
             img {
                 cursor: pointer;
-                height: 14px;
-                width: 14px;
+                height: 28px;
+                /* width: 18px; */
+                opacity: 1;
+                max-width: 19px;
             }
             &:hover,
             &:active {
                 box-shadow: none;
                 cursor: pointer;
-                background:none !important;
+                background: none !important;
             }
             &.btn-file__disabled {
                 @include opacity(.1);
@@ -494,14 +500,16 @@
     .msg-typing {
         // @include opacity(.7);
         display: block;
-        font-size: 10px;
-        // height: 20px;
+        font-size: 10px; // height: 20px;
         // margin-bottom: 5px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-family: "EkMukta-Regular";
-        color:#030303;
+        color: #030303;
+        float: left;
+        bottom: 3px;
+        position: relative;
     }
 }
 
@@ -678,6 +686,7 @@
             .post-image__details {
                 background: transparent;
                 border: none;
+                display: none;
                 padding: 0;
                 width: 100%;
                 svg {
@@ -757,20 +766,20 @@
     &.post--comment {
         .post__body {
             // border-left: 4px solid $gray!important;
-            padding-left: 20px;
+            padding-left: 14px;
             margin-left: 0px;
             position: relative;
             &:before {
                 content: "";
                 display: block;
                 width: 0;
-                border-radius: 8px;
+                border-radius: 4px;
                 position: absolute;
                 height: 0;
-                border: 2px solid #bfbfbf;
+                border: 2px solid rgba(127, 127, 127, 0.2);
                 position: absolute;
                 height: 80%;
-                left: 8px;
+                left: 2px;
                 top: 10%;
             }
             &.mention-comment {
@@ -1139,13 +1148,17 @@
         }
     }
     .post__link {
-        font-size: 13px;
+        font-size: 14px;
         margin: 2px 0 5px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         a {
             font-weight: bold;
+        }
+        a.theme {
+            color: #0D65D8;
+            font-family: "EkMukta-Light";
         }
     }
     .post__embed-visibility {
@@ -1408,5 +1421,5 @@
 }
 
 .post a.markdown__link {
-    color: #22B541 !important;
+    color: #0D65D8 !important;
 }

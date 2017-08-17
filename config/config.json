@@ -21,8 +21,8 @@
         "EnableOnlyAdminIntegrations": true,
         "EnablePostUsernameOverride": false,
         "EnablePostIconOverride": false,
-        "EnableLinkPreviews": true,
         "EnableAPIv3": true,
+        "EnableLinkPreviews": true,
         "EnableTesting": false,
         "EnableDeveloper": false,
         "EnableSecurityFixAlert": true,
@@ -53,7 +53,7 @@
     "TeamSettings": {
         "SiteName": "1THING",
         "MaxUsersPerTeam": 50,
-        "EnableTeamCreation": true,
+        "EnableTeamCreation": false,
         "EnableUserCreation": true,
         "EnableOpenServer": true,
         "RestrictCreationToDomains": "",

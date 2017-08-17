@@ -268,8 +268,19 @@ export default class ViewImageModal extends React.Component {
             >
                 <Modal.Body
                     modalClassName='modal-image__body'
-                    onClick={this.props.onModalDismissed}
                 >
+                <div className='image_modal_header'>
+                    <span className="image_file_name">{fileInfo.name}</span>
+                    <div className={closeButtonClass} onClick={this.props.onModalDismissed}></div>
+                            <ViewImagePopoverBar
+                                show={this.state.showFooter}
+                                fileId={this.state.imgId}
+                                totalFiles={this.props.fileInfos.length}
+                                filename={fileInfo.name}
+                                fileURL={fileUrl}
+                                onGetPublicLink={this.handleGetPublicLink}
+                            /> 
+                    </div>
                     <div
                         className={'modal-image__wrapper'}
                         onClick={this.props.onModalDismissed}
@@ -279,21 +290,11 @@ export default class ViewImageModal extends React.Component {
                             onMouseLeave={this.onMouseLeaveImage}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div
-                                className={closeButtonClass}
-                                onClick={this.props.onModalDismissed}
-                            />
+
                             <div className='modal-image__content'>
                                 {content}
                             </div>
-                            <ViewImagePopoverBar
-                                show={this.state.showFooter}
-                                fileId={this.state.imgId}
-                                totalFiles={this.props.fileInfos.length}
-                                filename={fileInfo.name}
-                                fileURL={fileUrl}
-                                onGetPublicLink={this.handleGetPublicLink}
-                            />
+
                         </div>
                     </div>
                     {leftArrow}

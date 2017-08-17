@@ -208,6 +208,7 @@
         display: inline-block;
         padding: 10px 4em 10px 20px;
         width: auto;
+        display: none;
         border-radius: 6px;
         background: #FFFFFF;
         i {
@@ -512,3 +513,6 @@
 .channel-header__description {
     visibility: hidden;
 }
+
+
+#channelEditHeader, #channelEditPurpose, #channelDelete { display: none;}

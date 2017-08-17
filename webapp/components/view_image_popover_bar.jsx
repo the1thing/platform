@@ -54,7 +54,7 @@ export default class ViewImagePopoverBar extends React.Component {
                     <a
                         href={this.props.fileURL}
                         download={this.props.filename}
-                        className='text'
+                        className='text download-image-button'
                         target='_blank'
                         rel='noopener noreferrer'
                     >

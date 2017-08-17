@@ -250,9 +250,10 @@ export default class NewChannelModal extends React.PureComponent {
                             />
                         </Modal.Title>
                         <div className='clearBoth'></div>
-                            <div>
+     {/*                       <div>
                                 {channelSwitchText}
                             </div>
+       */}                     
                     </Modal.Header>
                     <form
                         role='form'
@@ -260,13 +261,13 @@ export default class NewChannelModal extends React.PureComponent {
                     >
                         <Modal.Body>
                             <div className={displayNameClass}>
-                                <label className='col-sm-3 form__label control-label'>
+                              {/*   <label className='col-sm-3 form__label control-label'>
                                     <FormattedMessage
                                         id='channel_modal.name'
                                         defaultMessage='Name'
                                     />
-                                </label>
-                                <div className='col-sm-9'>
+                                </label>   */}  
+                                <div className='col-sm-12'>
                                     <input
                                         id={inputPrefixId + 'Name'}
                                         onChange={this.handleChange}
@@ -297,12 +298,12 @@ export default class NewChannelModal extends React.PureComponent {
                             </div>
                             <div className='form-group'>
                                 <div className='col-sm-3'>
-                                    <label className='form__label control-label'>
+                                   {/*  <label className='form__label control-label'>
                                         <FormattedMessage
                                             id='channel_modal.purpose'
                                             defaultMessage='Purpose'
                                         />
-                                    </label>
+                                    </label> */}
                                     <label className='form__label light'>
                                         <FormattedMessage
                                             id='channel_modal.optional'
@@ -310,12 +311,12 @@ export default class NewChannelModal extends React.PureComponent {
                                         />
                                     </label>
                                 </div>
-                                <div className='col-sm-9'>
+                                <div className='col-sm-12'>
                                     <textarea
                                         id={inputPrefixId + 'Purpose'}
                                         className='form-control no-resize'
                                         ref='channel_purpose'
-                                        rows='4'
+                                        rows='1'
                                         placeholder={Utils.localizeMessage('channel_modal.purposeEx', 'E.g.: "A channel to keep track of UI changes."')}
                                         maxLength='250'
                                         value={this.props.channelData.purpose}
@@ -330,7 +331,7 @@ export default class NewChannelModal extends React.PureComponent {
                                     </p>
                                 </div>
                             </div>
-                            <div className='form-group less'>
+                            <div className='form-group less hide-it-for-now'>
                                 <div className='col-sm-3'>
                                     <label className='form__label control-label'>
                                         <FormattedMessage
@@ -369,16 +370,6 @@ export default class NewChannelModal extends React.PureComponent {
                         </Modal.Body>
                         <Modal.Footer>
                             <button
-                                type='button'
-                                className='btn btn-default'
-                                onClick={this.props.onModalDismissed}
-                            >
-                                <FormattedMessage
-                                    id='channel_modal.cancel'
-                                    defaultMessage='Cancel'
-                                />
-                            </button>
-                            <button
                                 onClick={this.handleSubmit}
                                 type='submit'
                                 className='btn btn-primary'
@@ -389,6 +380,18 @@ export default class NewChannelModal extends React.PureComponent {
                                     defaultMessage='Create New Channel'
                                 />
                             </button>
+                        
+                            <button
+                                type='button'
+                                className='btn btn-default'
+                                onClick={this.props.onModalDismissed}
+                            >
+                                <FormattedMessage
+                                    id='channel_modal.cancel'
+                                    defaultMessage='Cancel'
+                                />
+                            </button>
+
                         </Modal.Footer>
                     </form>
                 </Modal>
