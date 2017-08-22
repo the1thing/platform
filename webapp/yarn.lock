@@ -2720,7 +2720,7 @@ executable@^1.0.0:
   dependencies:
     meow "^3.1.0"
 
-exif2css@^1.2.0:
+exif2css@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/exif2css/-/exif2css-1.2.0.tgz#8438e116921508e3dcc30cbe2407b1d5535e1b45"
 
@@ -5052,7 +5052,6 @@ mattermost-redux@mattermost/mattermost-redux#webapp-master:
     deep-equal "1.0.1"
     harmony-reflect "1.5.1"
     isomorphic-fetch "2.2.1"
-    key-mirror "1.0.1"
     mime-db "1.27.0"
     redux "3.6.0"
     redux-action-buffer "1.0.1"
