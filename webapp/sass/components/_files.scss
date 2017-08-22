@@ -1,9 +1,16 @@
 @charset 'UTF-8';
+.text_to_upload_images {
+font-family: "EkMukta-Light";
+font-size: 24px;
+color: #030303;
+margin-bottom:8px;
+}
 .file-preview__container {
-    height: 100px !important;
-    margin: 1px 0 10px;
-    // padding:10px 0;
-    max-height: 100px;
+    height: 110px !important;
+    margin: 1px 0 0px; // padding:10px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #F0F0F0;
+    max-height: 110px;
     overflow-x: auto;
     overflow-y: hidden;
     position: relative;
@@ -13,13 +20,13 @@
 
 .file-preview {
     @include clearfix;
-    border: 1px solid $light-gray;
+    border: 1px solid #F0F0F0;
     display: inline-block;
     height: 100px;
     margin: 0 0 0 10px;
     position: relative;
     width: 100px;
-    border-radius: 8px;
+    border-radius: 4px;
     &:first-child {
         margin-left: 0;
     }
@@ -47,17 +54,19 @@
     transition: all .2s ease-in-out;
     background: #FFFFFF !important;
     border-radius: 20px;
-    height: 20px;
+    height: 16px;
     position: absolute;
     right: 2px;
     text-align: center;
     top: 2px;
-    width: 20px;
+    width: 16px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
     line-height: 1.25;
     img {
         opacity: 0.2;
         transition: all .2s ease-in-out;
+        width: 8px;
+        margin-top: -3px;
     }
     &:hover {
         background: #fbfbfb !important;
@@ -134,7 +143,7 @@
 }
 
 .post-image__columns {
-    width: 350px;
+    width: 400px;
 }
 
 .post-image__column {
@@ -143,7 +152,7 @@
     height: 350px;
     margin: 0.5em 0em 0 0 !important;
     position: relative;
-    width: 350px;
+    width: 400px;
     border-radius: 4px;
     overflow: hidden!important;
     border: 1px solid rgb(240, 240, 240) !important;
@@ -167,11 +176,10 @@
     overflow: hidden;
     position: relative;
     text-align: center;
-    border-radius: 4px 4px 0 0 !important;
+    border-radius: 2px !important;
     width: 100%;
     border: none;
-    background-size: cover;
-    // border: 1px solid rgba(0, 0, 0, 0.08)!important;
+    background-size: cover; // border: 1px solid rgba(0, 0, 0, 0.08)!important;
     &.small {
         background-position: center;
     }
@@ -202,7 +210,7 @@
 .post-image__thumbnail {
     cursor: -webkit-zoom-in !important;
     float: left;
-    height: 90%;
+    height: 100%;
     width: 100%;
     border-bottom: 1px solid #dedede;
 }
@@ -224,8 +232,7 @@
     >div {
         position: absolute;
         top: 9px;
-        right: 3px;
-        // width: 100%;
+        right: 3px; // width: 100%;
     }
     .post-image__name {
         display: block;
@@ -299,8 +306,7 @@
         border-right: 1px solid $light-gray;
         height: 270px;
         vertical-align: center;
-        width: 320px;
-        // helper to center the image icon in the preview window
+        width: 320px; // helper to center the image icon in the preview window
         .file-details__preview-helper {
             display: inline-block;
             height: 100%;

@@ -35,7 +35,7 @@
         z-index: 2;
     }
     .help__text {
-        bottom: -16px;
+        bottom: -13px;
         cursor: pointer;
         font-size: 10px;
         position: absolute;
@@ -145,7 +145,7 @@
 
 .new-separator {
     .separator__hr {
-        border-color: #22B541;
+        border-color: #22B541 !important;
     }
     .separator__text {
         color: #030303 !important;

@@ -749,6 +749,16 @@ export default class CreatePost extends React.Component {
                 className={centerClass}
                 onSubmit={this.handleSubmit}
             >
+                <div className={postFooterClassName}>
+                <MsgTyping
+                channelId={this.state.channelId}
+                parentId=''
+                />
+                {postError}
+                {serverError}
+                {preview}
+                
+                </div>
                 <div className={'post-create' + attachmentsDisabled}>
                     <div className='post-create-body'>
                         <div className='post-body__cell'>
@@ -785,15 +795,7 @@ export default class CreatePost extends React.Component {
                         </a>
                         {tutorialTip}
                     </div>
-                    <div className={postFooterClassName}>
-                        <MsgTyping
-                            channelId={this.state.channelId}
-                            parentId=''
-                        />
-                        {postError}
-                        {preview}
-                        {serverError}
-                    </div>
+
                 </div>
                 <PostDeletedModal
                     show={this.state.showPostDeletedModal}

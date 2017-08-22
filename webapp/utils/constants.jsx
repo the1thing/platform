@@ -379,8 +379,8 @@ export const Constants = {
         patch: 'patch',
         other: 'generic'
     },
-    MAX_DISPLAY_FILES: 5,
-    MAX_UPLOAD_FILES: 5,
+    MAX_DISPLAY_FILES: 6,
+    MAX_UPLOAD_FILES: 6,
     THUMBNAIL_WIDTH: 800,
     THUMBNAIL_HEIGHT: 1000,
     PROFILE_WIDTH: 128,

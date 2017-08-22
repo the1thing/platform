@@ -86,11 +86,14 @@ export default class FilePreview extends React.Component {
         });
 
         return (
-            <div
-                className='file-preview__container'
-                ref='container'
-            >
-                {previews}
+        <div>
+                <div className="text_to_upload_images">Upload Images</div>
+                <div
+                    className='file-preview__container'
+                    ref='container'
+                >
+                    {previews}
+                </div>
             </div>
         );
     }

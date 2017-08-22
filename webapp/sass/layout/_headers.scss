@@ -512,3 +512,8 @@
 .channel-header__description {
     visibility: hidden;
 }
+
+
+#channelEditHeader, #channelEditHeader, #channelDelete {
+    display: none !important;
+}

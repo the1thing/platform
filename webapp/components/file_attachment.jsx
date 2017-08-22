@@ -154,7 +154,7 @@ export default class FileAttachment extends React.Component {
                 >
                     {thumbnail}
                 </a>
-                <div className='post-image__details'>
+                    {/*<div className='post-image__details'>
                     {filenameOverlay}
                     <div>
                         <a
@@ -170,7 +170,7 @@ export default class FileAttachment extends React.Component {
                         <span className='post-image__size'>{Utils.fileSizeToString(fileInfo.size)}</span>
                         </a>
                     </div>
-                </div>
+                </div>*/}
             </div>
         );
     }
