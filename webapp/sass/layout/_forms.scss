@@ -124,20 +124,20 @@ input.filter-textbox {
 }
 
 .form-control {
-    display: block;
-    width: 100%!important;
-    height: 40px;
-    padding-right: 15px!important;
-    padding-left: 15px!important;
-    font-size: 14px!important;
-    font-family: 'Open Sans', sans-serif !important;
-    background: #fff!important;
-    color: #030303!important;
-    background-image: none!important;
-    border: 1px solid #f0f0f0!important;
-    border-radius: 8px!important;
+    cursor: auto;
+    border: none!important;
+    border-radius: 0 !important;
+    border-bottom: solid 1px #f0f0f0 !important;
+    background: #FFF!important;
+    outline: none!important;
+    transition: none !important;
+    font-size: 24px !important;
     box-shadow: none !important;
-    -webkit-appearance: none !important;
+    -webkit-appearance: none!important;
+    margin: 0px !important;
+    color: #030303 !important;
+    font-family: "EkMukta-ExtraLight" !important;
+    padding-left: 40px !important;
 }
 
 input:-webkit-autofill {

@@ -1,6 +1,6 @@
 @charset 'UTF-8';
 .channel-header {
-    @include flex(0 0 57px);
+    @include flex(0 0 58px);
     border-left: none;
     border-bottom: 1px solid #F0F0F0;
     font-size: 14px;
@@ -512,6 +512,7 @@
 
 .channel-header__description {
     visibility: hidden;
+    display: none;
 }
 
 

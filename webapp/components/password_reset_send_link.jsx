@@ -97,40 +97,49 @@ class PasswordResetSendLink extends React.Component {
                         />
                     </Link>
                 </div>
-                <div className='col-sm-12'>
+                <div className='wrap_585px'>
+                    <div className='image-part-on-signin-page'>
+                        <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                    </div>
                     <div className='signup-team__container'>
-                        <h3>
+                    <div className='signin-title'>
+                        <h2>
                             <FormattedMessage
                                 id='password_send.title'
                                 defaultMessage='Password Reset'
                             />
-                        </h3>
+                        </h2>
+                    </div>
                         {this.state.updateText}
                         <form
                             onSubmit={this.handleSendLink}
                             ref='reset_form'
                         >
-                            <p>
-                                <FormattedMessage
-                                    id='password_send.description'
-                                    defaultMessage='To reset your password, enter the email address you used to sign up'
-                                />
-                            </p>
+                            <div className='signup__content'>
+                                <h4 className='color--light'>
+                                    <FormattedMessage
+                                        id='password_send.description'
+                                        defaultMessage='To reset your password, enter the email address you used to sign up'
+                                    />
+                                </h4>
+                            </div>
                             <div className={formClass}>
+                            <div className="user-email"></div>
                                 <input
                                     type='email'
-                                    className='form-control'
+                                    className='form-control reset-password'
                                     name='email'
                                     ref='email'
                                     placeholder={Utils.localizeMessage(
                                         'password_send.email',
-                                        'Email'
+                                        'Enter your email'
                                     )}
                                     spellCheck='false'
                                 />
                             </div>
                             {error}
                             <button
+                                id='passwordResetButton'
                                 type='submit'
                                 className='btn btn-primary'
                             >

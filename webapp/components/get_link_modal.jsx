@@ -108,16 +108,6 @@ export default class GetLinkModal extends React.Component {
                     {linkText}
                 </Modal.Body>
                 <Modal.Footer>
-                    <button
-                        type='button'
-                        className='btn btn-default'
-                        onClick={this.onHide}
-                    >
-                        <FormattedMessage
-                            id='get_link.close'
-                            defaultMessage='Close'
-                        />
-                    </button>
                     {copyLink}
                     {copyLinkConfirm}
                 </Modal.Footer>

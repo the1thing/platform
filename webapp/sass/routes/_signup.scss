@@ -1,4 +1,9 @@
 @charset 'UTF-8';
+.sign-in-header {
+    z-index: 100;
+    position: relative;
+}
+
 .signup-header {
     background: $bg--gray;
     line-height: 33px;
@@ -16,9 +21,10 @@
         width: 140px;
     }
     img.login-team-logo-mobile {
-        margin-top: 10px;
+        margin-top: 15px;
         height: 50px;
         width: 50px;
+        border-radius: 4px;
     }
 }
 
@@ -42,15 +48,16 @@
 
 .call_on_phone {
     float: right;
-    color: #7f7f7f;
+    color: #030303;
     margin-top: 34px;
     display: inline-block;
     list-style: none;
-    font-size: 13px;
+    font-size: 16px;
+    font-family: 'EkMukta-Bold';
     margin-right: 12px;
     vertical-align: middle;
     a {
-        color: #7f7f7f !important;
+        color: #030303 !important;
         &:hover,
         &:active,
         &:focus {
@@ -58,35 +65,52 @@
             text-decoration: none !important;
         }
     }
+    a.start-a-project,
+    a.join-our-network {
+        font-size: 16px;
+        font-family: 'EkMukta-Bold';
+        color: #0d65d8 !important;
+        margin-left: 64px;
+        text-transform: uppercase;
+    }
 }
 
+
 .wrap_585px {
-    max-width: 585px;
+    max-width: 1024px;
     margin: 0 auto;
     h2 {
-        font-family: 'EkMukta-ExtraBold';
+        font-family: 'EkMukta-ExtraLight';
         color: #030303 !important;
         text-transform: none;
         font-size: 42px !important;
-        font-weight: 900 !important;
+        font-weight: 200 !important;
         width: 100%;
-        text-align: center;
+        text-align: left;
     }
     h4 span {
         width: 100%;
-        text-align: center;
-        color: #7f7f7f!important;
+        text-align: left;
+        color: #030303 !important;
         font-size: 24px!important;
         letter-spacing: 0.5px!important;
         line-height: 30px!important;
+        font-family: "EkMukta-Light";
     }
+}
+
+.image-part-on-signin-page {
+    float: left;
+    // width: 405px;
+    padding: 100px 0;
 }
 
 .signup-team__container {
     margin: 0 auto;
-    max-width: 585px;
+    float: right;
+    max-width: 560px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     padding: 100px 0 50px;
     position: relative;
     h1 {
@@ -130,9 +154,9 @@
     }
     h2 {
         font-size: em(30px);
-        font-weight: 600;
-        letter-spacing: -.5px;
-        margin-bottom: .8em;
+        font-weight: 600; // letter-spacing: -.5px;
+        font-size: 42px;
+        color: #030303;
     }
     h3 {
         font-size: 1.5em;
@@ -260,18 +284,20 @@
         padding-left: 18px;
     }
     #loginButton,
+    #passwordResetButton,
     .btn {
-        background: #22B541 !important;
-        padding: 10px 40px !important;
+        background: #0d65d8 !important; // background-color: #0d65d8;
+        padding: 12px 42px !important;
         color: #FFFFFF !important;
-        font-size: 24px !important;
-        font-family: 'MarkPro-Heavy' !important;
-        border-radius: 40px !important;
-        letter-spacing: 0.5px !important;
+        font-size: 14px !important;
+        font-family: 'EkMukta-Bold' !important;
+        border-radius: 4px !important;
+        letter-spacing: 1.8px !important;
         outline: none !important;
         border: none !important;
         -webkit-appearance: none !important;
         margin-top: 50px;
+        text-transform: uppercase;
         .fa {
             font-size: 17px;
             margin-right: 8px;
@@ -301,11 +327,11 @@
             padding: 0 1em 0 2em;
             text-align: left;
             width: 200px;
-            > span {
+            >span {
                 position: relative;
                 top: 11px;
                 vertical-align: top;
-                > span {
+                >span {
                     display: inline-block;
                     line-height: normal;
                     vertical-align: top;
@@ -409,19 +435,19 @@
     }
     .has-error {
         .control-label {
-            @include border-radius(3px);
-            background: #f2f2f2;
-            color: #999999;
+            // @include border-radius(3px);
+            // background: #f2f2f2;
+            color: red;
             font-size: 14px;
             font-weight: normal;
-            margin: 1em 0 0;
-            padding: .7em 1em;
+            // margin: 1em 0 0;
+            // padding: .7em 1em;
             width: 100%;
             &:before {
                 @extend %font-awesome;
-                color: #aaaaaa;
+                color: red;
                 content: '\f071';
-                margin-right: 4px;
+                margin-right: 10px;
             }
         }
     }
@@ -432,8 +458,7 @@
         p {
             color: inherit;
         }
-    }
-    // Modifier Styles
+    } // Modifier Styles
     h1,
     h2,
     h3,
@@ -567,4 +592,91 @@
 .verify_panel {
     margin: 60px auto auto;
     max-width: 380px;
+}
+
+
+.signup__email-container .form-control,
+.signup-team__container .reset-password {
+    cursor: auto;
+    border: none!important;
+    border-radius: 0 !important;
+    border-bottom: solid 1px #f0f0f0 !important;
+    background: #FFF!important;
+    outline: none!important;
+    transition: none !important;
+    font-size: 24px !important;
+    box-shadow: none !important;
+    -webkit-appearance: none!important;
+    margin: 0px !important;
+    color: #030303 !important;
+    font-family: "EkMukta-ExtraLight" !important;
+    padding-left: 40px !important;
+}
+
+.signup__email-container .form-group {
+    position: relative;
+}
+
+.signup-team__container .form-group {
+    position: relative;
+}
+
+.form-group .user-email {
+    position: absolute;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    top: 22px;
+    background: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/signin-email-icon.svg') left top no-repeat !important;
+}
+
+.form-group .user-password {
+    position: absolute;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    top: 22px;
+    background: url('https://s3.ap-south-1.amazonaws.com/1thing-logos/signin-password-icon.svg') left top no-repeat !important;
+}
+
+
+.signup__email-container input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.signup__email-container input::-webkit-input-placeholder {
+    font-family: "EkMukta-ExtraLight" !important;
+    font-size: 24px !important;
+    /* WebKit, Blink, Edge */
+    color: #7f7f7f!important;
+}
+
+.signup__email-container input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    font-family: "EkMukta-ExtraLight" !important;
+    font-size: 24px !important;
+    color: #7f7f7f!important;
+    opacity: 1;
+}
+
+.signup__email-container input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    font-family: "EkMukta-ExtraLight" !important;
+    color: #7f7f7f!important;
+    font-size: 24px !important;
+    opacity: 1;
+}
+
+.signup__email-container input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    font-family: "EkMukta-ExtraLight" !important;
+    color: #7f7f7f!important;
+    font-size: 24px !important;
+}
+
+.signup__email-container input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    font-family: "EkMukta-ExtraLight" !important;
+    color: #7f7f7f!important;
+    font-size: 24px !important;
 }

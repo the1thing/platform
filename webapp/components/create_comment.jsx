@@ -597,6 +597,20 @@ export default class CreateComment extends React.Component {
         }
         return (
             <form onSubmit={this.handleSubmit}>
+                    <div className='post-create-footer'>
+                        <input
+                            type='button'
+                            className={addButtonClass}
+                            value={Utils.localizeMessage('create_comment.comment', 'Add Comment')}
+                            onClick={this.handleSubmit}
+                        />
+                        {uploadsInProgressText}
+                        {serverError}
+                        {postError}
+                        {preview}
+                        
+                    </div>
+
                 <div className='post-create'>
                     <div
                         id={this.props.rootId}
@@ -634,18 +648,7 @@ export default class CreateComment extends React.Component {
                         channelId={this.props.channelId}
                         parentId={this.props.rootId}
                     />
-                    <div className='post-create-footer'>
-                        <input
-                            type='button'
-                            className={addButtonClass}
-                            value={Utils.localizeMessage('create_comment.comment', 'Add Comment')}
-                            onClick={this.handleSubmit}
-                        />
-                        {uploadsInProgressText}
-                        {postError}
-                        {preview}
-                        {serverError}
-                    </div>
+
                 </div>
                 <PostDeletedModal
                     show={this.state.showPostDeletedModal}

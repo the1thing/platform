@@ -8,14 +8,12 @@
     }
     .post-right-comments-container {
         position: relative;
-
-        padding-bottom: 30px;
+        // padding-bottom: 30px;
         .post {
             &:first-child {
                 padding-top: 15px;
             }
         }
- 
     }
     .help_format_text {
         bottom: -63px;
@@ -26,7 +24,7 @@
             // border-bottom: 1px solid #ddd;
             padding-bottom: 1em;
             background: #f8f8f8 !important;
-            margin: 0 2%!important;
+            margin: 0%!important;
             border: none!important;
             border-radius: 8px!important;
         }
@@ -120,8 +118,10 @@
 }
 
 .post-right-channel__name {
-    font-weight: 600;
-    margin: 0 0 15px;
+    margin: 0 0 16px;
+    font-family: 'EkMukta-Light';
+    font-size: 14px;
+    color: #030303;
 }
 
 .post-right-root-container li {
@@ -148,7 +148,14 @@
     @include flex(1 1 auto);
     overflow: auto;
     position: relative;
-    padding-top: 10px;
+    padding: 0 16px; 
+    .post .post__img {
+        width: 42px;
+    }
+    .date-separator,
+    .new-separator {
+        padding: 0px !important;
+    }
     .file-preview__container {
         margin-top: 5px;
     }

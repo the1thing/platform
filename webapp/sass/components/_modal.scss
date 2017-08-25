@@ -13,6 +13,9 @@
         border-top: 1px solid #F0F0F0!important;
         background: #FFFFFF;
         overflow: auto;
+        textarea.form-control[readonly] {
+            background: #FFF !important;
+        }
     }
     .edit-modal-body {
         overflow: visible;
@@ -104,10 +107,10 @@
         }
         .btn {
             font-size: 13px;
-            outline:none !important;
+            outline: none !important;
             &.btn-default {
-                 outline:none !important;
-                float:left;
+                outline: none !important;
+                float: left;
                 background: transparent;
                 border: none;
                 color: #7F7F7F !important;
@@ -514,6 +517,7 @@
                 }
                 .public-link {
                     margin-right: 5px;
+                    display: none;
                 }
                 .pull-left.text {
                     display: none;
@@ -705,8 +709,8 @@
 input[type="submit"],
 .modal-header .btn.btn-primary,
 .app__body .btn.btn-primary {
-    float:left;
-     outline:none !important;
+    float: left;
+    outline: none !important;
     font-size: 14px !important;
     color: #FFFFFF !important; // background: #FFFFFF !important;
     // border-radius: 20px;
@@ -714,12 +718,11 @@ input[type="submit"],
     padding: 12px 32px 10px 32px !important;
     background: #0D65D8 !important;
     letter-spacing: 1.75px !important;
-    text-transform: uppercase !important;
-    // border: 2px solid #0D65D8;
+    text-transform: uppercase !important; // border: 2px solid #0D65D8;
     border-radius: 4px !important;
 
     &:hover {
-        color: #FFFFFF !important; 
+        color: #FFFFFF !important;
         background: #0D65D8 !important;
     }
 }
@@ -823,6 +826,7 @@ input[type="submit"],
     border-top: none !important;
     padding: 20px 64px 10px 64px !important;
 }
+
 .app__body .modal .new-channel__modal .modal-footer {
     padding: 0 64px 70px 64px !important
 }

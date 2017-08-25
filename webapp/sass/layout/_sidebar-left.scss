@@ -19,9 +19,25 @@
         margin-top: -2px;
         margin-left: 0px;
     }
-
+    .people-stack li.AddMorePeople {
+        width:auto;
+        float:right;
+        a#moreDirectMessage {
+            color: #FFFFFF !important;
+            float: right;
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 18px;
+            margin: -4px 0 0 0;
+            outline: none;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            padding: 0 5px;
+            text-decoration: none;
+        }
+    }
     .people-stack .status img {
-            margin-top: -5px;
+        margin-top: -5px;
         margin-left: 0px;
     }
 
@@ -115,14 +131,14 @@
         padding: 1em 1em 0;
     }
     .badge {
-        background-color: #FFFFFF!important;
+        background-color: #fff!important;
         position: absolute;
         border-radius: 50%;
-        font-family: "EkMukta-Light";
+        font-family: EkMukta-Light;
         right: 10px;
         font-size: 10px;
-        top: 5px; // color: transparent!important;
-        color: #000 !important;
+        top: 12px;
+        color: #191654!important;
         width: 16px;
         height: 16px;
         padding: 3px 0;
@@ -245,7 +261,9 @@
     .modal-title {
         line-height: 2em;
     }
-    #createPublicChannel {display: none;}
+    #createPublicChannel {
+        display: none;
+    }
     .add-channel-btn {
         color: #FFFFFF !important;
         float: right;
@@ -319,7 +337,7 @@
 }
 
 .nav-stacked .status i {
-    color: rgba(255,255,255,0.4) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .nav-stacked li:hover .status i {

@@ -697,7 +697,7 @@ export default class Sidebar extends React.Component {
         }
 
         var directMessageMore = (
-            <li key='more'>
+            <li className="AddMorePeople" key='more'>
                 <a
                     id='moreDirectMessage'
                     href='#'
@@ -705,7 +705,7 @@ export default class Sidebar extends React.Component {
                 >
                     <FormattedMessage
                         id='sidebar.moreElips'
-                        defaultMessage='...'
+                        defaultMessage='+'
                     />
                 </a>
             </li>
@@ -886,19 +886,6 @@ export default class Sidebar extends React.Component {
                             </h4>
                         </li>
                         {publicChannelItems}
-                        <li>
-                            <a
-                                id='sidebarChannelsMore'
-                                href='#'
-                                className='nav-more'
-                                onClick={this.showMoreChannelsModal}
-                            >
-                                <FormattedMessage
-                                    id='sidebar.moreElips'
-                                    defaultMessage='...'
-                                />
-                            </a>
-                        </li>
                     </ul>
 
                     <ul className='nav nav-pills nav-stacked private-channel-stack'>
@@ -920,10 +907,11 @@ export default class Sidebar extends React.Component {
                                     id='sidebar.direct'
                                     defaultMessage='DIRECT MESSAGES'
                                 />
+                                {directMessageMore}
                             </h4>
                         </li>
                         {directMessageItems}
-                        {directMessageMore}
+                        
                     </ul>
                 </div>
                 <div className='sidebar__switcher'>

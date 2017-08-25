@@ -364,7 +364,6 @@ export default class LoginController extends React.Component {
             if (this.state.loading) {
                 loginButton =
                 (<span>
-                    <span className='fa fa-refresh icon--rotate'/>
                     <FormattedMessage
                         id='login.signInLoading'
                         defaultMessage='Signing in...'
@@ -383,6 +382,7 @@ export default class LoginController extends React.Component {
                             margin={true}
                         />
                         <div className={'form-group' + errorClass}>
+                        <div className="user-email"></div>
                             <input
                                 className='form-control'
                                 ref='loginId'
@@ -395,6 +395,7 @@ export default class LoginController extends React.Component {
                             />
                         </div>
                         <div className={'form-group' + errorClass}>
+                        <div className="user-password"></div>
                             <input
                                 type='password'
                                 className='form-control'
@@ -426,34 +427,7 @@ export default class LoginController extends React.Component {
                     className='form-group'
                     key='signup'
                 >
-                    <span>
-                        <FormattedMessage
-                            id='login.noAccount'
-                            defaultMessage="Don't have an account? "
-                        />
-                        <Link
-                            target='_blank'
-                            to={'http://1thing.io/start-a-project'}
-                            id='signup'
-                            className='signup-team-login'
-                        >
-                            <FormattedMessage
-                                id='login.startaproject'
-                                defaultMessage='Start a project'
-                            />
-                        </Link>
-                        <Link
-                            target='_blank'
-                            to={'http://1thing.io/join-our-network'}
-                            className='signup-team-login'
-                        >
-                            <FormattedMessage
-                                id='login.joinournetwork'
-                                defaultMessage='Join our network'
-                            />
-                        </Link>
 
-                    </span>
                 </div>
             );
         }
@@ -632,7 +606,7 @@ export default class LoginController extends React.Component {
             <div>
                 <AnnouncementBar/>
                 <div className='col-sm-10 col-sm-offset-1'>
-                <header>    
+                <header className='sign-in-header'>    
                 <div className='logo_on_header'>
                     <a
                     className=''
@@ -642,26 +616,43 @@ export default class LoginController extends React.Component {
                             className='login-team-logo hide-on-mobile'
                             src='http://1thing.io/img/build/full-logo.svg'
                         />
+                        <img
+                            className='login-team-logo-mobile hide-on-desktop'
+                            src='http://1thing.io/img/build/thumbnail.png'
+                        />
                         </a>
 
                 </div>
                 <div className='call_on_phone'>
                     <img 
-                    src='http://1thing.io/assets/images/call.png'
+                    src='https://s3.ap-south-1.amazonaws.com/1thing-logos/call-icon-header.svg'
                     />
                     <a
                     className='call-us'
                     href='tel:+918375008375'
                     >&nbsp;8375 00 8375</a>
+                    <a
+                    className='start-a-project'
+                    href=''
+                    >Start a project</a>
+                    <a
+                    className='join-our-network'
+                    href=''
+                    >Join network</a>
+
+
                 </div>
                 </header>
                     <div className='wrap_585px'>
+                        <div className='image-part-on-signin-page'>
+                            <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                        </div>
                         <div className={'signup-team__container ' + customClass}>
                             <div className='signup__markdown'>
                                 {customContent}
                             </div>
                             <div className='signin-title'>
-                                <h2>Sign In</h2>
+                                <h2>Sign In to Workspace</h2>
                             </div>
                             <div className='signup__content'>
                                 <h1>{global.window.mm_config.SiteName}</h1>
