@@ -1,4 +1,11 @@
 @charset 'UTF-8';
+
+.modal-invite-member {
+    .form-group.invite {
+            margin-bottom: 40px;
+            margin-top:30px;
+    }
+}
 .app__body {
     &.browser--ie {
         .modal {
@@ -42,6 +49,7 @@
         }
     }
     .row--invite {
+
         .col-sm-6 {
             &:first-child {
                 padding-right: 0;
@@ -620,6 +628,10 @@
         flex-shrink: 0;
         margin: 5px 0;
         padding-left: 20px;
+        img.spinner-button__gif {
+                max-width: 30px;
+    margin-right: 42px;
+        }
     }
     .more-modal__name {
         font-size: .95em;

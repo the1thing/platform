@@ -367,7 +367,7 @@ class InviteMemberModal extends React.Component {
                 content = (
                     <div>
                         {serverError}
-                        <button
+                      {/*  <button
                             type='button'
                             className='btn btn-default'
                             onClick={this.addInviteFields}
@@ -377,17 +377,10 @@ class InviteMemberModal extends React.Component {
                                 defaultMessage='Add another'
                             />
                         </button>
+                        */}
                         <br/>
                         <br/>
-                        <span>
-                            <FormattedHTMLMessage
-                                id='invite_member.autoJoin'
-                                defaultMessage='People invited automatically join the <strong>{channel}</strong> channel.'
-                                values={{
-                                    channel: defaultChannelName
-                                }}
-                            />
-                        </span>
+
                     </div>
                 );
 
@@ -501,6 +494,7 @@ class InviteMemberModal extends React.Component {
                             {content}
                         </Modal.Body>
                         <Modal.Footer>
+                            {sendButton}
                             <button
                                 type='button'
                                 className='btn btn-default'
@@ -512,7 +506,7 @@ class InviteMemberModal extends React.Component {
                                     defaultMessage='Cancel'
                                 />
                             </button>
-                            {sendButton}
+                            
                         </Modal.Footer>
                     </Modal>
                     <ConfirmModal

@@ -106,7 +106,7 @@
             table-layout: fixed;
             width: 100%;
 
-            > div {
+            >div {
                 display: table-cell;
                 vertical-align: top;
             }
@@ -130,25 +130,30 @@
 
             .settings-links {
                 width: 180px;
-                background: #1F1D1D!important;
-                background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+                background: #00A0B0!important;
+                background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
                 .nav-stacked {
-                    li:nth-child(4) {display:none;}
-                    li:nth-child(5) {display:none;}
+                    li:nth-child(4) {
+                        display: none;
+                    }
+                    li:nth-child(5) {
+                        display: none;
+                    }
 
-                    li {margin: 10px 0;
+                    li {
+                        margin: 10px 0;
                         &.active {
-                                a:before {
-                                    background: #22B541 !important;
-                                    content: '';
-                                    height: 50%;
-                                    left: 0;
-                                    position: absolute;
-                                    top: 8px;
-                                    width: 4px;
-                                }
+                            a:before {
+                                background: #22B541 !important;
+                                content: '';
+                                height: 50%;
+                                left: 0;
+                                position: absolute;
+                                top: 8px;
+                                width: 4px;
                             }
-                        a {               
+                        }
+                        a {
                             border-radius: 0;
                             line-height: 1.5;
                             outline: none;
@@ -159,13 +164,15 @@
                             color: #7F7F7F!important;
                             font-family: 'EkMukta-Regular';
                             &:hover {
-                                        color: #FFFFFF!important;
-                                        background: transparent!important;
-                                    }
+                                color: #FFFFFF!important;
+                                background: transparent!important;
+                            }
 
 
 
-                            i {display:none;}
+                            i {
+                                display: none;
+                            }
                         }
                     }
                 }
@@ -384,11 +391,11 @@
                     border-bottom: 1px solid lightgrey;
                     display: none!important;
 
-                    & + .divider-light {
+                    &+.divider-light {
                         display: none;
                     }
 
-                    & + .divider-dark {
+                    &+.divider-dark {
                         display: none;
                     }
                 }
@@ -429,7 +436,7 @@
     }
 
     .nav-pills {
-        > li {
+        >li {
             margin: 0;
 
             a {

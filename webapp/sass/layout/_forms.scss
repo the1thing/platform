@@ -116,7 +116,7 @@
 input[type="text"],
 textarea,
 input.filter-textbox {
-    border-radius: 8px!important;
+    // border-radius: 8px!important;
     border: 1px solid #EBEBEB;
     background: #FFFFFF!important;
     outline: none;
@@ -124,6 +124,7 @@ input.filter-textbox {
 }
 
 .form-control {
+
     cursor: auto;
     border: none!important;
     border-radius: 0 !important;
@@ -137,7 +138,8 @@ input.filter-textbox {
     margin: 0px !important;
     color: #030303 !important;
     font-family: "EkMukta-ExtraLight" !important;
-    padding-left: 40px !important;
+    // padding-left: 40px !important;
+
 }
 
 input:-webkit-autofill {
