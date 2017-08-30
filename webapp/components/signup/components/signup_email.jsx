@@ -314,7 +314,7 @@ export default class SignupEmail extends React.Component {
 
         return (
             <form>
-                <div className='inner__content'>
+                <div className='inner__content signup__email-container'>
                     <div className={emailContainerStyle}>
                         <h5><strong>
                             <FormattedMessage
@@ -323,6 +323,7 @@ export default class SignupEmail extends React.Component {
                             />
                         </strong></h5>
                         <div className={emailDivStyle}>
+                        <div className="user-email"></div>
                             <input
                                 id='email'
                                 type='email'
@@ -336,7 +337,6 @@ export default class SignupEmail extends React.Component {
                                 autoCapitalize='off'
                             />
                             {emailError}
-                            {emailHelpText}
                         </div>
                     </div>
                     {yourEmailIs}
@@ -348,6 +348,7 @@ export default class SignupEmail extends React.Component {
                             />
                         </strong></h5>
                         <div className={nameDivStyle}>
+                        <div className="user-email"></div>
                             <input
                                 id='name'
                                 type='text'
@@ -359,7 +360,7 @@ export default class SignupEmail extends React.Component {
                                 autoCapitalize='off'
                             />
                             {nameError}
-                            {nameHelpText}
+                            
                         </div>
                     </div>
                     <div className='margin--extra'>
@@ -370,6 +371,7 @@ export default class SignupEmail extends React.Component {
                             />
                         </strong></h5>
                         <div className={passwordDivStyle}>
+                        <div className="user-password"></div>
                             <input
                                 id='password'
                                 type='password'
@@ -382,19 +384,21 @@ export default class SignupEmail extends React.Component {
                             {passwordError}
                         </div>
                     </div>
-                    <p className='margin--extra'>
-                        <button
-                            id='createAccountButton'
-                            type='submit'
-                            onClick={this.handleSubmit}
-                            className='btn-primary btn'
-                        >
-                            <FormattedMessage
-                                id='signup_user_completed.create'
-                                defaultMessage='Create Account'
-                            />
-                        </button>
-                    </p>
+                    <div className='form-group'>
+                        <p className='margin--extra'>
+                            <button
+                                id='createAccountButton'
+                                type='submit'
+                                onClick={this.handleSubmit}
+                                className='btn btn-primary'
+                            >
+                                <FormattedMessage
+                                    id='signup_user_completed.create'
+                                    defaultMessage='Create Account'
+                                />
+                            </button>
+                        </p>
+                    </div>
                 </div>
             </form>
         );
@@ -462,19 +466,21 @@ export default class SignupEmail extends React.Component {
                         />
                     </Link>
                 </div>
-                <div className='col-sm-12'>
-                    <div className='signup-team__container padding--less'>
-                        <img
-                            className='signup-team-logo'
-                            src={logoImage}
-                        />
+                <div className='wrap_585px'>
+                    <div className='image-part-on-signin-page'>
+                        <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                    </div>
 
-                        <h4 className='color--light'>
+                    <div className='signup-team__container padding--less'>
+
+                        <div className='signin-title'>
+                        <h2>
                             <FormattedMessage
                                 id='signup_user_completed.lets'
                                 defaultMessage="Let's create your account"
                             />
-                        </h4>
+                            </h2>
+                        </div>
                         <span className='color--light'>
                             <FormattedMessage
                                 id='signup_user_completed.haveAccount'

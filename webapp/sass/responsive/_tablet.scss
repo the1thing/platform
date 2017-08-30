@@ -53,7 +53,7 @@
             .app__content & {
                 .btn-file {
                     bottom: -2px;
-                    left: 0;
+                    left: 7px;
                     line-height: 36px;
                     padding: 0;
                     top: auto;
@@ -78,6 +78,7 @@
             }
             .send-button {
                 display: table-cell;
+                line-height: 45px;
             }
         }
     }

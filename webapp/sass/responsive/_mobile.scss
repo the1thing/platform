@@ -1,5 +1,84 @@
 @charset 'UTF-8';
 @media screen and (max-width: 768px) {
+    .sidebar--right__header {
+        flex: 0 0 44px;
+        background: #FAFAFA !important;
+        border-color: transparent !important;
+        color: inherit;
+        font-size: 1em;
+        margin-top: 0px;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 5px 0 16px;
+        text-transform: uppercase;
+    }
+
+    .sidebar--right .sidebar--right__header .sidebar--right__title span {
+        text-transform: capitalize;
+        line-height: 44px;
+        font-family: 'EkMukta-Light';
+        font-size: 18px;
+        color: #030303;
+    }
+    .sidebar-collapse__container {
+        display: block !important;
+        .sidebar-collapse {
+            float: left;
+            left: 17px;
+            top: 14px;
+            position: relative;
+        }
+    }
+    .channel-header__icon {
+        display: none !important;
+    }
+
+    .sidebar--left .nav li>a .sidebar-item__name {
+        font-size: 16px;
+    }
+
+    .app__body .modal .modal-image .modal-image__wrapper {
+        border-radius: 3px;
+        display: table-cell;
+        float: left;
+        max-width: 90%;
+        position: relative;
+        text-align: center;
+        vertical-align: middle;
+        width: 100%;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+    }
+
+    .app__body .modal .modal-prev-bar {
+        height: 100%;
+        left: 5px;
+        position: absolute;
+        top: 0;
+    }
+
+    .app__body .modal .modal-next-bar {
+        height: 100%;
+        position: absolute;
+        right: 5px;
+        top: 0;
+    }
+
+    .app__body .modal .modal-image .modal-body .image_modal_header .image_file_name {
+        max-width: 40%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .app__body .modal .modal-image .modal-button-bar {
+        top: 14px;
+    }
+    .app__body .modal .modal-image .modal-body .image_modal_header .modal-close {
+        right: 18px;
+    }
+
     .image-part-on-signin-page {
         display: none !important;
     }
@@ -37,11 +116,11 @@
     .post-create__container {
         padding-bottom: 10px;
         .post-create-body .btn-file {
-            bottom: 7px !important;
+            bottom: 12px !important;
         }
         .post-create-body .custom-textarea {
             padding-left: 20px !important;
-            padding-top: 9px;
+            padding-right: 20px !important;
         }
         .msg-typing {
             display: none;
@@ -220,7 +299,7 @@
             }
         }
         &.post--root {
-            padding: 25px 15px 10px !important;
+           padding: 25px 0px 10px 0px !important;
             .post__header .col__reply {
                 right: 0px;
             }
@@ -530,15 +609,16 @@
     }
 
     .sign-in-header {
-        .start-a-project, .join-our-network {
+        .start-a-project,
+        .join-our-network {
             display: none !important;
         }
         .call_on_phone {
-                margin-top: 28px !important;
+            margin-top: 28px !important;
         }
     }
     .wrap_585px {
-        padding:0 15px;
+        padding: 0 15px;
         h2 {
             font-size: 36px !important;
         }
@@ -938,8 +1018,8 @@
         }
     }
     .sidebar--menu {
-        background: #1F1D1D!important;
-        background-image: linear-gradient(-128deg, #242222 0%, #030303 100%)!important;
+        background: #00A0B0!important;
+        background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
         @include single-transition(transform, .35s, ease);
         @include translate3d(290px, 0, 0);
         border: none;
@@ -1039,8 +1119,9 @@
                 }
                 >a {
                     font-size: 15px;
-                    line-height: 2.5;
+                    line-height: 2;
                     margin: 0;
+                    padding: 0px 10px 0px 15px;
                     &:hover,
                     &:focus {
                         background: transparent !important;
@@ -1052,6 +1133,7 @@
                             right: 0;
                             text-align: center;
                             width: 40px;
+                            line-height: 24px;
                         }
                     }
                 }
