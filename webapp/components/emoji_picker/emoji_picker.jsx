@@ -414,7 +414,6 @@ export default class EmojiPicker extends React.Component {
                     />
                 </div>
                 <div className='emoji-picker__search-container'>
-                    <span className='fa fa-search emoji-picker__search-icon'/>
                     <input
                         ref={(input) => {
                             this.searchInput = input;
@@ -422,7 +421,7 @@ export default class EmojiPicker extends React.Component {
                         className='emoji-picker__search'
                         type='text'
                         onChange={this.handleFilterChange}
-                        placeholder={Utils.localizeMessage('emoji_picker.search', 'search')}
+                        placeholder={Utils.localizeMessage('emoji_picker.search', 'search an emoji')}
                     />
                 </div>
                 <div
@@ -433,7 +432,6 @@ export default class EmojiPicker extends React.Component {
                 >
                     {items}
                 </div>
-                <EmojiPickerPreview emoji={this.state.selected}/>
             </div>
         );
     }

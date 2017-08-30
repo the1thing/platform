@@ -81,7 +81,7 @@
             min-width: 1px;
         }
         .post-create-footer {
-            padding: 5px 0 60px;
+            padding: 5px 0 0px;
             width: 100%;
         }
         .post-right-comments-upload-in-progress {
@@ -158,6 +158,7 @@
     }
     .file-preview__container {
         margin-top: 5px;
+        border:none;
     }
     .post-image__columns {
         max-width: 270px!important;

@@ -244,19 +244,21 @@
         }
     }
     .channel-intro__title {
-        font-size: 24px; // font-weight: 600;
+        font-size: 32px; // font-weight: 600;
         padding-top: 70px!important;
         margin-top: 0px;
         margin-bottom: 15px;
         color: #030303!important;
-        font-family: 'MarkPro-Black'!important;
+        font-family: "EkMukta-Light";
     }
     .channel-intro__content {
         // @include border-radius(3px);
         background: transparent!important;
         padding: 8px 0px;
-        color: #030303!important;
-        font-size: 14px!important;
+        color: #030303 !important;
+        font-size: 18px !important;
+        line-height: 28px;
+        font-family: 'EkMukta-ExtraLight';
     }
     .oh-hello-there.hide-in-mobile {
         margin: 40px 0;
@@ -397,20 +399,18 @@
             float: left;
             line-height: 22px;
             margin-top: -2px;
-            text-transform: uppercase;
-            // letter-spacing: 8px;
+            text-transform: uppercase; // letter-spacing: 8px;
             font-family: 'EkMukta-Regular';
             font-size: 24px;
             color: #FFFFFF!important;
-                padding: 5px 0;
+            padding: 5px 0;
         }
         .user__name {
             @include single-transition(all, .1s, linear);
             @include alpha-property(color, $white, .8);
             font-size: 18px;
             color: #FFFFFF!important;
-            font-family: 'EkMukta-Light';
-            // font-weight: 400;
+            font-family: 'EkMukta-Light'; // font-weight: 400;
             line-height: 18px;
         }
     }
@@ -516,4 +516,8 @@
 }
 
 
-#channelEditHeader, #channelEditPurpose, #channelDelete { display: none;}
+#channelEditHeader,
+#channelEditPurpose,
+#channelDelete {
+    display: none;
+}

@@ -176,7 +176,7 @@ export function createOffTopicIntroMessage(channel, centeredIntro) {
         <div className={'channel-intro ' + centeredIntro}>
             <FormattedHTMLMessage
                 id='intro_messages.offTopic'
-                defaultMessage='<h4 class="channel-intro__title">Welcome {display_name}</h4><p class="channel-intro__content">This is the start of coversations between {display_name} and 1THING.<br/></p>'
+                defaultMessage='<h4 class="channel-intro__title">Welcome {display_name} 🙏</h4><p class="channel-intro__content">This is the start of coversations between {display_name} and 1THING.<br/></p>'
                 values={{
                     display_name: channel.display_name
                 }}
@@ -262,7 +262,7 @@ export function createStandardIntroMessage(channel, centeredIntro) {
         memberMessage = (
             <FormattedMessage
                 id='intro_messages.onlyInvited'
-                defaultMessage=' Only invited members can access this conversation.'
+                defaultMessage=' '
             />
         );
     } else {
@@ -346,7 +346,7 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             <h4 className='channel-intro__title'>
                 <FormattedMessage
                     id='intro_messages.welcome'
-                    defaultMessage='Welcome {name}'
+                    defaultMessage='Welcome {name} 🙏'
                     values={{
                         name: (uiName)
                     }}
@@ -354,7 +354,6 @@ export function createStandardIntroMessage(channel, centeredIntro) {
             </h4>
             <p className='channel-intro__content'>
                 {createMessage}
-                {memberMessage}
                 {purposeMessage}
                 <br/>
             </p>
