@@ -633,11 +633,11 @@ export default class LoginController extends React.Component {
                     >&nbsp;8375 00 8375</a>
                     <a
                     className='start-a-project'
-                    href=''
+                    href='http://1thing.io/start-a-project'
                     >Start a project</a>
                     <a
                     className='join-our-network'
-                    href=''
+                    href='http://1thing.io/join-our-network'
                     >Join network</a>
 
 

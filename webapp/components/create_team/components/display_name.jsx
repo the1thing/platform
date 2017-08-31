@@ -103,22 +103,19 @@ export default class TeamSignupDisplayNamePage extends React.Component {
                         </div>
                         {nameError}
                     </div>
-                    <div>
-                        <FormattedMessage
-                            id='create_team.display_name.nameHelp'
-                            defaultMessage='Name your team in any language. Your team name shows in menus and headings.'
-                        />
+                    <div className='form-group'>
+                        <button
+                            id='createAccountButton'
+                            type='submit'
+                            className='btn btn-primary margin--extra'
+                            onClick={this.submitNext}
+                        >
+                            <FormattedMessage
+                                id='create_team.display_name.next'
+                                defaultMessage='Next'
+                            />
+                        </button>
                     </div>
-                    <button
-                        type='submit'
-                        className='btn btn-primary margin--extra'
-                        onClick={this.submitNext}
-                    >
-                        <FormattedMessage
-                            id='create_team.display_name.next'
-                            defaultMessage='Next'
-                        /><i className='fa fa-chevron-right'/>
-                    </button>
                 </form>
             </div>
         );

@@ -72,13 +72,14 @@ export default class CreateTeamController extends React.Component {
                         />
                     </Link>
                 </div>
-                <div className='col-sm-12'>
-                    <div className='signup-team__container'>
-                        <h1>{global.window.mm_config.SiteName}</h1>
-                        <h4 className='color--light'>
-                            {description}
-                        </h4>
-                        <div className='signup__content'>
+                <div className="clearfix"></div>
+                <div className='wrap_585px'>
+                   <div className='image-part-on-signin-page'>
+                        <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                    </div>
+
+                    <div className='signup-team__container padding--less'>
+                        <div className='signup__content extra-margin-on-top'>
                             {React.cloneElement(this.props.children, {
                                 state: this.state,
                                 updateParent: this.updateParent

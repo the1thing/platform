@@ -221,8 +221,12 @@ export default class SelectTeam extends React.Component {
                 <div className='signup-header'>
                     {headerButton}
                 </div>
-                <div className='col-sm-12'>
-                    <div className={'signup-team__container'}>
+                <div className="clearfix"></div>
+                <div className='wrap_585px'>
+                   <div className='image-part-on-signin-page'>
+                        <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                    </div>
+                    <div className={'signup-team__container padding--less extra-margin-on-top'}>
                         <img
                             className='signup-team-logo'
                             src={logoImage}

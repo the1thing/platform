@@ -50,7 +50,6 @@ export default class ViewImagePopoverBar extends React.Component {
                     />
                 </span>
                 <div className='image-links'>
-                    {publicLink}
                     <a
                         href={this.props.fileURL}
                         download={this.props.filename}
