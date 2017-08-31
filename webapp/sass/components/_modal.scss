@@ -27,9 +27,21 @@
     }
     .edit-modal-body {
         overflow: visible;
+        .help__text {
+            bottom:-20px;
+        }
         .custom-textarea {
             max-height: 60vh;
             min-height: 8em;
+        }
+        #edit_textbox {
+            border: none;
+            outline: none;
+            box-shadow: none;
+            line-height: 30px;
+            font-size: 18px!important;
+            color: #030303!important;
+            font-family: "EkMukta-Light" !important;
         }
         .suggestion-list__content {
             max-height: 150px;
@@ -727,7 +739,7 @@ input[type="submit"],
     font-size: 14px !important;
     color: #FFFFFF !important; // background: #FFFFFF !important;
     // border-radius: 20px;
-    margin:0px;
+    margin: 0px;
     font-family: 'EkMukta-Bold' !important;
     padding: 12px 32px 10px 32px !important;
     background: #0D65D8 !important;

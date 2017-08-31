@@ -285,16 +285,6 @@ export default class EditPostModal extends React.Component {
                         <div className='modal-footer'>
                             <button
                                 type='button'
-                                className='btn btn-default'
-                                data-dismiss='modal'
-                            >
-                                <FormattedMessage
-                                    id='edit_post.cancel'
-                                    defaultMessage='Cancel'
-                                />
-                            </button>
-                            <button
-                                type='button'
                                 className='btn btn-primary'
                                 onClick={this.handleEdit}
                             >
@@ -303,6 +293,17 @@ export default class EditPostModal extends React.Component {
                                     defaultMessage='Save'
                                 />
                             </button>
+                            <button
+                                type='button'
+                                className='btn btn-default'
+                                data-dismiss='modal'
+                            >
+                                <FormattedMessage
+                                    id='edit_post.cancel'
+                                    defaultMessage='Cancel'
+                                />
+                            </button>
+
                         </div>
                     </div>
                 </div>
