@@ -97,6 +97,7 @@ class PasswordResetSendLink extends React.Component {
                         />
                     </Link>
                 </div>
+                <div className="clearfix"></div>
                 <div className='wrap_585px'>
                     <div className='image-part-on-signin-page'>
                         <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>

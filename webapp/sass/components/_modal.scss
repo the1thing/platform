@@ -2,10 +2,11 @@
 
 .modal-invite-member {
     .form-group.invite {
-            margin-bottom: 40px;
-            margin-top:30px;
+        margin-bottom: 40px;
+        margin-top: 30px;
     }
 }
+
 .app__body {
     &.browser--ie {
         .modal {
@@ -165,10 +166,10 @@
             margin-top: 60px;
         }
         .modal-next-bar {
-            height: 100%;
+            height: 95%;
             position: absolute;
             right: 32px;
-            top: 0;
+            top: 5%;
         }
         .modal-header {
             @include border-radius(0);
@@ -272,10 +273,10 @@
             top: 50%;
         }
         .modal-prev-bar {
-            height: 100%;
+            height: 95%;
             left: 32px;
             position: absolute;
-            top: 0;
+            top: 5%;
         }
         .modal-image {
             height: 100%;
@@ -358,9 +359,9 @@
                 text-align: center;
                 vertical-align: middle;
                 width: 100%;
-                top: 80px;
+                top: 55%;
                 left: 50%;
-                transform: translateX(-50%);
+                transform: translate3d(-50%, -50%, 0);
                 &:hover {
                     @include border-radius(3px 3px 0 0);
                 }
@@ -629,8 +630,8 @@
         margin: 5px 0;
         padding-left: 20px;
         img.spinner-button__gif {
-                max-width: 30px;
-    margin-right: 42px;
+            max-width: 30px;
+            margin-right: 42px;
         }
     }
     .more-modal__name {
@@ -726,6 +727,7 @@ input[type="submit"],
     font-size: 14px !important;
     color: #FFFFFF !important; // background: #FFFFFF !important;
     // border-radius: 20px;
+    margin:0px;
     font-family: 'EkMukta-Bold' !important;
     padding: 12px 32px 10px 32px !important;
     background: #0D65D8 !important;
