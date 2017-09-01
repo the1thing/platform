@@ -656,9 +656,9 @@ export default class NotificationsTab extends React.Component {
             }
 
             if (this.state.channelKey) {
-                keys.push('@channel');
-                keys.push('@all');
+                keys.push('@everyone');
                 keys.push('@here');
+                keys.push('@all');
             }
             if (this.state.customKeys.length > 0) {
                 keys = keys.concat(this.state.customKeys.split(','));

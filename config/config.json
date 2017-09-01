@@ -122,7 +122,7 @@
         "EnableSignUpWithEmail": true,
         "EnableSignInWithEmail": true,
         "EnableSignInWithUsername": true,
-        "SendEmailNotifications": true,
+        "SendEmailNotifications": false,
         "RequireEmailVerification": false,
         "FeedbackName": "1THING",
         "FeedbackEmail": "steve@1thing.design",

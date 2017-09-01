@@ -864,3 +864,9 @@ input[type="submit"],
 .app__body .modal .new-channel__modal .form-horizontal .form-group {
     margin-bottom: 55px;
 }
+
+.app__body .modal-confirm .modal-header .modal-title {
+        max-width: 100% !important;
+}
+
+.app__body .modal-confirm .modal-body {    padding: 30px;}

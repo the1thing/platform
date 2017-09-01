@@ -208,7 +208,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: rgba(255, 255, 255, 0.5)!important;
-                font-family: 'EkMukta-Regular';
+                font-family: 'EkMukta-Light';
                 .sidebar-item__name {
                     font-size: 18px;
                 }
@@ -240,7 +240,11 @@
                 &.unread-title {
                     font-weight: 400;
                     color: #FFFFFF!important;
-                    font-family: 'EkMukta-Regular';
+                    font-family: 'EkMukta-Medium';
+                    .status i {
+                        color:#FFFFFF !important;
+                        opacity: 1 !important;
+                    }
                 }
             }
             &.active {

@@ -171,10 +171,25 @@ export default class SettingPicture extends Component {
                 <li className='col-xs-12 section-title'>{this.props.title}</li>
                 <li className='col-xs-offset-3 col-xs-8'>
                     <ul className='setting-list'>
-                        <li className='setting-list-item'>
+                        <li className='setting-list-item profile-image-container'>
                             {img}
+                            <span className='btn btn-sm btn-primary btn-file sel-btn'>
+                                <FormattedMessage
+                                    id='setting_picture.select'
+                                    defaultMessage='Select / Upload'
+                                />
+                                <input
+                                    ref='input'
+                                    accept='.jpg,.png,.bmp'
+                                    type='file'
+                                    onChange={this.props.onFileChange}
+                                />
+                            </span>
+
                         </li>
                         <li className='setting-list-item padding-top x2'>
+
+                            <div className="clearfix"></div>
                             <FormattedMessage
                                 id='setting_picture.help'
                                 defaultMessage='Upload a profile picture in BMP, JPG, JPEG or PNG format, at least {width}px in width and {height}px height.'
@@ -190,18 +205,7 @@ export default class SettingPicture extends Component {
                                 errors={[this.props.clientError, this.props.serverError]}
                                 type={'modal'}
                             />
-                            <span className='btn btn-sm btn-primary btn-file sel-btn'>
-                                <FormattedMessage
-                                    id='setting_picture.select'
-                                    defaultMessage='Select'
-                                />
-                                <input
-                                    ref='input'
-                                    accept='.jpg,.png,.bmp'
-                                    type='file'
-                                    onChange={this.props.onFileChange}
-                                />
-                            </span>
+
                             {confirmButton}
                             <a
                                 className='btn btn-sm theme'

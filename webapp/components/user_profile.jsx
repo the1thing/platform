@@ -104,7 +104,7 @@ UserProfile.defaultProps = {
     user: {},
     overwriteName: '',
     overwriteImage: '',
-    disablePopover: false
+    disablePopover: true
 };
 UserProfile.propTypes = {
     user: PropTypes.object,

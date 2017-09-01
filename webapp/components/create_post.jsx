@@ -221,7 +221,7 @@ export default class CreatePost extends React.Component {
         const members = stats.member_count - 1;
         const updateChannel = ChannelStore.getCurrent();
 
-        if ((this.state.message.includes('@all') || this.state.message.includes('@channel')) && members >= Constants.NOTIFY_ALL_MEMBERS) {
+        if ((this.state.message.includes('@everyone') || this.state.message.includes('@all')) && members >= Constants.NOTIFY_ALL_MEMBERS) {
             this.setState({totalMembers: members});
             this.showNotifyAllModal();
             return;
@@ -648,7 +648,7 @@ export default class CreatePost extends React.Component {
         const notifyAllMessage = (
             <FormattedMessage
                 id='notify_all.question'
-                defaultMessage='By using @all or @channel you are about to send notifications to {totalMembers} people. Are you sure you want to do this?'
+                defaultMessage='By using @everyone or @all you are about to send notifications to {totalMembers} people. Are you sure you want to do this?'
                 values={{
                     totalMembers: this.state.totalMembers
                 }}

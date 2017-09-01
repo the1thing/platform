@@ -344,7 +344,7 @@ export const Constants = {
         POST: 5
     },
 
-    SPECIAL_MENTIONS: ['all', 'channel', 'here'],
+    SPECIAL_MENTIONS: ['all', 'here', 'everyone'],
     NOTIFY_ALL_MEMBERS: 5,
     CHARACTER_LIMIT: 4000,
     IMAGE_TYPES: ['jpg', 'gif', 'bmp', 'png', 'jpeg'],

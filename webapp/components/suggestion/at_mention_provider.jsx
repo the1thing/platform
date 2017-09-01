@@ -34,11 +34,11 @@ class AtMentionSuggestion extends Suggestion {
                 />
             );
             icon = <i className='mention__image fa fa-users fa-2x'/>;
-        } else if (user.username === 'channel') {
-            username = 'channel';
+        } else if (user.username === 'everyone') {
+            username = 'everyone';
             description = (
                 <FormattedMessage
-                    id='suggestion.mention.channel'
+                    id='suggestion.mention.everyone'
                     defaultMessage='Notifies everyone in the channel'
                 />
             );
@@ -135,7 +135,7 @@ export default class AtMentionProvider extends Provider {
 
                 let specialMentions = [];
                 if (!pretext.startsWith('/msg')) {
-                    specialMentions = ['here', 'channel', 'all'].filter((item) => {
+                    specialMentions = ['here', 'all', 'everyone'].filter((item) => {
                         return item.startsWith(prefix);
                     }).map((name) => {
                         return {username: name, type: Constants.MENTION_SPECIAL};

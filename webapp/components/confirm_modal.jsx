@@ -145,18 +145,19 @@ export default class ConfirmModal extends React.Component {
                 <Modal.Footer>
                     <button
                         type='button'
-                        className='btn btn-default'
-                        onClick={this.handleCancel}
-                    >
-                        {cancelText}
-                    </button>
-                    <button
-                        type='button'
                         className={this.props.confirmButtonClass}
                         onClick={this.handleConfirm}
                     >
                         {this.props.confirmButtonText}
                     </button>
+                    <button
+                        type='button'
+                        className='btn btn-default'
+                        onClick={this.handleCancel}
+                    >
+                        {cancelText}
+                    </button>
+
                 </Modal.Footer>
             </Modal>
         );

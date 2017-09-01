@@ -347,13 +347,13 @@
         top: 0px;
     }
     .icon--emoji-picker {
-    position: absolute;
-    right: 10px;
-    top: 4px;
-    cursor: pointer;
-    font-size: 24px;
-    width: 30px;
-    height: 30px;
+        position: absolute;
+        right: 10px;
+        top: 4px;
+        cursor: pointer;
+        font-size: 24px;
+        width: 30px;
+        height: 30px;
     }
     .btn-file {
         overflow: visible;
@@ -508,6 +508,7 @@
         font-family: "EkMukta-Regular";
         color: #030303;
         float: left;
+        height: 14px;
         bottom: 3px;
         position: relative;
     }
@@ -745,7 +746,9 @@
             font-size: .87em;
         }
     }
-    p {
+    p,
+    ol li,
+    ul li {
         font-size: 18px;
         line-height: 30px;
         margin: 0;
@@ -1190,6 +1193,7 @@
         line-height: 14px;
         top: -1px;
         position: relative;
+        text-transform: lowercase;
     }
     .post__permalink {
         color: inherit;
@@ -1409,7 +1413,6 @@
 
 .post__time:hover {
     text-decoration: none !important;
-    color: #030303 !important;
 }
 
 .post__header--info a:hover {
@@ -1422,4 +1425,13 @@
 
 .post a.markdown__link {
     color: #0D65D8 !important;
+}
+
+
+span.post-message__text>p>span>span {
+    color: rgb(22, 109, 224) !important;
+}
+
+.post .post__header--info .post__permalink:hover {
+    text-decoration: none !important;
 }
