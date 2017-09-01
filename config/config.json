@@ -134,7 +134,7 @@
         "ConnectionSecurity": "STARTTLS",
         "InviteSalt": "foxhnpjgmh9r8tnnke53j6816qd91px5",
         "SendPushNotifications": true,
-        "PushNotificationServer": "http://172.104.182.36:8066",
+        "PushNotificationServer": "http://139.59.84.160:8066",
         "PushNotificationContents": "generic",
         "EnableEmailBatching": false,
         "EmailBatchingBufferSize": 256,
