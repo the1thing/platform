@@ -66,6 +66,15 @@ export default class FileAttachment extends React.Component {
         const fileName = fileInfo.name;
         const fileUrl = getFileUrl(fileInfo.id);
 
+        let imageOrFile;
+        const type = Utils.getFileType(fileInfo.extension);
+          if (type === 'image') {
+            imageOrFile = 'image';
+          }
+          else {
+          imageOrFile = 'file';
+          }
+
         let thumbnail;
         if (this.state.loaded) {
             const type = Utils.getFileType(fileInfo.extension);
@@ -154,7 +163,7 @@ export default class FileAttachment extends React.Component {
                 >
                     {thumbnail}
                 </a>
-                <div className='post-image__details'>
+                <div className={'post-image__details ' + imageOrFile}>
                     {filenameOverlay}
                     <div>
                         <a

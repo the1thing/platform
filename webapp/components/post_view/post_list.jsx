@@ -485,7 +485,7 @@ export default class PostList extends React.PureComponent {
                 >
                     <FormattedMessage
                         id='posts_view.loadMore'
-                        defaultMessage='Load more messages'
+                        defaultMessage='Load previous messages'
                     />
                 </a>
             );

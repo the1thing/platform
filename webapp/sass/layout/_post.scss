@@ -35,7 +35,7 @@
         z-index: 2;
     }
     .help__text {
-        bottom: -10px;
+        bottom: -14px;
         cursor: pointer;
         font-size: 10px;
         position: absolute;
@@ -57,7 +57,7 @@
 }
 
 .help__format-text {
-    @include opacity(0);
+    opacity: 1 !important;
     @include single-transition(all, .5s, ease, .5s);
     display: inline-block;
     font-size: 10px;
@@ -147,7 +147,7 @@
         border-color: #22B541 !important;
     }
     .separator__text {
-        color: #030303 !important;
+        color: #22B541 !important;
         font-weight: normal;
     }
 }
@@ -236,12 +236,24 @@
         border: none;
         display: block;
         font-size: 13px;
-        margin: 5px 0 10px;
+        margin: 15px 0 10px;
         outline: none;
-        text-align: center;
-        text-decoration: underline;
+        text-align: center; // text-decoration: underline;
         color: #0D65D8 !important;
         font-family: "EkMukta-Regular";
+        span {
+            border: 1px solid #F0F0F0;
+            border-radius: 29px;
+            padding: 4px 19px;
+            text-decoration: none;
+            &:hover {
+                text-decoration: none;
+                background: #fafafa;
+            }
+        }
+        &:hover, &:active, &:focus {
+            text-decoration: none;
+        }
     }
     .new-messages__button {
         @include opacity(0);
@@ -1340,7 +1352,7 @@
 }
 
 .bot-indicator {
-    margin: 2px 10px 0 -4px;
+    margin: 2px 10px 0 2px;
 }
 
 .post__pinned-badge {

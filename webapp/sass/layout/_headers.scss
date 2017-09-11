@@ -364,16 +364,20 @@
             }
             .sidebar-header-dropdown__icon,
             .admin-navbar-dropdown__icon {
-                fill: #BDBDBD;
+                margin-top: 4px;
+                fill: #FFFFFF;
                 float: right;
+                svg {
+                    fill: #FFFFFF !important;
+                }
             }
         }
         .user__picture {
-            @include border-radius(36px);
+            @include border-radius(32px);
             float: left;
-            height: 36px;
+            height: 32px;
             margin-right: 6px;
-            width: 36px;
+            width: 32px;
         }
         .header__info {
             overflow: hidden;
@@ -408,10 +412,10 @@
         .user__name {
             @include single-transition(all, .1s, linear);
             @include alpha-property(color, $white, .8);
-            font-size: 18px;
-            color: #FFFFFF!important;
-            font-family: 'EkMukta-Light'; // font-weight: 400;
-            line-height: 18px;
+            font-size: 16px;
+            color: #FFFFFF !important;
+            font-family: 'EkMukta-Light';
+            line-height: 16px;
         }
     }
     .search__clear {

@@ -1,8 +1,13 @@
 @charset 'UTF-8';
+.post .status-wrapper {
+    margin-top: 0px;
+}
+
 .status-wrapper {
     display: inline-block;
     height: 32px;
     position: relative;
+    margin-top: 7px;
     .status {
         border-radius: 100px;
         bottom: -2px;
@@ -49,21 +54,21 @@
 
 .status {
     display: inline-block;
-    margin-right: 6px;
+    margin-right: 12px;
     position: relative;
     top: 1px;
     width: 12px;
     &.status--group {
         border-radius: 2px;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
-        height: 16px;
+        height: 12px;
         left: 1px;
-        line-height: 18px;
-        margin-left: -3px;
+        line-height: 12px;
+        margin-left: -2px;
         text-align: center;
         top: -1px;
-        width: 16px;
+        width: 12px;
         .mentions__name & {
             height: 20px;
             left: 0;
@@ -87,8 +92,8 @@
     }
     .fa-lock {
         margin-left: 1px;
-            position: relative;
-    top: -1px;
+        position: relative;
+        top: -1px;
     }
     .fa-globe {
         position: relative;

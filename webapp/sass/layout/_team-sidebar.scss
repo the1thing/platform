@@ -4,25 +4,28 @@
         left: 0;
         position: fixed;
         text-align: center;
-        width: 72px;
+        width: 56px;
         z-index: 5;
         background: #221F1F!important;
-        background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
+        background-image: linear-gradient(0deg, #317A86 0%, #317A86 17%, #191654 100%) !important;
         .team-wrapper {
             -webkit-overflow-scrolling: touch; // background-color: alpha-color($black, .2);
             height: 100%;
             overflow: auto; // padding-top: 15px;
-            background: rgba(34,31,31,0.1);
+            background: rgba(34, 31, 31, 0.15);
             .team-container {
                 display: table;
-                margin: 20px 0;
+                margin: 24px 0;
                 position: relative;
                 text-align: center;
                 width: 100%;
+                &:first-child {
+                    margin-top: 16px !important;
+                }
 
                 a {
                     display: block;
-                    margin-left: 15px;
+                    margin-left: 12px;
                     text-decoration: none;
                 }
                 .team-btn {
@@ -33,17 +36,17 @@
                     text-align: center;
                     vertical-align: top;
                     background: rgba(255, 255, 255, 0.1);
-                    width: 40px;
-                    height: 40px; // background: transparent;
+                    width: 32px;
+                    height: 32px;
                     color: rgba(255, 255, 255, 0.5) !important;
                     border: 1px solid rgba(255, 255, 255, 0.2);
                     border-radius: 4px;
                     .team-btn__initials {
                         text-align: center;
                         font-family: "EkMukta-Light";
-                        font-size: 24px;
+                        font-size: 18px;
                         color: rgba(255, 255, 255, 0.5);
-                        line-height: 38px;
+                        line-height: 30px;
                         font-weight: 100;
                     }
                     .team-btn__content {
@@ -64,23 +67,21 @@
                         top: -3px;
                     }
                     &.team-btn__add {
-                        height: 40px;
-                        width: 40px;
+                        height: 32px;
+                        width: 32px;
                         vertical-align: middle;
                     }
                 }
                 &.active {
                     border-left: 2px solid #FFF;
                     a {
-                        margin-left: 13px !important;
+                        margin-left: 10px !important;
                     }
                     .team-btn {
                         // background-color: #FFFFFF;
                         font-family: 'EkMukta-Bold'; // border: none;
                         color: #030303 !important;
                         background: rgba(255, 255, 255, 0.2);
-                        width: 40px;
-                        height: 40px; // background: transparent;
                         color: rgba(255, 255, 255, 1) !important;
                         border: 1px solid rgba(255, 255, 255, 1);
                         background: #FFFFFF !important;
@@ -120,12 +121,12 @@
         }
     }
     .sidebar--left {
-        left: 72px;
+        left: 56px;
         .nav-pills__unread-indicator {
-            left: 126px;
+            left: 106px;
         }
     }
     .app__content {
-        margin-left: 363px;
+        margin-left: 308px;
     }
 }

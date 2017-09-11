@@ -5,10 +5,10 @@
     height: 100%;
     left: 0;
     position: fixed;
-    width: 292px;
+    width: 252px;
     z-index: 5; // padding-left:10px;
-    background: #00A0B0!important;
-    background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
+    background: #00A0B0!important; // background-image: linear-gradient(0deg, #43C6AC 0%, #191654 100%) !important;
+    background-image: linear-gradient(0deg, #317A86 0%, #317A86 17%, #191654 100%) !important;
     .status img {
         margin-top: 1px;
         margin-left: 1px;
@@ -20,11 +20,11 @@
         margin-left: 0px;
     }
     .people-stack {
-        padding-bottom:30px;
+        padding-bottom: 30px;
     }
     .people-stack li.AddMorePeople {
-        width:auto;
-        float:right;
+        width: auto;
+        float: right;
         a#moreDirectMessage {
             color: #FFFFFF !important;
             float: right;
@@ -140,7 +140,7 @@
         font-family: EkMukta-Light;
         right: 10px;
         font-size: 10px;
-        top: 12px;
+            top: 9px;
         color: #191654!important;
         width: 16px;
         height: 16px;
@@ -157,13 +157,13 @@
         font-size: 13.5px;
         left: 15px;
         margin: 0 auto;
-        padding: 3px 0 1px 0;
+        padding: 6px 0 4px 0;
         position: fixed;
         text-align: center;
-        width: 190px;
+        width: 146px;
         z-index: 1;
-        font-family: "EkMukta-Light";
-        color: #030303 !important;
+        font-family: "EkMukta-Regular";
+        color: #7f7f7f !important;
     }
     .nav-pills__unread-indicator-top {
         top: 76px;
@@ -177,7 +177,7 @@
                 margin: 0;
             }
             li:first-child {
-                margin-bottom: 10px;
+                margin-bottom: 16px;
             }
         }
         li {
@@ -192,6 +192,7 @@
                 font-size: 14px;
                 margin: 2em 0 .2em;
                 padding: 0 10px 0 15px;
+                text-transform: lowercase;
             }
             .divider {
                 &+.divider {
@@ -204,13 +205,14 @@
                 line-height: 1.5;
                 outline: none;
                 overflow: hidden;
-                padding: 7px 10px 6px 15px;
+                padding: 6px 10px 3px 15px;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: rgba(255, 255, 255, 0.5)!important;
                 font-family: 'EkMukta-Light';
                 .sidebar-item__name {
-                    font-size: 18px;
+                    font-size: 16px;
+                    text-transform: lowercase;
                 }
                 &.has-badge {
                     padding-right: 30px;
@@ -242,7 +244,7 @@
                     color: #FFFFFF!important;
                     font-family: 'EkMukta-Medium';
                     .status i {
-                        color:#FFFFFF !important;
+                        color: #FFFFFF !important;
                         opacity: 1 !important;
                     }
                 }
