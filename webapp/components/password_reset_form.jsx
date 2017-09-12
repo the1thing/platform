@@ -73,16 +73,22 @@ class PasswordResetForm extends React.Component {
         }
 
         return (
-            <div className='col-sm-12'>
+                <div className='wrap_585px'>
+                    <div className='image-part-on-signin-page'>
+                        <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/sign-in-graphic.svg"/>
+                    </div>
                 <div className='signup-team__container'>
-                    <h3>
+                <div className='signin-title'>
+                    <h2>
                         <FormattedMessage
                             id='password_form.title'
                             defaultMessage='Password Reset'
                         />
-                    </h3>
+                    </h2>
+                    </div>
                     <form onSubmit={this.handlePasswordReset}>
-                        <p>
+                        <div className='signup__content'>
+                        <h4 className='color--light'>
                             <FormattedMessage
                                 id='password_form.enter'
                                 defaultMessage='Enter a new password for your {siteName} account.'
@@ -90,11 +96,13 @@ class PasswordResetForm extends React.Component {
                                     siteName: global.window.mm_config.SiteName
                                 }}
                             />
-                        </p>
+                            </h4>
+                        </div>
                         <div className={formClass}>
+                        <div className="user-password"></div>
                             <input
                                 type='password'
-                                className='form-control'
+                                className='form-control reset-password'
                                 name='password'
                                 ref='password'
                                 placeholder={Utils.localizeMessage(

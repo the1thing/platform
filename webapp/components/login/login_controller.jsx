@@ -614,11 +614,11 @@ export default class LoginController extends React.Component {
                     >
                         <img
                             className='login-team-logo hide-on-mobile'
-                            src='http://1thing.io/img/build/full-logo.svg'
+                            src='https://s3.ap-south-1.amazonaws.com/1thing-logos/full-logo.svg'
                         />
                         <img
                             className='login-team-logo-mobile hide-on-desktop'
-                            src='http://1thing.io/img/build/thumbnail.png'
+                            src='https://s3.ap-south-1.amazonaws.com/1thing-logos/thumbnail.png'
                         />
                         </a>
 
@@ -633,11 +633,11 @@ export default class LoginController extends React.Component {
                     >&nbsp;8375 00 8375</a>
                     <a
                     className='start-a-project'
-                    href='http://1thing.io/start-a-project'
+                    href='http://1thing.io/new-project'
                     >Start a project</a>
                     <a
                     className='join-our-network'
-                    href='http://1thing.io/join-our-network'
+                    href='http://1thing.io/new-designer'
                     >Join network</a>
 
 

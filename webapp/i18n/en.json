@@ -1013,7 +1013,7 @@
   "analytics.team.totalUsers": "Total Users",
   "api.channel.add_member.added": "{addedUsername} added to the channel by {username}",
   "api.channel.delete_channel.archived": "{username} has archived the channel.",
-  "api.channel.join_channel.post_and_forget": "Hi {username}.  Welcome to All About UX.",
+  "api.channel.join_channel.post_and_forget": "Hi {username}.  Welcome to 1THING.",
   "api.channel.leave.left": "{username} has left the channel.",
   "api.channel.post_update_channel_displayname_message_and_forget.updated_from": "{username} updated the channel display name from: {old} to: {new}",
   "api.channel.post_update_channel_header_message_and_forget.removed": "{username} removed the channel header (was: {old})",
