@@ -282,6 +282,8 @@
     .divider {
         border-top: 1px solid transparent;
         margin: 0.5em 0;
+        margin-left: 9% !important;
+        width: 91% !important;
         &+.divider {
             display: none;
         }
