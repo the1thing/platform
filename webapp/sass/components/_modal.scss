@@ -90,6 +90,9 @@
         color: alpha-color($black, .9);
         width: 100%;
         .channel-switch-modal {
+            .modal-content {
+                overflow: visible; 
+            }
             .modal-header {
                 background: transparent;
                 border: none;

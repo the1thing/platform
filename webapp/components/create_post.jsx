@@ -737,7 +737,7 @@ export default class CreatePost extends React.Component {
                         className={'icon--emoji-picker emoji-main'}
                         onClick={this.toggleEmojiPicker}
                     >
-                    <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/emoji-icon.svg"/>
+                    <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/emoji-icon-create-post.svg"/>
 
                     </span>
 

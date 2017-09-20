@@ -27,15 +27,17 @@
         > a {
             color: inherit;
             text-decoration: none;
-            font-size: 14px!important;
-            color: #030303!important;
+            font-size: 12px!important;
+            color: #7f7f7f!important;
             background: #FFFFFF!important;
-            font-family: 'Open Sans', sans-serif !important;
-            padding: 8px 20px!important;
+            font-family: "EkMukta-Bold";
+            padding: 8px 20px 7px 20px!important;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             &:focus,
             &:hover {
-                color: #000000!important;
-                background: #F4F4F4!important;
+                color: #030303!important;
+                background: #F0F0F0!important;
             }
         }
     }

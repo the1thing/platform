@@ -72,7 +72,7 @@ export default class FileAttachment extends React.Component {
             imageOrFile = 'image';
           }
           else {
-          imageOrFile = 'file';
+            imageOrFile = type;
           }
 
         let thumbnail;
@@ -155,7 +155,7 @@ export default class FileAttachment extends React.Component {
         }
 
         return (
-            <div className='post-image__column'>
+            <div className={'post-image__column ' + imageOrFile}>
                 <a
                     className='post-image__thumbnail'
                     href='#'
@@ -173,7 +173,8 @@ export default class FileAttachment extends React.Component {
                             target='_blank'
                             rel='noopener noreferrer'
                         >
-                            <img src='https://s3.ap-south-1.amazonaws.com/1thing-logos/download.svg' alt=''/>
+                            <img className='download-icon-image' src='https://s3.ap-south-1.amazonaws.com/1thing-logos/download.svg' alt=''/>
+                            <img className='download-icon-others' src='https://s3.ap-south-1.amazonaws.com/1thing-logos/download-black.svg' alt=''/>
                         
                         <span className='post-image__type'>{fileInfo.extension.toUpperCase()}</span>
                         <span className='post-image__size'>{Utils.fileSizeToString(fileInfo.size)}</span>

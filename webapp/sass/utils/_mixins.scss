@@ -2,7 +2,6 @@
 
 @mixin file-icon($path) {
     @include background-size(60px auto);
-    background-color: $white;
     background-image: url($path);
     background-position: center;
     background-repeat: no-repeat;

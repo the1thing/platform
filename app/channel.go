@@ -954,19 +954,19 @@ func LeaveChannel(channelId string, userId string) *model.AppError {
 }
 
 func postLeaveChannelMessage(user *model.User, channel *model.Channel) *model.AppError {
-	post := &model.Post{
-		ChannelId: channel.Id,
-		Message:   fmt.Sprintf(utils.T("api.channel.leave.left"), user.Username),
-		Type:      model.POST_LEAVE_CHANNEL,
-		UserId:    user.Id,
-		Props: model.StringInterface{
-			"username": user.Username,
-		},
-	}
+	// post := &model.Post{
+	// 	ChannelId: channel.Id,
+	// 	Message:   fmt.Sprintf(utils.T("api.channel.leave.left"), user.Username),
+	// 	Type:      model.POST_LEAVE_CHANNEL,
+	// 	UserId:    user.Id,
+	// 	Props: model.StringInterface{
+	// 		"username": user.Username,
+	// 	},
+	// }
 
-	if _, err := CreatePost(post, channel.TeamId, false); err != nil {
-		return model.NewLocAppError("postLeaveChannelMessage", "api.channel.post_user_add_remove_message_and_forget.error", nil, err.Error())
-	}
+	// if _, err := CreatePost(post, channel.TeamId, false); err != nil {
+	// 	return model.NewLocAppError("postLeaveChannelMessage", "api.channel.post_user_add_remove_message_and_forget.error", nil, err.Error())
+	// }
 
 	return nil
 }

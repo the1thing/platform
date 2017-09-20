@@ -167,7 +167,7 @@ export default class PostInfo extends React.PureComponent {
                             className='reacticon__container'
                             onClick={this.toggleEmojiPicker}
                         >
-                            <i className='fa fa-smile-o'/>
+                            <img src="https://s3.ap-south-1.amazonaws.com/1thing-logos/emoji.svg"/>
                         </a>
                     </span>
 

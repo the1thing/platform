@@ -39,7 +39,9 @@
 .post {
     .attachment {
         &.attachment--opengraph {
-            max-width: 800px;
+            max-width: 450px;
+            display: inline-block;
+            margin-top: 10px;
         }
 
         .attachment__content {
@@ -48,6 +50,7 @@
             border-width: 1px;
             margin: 0 0 5px 0;
             padding: 2px 5px;
+            border: 1px solid #cccccc !important;
         }
 
         .attachment__thumb-pretext {
@@ -74,8 +77,8 @@
             }
 
             &.attachment__container--opengraph {
-                padding-left: 5px;
                 border-left-style: none;
+                margin-top: 15px;
                 border-left-color: transparent;
                 display: table;
                 margin: 0;
@@ -116,6 +119,7 @@
                 padding-right: 0;
                 width: 100%;
                 word-wrap: break-word;
+                font-family: "EkMukta-Light";
             }
         }
 
@@ -147,9 +151,10 @@
                 &.large_image {
                     border-radius: 3px;
                     margin-top: 10px;
-                    max-height: 200px;
-                    max-width: 400px;
+                    max-height: none;
+                    max-width: 413px;
                     width: 100%;
+                    height: auto;
 
                     &.loading {
                         height: 150px;
@@ -161,14 +166,19 @@
         .attachment__author-name {
             @include opacity(.6);
         }
+        .sitename {
+            font-family: "EkMukta-Light";
+            font-size: 16px;
+        }
 
         .attachment__title {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 16px;
+            font-family: "EkMukta-Regular";
             height: 22px;
             line-height: 18px;
             margin: 5px 0;
             padding: 0;
+            max-width: 400px;
 
             &.has-link {
                 color: #2f81b7;
