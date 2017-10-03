@@ -13,6 +13,40 @@
             height: 100%;
             overflow: auto; // padding-top: 15px;
             background: rgba(34, 31, 31, 0.15);
+            .dashboard-icon {
+                display: table;
+                margin: 24px 0;
+                position: relative;
+                text-align: center;
+                width: 100%;
+                a {
+                    display: block;
+                    margin-left: 12px;
+                    text-decoration: none;
+                }
+                .dashboard-btn {
+                    display: table-cell;
+                    font-size: 12px;
+                    font-weight: bold; // padding: 4px 5px;
+                    position: relative;
+                    text-align: center;
+                    vertical-align: top;
+                    background: rgba(255, 255, 255, 0.1);
+                    width: 32px;
+                    height: 32px;
+                    color: rgba(255, 255, 255, 0.5) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 4px;
+                    .dashboard-btn-initials {
+                        text-align: center;
+                        font-family: "EkMukta-Light";
+                        font-size: 18px;
+                        color: rgba(255, 255, 255, 0.5);
+                        line-height: 30px;
+                        font-weight: 100;
+                    }
+                }
+            }
             .team-container {
                 display: table;
                 margin: 24px 0;

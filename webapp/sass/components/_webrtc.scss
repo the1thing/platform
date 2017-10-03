@@ -269,7 +269,7 @@
     width: 100%;
 
     .loading-screen {
-        background-color: rgba(0,0,0, .3);
+        background-color: rgba(0, 0, 0, .3);
         color: $connecting;
         margin-left: 5px;
         padding: 20px;
@@ -278,6 +278,21 @@
         width: 97%;
 
         .loading__content {
+            display: table-cell;
+            font-size: 0;
+            vertical-align: middle;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            z-index: 800;
+            background: #1B1D58;
+            transform: translateX(100%);
+            display: block;
+            animation: shift-rightwards 1s ease-in-out infinite;
+            animation-delay: .8s;
+
             .round {
                 background: $connecting !important;
             }
@@ -349,5 +364,22 @@
 
     .search__form {
         width: calc(100% - 92px);
+    }
+}
+
+
+
+@keyframes shift-rightwards {
+    0% {
+        transform: translateX(-100%)
+    }
+    40% {
+        transform: translateX(0)
+    }
+    60% {
+        transform: translateX(0)
+    }
+    100% {
+        transform: translateX(100%)
     }
 }
