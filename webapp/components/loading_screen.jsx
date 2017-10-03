@@ -35,7 +35,6 @@ export default class LoadingScreen extends React.Component {
                         {message}
                     </h3>
                     */}
-
                 </div>
             </div>
         );
