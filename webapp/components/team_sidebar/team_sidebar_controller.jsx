@@ -41,7 +41,7 @@ export default class TeamSidebar extends React.Component {
             teamListings: TeamStore.getTeamListings(),
             teamMembers,
             currentTeamId,
-            show: teamMembers && teamMembers.length > 0,
+            show: teamMembers && teamMembers.length > 1,
             isMobile: Utils.isMobile()
         };
     }
@@ -81,7 +81,7 @@ export default class TeamSidebar extends React.Component {
 
     handleResize() {
         const teamMembers = this.state.teamMembers;
-        this.setState({show: teamMembers && teamMembers.length > 0});
+        this.setState({show: teamMembers && teamMembers.length > 1});
         this.setStyles();
     }
 
@@ -181,13 +181,6 @@ export default class TeamSidebar extends React.Component {
         return (
             <div className='team-sidebar'>
                 <div className='team-wrapper'>
-                    <div className="dashboard-icon">
-                        <a>
-                         <div className="dashboard-btn">
-                            <div className="dashboard-btn-initials">d</div>
-                         </div>
-                        </a>
-                    </div>
                     {teams}
                 </div>
             </div>
