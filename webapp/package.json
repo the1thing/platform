@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "autolinker": "1.4.3",
+    "axios": "^0.17.0",
     "bootstrap": "3.3.7",
     "bootstrap-colorpicker": "2.5.1",
     "chart.js": "2.5.0",
@@ -33,6 +34,7 @@
     "react": "15.6.1",
     "react-addons-pure-render-mixin": "15.6.0",
     "react-bootstrap": "0.31.0",
+    "react-bootstrap-carousel": "^2.2.0",
     "react-color": "2.12.1",
     "react-custom-scrollbars": "4.1.2",
     "react-dom": "15.6.1",
@@ -40,6 +42,7 @@
     "react-redux": "5.0.5",
     "react-router": "2.8.1",
     "react-select": "1.0.0-rc.5",
+    "react-tweet-embed": "^1.0.8",
     "redux-batched-actions": "0.2.0",
     "redux-persist": "4.8.2",
     "redux-persist-transform-filter": "0.0.13",

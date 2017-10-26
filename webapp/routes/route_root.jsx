@@ -16,6 +16,7 @@ import ErrorStore from 'stores/error_store.jsx';
 import * as UserAgent from 'utils/user_agent.jsx';
 
 import {browserHistory} from 'react-router/es6';
+import Dashboard from '../components/DashBoard/Dashboard';
 
 function preLogin(nextState, replace, callback) {
     // redirect to the mobile landing page if the user hasn't seen it before
@@ -105,6 +106,11 @@ export default {
                     ]
                 )
             },
+            {
+                path:'/dashboard',
+                component:Dashboard
+            },
+            
             {
                 path: 'get_ios_app',
                 getComponents: (location, callback) => {

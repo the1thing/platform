@@ -1,0 +1,221 @@
+import React, { Component } from 'react';
+import '../Styles/RatingUserself.scss';
+import { FormGroup, Checkbox, Row, Col } from 'react-bootstrap';
+import RadioBoxCom from '../Components/RadioBoxComp';
+
+let myStringList = ['Quality of design.','Ability to use tools.','Communication skills.',
+'Project management.','Working in a team.','Leading a design team.'];
+let myList = [];
+let CreateRadio = (props) => {
+    return (
+        <Checkbox inline>
+            <span>{props.label}</span>
+        </Checkbox>
+    )
+}
+let i=1;
+
+
+export default class RatingUserself extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            designQuality:'',
+            useToolQuality:'',
+            commSkills:'',
+            proManagement:'',
+            teamWorking:'',
+            leadingTeam:'',
+            error:['','hidden','hidden','hidden','hidden','hidden'],
+            designQualityError:'hidden',
+        }
+    }
+    renderClass=()=>{
+        if(this.state.designQuality && this.state.useToolQuality && this.state.commSkills
+            && this.state.proManagement && this.state.teamWorking && this.state.leadingTeam
+            && this.state.leadingTeam ){
+                return "Rectangle-4"
+            }
+        else{
+            return "button-block-class"
+        }
+    }
+    renderMyList = (no) => {
+        console.log("view",no)
+            return (
+            <div key={no} style={{overflow:'hidden'}}>
+                <Row>
+                    <Col md={1} className="form-label">{no}.</Col>
+                    <Col md={11}>
+                        <div className="form-label">
+                            {myStringList[no]}
+                        </div>
+                    </Col>
+                    <Col md={11} mdOffset={1}>
+                        <div className="subcomponent-spacing">
+                            <RadioBoxCom 
+                                defaultValue={this.renderDefaultValue(no)}
+                                radioList={['10 on 10','9 on 10','8 on 10','Less than 8']}
+                                onclick={(value)=>{this.handleRadioClick(value,no)}}/>
+                        </div>
+                        <div style={{ visibility: this.state.error[no] }} className='display-error'>
+                            Please identify yourself
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+            );
+    }
+    renderDefaultValue=(no)=>{
+        switch(no){
+            case '1': return this.state.useToolQuality;
+            break;
+            case '2':return this.state.commSkills;
+            break;
+            case '3':return this.state.proManagement;
+            break;
+            case '4':return this.state.teamWorking;
+            break;
+            case '5':return this.state.leadingTeam;
+        }
+    }
+    handleRadioClick=(value,no)=>{
+        switch(no){
+            case '1':{
+                        let temp=this.state.error;
+                        temp[1]='hidden';
+                        this.setState({
+                            useToolQuality:value,
+                            error:temp,
+                        });
+                    }
+            break;
+            case '2':{
+                        let temp=this.state.error;
+                        temp[2]='hidden';
+                        this.setState({
+                            commSkills:value,
+                            error:temp,
+                        });
+                    }
+            break;
+            case '3':{
+                        let temp=this.state.error;
+                        temp[3]='hidden';
+                        this.setState({
+                            proManagement:value,
+                            error:temp,
+                        });
+                    }
+            break;
+            case '4':{
+                        let temp=this.state.error;
+                        temp[4]='hidden';
+                        this.setState({
+                            teamWorking:value,
+                            error:temp,
+                        });
+                    }
+            break;
+            case '5':{
+                        let temp=this.state.error;
+                        temp[5]='hidden';
+                        this.setState({
+                            leadingTeam:value,
+                            error:temp,
+                    });
+                }
+        }
+    }
+    goTo=()=>{
+        console.log('output------->','1-->',this.state.useToolQuality,'2-->',this.state.commSkills,
+        '3-->',this.state.proManagement,'4-->',this.state.teamWorking,'5-->',this.state.leadingTeam,'6-->',this.state.designQuality)
+        if(this.state.useToolQuality == ''){
+            let temp=this.state.error;
+            temp[1]='visible';
+            this.setState({
+                error:temp,
+            })
+        }
+        else if(this.state.commSkills == ''){
+            let temp=this.state.error;
+            temp[2]='visible';
+            this.setState({
+                error:temp,
+            })
+        }
+        else if(this.state.proManagement == ''){
+            let temp=this.state.error;
+            temp[3]='visible';
+            this.setState({
+                error:temp,
+            })
+        }
+        else if(this.state.teamWorking == ''){
+            let temp=this.state.error;
+            temp[4]='visible';
+            this.setState({
+                error:temp,
+            })
+        }
+        else if(this.state.leadingTeam == ''){
+            let temp=this.state.error;
+            temp[5]='visible';
+            this.setState({
+                error:temp,
+            })
+        }
+        else if(this.state.designQuality == ''){
+            this.setState({
+                designQualityError:'visible',
+            })
+        }
+    }
+    render() {
+        return (
+            <div>
+                <div className="input-spacing-radio">
+                    <div className="form-label">
+                        Please rate yourself for each of the following attributes
+                    </div>
+                </div>
+                <div className="input-spacing">
+                    {this.renderMyList('1')}
+                    {this.renderMyList('2')}
+                    {this.renderMyList('3')}
+                    {this.renderMyList('4')}
+                    {this.renderMyList('5')}
+                </div>
+                   <div style={{overflow:'hidden'}} className="input-spacing">
+                    <Row>
+                        <Col md={1} className="form-label">
+                            <img src={require('../Images/1-thing-fevikon.svg')}/>
+                        </Col>
+                        <Col md={11}>
+                            <div className="form-label">
+                                How did you learn about 1THING?
+                            </div>
+                        </Col>
+                        <Col md={11} mdOffset={1}>
+                            <div className="subcomponent-spacing">
+                                <RadioBoxCom 
+                                    defaultValue={this.state.designQuality}
+                                    radioList={['Instagram','Twitter','Google Search','Friends','Monochrome','Other']}
+                                    onclick={(value)=>{
+                                        this.setState({
+                                            designQuality:value,
+                                            designQualityError:'hidden',
+                                        })
+                                    }}/>
+                            </div>
+                            <div style={{ visibility: this.state.designQualityError }} className='display-error'>
+                                Please identify yourself
+                            </div>
+                        </Col>
+                    </Row>
+                </div>   
+                <button className={this.renderClass()} onClick={()=>{this.goTo()}}><span className="button-title">NEXT</span></button>
+            </div>
+        )
+    }
+}

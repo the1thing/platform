@@ -1,0 +1,479 @@
+import React, { Component } from 'react';
+import '../Styles/Selection.scss';
+import { AddButton } from './AddLink';
+import { Row, Col } from 'react-bootstrap';
+
+export class Selection extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popupVisible: false,
+            baseClass: 'arrow-div',
+            toggleVisiblity: true,
+            selectedValue: '',
+        };
+    }
+
+    componentWillMount = () => {
+        if (this.props.placeholder && !this.props.defaultValue) {
+            this.setState({
+                toggleVisiblity: true,
+            })
+        } else {
+            this.setState({
+                selectedValue: this.props.defaultValue,
+                toggleVisiblity: false,
+            })
+        }
+    }
+
+    handleClick = (e) => {
+        if (!this.state.popupVisible) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+        if (this.state.baseClass === 'rotate-div') {
+            this.setState({
+                baseClass: 'arrow-div',
+            })
+        } else {
+            this.setState({
+                baseClass: 'rotate-div',
+            })
+        }
+        this.setState(prevState => ({
+            popupVisible: !prevState.popupVisible,
+        }));
+    }
+
+    handleOutsideClick = (e) => {
+        if (this.node.contains(e.target)) {
+            return;
+        }
+
+        this.handleClick(e);
+    }
+    handleListClick = (value, key) => {
+        console.log("handle click", value, key)
+        this.setState({
+            selectedValue: value,
+            toggleVisiblity: false,
+        });
+        this.props.onclick(value, key);
+    }
+    renderList = () => {
+        return this.props.optionList.map((value, key) => {
+            return <li className="list" onClick={(e) => this.handleListClick(value, key)}>
+                {value}
+            </li>
+        })
+    }
+
+    render() {
+
+        return (
+            <div className="popover-container" onClick={this.handleClick} ref={node => { this.node = node; }}>
+                <div className={this.props.error ? "selection-error-placeholder" : "selection-placeholder"} style={{ display: this.state.toggleVisiblity ? 'block' : 'none' }}>{this.props.placeholder}</div>
+                <div style={{ color: '#030303', display: this.state.toggleVisiblity ? 'none' : 'block' }}>{this.state.selectedValue}</div>
+                <div className='arrow-container'>
+                    <div className={this.state.baseClass}>
+                        <div className='arrow-down-outer'></div>
+                        <div className='arrow-down-inner'></div>
+                    </div>
+                </div>
+                {this.state.popupVisible && (
+                    <ul className="popover">
+                        {this.renderList()}
+                    </ul>
+                )}
+            </div>
+        )
+    }
+}
+export class SelectionBox extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popupVisible: false,
+            baseClass: 'arrow-div',
+            toggleVisiblity: true,
+            selectedValue: '',
+        };
+    }
+
+    componentWillMount = () => {
+        if (this.props.placeholder) {
+            this.setState({
+                toggleVisiblity: true,
+            })
+        } else {
+            this.setState({
+                toggleVisiblity: false,
+            })
+        }
+    }
+
+    
+    renderList = () => {
+        return this.props.optionList.map((value, key) => {
+            return <li className="list" 
+                onClick={()=>this.props.handleListClick(value, key)}
+                
+                >
+                {value}
+            </li>
+        })
+    }
+
+    render() {
+
+        return (
+            <div className="popover-container" 
+            
+                //onClick={this.handleClick} 
+                onClick={this.props.handleClick} 
+                //ref={node => { this.node = node; }}
+                ref={this.props.refvalue}>
+                <div className={this.props.error ? "selection-error-placeholder" : 
+                    "selection-placeholder"} 
+                    style={{ 
+                        display: this.props.toggleVisiblity ? 'block' : 'none' }}
+                >{this.props.placeholder}</div>
+                <div style={{ color: '#030303', 
+                        display: this.props.toggleVisiblity ? 'none' : 'block' }}
+                >{this.props.selectedValue}</div>
+                <div className='arrow-container'>
+                    <div className={this.props.baseClass}>
+                        <div className='arrow-down-outer'></div>
+                        <div className='arrow-down-inner'></div>
+                    </div>
+                </div>
+                {this.props.popupVisible && (
+                    <ul className="popover">
+                        {this.renderList()}
+                    </ul>
+                )}
+            </div>
+        )
+    }
+}
+
+export class SelectContent extends Component {
+    render() {
+        return (
+            <div className="subcomponent-spacing">
+                <Row>
+                    <Col md={1} className="form-label" style={{lineHeight:'48px'}}>{this.props.count}.</Col>
+                    <Col md={11}>
+                        <Selection 
+                            optionList={['Ecommerce', 'Social Network','Payments','News + Content',
+                            'IoT Analytics','Chatbots','OnDemand','Marketplace','Travel','Edu-tech',
+                            'Food-tech','Fin-tech','VR/AR','Health-tech','AI powered','Others']}
+                            error={this.props.error}
+                            placeholder={this.props.placeholder}
+                            defaultValue={this.props.defaultValue}
+                            onclick={(value,key)=>this.props.onSelectionClick(value,key)} />
+                            {console.log("errrrrruuuuuuuuu",this.props.error)}
+                        <textarea
+                            rows={3}
+                            className={this.props.error ? 'Error-link-textares' : 'about-link-textares'}  
+                            style={{ width: '100%' }}
+                            placeholder="Write all the modules in Social (if Social  is selected) you have worked upon. Ex - chronological feed about updates from friends/connections"
+                            onChange={(e) => this.props.onTextAreaClick(e)} />
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+}
+
+
+export class SelectMultiple extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            popupVisible: false,
+            baseClass: 'arrow-div',
+            toggleVisiblity: true,
+            selectedList: [],
+            containerClass: 'popover-container',
+            optionList: [],
+        };
+    }
+    count = 0;
+    componentWillMount = () => {
+        if (this.props.placeholder && this.props.defaultValue) {
+            this.setState({
+                toggleVisiblity: true,
+                optionList: this.props.optionList,
+               selectedList:this.props.defaultValue
+            })
+        } else {
+            this.setState({
+                selectedValue: this.props.defaultValue,
+                toggleVisiblity: false,
+                optionList: this.props.optionList,
+                selectedList:this.props.defaultValue
+            });
+            
+        }
+        if(this.props.defaultValue.length>0){
+            this.setState({
+                toggleVisiblity:false,
+                containerClass: 'popover-container change-width',
+            })
+        }
+        
+    }
+
+    handleClick = (e) => {
+        if (!this.state.popupVisible && !this.props.defaultValue) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+        if (this.state.baseClass === 'rotate-div') {
+            this.setState({
+                baseClass: 'arrow-div',
+            })
+        } else {
+            this.setState({
+                baseClass: 'rotate-div',
+            })
+        }
+        this.setState(prevState => ({
+            popupVisible: !prevState.popupVisible,
+        }));
+    }
+
+    handleOutsideClick = (e) => {
+        if (this.node.contains(e.target)) {
+            return;
+        }
+
+        this.handleClick(e);
+    }
+    handleListClick = (value, key) => {
+        console.log("check list11", value, key)
+        this.state.optionList.splice(key, 1)
+        let list = this.state.selectedList;
+        list = list.concat(value);
+        this.setState({
+            containerClass: 'popover-container change-width',
+            selectedList: list,
+            toggleVisiblity: false,
+        });
+        console.log("check list33", this.state.selectedList[0])
+       this.props.onclick(value, key);
+    }
+
+    handleRemoval = (value, key) => {
+        let list = this.state.optionList;
+        let removeList = this.state.selectedList;
+        list = list.concat(value);
+        removeList.splice(key, 1);
+        console.log("check list---->", value, key, "kk", this.state.optionList, list)
+        this.setState({
+            optionList: list,
+        });
+        if (this.state.selectedList == '') {
+            this.setState({
+                toggleVisiblity: true,
+                baseClass: 'arrow-div',
+                containerClass: 'popover-container',
+            })
+
+        }
+        console.log("lllll", value.value, value.key)
+    }
+    renderSelectedList = () => {
+        // if(this.props.defaultValue.length>0){
+        //     alert('greater');
+        // }
+        // else{
+        //     alert('lower')
+        // }
+        
+        return this.state.selectedList.map((value, key) => {
+            console.log("check list22", value, key)
+            return <div className="multiple-selection-button-container">
+                <div className="multiple-selection-button">
+                    <span>{value}</span>
+                </div>
+                <div className="cross-image" onClick={() => this.handleRemoval(value, key)}></div>
+            </div>
+        })
+    }
+    render() {
+       
+            let renderList = () => {
+            return this.state.optionList.map((value, key) => {
+                return <li className="list" onClick={(e) => this.handleListClick(value, key)}>
+                    {value}
+                </li>
+            })
+        }
+
+        return (
+            <div style={{ display: '-webkit-box', width: this.props.width }}>
+            <h1>{console.log('demooooooossss in selection',this.state.selectedList)}</h1>
+                {console.log("list", this.state.selectedList)}
+                {this.renderSelectedList()}
+                <div className='popover-container' onClick={this.handleClick} ref={node => { this.node = node; }}>
+                    <div className={this.state.containerClass}>
+                        <div className={this.props.error ? "selection-error-placeholder" : "selection-placeholder"} style={{ display: this.state.toggleVisiblity ? 'block' : 'none' }}>{this.props.placeholder}</div>
+                        <div style={{ color: '#030303', display: this.state.toggleVisiblity ? 'none' : 'block' }}></div>
+                        <div className='arrow-container'>
+                            <div className={this.state.baseClass}>
+                                <div className='arrow-down-outer'></div>
+                                <div className='arrow-down-inner'></div>
+                            </div>
+                        </div></div>
+                    {this.state.popupVisible && (
+                        <ul className="popover">
+                            {renderList()}
+                        </ul>
+                    )}
+                </div>
+            </div>
+        )
+    }
+}
+
+export class SelectMultipleBox extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            multiSelectPopupVisible: false,
+            baseClass: 'arrow-div',
+            toggleVisiblity: true,
+            selectedList: [],
+            containerClass: 'popover-container',
+            optionList: [],
+        };
+    }
+    count = 0;
+    componentWillMount = () => {
+        if (this.props.placeholder) {
+            this.setState({
+                toggleVisiblity: true,
+                optionList: this.props.optionList,
+            })
+        } else {
+            this.setState({
+                selectedValue: this.props.defaultValue,
+                toggleVisiblity: false,
+                optionList: this.props.optionList,
+            })
+        }
+    }
+
+    handleClick = (e) => {
+        if (!this.state.multiSelectPopupVisible) {
+            document.addEventListener('click', this.handleOutsideClick, false);
+        } else {
+            document.removeEventListener('click', this.handleOutsideClick, false);
+        }
+        if (this.state.baseClass === 'rotate-div') {
+            this.setState({
+                baseClass: 'arrow-div',
+            })
+        } else {
+            this.setState({
+                baseClass: 'rotate-div',
+            })
+        }
+        this.setState(prevState => ({
+            multiSelectPopupVisible: !prevState.multiSelectPopupVisible,
+        }));
+    }
+
+    handleOutsideClick = (e) => {
+        if (this.node.contains(e.target)) {
+            return;
+        }
+
+        this.handleClick(e);
+    }
+    handleListClick = (value, key) => {
+        console.log("check list11", value, key);
+        this.state.optionList.splice(key, 1)
+        let list = this.state.selectedList;
+        list = list.concat({
+            value,
+        })
+        this.setState({
+            containerClass: 'popover-container change-width',
+            selectedList: list,
+            toggleVisiblity: false,
+        });
+        console.log("check list33", this.state.selectedList[0])
+        this.props.onclick(value, key);
+    }
+    handleRemoval = (value, key) => {
+    
+        let list = this.state.optionList;
+        let removeList = this.state.selectedList;
+        list = list.concat(value);
+        removeList.splice(key, 1);
+        console.log("check list---->", value, key, "kk", this.state.optionList, list)
+        this.setState({
+            optionList: list,
+        });
+        if (this.state.selectedList == '') {
+            this.setState({
+                toggleVisiblity: true,
+                baseClass: 'arrow-div',
+                containerClass: 'popover-container',
+            })
+
+        }
+        console.log("lllll", value.value, value.key)
+    }
+    renderSelectedList = () => {
+        return this.state.selectedList.map((value, key) => {
+            console.log("check list22", value, key)
+            return <div key={key} className="multiple-selection-button-container">
+                <div className="multiple-selection-button">
+                    <span>{value.value}</span>
+                </div>
+                <div className="cross-image" 
+                    onClick={() =>this.props.handleRemoval()}></div>
+            </div>
+        })
+    }
+    render() {
+        let renderList = () => {
+            return this.state.optionList.map((value, key) => {
+                return <li className="list" 
+                    onClick={(e) => this.handleListClick(value, key)}>
+                    {value}
+                </li>
+            })
+        }
+
+        return (
+            <div style={{ display: '-webkit-box', width: this.props.width }}>
+                {console.log("list", this.state.selectedList)}
+                {this.renderSelectedList()}
+                <div className='popover-container' onClick={this.handleClick} ref={node => { this.node = node; }}>
+                    <div className={this.state.containerClass}>
+                        <div className={this.props.error ? "selection-error-placeholder" : "selection-placeholder"} style={{ display: this.state.toggleVisiblity ? 'block' : 'none' }}>{this.props.placeholder}</div>
+                        <div style={{ color: '#030303', display: this.state.toggleVisiblity ? 'none' : 'block' }}></div>
+                        <div className='arrow-container'>
+                            <div className={this.state.baseClass}>
+                                <div className='arrow-down-outer'></div>
+                                <div className='arrow-down-inner'></div>
+                            </div>
+                        </div></div>
+                    {this.state.multiSelectPopupVisible && (
+                        <ul className="popover">
+                            {renderList()}
+                        </ul>
+                    )}
+                </div>
+            </div>
+        )
+    }
+}

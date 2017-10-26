@@ -1,0 +1,56 @@
+.-About-yourself {
+  font-family: EkMukta-Light;
+  margin: 0 24px 12px 24px;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  color: #030303; }
+
+.title-content .panel-body {
+  padding: 40px; }
+
+.title-content .panel-default {
+  border-color: #f0f0f0; }
+
+.Rectangle-3 {
+  justify-content: space-between;
+  display: flex;
+  align-items: flex-end;
+  height: 96px;
+  border-radius: 4px;
+  background-image: linear-gradient(279deg, #b3f1ee, #59d8d2); }
+
+.unactive-title {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  height: 64px;
+  background: #ffffff; }
+
+.-Your-expertise {
+  font-family: EkMukta-Light;
+  opacity: 0.5;
+  font-size: 24px;
+  letter-spacing: 0.5px;
+  text-align: left;
+  color: #7f7f7f;
+  margin: 0 24px; }
+
+.title-content .panel {
+  margin-bottom: 8px; }
+
+.Done-Sep-29-740p {
+  height: 16px;
+  opacity: 0.8;
+  font-family: EkMukta-Light;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+  text-align: right;
+  color: #ffffff; }
+
+.date-container {
+  display: inline-flex;
+  line-height: 17px;
+  margin-bottom: 23px; }

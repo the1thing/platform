@@ -1,0 +1,42 @@
+.menu {
+    list-style-type: none;
+    height: 20px;
+    margin-top: 0;
+    line-height: 20px;
+  }
+  
+  .menu-title {
+    margin-left: 14px;
+    font-family: EkMukta;
+    font-size: 24px;
+    letter-spacing: 3px;
+    text-align: left;
+  }
+  
+  .menu-list span {
+    font-size: 14px !important;
+    margin-left: 3px;
+    vertical-align: -webkit-baseline-middle;
+  }
+  
+  .menu-list li {
+    line-height: 11px;
+  }
+  
+  .menu li {
+    list-style-type: none;
+  }
+  
+  .menu-list-hover {
+    line-height: 18px !important;
+  }
+  
+  .menu-list-hover div {
+    width: 24px !important;
+  }
+  
+  .menu-list-hover span {
+    font-size: 24px !important;
+  }
+  
+  

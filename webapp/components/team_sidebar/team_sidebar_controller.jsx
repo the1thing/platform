@@ -13,6 +13,7 @@ import $ from 'jquery';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
+import {browserHistory} from 'react-router/es6';
 
 export default class TeamSidebar extends React.Component {
     static propTypes = {
@@ -93,6 +94,11 @@ export default class TeamSidebar extends React.Component {
         } else {
             root.classList.remove('multi-teams');
         }
+    }
+    goToDashBoard(){
+        alert("hiii")
+        console.log('called');
+        browserHistory.push('/dashboard');
     }
 
     render() {
@@ -181,6 +187,14 @@ export default class TeamSidebar extends React.Component {
         return (
             <div className='team-sidebar'>
                 <div className='team-wrapper'>
+                    <div className="dashboard-icon">
+                        <a>
+                         <div className="dashboard-btn" onClick={this.goToDashBoard}>
+                            <div className="dashboard-btn-initials">d</div>
+                         </div>
+                        </a>
+                    </div>
+                    <div></div>
                     {teams}
                 </div>
             </div>

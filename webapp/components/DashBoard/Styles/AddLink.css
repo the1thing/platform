@@ -1,0 +1,43 @@
+.default-add-button {
+  background-image: url("../Images/add.svg");
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: initial;
+  border: 1px solid #7f7f7f; }
+
+.add-button {
+  background-image: url("../Images/add.svg");
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: initial;
+  border: 1px solid #7f7f7f;
+  transition: ease-in-out; }
+
+.add-button:hover {
+  transition: ease-in-out;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: initial !important;
+  background-color: #0d65d8;
+  border: 1px solid #0d65d8;
+  background-image: url("../Images/add.svg"); }
+
+.add-button-disabled {
+  background-image: url("../Images/add.svg");
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: initial;
+  border: 1px solid #7f7f7f;
+  transition: 'ease-in-out'; }
