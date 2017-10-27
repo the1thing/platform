@@ -42,7 +42,7 @@ export default class TeamSidebar extends React.Component {
             teamListings: TeamStore.getTeamListings(),
             teamMembers,
             currentTeamId,
-            show: teamMembers && teamMembers.length > 1,
+            show: teamMembers && teamMembers.length > 0,
             isMobile: Utils.isMobile()
         };
     }
