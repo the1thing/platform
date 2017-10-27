@@ -56,7 +56,7 @@ export default class Dashboard extends Component {
         }
     }
     getCookie=(name)=> {
-        console.log('-------------->>',name);
+       // console.log('-------------->>',name);
         var re = new RegExp(name + "=([^;]+)");
         var value = re.exec(document.cookie);
         return (value != null) ? unescape(value[1]) : null;
@@ -64,9 +64,11 @@ export default class Dashboard extends Component {
 
     componentWillMount() {
         let uId=this.getCookie('MMUSERID');
+        console.log('----->',uId)
         // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
-        //axios.get(basepath + 'user/getUser/'+uId)
-        axios.get(basepath + 'user/getUser/b5moybzsetncpqg88y6icxu48o')
+        // axios.get(basepath + 'user/getUser/b5moybzsetncpqg88y6icxu48o')
+        
+        axios.get(basepath + 'user/getUser/'+uId)
             .then((resp) => {
                 this.setState({
                     userType: resp.data.data.userType,
