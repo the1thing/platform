@@ -250,6 +250,8 @@ getTimeLineData=()=>{
                 value={this.state.defaultRange}
                 className={this.state.budgetRangeClass ? "Error-input" : "simple-input"} 
                 placeholder="Enter budget"
+                onKeyPress={(event)=>{if(!(event.charCode>=47 && event.charCode<=57)){event.preventDefault()}}}
+                maxLength={10}
                 onChange={(e)=>{
                   this.setStateMethod('defaultRange',e.target.value);
                   this.setStateMethod('budgetRange',e.target.value)

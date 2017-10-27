@@ -55,7 +55,7 @@ export default class AboutProduct extends Component {
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
         }).then((response) => {
-            if(response.data=='')
+            if(response.data==null)
                 {
                      this.setState({
                         checkProjectId:'',
@@ -94,10 +94,10 @@ export default class AboutProduct extends Component {
             this.setState({
                 productName: response.data.name,
                 productType: response.data.projectType.projectType,
-                productLink: response.data.projectType.link,
-                domains: response.data.domain,
+                productLink: (response.data.projectType.link)?response.data.projectType.link:[],
+                domains: (response.data.domain)?response.data.domain:[],
                 otherProduct: response.data.similarProduct,
-                scopeDocument: response.data.userDocumentLink,
+                scopeDocument: (response.data.userDocumentLink)?response.data.userDocumentLink:[],
                 loading:false,
                })
             console.log('qqqqqqqqqqqqqqqqqget about product', response.data,);

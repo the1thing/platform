@@ -86,10 +86,13 @@ getAboutDesignData=()=>{
 }
 
   renderClass=()=>{
-    if(this.state.platforms.length==0
-        && this.state.services 
+    if(
+        this.state.platforms.length>0
+        &&
+         this.state.services 
         && this.state.objective
-        && (this.state.document || this.state.addLink.length==0) ){
+        && (this.state.document || this.state.addLink.length>0) 
+    ){
             return "Rectangle-4"
         }
     else{
@@ -104,6 +107,7 @@ setStateMethod=(label,value)=>{
     });
 }
 goTo=()=>{
+    console.log("data------->",'1-->',this.state.platforms,'2-->',this.state.services,'3-->',this.state.objective,'4-->',this.state.document,'5-->',this.state.addLink)
     if(this.state.platforms.length==0){
         this.setStateMethod('platformClass',true)
     }
@@ -190,10 +194,11 @@ goTo=()=>{
                                 placeholder="Design Services"
                                 optionList={this.state.designList}
                                // error={this.state.productTypeClass}
-                                onclick={(value,key)=>{   this.setState({
-                                                                    services:value,
-                                                                      });
-                                                      }
+                                onclick={(value,key)=>{ 
+                                      this.setState({
+                                                services:value,
+                                                });
+                                  }
                                 }
                            /> 
                            </div>
