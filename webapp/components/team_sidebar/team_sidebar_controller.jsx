@@ -96,8 +96,7 @@ export default class TeamSidebar extends React.Component {
         }
     }
     goToDashBoard(){
-        alert("hiii")
-        console.log('called');
+//        console.log('called');
         browserHistory.push('/dashboard');
     }
 

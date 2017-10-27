@@ -55,17 +55,20 @@ export default class Dashboard extends Component {
             userType: '',
         }
     }
-    getCookie(name) {
+    getCookie=(name)=> {
+        console.log('-------------->>',name);
         var re = new RegExp(name + "=([^;]+)");
         var value = re.exec(document.cookie);
         return (value != null) ? unescape(value[1]) : null;
     }
 
     componentWillMount() {
-        let uId=getCookie('MMUSERID');
-        // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa')
-        axios.get(basepath + 'user/getUser/'+uId)
+        let uId=this.getCookie('MMUSERID');
+        // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
+        //axios.get(basepath + 'user/getUser/'+uId)
+        axios.get(basepath + 'user/getUser/b5moybzsetncpqg88y6icxu48o')
             .then((resp) => {
+                console.log('---->>>>>',uId)
                 console.log("response of client or designer", resp);
                 this.setState({
                     userType: resp.data.data.userType,
