@@ -73,14 +73,14 @@ export default class ClientTitleMenu extends Component {
             <div style={{borderTop:'1px solid #118bf3',color:'#118bf3',width:this.state.design_width,display:'inline-block'}}></div>
             <span className="menu-title" style={{color:"#118bf3"}} onClick={(e)=>this.openMenuTitle(e,'design')}>PROPOSAL</span>
           </li>
-          <li  onClick={this.props.getDesign} onMouseEnter={()=>{this.setState({menu_hover_class_analysis:'menu-list-hover'})}} onMouseOut={()=>{this.setState({menu_hover_class_analysis:''})}} className={this.state.menu_hover_class_analysis}>
+          {/* <li  onClick={this.props.getDesign} onMouseEnter={()=>{this.setState({menu_hover_class_analysis:'menu-list-hover'})}} onMouseOut={()=>{this.setState({menu_hover_class_analysis:''})}} className={this.state.menu_hover_class_analysis}>
             <div style={{borderTop:'1px solid #36cb3b',color:'#36cb3b',width:this.state.analysis_width,display:'inline-block'}}></div>
             <span className="menu-title" style={{color:"#36cb3b"}} onClick={(e)=>this.openMenuTitle(e,'analysis')}>DESIGN</span>
           </li>
           <li  onClick={this.props.getFeedback} onMouseEnter={()=>{this.setState({menu_hover_class_feedback:'menu-list-hover'})}} onMouseOut={()=>{this.setState({menu_hover_class_feedback:''})}} className={this.state.menu_hover_class_feedback}>
             <div style={{borderTop:'1px solid #7560fd',color:'#7560fd',width:this.state.feedback_width,display:'inline-block'}}></div>
             <span className="menu-title" style={{color:"#7560fd"}} onClick={(e)=>this.openMenuTitle(e,'feedback')}>FEEDBACK</span>
-          </li>
+          </li> */}
           </ul>
         </div>  
     )

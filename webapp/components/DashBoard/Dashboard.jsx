@@ -68,12 +68,10 @@ export default class Dashboard extends Component {
         //axios.get(basepath + 'user/getUser/'+uId)
         axios.get(basepath + 'user/getUser/b5moybzsetncpqg88y6icxu48o')
             .then((resp) => {
-                console.log('---->>>>>',uId)
-                console.log("response of client or designer", resp);
                 this.setState({
                     userType: resp.data.data.userType,
                 })
-                localStorage.setItem('userName', resp.data.data.userName);
+                localStorage.setItem('userName', resp.data.data.name);
                 localStorage.setItem('userId', resp.data.data.userId);
                 localStorage.setItem('projectDate', resp.data.data.createdAt)
 

@@ -74,7 +74,8 @@ export default class OnboardingMonochromeForms extends Component {
                                             client_info_display:'block',
                                             
                                             })}}
-          getProposal={()=>{this.setState({
+          getProposal={()=>{
+                                {/* this.setState({
                                             requirement_display:'none',
                                             proposal_display:'block',
                                             design_display:'none',
@@ -82,7 +83,10 @@ export default class OnboardingMonochromeForms extends Component {
                                             manifesto_display:'none',
                                             client_info_display:'none',
                                             
-                                                })}}
+                                                }) */}
+                                                document.getElementById('proposal_div').scrollIntoView();
+                                                }
+                                              }
           getDesign={()=>{this.setState({
                                             requirement_display:'none',
                                             proposal_display:'none',
@@ -103,7 +107,9 @@ export default class OnboardingMonochromeForms extends Component {
                                            })}}
           />
         </div>
-        <div style={{display:this.state.requirement_display}} className="title-content">
+        <div 
+           //style={{display:this.state.requirement_display}}
+            className="title-content">
           <div className="Onboarding-content-f">
           Requirements content three steps 1st is product where you tell us about your product,
            what kinda product you want to build,
@@ -141,10 +147,15 @@ export default class OnboardingMonochromeForms extends Component {
             )}
           />
         </div>
-        <div className="title-content" style={{display:this.state.proposal_display}}>
+        <div className="title-content" id='proposal_div'
+           //style={{display:this.state.proposal_display}}
+           >
          <MonochromeProposal/>
+         
          </div>
-        <div className="title-content" style={{display:this.state.manifesto_display}}>
+        <div className="title-content" 
+         //style={{display:this.state.manifesto_display}}
+         >
         <OnboardManifesto/>
         </div>
       </div>
