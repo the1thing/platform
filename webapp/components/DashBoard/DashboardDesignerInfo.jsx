@@ -5,7 +5,7 @@ export default class DashboardDesignerInfo extends Component {
         return (
             <div>
               <div style={{border:'1px solid #f7f7f7'}} className="view-container">
-                 <div>  Eshaan, This is your space .. <img  width='24px' src={require('./Images/1f60a.png')}/></div>
+                 <div style={{marginBottom:'8px'}}>  Eshaan, This is your space .. <img  width='24px' src={require('./Images/1f60a.png')}/></div>
                  <div>
                  Here you can design, discuss & manage your project with 1THING.For join <span className="clickable_text">1THING Design Network</span> you need to complete onboarding first
                 <img  width='24px' src={require('./Images/1f447.png')}/>  

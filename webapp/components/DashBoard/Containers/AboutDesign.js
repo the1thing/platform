@@ -32,10 +32,10 @@ export default class AboutDesign extends Component {
   constructor(props){
     super(props);
     this.state={
-      platforms: [],
+      platforms:[],
       services:'',
       objective:'',
-      domains:[],
+      domains:'',
       addLink:[],
       document:'',
       platformClass:false,
@@ -48,6 +48,7 @@ export default class AboutDesign extends Component {
       platformList:['Mac App','Android wearable','Apple watch','VR',
       'Windows app','IOS app','Android app','Web app','Responsive web'],
       loading:false,
+      edit:true,
     }
   }
   componentWillMount = () => {
@@ -58,19 +59,22 @@ export default class AboutDesign extends Component {
     this.getAboutDesignData();
 }
 getAboutDesignData=()=>{
-    this.setState({
-        loading:true,
-    })
+    
+    if(localStorage.getItem("projectId"))
+    {
+        this.setState({
+            loading:true,
+        })
     axios({
         method: 'get',
         url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId')+'?stage=2',
     }).then((response) => {
         var _response=response.data;
-        console.log('get about design****', response.data);
+      //  console.log('get about design****', response.data);
         var _tempUserPropsal=_response.userProposal;
         //designServices  designObjective
         this.setState({
-            platforms:_response.platform,
+            platforms: (_response.platform)?_response.platform:[],
             services:_tempUserPropsal.designServices,
             objective:_tempUserPropsal.designObjective,
             addLink:_tempUserPropsal.referenceLink,
@@ -78,29 +82,29 @@ getAboutDesignData=()=>{
            })
 
     }).catch((error) => {
-        console.log('get project error', error.response);
+        console.log('get project error stage 2', error.response);
         this.setState({
             loading:false
         })
     });
+   }
 }
 
   renderClass=()=>{
-    if(this.state.platforms.length==0
+    if( this.state.platforms.length>0
         && this.state.services 
         && this.state.objective
-        && (this.state.document || this.state.addLink.length==0) ){
+        && (this.state.document || this.state.addLink.length>0) ){
             return "Rectangle-4"
         }
     else{
         return "button-block-class"
     }
 }
- 
 setStateMethod=(label,value)=>{
-    console.log('1111111111ddddddd',label,value,this.state.servicesClass)
     this.setState({
         [label]:value,
+        edit:false,
     });
 }
 goTo=()=>{
@@ -118,6 +122,11 @@ goTo=()=>{
         this.setStateMethod('linkClass',true)
     }
     else{
+        if(this.state.document){
+            this.state.addLink.push(this.state.document);
+            this.setState({addLink:this.state.addLink});
+
+        }
         axios({
                 method:'put',
                 url:basepath+'project/updateProjectFromWorkspace',
@@ -130,6 +139,10 @@ goTo=()=>{
                 },
             })
             .then((resp)=>{
+                this.setState({
+                    edit:true,
+                })
+                this.props.openPanel()
                 console.log("about design---------->",resp);
             })
             .catch((err)=>{
@@ -167,10 +180,11 @@ goTo=()=>{
                        error={this.state.platformClass}
                        onclick={(value, key) => {
                            console.log('---------------',value)
-                           
-                           let platform = this.state.domains;
-                           platform = platform.concat( value );
-                           this.setStateMethod('platforms', platform)
+                           this.state.platforms.push(value);
+                           //let platform = this.state.domains;
+                           //platform = platform.concat( value );
+                        //    this.setState({platforms:this.state.platforms});
+                           this.setStateMethod('platforms', this.state.platforms)
                        }} />            
         </div>
         {/* <DropdownList 
@@ -236,7 +250,7 @@ goTo=()=>{
                     this.setStateMethod('document', '')
                     this.setStateMethod('scopeDocumentClass', false)
                 }} /> */}
-         <AddLink 
+        <AddLink 
            defaultValue={this.state.addLink}
             error={this.state.linkClass}
             placeholder='Link(s) to references (apps/sites you like)'
@@ -252,10 +266,16 @@ goTo=()=>{
                 }}/>
         
           <button   
+            disabled={this.state.edit}
             onClick={()=>this.goTo()}
             className={this.renderClass()}>
-             <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span>
-        </button> 
+            <span className="button-title">
+                <span>NEXT</span>
+                <span><img src={require('../Images/arrow-down.svg')}/></span>
+            </span>
+                
+             {/* <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span> */}
+        </button>
       </div>
     )
   }

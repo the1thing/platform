@@ -134,11 +134,19 @@ export default class OnboardManifesto extends Component {
                          <TweetEmbed id={this.state.tweet_id} />
                          </span>
                          <span >
-                          <img onClick={()=>{
-                                             tweet_count=tweet_count+1;
+                          <img style={{cursor:'pointer'}} onClick={()=>{
+                                             if(tweet_count<=10|| tweet_count<=1)
+                                             {
+                                              tweet_count=tweet_count+1;
+                                              let  currId=tweet_count;
+                                             }
+                                             else{
+                                               tweet_count=10-tweet_count;
+                                               let currId=tweet_count;
+                                             }
                                              this.setState({tweet_id:this.state.tweet_data[tweet_count]})
                                              }}
-                                              width='24px' height='24px'  src={require('./Images/right-arrow.svg')}/>
+                                       width='24px' height='24px'  src={require('./Images/right-arrow.svg')}/>
                         </span>
                     </span>
                  </div>

@@ -56,7 +56,7 @@ export default class ClientProgress extends Component {
                                         },
                         inProcess:{
                                       completed:false,
-                                      completedDate:'30 sep'
+                                      completedDate:''
                                       },
                        received:{
                                         completed:false,
@@ -76,12 +76,12 @@ export default class ClientProgress extends Component {
                                          value:''
                                         },
                         inProcess:{
-                                      completed:true,
-                                      completedDate:'30 sep'
+                                      completed:false,
+                                      completedDate:''
                                       },
                        received:{
-                                        completed:true,
-                                        completedDate:'30 sep'
+                                        completed:false,
+                                        completedDate:''
                                     },   
                        approval:{
                                         completed:false,
@@ -190,16 +190,15 @@ export default class ClientProgress extends Component {
     }
     
     componentWillMount=()=> {
-        this.getClientStatus();
-        
-        
-    }
+          this.getClientStatus();
+       }
      getClientStatus=()=>{
          this.setState({loading:true});
         axios({
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
         }).then((response) => {
+            this.state.requirement.dateOfCompletion=response.data.statusBar.timeline.completedDate;
             this.state.requirement.aboutProduct=response.data.statusBar.product;
             this.state.requirement.aboutDesign=response.data.statusBar.design;
             this.state.requirement.aboutTimeline=response.data.statusBar.timeline;
@@ -251,23 +250,23 @@ export default class ClientProgress extends Component {
                         <Row  className="margin_bu16">
                             <Col  md={1} ><div className={this.state.requirement.completed.value?"check_Oval_md":"Oval_md"}></div></Col>
                             <Col  md={6} className={this.state.requirement.completed.value?"checked_progress_text":"progress_text_dark"}> requirement</Col>
-                            <Col  md={4} className={!this.state.requirement.completed.value?"hide_progress_text":"progress_text_position"}> Date</Col>
+                            <Col  md={4} className={!this.state.requirement.completed.value?"hide_progress_text":"progress_text_position"}>{ returnDate(this.state.requirement.dateOfCompletion)}</Col>
                         </Row>
                         <Row className={this.state.margin_bu8_requirement}>
                         <Row className="margin_bu8">
                             <Col  md={1} ><div className={this.state.requirement.aboutProduct.completed?"check_Oval_sm":this.state.not_cross_aboutProduct?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6} className={this.state.requirement.aboutProduct.completed?"checked_progress_text_sub":this.state.not_cross_aboutProduct?"progress_text_subpart":"progress_text_sub_dim"}> About product</Col>
-                            <Col  md={4} className={!this.state.not_cross_aboutProduct?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4} className={!this.state.not_cross_aboutProduct?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.requirement.aboutDesign.completed?"check_Oval_sm":this.state.not_cross_aboutDesign?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6}  className={this.state.requirement.aboutDesign.completed?"checked_progress_text_sub":this.state.not_cross_aboutDesign?"progress_text_subpart":"progress_text_sub_dim"}> about design</Col>
-                            <Col  md={4}  className={!this.state.not_cross_aboutDesign?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4}  className={!this.state.not_cross_aboutDesign?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.requirement.aboutTimeline.completed?"check_Oval_sm":this.state.not_cross_aboutTimeline?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6}  className={this.state.requirement.aboutTimeline.completed?"checked_progress_text_sub":this.state.not_cross_aboutTimeline?"progress_text_subpart":"progress_text_sub_dim"}> aboutTimeline</Col>
-                            <Col  md={4}  className={!this.state.not_cross_aboutTimeline?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4}  className={!this.state.not_cross_aboutTimeline?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         
                      </Row>
@@ -287,17 +286,17 @@ export default class ClientProgress extends Component {
            <Row className="margin_bu8">
                <Col  md={1} ><div className={this.state.proposal.inProcess.completed?"check_Oval_sm":this.state.not_cross_inProcess?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6} className={this.state.proposal.inProcess.completed?"checked_progress_text_sub":this.state.not_cross_inProcess?"progress_text_subpart":"progress_text_sub_dim"}> In process</Col>
-               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
            <Row  className="margin_bu8">
                <Col  md={1} ><div className={this.state.proposal.received.completed?"check_Oval_sm":this.state.not_cross_received?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6}  className={this.state.proposal.received.completed?"checked_progress_text_sub":this.state.not_cross_received?"progress_text_subpart":"progress_text_sub_dim"}> Received</Col>
-               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
            <Row  className="margin_bu8">
                <Col  md={1} ><div className={this.state.proposal.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approval</Col>
-               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
         </div>
      </div>
@@ -320,7 +319,7 @@ export default class ClientProgress extends Component {
                  <Col  md={1} ><div className="check_Oval_md"></div></Col>
                  <Col  md={6} className="checked_progress_text margin_le20">Sign up</Col>
                  {/* <Col  md={4} className="progress_text_position">{localStorage.getItem('projectDate')}</Col> */}
-                 <Col  md={4} className="progress_text_position">{ returnDate(localStorage.getItem('projectDate') )}</Col>
+                 <Col  md={4} className="progress_text_position">{ returnDate(localStorage.getItem('signUpDate') )}</Col>
               </Row>
               {this.renderRequirementStatus()}
               {this.renderProposalStatus()}

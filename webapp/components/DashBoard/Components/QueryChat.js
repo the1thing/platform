@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import '../Styles/queryChat.scss';
-import {browserHistory} from 'react-router/es6';
+import '../Styles/queryChat.scss'
 // import ReactTooltip from 'react-tooltip';
 
 export default class QueryChat extends Component {
@@ -10,12 +9,9 @@ export default class QueryChat extends Component {
             visible_chat:'hidden',
         }
     }
-    goToHome=()=>{
-       browserHistory.push('/');
-    }
     render() {
         return (
-            <div onClick={()=>{this.goToHome()}}>
+            <div>
                
              <div className="chat_icon_div">
 

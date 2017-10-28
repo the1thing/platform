@@ -4,7 +4,7 @@
     font-size: 24px;
     letter-spacing: 0.5px;
     text-align: left;
-    color: #030303;
+    color: #fff// #030303;
 }
 .title-content .panel-body {
     padding: 40px;
@@ -28,6 +28,8 @@
     border-radius: 4px;
     height: 64px;
     background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
 }
 .-Your-expertise {
     font-family: EkMukta-Light;
@@ -56,4 +58,14 @@
     display: inline-flex;
     line-height: 17px;
     margin-bottom: 23px;
+}
+.panel{
+    border-radius: 0px;
+}
+// .title-content .panel-default {
+//     border-color: #fff;
+//     border: none;
+// }
+.unactive .panel-default{
+    display: none;
 }

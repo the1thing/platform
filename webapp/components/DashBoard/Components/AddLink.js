@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {validateUrl} from '../utils/Methods';
 import '../Styles/AddLink.scss';
 
 export class AddLink extends Component {
@@ -11,6 +12,8 @@ export class AddLink extends Component {
             defaultInputValue:'',
             readOnlyValue:'',
             myList:[],
+            btnDisability:true,
+            linkColor:'#030303',
         }
     }
     componentWillMount=()=> {
@@ -31,28 +34,42 @@ export class AddLink extends Component {
             }) 
         }
     }
-    nkList
-    validateUrl = (productArgu) => {
-        let regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-        let checkProduct = regex.test(productArgu);
-        return checkProduct;
-    }
+    // validateUrl = (checkLink) => {
+    //     let regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+    //     let checkProduct = regex.test(checkLink);
+    //     return checkProduct;
+    // }
     renderLinkList = () => {
         return this.state.myList.map((v,k) => {
             return <div key={k} className="subcomponent-spacing">
-                <input readOnly className={this.props.error ? "Error-input" : "simple-input"} value={v}/>
+                <input readOnly style={{color:" #0d65d8"}} className={this.props.error ? "Error-input" : "simple-input"} value={v}/>
             </div>
         })
     }
     handleButtonClick = (e) => {
         let list=this.state.myList;
         list=list.concat(e.target.value)
-        this.setState({
-            error:false,
-            buttonVisiblity: 'visible',
-            readOnlyValue:e.target.value,
-            defaultInputValue:e.target.value,
-        })
+        if(validateUrl(e.target.value))
+        {
+            this.setState({
+                btnDisability:false,
+                linkColor:"#0d65d8",
+                error:false,
+                buttonVisiblity: 'visible',
+                readOnlyValue:e.target.value,
+                defaultInputValue:e.target.value,
+                 })
+        }
+        else{
+            this.setState({
+                linkColor:"#030303",
+                btnDisability:true,
+                error:false,
+                buttonVisiblity: 'visible',
+                readOnlyValue:e.target.value,
+                defaultInputValue:e.target.value,
+          })
+     }
         this.props.onclick(e,e.target.value);
         
     }
@@ -63,6 +80,8 @@ export class AddLink extends Component {
             this.state.readOnlyValue
         );
         this.setState({
+            btnDisability:true,
+            linkColor:'#030303',
             linkreadonly:true,
             linkList: list,
             defaultInputValue:'',
@@ -76,13 +95,14 @@ export class AddLink extends Component {
                 
                 {this.renderLinkList()}
                 <input 
+                    style={{color:this.state.linkColor}}
                     value={this.state.defaultInputValue}
                     className="simple-input" 
                     placeholder="Link(s) to scope document, if any"
                     onChange={(e) => { this.handleButtonClick(e) }}/>
                 <div className="input-spacing">
-                    <div  style={{ visibility: this.state.buttonVisiblity }}>
-                        <AddButton onclick={(e) => { this.addAnotherLink(e) }}/>
+                    <div  style={{ visibility: this.state.buttonVisiblity,cursor:'notAllowed'}}>
+                        <AddButton checkDisable={this.state.btnDisability} onclick={(e) => { if(!this.state.btnDisability){ this.addAnotherLink(e) } }}/> 
                     </div>
                 </div>
             </div>
@@ -96,8 +116,27 @@ export class AddButton extends Component {
     render() {
         return (
             <div 
-                className={this.props.disabledClass === true ? 'add-button-disabled' : 'add-button'} 
+                className={this.props.disabledClass === true ? 'add-button-disabled': 
+                           this.props.checkDisable?'add-button-disabled':'add-button'} 
                 onClick={(e) => { this.props.onclick(e) }}/> 
+        )
+    }
+}
+export class AddButtonDomain extends Component {
+    render() {
+        return (
+            // <div 
+            //     className={this.props.disabledClass === true ? 'add-button-disabled': 'add-button'} 
+            //     onClick={ this.props.onclick }
+            //     /> 
+            <div>
+                <button
+                       // className={this.props.disabledClass?'add-button-disabled':'add-button'}
+                        // disabled={this.props.disabledClass}
+                    //     onclick={()=>{console.log('called ina dd')}}
+                         >+</button>
+                         <button onclick={(event)=>{alert('called')}}>add</button>
+            </div>
         )
     }
 }

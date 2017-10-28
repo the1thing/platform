@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
-import { FormGroup, Checkbox } from 'react-bootstrap';
+import { FormGroup, Checkbox,OverlayTrigger,Tooltip,Button } from 'react-bootstrap';
 import '../Styles/AboutUser.scss';
 import CheckBoxComp from '../Components/CheckBoxComp';
 import RadioBoxComp from '../Components/RadioBoxComp';
 import { getCheckBoxValue } from '../utils/Methods';
+import {basepath} from '../utils/constant';
+import {validateUrl, numberOnly} from '../utils/Methods';
+import axios from 'axios';
+import LoreamTooltip from '../Components/LoreamTooltip';
 
+const tooltip = (
+    <Tooltip id="tooltip">
+        <div className='questionMarkToolTipDiv'>
+        Your Linkedin profile adds authenticity to your account. 
+        It further helps account managers start more contextual 
+        conversations with you. We do not share your information 
+        with anyone outside of 1THING.
+        </div>
+    </Tooltip>
+  );
 export default class AboutUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            loader:true,
+            view:'hidden-me',
             linkdinLink: '',
             workExperience: '',
             jobTiming: '',
@@ -16,14 +32,37 @@ export default class AboutUser extends Component {
             checkboxArray: [],
             workExperienceClass: false,
             linkdinLinkClass: false,
+            linkdinErrorMessage:'',
             availabilityClass: false,
+            linkdinLinkColor:'#030303',
             idVisiblityError: 'hidden',
             jobTimingError: 'hidden',
-            checkboxList: ['UI Designer', 'UX Designer', 'Graphics Designer', 'Branding', 'UX Writer',
+            checkboxList: ['UI Designer', 'UX Designer', 'Graphics Designer', 'Branding',
                 'Fron-end Devloper', 'Android Devloper', 'UX Writer']
         }
     }
-
+    
+    componentWillMount=()=> {
+        setTimeout(()=>{this.getAboutUserData()},6)
+    }
+    getAboutUserData=()=>{
+        axios({
+            method: 'get',
+            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
+           }).then((response) => {
+           console.log('response of get about userrrrrrrrrrr', response)
+            this.setState({
+                linkdinLink:response.data.linkedinProfile,
+                workExperience:response.data.workExperience,
+                jobTiming:response.data.role,
+                availability:response.data.hoursAvailable,
+                checkboxArray: response.data.profile,
+                loader:false,
+               })
+          }).catch((error) => {
+            console.log('get project error', error);
+          });
+    }
     renderClass = () => {
         if (this.state.checkboxArray[0] && this.state.linkdinLink && this.state.workExperience
             && this.state.jobTiming && this.state.availability) {
@@ -38,9 +77,29 @@ export default class AboutUser extends Component {
             [label]: value,
         })
     }
+    putAboutUser=()=>{
+        axios({
+            method:'put',
+            url:basepath+'designer/addAboutYourself',
+            data:{
+                designerId:localStorage.getItem('userId'),
+                profile:this.state.checkboxArray,
+                linkedinProfile:this.state.linkdinLink,
+                workExperience:this.state.workExperience,
+                role:this.state.jobTiming,
+                hoursAvailable:this.state.availability,
+            },
+        })
+        .then((resp)=>{
+            this.props.openPanel()
+            console.log("about design---------->",resp);
+        })
+        .catch((err)=>{
+            console.log("about design  error",err)
+        })
+    }
     goTo = () => {
-        console.log("aaaaaaaaaaaaaaaaaa","1-->",this.state.linkdinLink,"2-->",this.state.workExperience,"3-->",this.state.jobTiming,"4-->",this.state.availability,"5-->",this.state.checkboxArray,"6-->",this.state.radioBoxTimeValue)
-        if (!this.state.checkboxArray[0]) {
+        if (this.state.checkboxArray.length==0) {
             this.setStateMethod('idVisiblityError', 'visible');
         }
         else if (!this.state.linkdinLink) {
@@ -56,7 +115,7 @@ export default class AboutUser extends Component {
             this.setStateMethod('availabilityClass', true)
         }
         else {
-
+            this.putAboutUser();
         }
     }
     renderCheckBox = () => {
@@ -64,19 +123,26 @@ export default class AboutUser extends Component {
             this.state.checkboxList.map((value, key) => {
                 return (
                     <CheckBoxComp
+                        /* defaultValue={this.state.checkboxArray} */
+                        isChecked={this.state.checkboxArray.indexOf(value)>=0}
+                        toggle={this.state.checkboxArray.indexOf(value)>=0}
                         label={value}
                         checkboxOnClick={(e) => {
                             this.setStateMethod('checkboxArray', getCheckBoxValue(e, this.state.checkboxArray))
                             this.setStateMethod('idVisiblityError', 'hidden')
                         }} />
-                )
+                 )
             })
         )
     }
     render() {
+        if(this.state.loader){
+          return <div>loading</div>;
+        }
+        else{
         return (
-            <div>about user
-                {/* <div className="input-spacing-radio">
+            <div>
+                 <div className="input-spacing-radio">
                     <div className="form-label">
                         You identify yourself as
                     </div>
@@ -87,17 +153,34 @@ export default class AboutUser extends Component {
                         Please identify yourself
                     </div>
                 </div>
-                <div className="input-spacing">
+                <div className="input-spacing" style={{display:'flex'}}>
                     <input
+                        style={{color:this.state.linkdinLinkColor,width:'85%'}}
+                        value={this.state.linkdinLink}
                         className={this.state.linkdinLinkClass ? "Error-input" : "simple-input"}
                         placeholder="Paste your linkdin profile link"
-                        onChange={(e) => this.setStateMethod('linkdinLink', e.target.value)} />
+                        onChange={(e) => {if(validateUrl(e.target.value)){
+                                            this.setStateMethod('linkdinLink', e.target.value)
+                                            this.setStateMethod('linkdinLinkColor','#0d65d8')
+                                            }
+                                            else{
+                                                this.setStateMethod('linkdinErrorMessage','Please enter valid URL')
+                                                this.setStateMethod('linkdinLinkColor','#030303')
+                                            }}} />
+                    <div style={{height:'40px'}}>
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                            <div className="tooltip-image"></div>
+                        </OverlayTrigger>
+                    </div>
                 </div>
                 <div className="input-spacing">
                     <input
+                        onKeyPress={(e)=>numberOnly(e)}
+                        value={this.state.workExperience}
                         className={this.state.workExperienceClass ? "Error-input" : "simple-input"}
                         placeholder="Total work experience (in years)?"
-                        onChange={(e) => this.setStateMethod('workExperience', e.target.value)} />
+                        onChange={(e) =>this.setStateMethod('workExperience', e.target.value)}
+                        />
                 </div>
                 <div className="input-spacing-radio">
                     <div className="form-label">You are here for?</div>
@@ -111,14 +194,27 @@ export default class AboutUser extends Component {
                         Please identify yourself
                     </div>
                 </div>
-                <div className="input-spacing">
+                <div className="input-spacing" style={{display:'flex'}}>
                     <input
+                        style={{width:'85%'}}
+                        value={this.state.availability}
                         className={this.state.availabilityClass ? "Error-input" : "simple-input"}
                         placeholder="Your availability in hours/week?"
                         onChange={(e)=>this.setStateMethod('availability',e.target.value)} />
+                    <div style={{height:'40px'}}>
+                        <OverlayTrigger placement="top" overlay={tooltip}>
+                            <div className="tooltip-image"></div>
+                        </OverlayTrigger>
+                    </div>
                 </div>
-                <button className={this.renderClass()} onClick={() => this.goTo()}><span className="button-title">NEXT</span></button> */}
+                <button className={this.renderClass()} onClick={() => this.goTo()}>
+                    <span className="button-title">
+                        <span>NEXT</span>
+                        <span><img src={require('../Images/arrow-down.svg')}/></span>
+                    </span>
+                </button> 
             </div>
         )
     }
+  } 
 }

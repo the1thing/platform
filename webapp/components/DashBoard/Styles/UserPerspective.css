@@ -1,28 +1,33 @@
 .link-input::-webkit-input-placeholder {
+  outline: none;
   font-size: 24px;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight;
   color: #7f7f7f !important; }
 
 .link-input {
+  outline: none;
   height: 37px;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
   color: #0d65d8; }
 
 .Error-link-input::-webkit-input-placeholder {
+  outline: none;
   font-size: 24px;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight;
   color: #eb444c !important; }
 
 .Error-link-input {
+  outline: none;
   height: 37px;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
   color: #0d65d8; }
 
 .about-link-textares::-webkit-input-placeholder {
+  outline: none;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight;
   font-size: 18px;
@@ -31,6 +36,7 @@
   color: #7f7f7f; }
 
 .about-link-textares {
+  outline: none;
   border: none;
   font-size: 18px;
   letter-spacing: 0.5px;
@@ -39,6 +45,7 @@
   color: #030303; }
 
 .Error-link-textares::-webkit-input-placeholder {
+  outline: none;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight;
   font-size: 18px;
@@ -47,6 +54,7 @@
   color: #eb444c; }
 
 .Error-link-textares {
+  outline: none;
   border: none;
   font-size: 18px;
   letter-spacing: 0.5px;
@@ -56,6 +64,7 @@
 
 .simple-input::-webkit-input-placeholder {
   opacity: 0.5;
+  outline: none;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
   letter-spacing: 0.5px;
@@ -63,6 +72,7 @@
   color: #7f7f7f; }
 
 .simple-input {
+  outline: none;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
   letter-spacing: 0.5px;
@@ -70,6 +80,7 @@
   color: #030303; }
 
 .Error-input::-webkit-input-placeholder {
+  outline: none;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
@@ -78,6 +89,7 @@
   color: #eb444c; }
 
 .Error-input {
+  outline: none;
   font-family: EkMukta-ExtraLight;
   font-size: 24px;
   letter-spacing: 0.5px;

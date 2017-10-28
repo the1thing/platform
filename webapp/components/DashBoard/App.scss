@@ -27,7 +27,7 @@
     src: url(./Fonts/ek-mukta.extrabold.ttf);
 }
 .dashboard-container{
-    margin-left: 8%;
+    margin-left: 12%;
     display: flex;
 }
 .dashboard-switch-div{
@@ -43,7 +43,8 @@
     letter-spacing: 0.5px;
     text-align: left;
     color: #030303;
-    line-height: 150%;
+    line-height: 36px;
+    // line-height: 150%;
 }
 .progress-container{
     // width: 33%;
@@ -109,7 +110,7 @@
         margin: auto;
         opacity: 0.2;
         margin-top: 5px;
-        margin-top: 5px;
+        margin-left: 3px;
 
       }
       .Oval_md_noback{
@@ -152,7 +153,7 @@
         margin-top:5px;
       }
       .progress_text_main{
-        font-family: EkMukta;
+        font-family: EkMukta-Light;
         font-size: 12px;
         font-weight: 300;
         letter-spacing: 0.3px;
@@ -162,7 +163,7 @@
         padding-left: 6px;
       }
       .progress_text{
-      font-family: EkMukta;
+      font-family: EkMukta-Light;
       font-size: 12px;
       font-weight: 300;
       letter-spacing: 0.3px;
@@ -172,7 +173,7 @@
       padding-left: 14px;
     }
     .progress_text_dark{
-        font-family: EkMukta;
+        font-family: EkMukta-ExtraLight;
         font-size: 12px;
         font-weight: 300;
         letter-spacing: 0.3px;
@@ -182,8 +183,8 @@
         padding-left: 14px;
     }
     .progress_text_subpart{
-        font-family: EkMukta;
-        font-size: 12px;
+        font-family: EkMukta-ExtraLight;
+        font-size: 10px;
         font-weight: 300;
         letter-spacing: 0.3px;
         text-align: left;
@@ -192,8 +193,8 @@
         padding-left: 26px;
     }
     .progress_text_sub_dim{
-        font-family: EkMukta;
-        font-size: 12px;
+        font-family: EkMukta-ExtraLight;
+        font-size: 10px;
         font-weight: 300;
         letter-spacing: 0.3px;
         text-align: left;
@@ -202,8 +203,8 @@
         padding-left: 26px;
     }
     .progress_text_position{
-        font-family: EkMukta;
-        font-size: 12px;
+        font-family: EkMukta-Light;
+        font-size: 10px;
         font-weight: 300;
         letter-spacing: 0.3px;
         text-align: left;
@@ -211,10 +212,25 @@
         margin: auto;
         padding: 0px;
       }
+      .progress_text_curr_position{
+        font-family: EkMukta-Light;
+        font-size: 10px;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+        text-align: center;
+        margin: auto;
+        padding: 0px;
+        color: #030303;
+        width: 70px;
+        border-radius: 2px;
+        background-color: #0d65d8;
+        opacity: 0.7;
+      }
+      
       
 
     .checked_progress_text{
-        font-family: EkMukta;
+        font-family: EkMukta-ExtraLight;
         font-size: 12px;
         font-weight: 300;
         letter-spacing: 0.3px;
@@ -225,8 +241,8 @@
         padding-left: 14px;
     }
     .checked_progress_text_sub{
-        font-family: EkMukta;
-        font-size: 12px;
+        font-family: EkMukta-ExtraLight;
+        font-size: 10px;
         font-weight: 300;
         letter-spacing: 0.3px;
         text-align: left;
@@ -285,7 +301,8 @@
 
 // }
 .clickable_text{
-  text-decoration: underline;
+    border-bottom: 1px solid #030303;
+//   text-decoration: underline;
   cursor: pointer;
 }
 

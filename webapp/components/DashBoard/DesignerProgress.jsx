@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import {Row,Col,Grid} from 'react-bootstrap';
 import ReactDOM from 'react-dom';
+import {returnDate } from './utils/Methods';
+import { basepath } from './utils/constant';
+import axios from 'axios';
 var final_view='';
 
 export default class DesignerProgress extends Component {
@@ -56,12 +59,12 @@ export default class DesignerProgress extends Component {
                                          value:''
                                         },
                         inProcess:{
-                                      completed:true,
-                                      completedDate:'30 sep'
+                                      completed:false,
+                                      completedDate:''
                                       },
                        received:{
-                                        completed:true,
-                                        completedDate:'30 sep'
+                                        completed:false,
+                                        completedDate:''
                                     },   
                        approval:{
                                         completed:false,
@@ -77,21 +80,84 @@ export default class DesignerProgress extends Component {
                                          value:''
                                         },
                         inProcess:{
-                                      completed:true,
+                                      completed:false,
                                       completedDate:'30 sep'
                                       },
                        received:{
-                                        completed:true,
+                                        completed:false,
                                         completedDate:'30 sep'
                                     },   
                        approval:{
                                         completed:false,
                                         completedDate:''
                                     }, 
-                      
-                       }
+                       },
+
+                       loading:false,
+
               }
       }
+      getClientStatus=()=>{
+         this.setState({loading:true});
+        axios({
+            method: 'get',
+            url: basepath + 'user/getUser/'+localStorage.getItem('designerProgressId'),
+        }).then((response) => {
+            this.state.onboarding.dateOfCompletion=response.data.data.statusBar.thinkAboutYourself.completedDate;
+            this.state.onboarding.aboutYourself=response.data.data.statusBar.aboutYourself;
+            this.state.onboarding.yourExpertise=response.data.data.statusBar.expertise;
+            this.state.onboarding.yourPerspective=response.data.data.statusBar.perspective;
+            this.state.onboarding.howYouThink=response.data.data.statusBar.thinkAboutYourself;
+ 
+            if(!response.data.data.statusBar.aboutYourself.completed)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                }
+              else if(!response.data.data.statusBar.expertise.completed)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                }
+               else if(!response.data.data.statusBar.perspective.completed)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                } 
+                else if(!response.data.data.statusBar.thinkAboutYourself.completed)
+                {
+                    this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                }
+               else{
+                    this.state.onboarding.completed.value=true,
+                     this.setState({
+                     requirement:this.state.requirement,
+                     })
+               }          
+            this.setState({
+                requirement:this.state.requirement,
+                loading:false,
+            })
+
+            console.log('checkinggggggggg  get about product', response);
+        }).then(()=>{
+            this.checkRenderStaus();
+        })
+        .catch((error) => {
+            console.log('get project error', error);
+             this.setState({loading:false});
+        });
+    }
     checkRenderStaus=()=>{
         if(!this.state.onboarding.completed.value)
         {
@@ -194,9 +260,10 @@ export default class DesignerProgress extends Component {
     }
     
     componentWillMount=()=> {
-        this.checkRenderStaus();
+        this.getClientStatus();
         
     }
+   
     
     
      renderOnboardingStatus=()=>{
@@ -205,28 +272,28 @@ export default class DesignerProgress extends Component {
                         <Row  className="margin_bu16">
                             <Col  md={1} ><div className={this.state.onboarding.completed.value?"check_Oval_md":"Oval_md"}></div></Col>
                             <Col  md={6} className={this.state.onboarding.completed.value?"checked_progress_text":"progress_text_dark"}> Onboarding</Col>
-                            <Col  md={4} className={!this.state.onboarding.completed.value?"hide_progress_text":"progress_text_position"}> Date</Col>
+                            <Col  md={4} className={!this.state.onboarding.completed.value?"hide_progress_text":"progress_text_position"}>{returnDate(this.state.onboarding.dateOfCompletion)}</Col>
                         </Row>
                         <Row className={this.state.margin_bu8_onboarding}>
                         <Row className="margin_bu8">
                             <Col  md={1} ><div className={this.state.onboarding.aboutYourself.completed?"check_Oval_sm":this.state.not_cross_aboutYourself?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6} className={this.state.onboarding.aboutYourself.completed?"checked_progress_text_sub":this.state.not_cross_aboutYourself?"progress_text_subpart":"progress_text_sub_dim"}> About yourself</Col>
-                            <Col  md={4} className={!this.state.not_cross_aboutYourself?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4} className={!this.state.not_cross_aboutYourself?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.onboarding.yourExpertise.completed?"check_Oval_sm":this.state.not_cross_yourExpertise?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6}  className={this.state.onboarding.yourExpertise.completed?"checked_progress_text_sub":this.state.not_cross_yourExpertise?"progress_text_subpart":"progress_text_sub_dim"}> Your expertise</Col>
-                            <Col  md={4}  className={!this.state.not_cross_yourExpertise?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4}  className={!this.state.not_cross_yourExpertise?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.onboarding.yourPerspective.completed?"check_Oval_sm":this.state.not_cross_yourPerspective?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6}  className={this.state.onboarding.yourPerspective.completed?"checked_progress_text_sub":this.state.not_cross_yourPerspective?"progress_text_subpart":"progress_text_sub_dim"}> Your perspective</Col>
-                            <Col  md={4}  className={!this.state.not_cross_yourPerspective?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4}  className={!this.state.not_cross_yourPerspective?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.onboarding.howYouThink.completed?"check_Oval_sm":this.state.not_cross_howYouThink?"Oval_sm":"dim_Oval_sm"}></div></Col>
                             <Col  md={6}  className={this.state.onboarding.howYouThink.completed?"checked_progress_text_sub":this.state.not_cross_howYouThink?"progress_text_subpart":"progress_text_sub_dim"}>How you think</Col>
-                            <Col  md={4}  className={!this.state.not_cross_howYouThink?"hide_progress_text":"progress_text_position"}>you are here</Col>
+                            <Col  md={4}  className={!this.state.not_cross_howYouThink?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                      </Row>
                   </div>
@@ -245,23 +312,24 @@ export default class DesignerProgress extends Component {
            <Row className="margin_bu8">
                <Col  md={1} ><div className={this.state.assignment.inProcess.completed?"check_Oval_sm":this.state.not_cross_inProcess?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6} className={this.state.assignment.inProcess.completed?"checked_progress_text_sub":this.state.not_cross_inProcess?"progress_text_subpart":"progress_text_sub_dim"}> In process</Col>
-               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
            <Row  className="margin_bu8">
                <Col  md={1} ><div className={this.state.assignment.received.completed?"check_Oval_sm":this.state.not_cross_received?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6}  className={this.state.assignment.received.completed?"checked_progress_text_sub":this.state.not_cross_received?"progress_text_subpart":"progress_text_sub_dim"}> Received</Col>
-               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
            <Row  className="margin_bu8">
                <Col  md={1} ><div className={this.state.assignment.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
                <Col  md={6}  className={this.state.assignment.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approval</Col>
-               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_position"}>you are here</Col>
+               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
         </div>
      </div>
    )
 }
     render() {
+        console.log("************** yourexxx",this.state.onboarding.yourPerspective.completed)
         console.log("ntcrappr",this.state.not_cross_approval)
         return (
             <Grid style={{width:'90%'}}>
@@ -277,7 +345,7 @@ export default class DesignerProgress extends Component {
                <Row className="margin_bu24" >
                  <Col  md={1} ><div className="check_Oval_md"></div></Col>
                  <Col  md={6} className="checked_progress_text margin_le20">Sign up</Col>
-                 <Col  md={4} className="progress_text_position">Date</Col>
+                 <Col  md={4} className="progress_text_position">{ returnDate(localStorage.getItem('signUpDate'))}</Col>
               </Row>
               {this.renderOnboardingStatus()}
               {this.renderAssignmentStatus()}

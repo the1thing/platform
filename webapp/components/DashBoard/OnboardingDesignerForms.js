@@ -12,7 +12,8 @@ import AboutDesign from './Containers/AboutDesign';
 import AboutTimeline from './Containers/AboutTimeline';
 import OnboardAssignment from './OnboardAssignment';
 import  OnboardManifesto from './OnboardManifesto';
-import  DashboardDesignerInfo from './DashboardDesignerInfo'
+import  DashboardDesignerInfo from './DashboardDesignerInfo';
+import Tooltip from './Components/Tooltip';
 
 
 
@@ -31,13 +32,16 @@ export default class OnboardingDesignerForms extends Component {
       
     }
   }
+  openPanel=()=>{
+    this.refs.openPanel();
+  }
   render() {
     return (
       <div>
          <div className="title-content" style={{display:this.state.designer_info_display,marginBottom:'32px'}} >
          <DashboardDesignerInfo/>
         </div> 
-        <div style={{marginLeft:'7%'}}>
+        <div>
           <DesignerTitleMenu
           getOnboarding={()=>{this.setState({
                                             onboarding_display:'block',
@@ -85,37 +89,47 @@ export default class OnboardingDesignerForms extends Component {
             <img  width='24px' src={require('./Images/1f447.png')}/>
           </div>
           <OnBoardingTitles 
+            openPanel={refs=>this.refs=refs}
+            color='linear-gradient(248deg, #8776ff, #743afe)'
+            borderRadius='4px'
             active={true}
-            color='#000'
             title={<span>1.<span className="title-padding">About yourself</span></span>}
             panelContent={(
-              <AboutUser/>
+              <AboutUser openPanel={()=>{this.openPanel()}}/>
             )}
               />
           <OnBoardingTitles 
+            openPanel={refs=>this.refs=refs}
+            color='linear-gradient(248deg, #28e5c0 1%, #06c9a4)'
+            borderRadius='4px'
             active={true}
-            color=''
             title={<span>2.<span className="title-padding">Your expertise</span></span>}
             panelContent={(
-              <UserExperties/>
+              <UserExperties openPanel={()=>{this.openPanel()}}/>
             )}
               />
           <OnBoardingTitles 
+           openPanel={refs=>this.refs=refs}
+            color=' linear-gradient(248deg, #d878ef, #c45edd)'
+            borderRadius='4px'
             active={true}
-            color=''
             title={<span>3.<span className="title-padding">Your perspective</span></span>}
             panelContent={(
-              <UserPerspective/>
+              <UserPerspective openPanel={()=>{this.openPanel()}}/>
             )}
               />
           <OnBoardingTitles 
+            openPanel={refs=>this.refs=refs}
+            color='linear-gradient(227deg, #ffb061, #ff9c39)'
+            borderRadius='4px'
             active={true}
-            color=''
             title={<span>4.<span className="title-padding">How you think about yourself</span></span>}
             panelContent={(
-              <RatingUserself />
+              <RatingUserself openPanel={()=>{this.openPanel()}}/>
             )}
           />
+          <div><Tooltip/></div>
+          
         </div>
         <div className="title-content" style={{display:this.state.assignment_display}}>
            <OnboardAssignment/>

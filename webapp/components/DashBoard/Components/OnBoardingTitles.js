@@ -12,11 +12,13 @@ export default class OnboardingTitles extends Component {
       plus_cursor:'',
       plus_visiblity:'inline',
       minus_visiblity:'none',
+      panelClass:'active'
     }
   }
   componentWillMount = () => {
     if(this.props.active){
       this.setState({
+        panelClass:'active',
         container_class:'Rectangle-3',
         title_class:'-About-yourself',
         plus_cursor:'pointer',
@@ -24,6 +26,7 @@ export default class OnboardingTitles extends Component {
     }
     else{
       this.setState({
+        panelClass:'unactive',
         container_class:'unactive-title',
         title_class:'-Your-expertise',
         plus_cursor:'not-allowed'
@@ -32,6 +35,7 @@ export default class OnboardingTitles extends Component {
   }
   
   openPanel=(e)=>{
+    this.props.openPanel(this)
     if(this.props.active){
       if(this.state.about_user_view){
         this.setState({
@@ -74,7 +78,7 @@ export default class OnboardingTitles extends Component {
                </div>
          </div>
         </div>
-        <div>
+        <div className={this.state.panelClass}>
           <Panel collapsible expanded={this.state.about_user_view}>
             {this.props.panelContent}
           </Panel>

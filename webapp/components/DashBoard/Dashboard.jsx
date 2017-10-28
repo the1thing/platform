@@ -47,6 +47,7 @@ import axios from 'axios';
 import OnboardingDesigner from './OnboardingDesigner';
 import OnboardingClient from './OnboardingClient';
 import { basepath } from './utils/constant';
+import './App.scss';
 
 export default class Dashboard extends Component {
     constructor(props) {
@@ -64,22 +65,28 @@ export default class Dashboard extends Component {
 
     componentWillMount() {
         let uId=this.getCookie('MMUSERID');
-        console.log('----->',uId)
+       // console.log('----->',uId)
+        // k5iu4qh1kfy1iyft4dh7gwus3r  designer
         // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
-        // axios.get(basepath + 'user/getUser/b5moybzsetncpqg88y6icxu48o')
-        
-        axios.get(basepath + 'user/getUser/'+uId)
+        // axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //client
+         //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
+      //  axios.get(basepath + 'user/getUser/'+uId)
+      axios({
+          method:'get',
+          url:basepath + 'user/getUser/'+uId
+      })
             .then((resp) => {
+                console.log(resp.data.data.userType,'------------>',resp)
                 this.setState({
                     userType: resp.data.data.userType,
                 })
                 localStorage.setItem('userName', resp.data.data.name);
-                localStorage.setItem('userId', resp.data.data.userId);
+                localStorage.setItem('userId', resp.data.data._id);
                 localStorage.setItem('projectDate', resp.data.data.createdAt)
-
+                localStorage.setItem('designerProgressId',uId)
             })
             .catch((err) => {
-                console.log("errorrrrrrrrrrrrrrrr", err)
+                console.log("errorrrrrrrrrrrrrrrr123", err)
             })
     }
 
@@ -95,8 +102,8 @@ export default class Dashboard extends Component {
         else if (this.state.userType == 'designer') {
             return (
                 <div>
-                    <OnboardingClient />
-                    {/* <OnboardingDesigner/>  */}
+                    {/* <OnboardingClient /> */}
+                     <OnboardingDesigner/>  
                 </div>
             )
         }
@@ -111,3 +118,7 @@ export default class Dashboard extends Component {
         }
     }
 }
+
+
+
+

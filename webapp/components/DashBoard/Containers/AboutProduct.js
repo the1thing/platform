@@ -40,46 +40,56 @@ export default class AboutProduct extends Component {
             checkProjectId:'',
             apiMethode:'',
             apiLink:'',
+            edit:true
           
         }
     }
     componentWillMount = () => {
         //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
         //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
-
-        this.getAboutProductData();
         this.getAllProjectsForWorkspace();
+        // this.getAboutProductData();
+         this.getAboutProductData();
+       
     }
     getAllProjectsForWorkspace = () => {
+        this.setState({loading:true});
         axios({
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
         }).then((response) => {
-            if(response.data=='')
+            console.log('---------------------***********',response.data);
+           // localStorage.setItem('projectId',response.data._id);
+            if(response.data==null)
                 {
                      this.setState({
                         checkProjectId:'',
                         apiMethode:'post',
-                        productName:'',
+                       // productName:'',
                         productType:'',
-                        productLink:'',
-                        domains:'',
-                        otherProduct:'',
-                        scopeDocument:'',
+                       // productLink:'',
+                        domains:[],
+                        //otherProduct:'',
+                        //scopeDocument:[],
                         apiLink:'project/addProjectFromWorkspace',
+                        loading:false
                      })
                 }
              else{
+                 localStorage.setItem('projectId',response.data._id);
                   this.setState({
                        checkProjectId:response.data._id,
-                       apiMethode:'put',
-                        apiLink:' project/updateProject',
-                       })
+                        apiMethode:'put',
+                        apiLink:'project/updateProject',
+                        loading:false
+                       });
+                      
                     }
-            console.log('qqqqqqqqqcheckinggggggggg  get about product', response);
+           // console.log('qqqqqqqqqcheckinggggggggg  get about product', response);
 
         }).catch((error) => {
             console.log('get project error', error.response);
+            this.setState({loading:false})
         });
     }
     getAboutProductData=()=>{
@@ -90,7 +100,7 @@ export default class AboutProduct extends Component {
             method: 'get',
             url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId')+'?stage=1',
         }).then((response) => {
-            console.log('response of get about product', response)
+                       //console.log('response of get about product', response)
             this.setState({
                 productName: response.data.name,
                 productType: response.data.projectType.projectType,
@@ -104,7 +114,7 @@ export default class AboutProduct extends Component {
         
 
         }).catch((error) => {
-            console.log('get project error', error.response);
+            console.log('get project error stge 1', error.response);
             this.setState({
                 loading:false
             })
@@ -114,10 +124,11 @@ export default class AboutProduct extends Component {
     setStateMethod = (label, value) => {
         this.setState({
             [label]: value,
+            edit:false
         })
     }
     postDataOfProduct = ()=>{
-        console.log("apiiiiiiii")
+        console.log('*******',this.state.apiMethode);
         axios({
             method: this.state.apiMethode,
             url: basepath + this.state.apiLink ,
@@ -130,11 +141,17 @@ export default class AboutProduct extends Component {
                 similarProduct: this.state.otherProduct,
                 userId: localStorage.getItem('userId'),
                 userName: localStorage.getItem('userName'),
+                projectId:localStorage.getItem('projectId'),
             },
         })
             .then((response) => {
-                localStorage.setItem('projectId', response.data.data._id)
-                console.log("about product", response.data);
+                console.log('############',response)
+                this.setState({edit:true})
+                if(this.state.apiMethode=='post')
+                {
+                  localStorage.setItem('projectId', response.data.data._id)
+                 }
+                 this.props.openPanel()
             })
             .catch((err) => {
                 console.log("about priduct error", err)
@@ -143,18 +160,16 @@ export default class AboutProduct extends Component {
     }
 
     goTo = () => {
-        console.log('----------------',this.state.domains);
         
         if(this.state.document){
             let list=this.state.scopeDocument;
             list=list.concat(this.state.document);
-            console.log("listaaa",list)
             this.setState({
                 scopeDocument:list,
             })
-            console.log("scope documentjhbnb",this.state.scopeDocument)
         }
         if (!this.state.productName) {
+           
             this.setStateMethod('productNameClass', 'Error-input')
         }
         else if (!this.state.productType) {
@@ -173,7 +188,9 @@ export default class AboutProduct extends Component {
             this.setStateMethod('scopeDocumentClass', true)
         }
         else {
-            setTimeout(()=>{this.postDataOfProduct()}, 5);
+          //  setTimeout(()=>{this.postDataOfProduct()}, 5);
+
+          this.postDataOfProduct();
         }
         
     }
@@ -183,9 +200,8 @@ export default class AboutProduct extends Component {
                 || (this.state.productType === 'Existing Product'
                     && this.state.productLink
                 ))
-           // && this.state.domains[0]
+            && (this.state.domains.length>0 || this.state.document)
             && this.state.otherProduct
-            && this.state.document
         ) {
             return "Rectangle-4"
         }
@@ -279,7 +295,6 @@ render() {
                                         this.setStateMethod('productLinkVisiblity','hidden')
                                         this.setStateMethod('productType','Starting Afresh')
                                     }
-                                console.log("value",this.state.productType);
                                 }
                                 }
                            //onChange={(e) => { this.handleButtonClick(e) }}  
@@ -310,7 +325,6 @@ render() {
                 </Row>
             </div>
             <div className="input-spacing">
-                <h1>{console.log('domaineeeeeeeeeeeeeeee', this.state.domains)}</h1>
                  <SelectMultiple
                     width='48%'
                     placeholder="Select Domain"
@@ -318,7 +332,6 @@ render() {
                     optionList={this.state.domainList}
                     error={this.state.domainsClass}
                     onclick={(value, key) => {
-                        console.log('-------------',value)
                         let domain=[]
                         domain = this.state.domains;
                         domain = domain.concat( value );
@@ -362,9 +375,15 @@ render() {
                     this.setStateMethod('scopeDocumentClass', false)
                 }} />
             <button
+                disabled={this.state.edit}
                 className={this.renderClass()}
-                onClick={() => this.goTo()}>
-                <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span>
+                onClick={() =>{ this.goTo()}}>
+                <span className="button-title">
+                    <span>NEXT</span>
+                    <span><img src={require('../Images/arrow-down.svg')}/></span>
+                </span>
+            
+                {/* <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span> */}
             </button>
         </div>
        

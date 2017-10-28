@@ -1,12 +1,9 @@
 .menu {
-  list-style-type: none;
-  height: 20px;
-  margin-top: 0;
-  line-height: 20px; }
+  padding-left: 6%;
+  -webkit-padding-start: 0px; }
 
 .menu-title {
-  margin-left: 14px;
-  font-family: EkMukta;
+  font-family: EkMukta-Regular;
   font-size: 24px;
   letter-spacing: 3px;
   text-align: left; }
@@ -30,3 +27,7 @@
 
 .menu-list-hover span {
   font-size: 24px !important; }
+
+.menu-top-border {
+  width: 40px;
+  height: 2px; }

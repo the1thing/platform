@@ -5,6 +5,7 @@ import {Selection,SelectMultiple} from '../Components/Selection';
 import {basepath} from '../utils/constant';
 import axios from 'axios';
 import RadioBoxComp from '../Components/RadioBoxComp';
+import {validateUrl, numberOnly} from '../utils/Methods';
 
 export default class AboutTimeline extends Component {
   constructor(props){
@@ -25,6 +26,7 @@ export default class AboutTimeline extends Component {
       radioText:'radio-text',
       defaultValue:'',
       loading:false,
+      edit:true,
 
     }
   }
@@ -36,15 +38,17 @@ export default class AboutTimeline extends Component {
     this.getTimeLineData();
 }
 getTimeLineData=()=>{
-    this.setState({loading:true});
+   
+    if(localStorage.getItem("projectId"))
+    {
+        this.setState({loading:true});
   axios({
       method: 'get',
       url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId')+'?stage=3',
   }).then((response) => {
      
-      console.log('get about timeline*********', response.data);
+    //  console.log('get about timeline*********', response.data);
       var _tempUserPropsal=response.data.userProposal;
-      console.log('=============',_tempUserPropsal.budgetRange)
          this.setState({
                  time:_tempUserPropsal.startTime,
                  timeline:_tempUserPropsal.timeline,
@@ -62,14 +66,16 @@ getTimeLineData=()=>{
             }
 
   }).catch((error) => {
-      console.log('get project error', error.response);
+      console.log('get project error stage 3', error.response);
        this.setState({loading:false})
   });
+}
 }
 
   setStateMethod=(label,value)=>{
         this.setState({
             [label]:value,
+            edit:false,
         })
     }
     
@@ -108,7 +114,7 @@ getTimeLineData=()=>{
     );
   }  
   renderClass=()=>{
-    if(this.state.time[0] && this.state.timeline && this.state.budgetRange){
+    if(this.state.time && this.state.timeline && ( this.state.budgetRange || this.state.defaultRange)){
             return "Rectangle-4"
         }
     else{
@@ -117,7 +123,6 @@ getTimeLineData=()=>{
   }
   
   goTo=()=>{
-    console.log("gggg",this.state.budgetRange)
     if(!this.state.time){
       this.setStateMethod('timeClass',true);
     }
@@ -139,13 +144,16 @@ getTimeLineData=()=>{
                 },
             })
             .then((resp)=>{
-                console.log("about timeLine",resp);
+                this.setState({
+                    edit:true
+                })
+                this.props.openPanel()
+              //  console.log("about timeLine",resp);
             })
             .catch((err)=>{
                 console.log("about timeLine  error",err)
             })
     }
-    console.log('qqqqqqqqqqqqq',this.state.budgetRange)
   }
   renderRadioClass=(value)=>{
          if(value == this.state.defaultValue){
@@ -172,10 +180,12 @@ getTimeLineData=()=>{
              }
          }
     handleRadioClick=(value)=>{
+        this.setStateMethod('defaultValue','');
         this.setState({
             defaultValue:value,
             budgetRange:value,
             defaultRange:'',
+        
         })
       //  this.props.onclick(value)
     }
@@ -200,7 +210,6 @@ getTimeLineData=()=>{
                                 optionList={this.state.timeList}
                                // error={this.state.productTypeClass}
                                 onclick={(value,key)=>{  
-                                     console.log('************',value);
                                           this.setState({time:value});
                                                    }
                                 }
@@ -232,7 +241,7 @@ getTimeLineData=()=>{
             <div style={{width:'11%'}}>
               <Selection
                   defaultValue="INR"
-                  optionList={['Existing Product','Start Afresh']}
+                  optionList={['INR','$','URO']}
                   onclick={(value,key)=>{if(value === 'Existing Product'){
                       this.setState({
                           productLinkVisiblity:'visible',
@@ -247,9 +256,11 @@ getTimeLineData=()=>{
             </div>
             <div style={{width:'21%'}}>
               <input 
+                onKeyPress={(e)=>{numberOnly(e)}}
                 value={this.state.defaultRange}
                 className={this.state.budgetRangeClass ? "Error-input" : "simple-input"} 
                 placeholder="Enter budget"
+                onKeyPress={(event)=>{if(!(event.charCode>=48 && event.charCode<=57) ){event.preventDefault()}}}
                 onChange={(e)=>{
                   this.setStateMethod('defaultRange',e.target.value);
                   this.setStateMethod('budgetRange',e.target.value)
@@ -284,9 +295,16 @@ getTimeLineData=()=>{
             </div> */}
           </div>
         </div>
-        <button className={this.renderClass()}
+        <button 
+            disabled={this.state.edit}
+             className={this.renderClass()}
               onClick={()=>this.goTo()}>
-             <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span>
+            <span className="button-title">
+                <span>Done</span>
+                <span><img src={require('../Images/arrow-right.svg')}/></span>
+            </span>
+        
+             {/* <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span> */}
           </button>
       </div>
     )

@@ -73,7 +73,7 @@ export class Selection extends Component {
     render() {
 
         return (
-            <div className="popover-container" onClick={this.handleClick} ref={node => { this.node = node; }}>
+            <div className="popover-container" onClick={(event)=>{this.props.disableClick?event.preventDefault():this.handleClick()}} ref={node => { this.node = node; }}>
                 <div className={this.props.error ? "selection-error-placeholder" : "selection-placeholder"} style={{ display: this.state.toggleVisiblity ? 'block' : 'none' }}>{this.props.placeholder}</div>
                 <div style={{ color: '#030303', display: this.state.toggleVisiblity ? 'none' : 'block' }}>{this.state.selectedValue}</div>
                 <div className='arrow-container'>
@@ -167,16 +167,17 @@ export class SelectContent extends Component {
                     <Col md={1} className="form-label" style={{lineHeight:'48px'}}>{this.props.count}.</Col>
                     <Col md={11}>
                         <Selection 
-                            optionList={['Ecommerce', 'Social Network','Payments','News + Content',
-                            'IoT Analytics','Chatbots','OnDemand','Marketplace','Travel','Edu-tech',
-                            'Food-tech','Fin-tech','VR/AR','Health-tech','AI powered','Others']}
+                            optionList={this.props.optionList}
                             error={this.props.error}
                             placeholder={this.props.placeholder}
+                            disableClick={this.props.disableClick}
                             defaultValue={this.props.defaultValue}
                             onclick={(value,key)=>this.props.onSelectionClick(value,key)} />
                             {console.log("errrrrruuuuuuuuu",this.props.error)}
                         <textarea
                             rows={3}
+                            readOnly={this.props.textAreaReadOnly}
+                            value={this.props.textAreaDefaultValue}
                             className={this.props.error ? 'Error-link-textares' : 'about-link-textares'}  
                             style={{ width: '100%' }}
                             placeholder="Write all the modules in Social (if Social  is selected) you have worked upon. Ex - chronological feed about updates from friends/connections"

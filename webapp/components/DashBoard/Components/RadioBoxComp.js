@@ -14,6 +14,7 @@ export default class RadioBoxComp extends Component {
         }
     }
     componentWillMount = () => {
+        console.log("default value--------------->>>>>>>",this.props.defaultValue)
       this.setState({
         defaultValue:this.props.defaultValue,
       })
