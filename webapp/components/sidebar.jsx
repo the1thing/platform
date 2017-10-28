@@ -885,6 +885,13 @@ export default class Sidebar extends React.Component {
                                 {createPublicChannelIcon}
                             </h4>
                         </li>
+                        <li className="">
+                            <a className="sidebar-item" href="">
+                                <div className="status"><i className="fa fa-globe"></i></div>
+                                <span className="sidebar-item__name">hnhn</span>
+                            </a>
+                        </li>
+
                         {publicChannelItems}
                     </ul>
 

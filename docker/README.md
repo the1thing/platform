@@ -63,3 +63,24 @@ For the server configurations, see [prod-ubuntu.rst] of mattermost.
 
 [docker]: http://docs.docker.com/engine/installation/
 [docker-compose]: https://docs.docker.com/compose/install/
+
+## USING CLI Commands with Docker install
+
+Hello there
+
+```bash
+    Go to platform/docker
+    use : docker container ls
+
+    You'll see "docker_app_1". This is mattermost app container.
+    
+    Do : docker exec -it docker_app_1 /bin/bash
+    Do : cd /mattermost
+    Do : cd /bin
+
+    Now you can use all the CLI commands listed here https://docs.mattermost.com/administration/command-line-tools.html
+
+    For example - 
+    ./platform team delete gosocial => to delete a team
+
+```
