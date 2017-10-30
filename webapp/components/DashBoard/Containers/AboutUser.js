@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, Checkbox,OverlayTrigger,Tooltip,Button } from 'react-bootstrap';
-import '../Styles/AboutUser.scss';
+import '../Styles/AboutUser.css';
 import CheckBoxComp from '../Components/CheckBoxComp';
 import RadioBoxComp from '../Components/RadioBoxComp';
 import { getCheckBoxValue } from '../utils/Methods';
@@ -23,7 +23,7 @@ export default class AboutUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loader:true,
+            loader:false,
             view:'hidden-me',
             linkdinLink: '',
             workExperience: '',
@@ -34,9 +34,10 @@ export default class AboutUser extends Component {
             linkdinLinkClass: false,
             linkdinErrorMessage:'',
             availabilityClass: false,
-            linkdinLinkColor:'#030303',
+            linkdinLinkColor:'#0d65d8',
             idVisiblityError: 'hidden',
             jobTimingError: 'hidden',
+            linkVisiblityError:'hidden',
             checkboxList: ['UI Designer', 'UX Designer', 'Graphics Designer', 'Branding',
                 'Fron-end Devloper', 'Android Devloper', 'UX Writer']
         }
@@ -46,6 +47,7 @@ export default class AboutUser extends Component {
         setTimeout(()=>{this.getAboutUserData()},6)
     }
     getAboutUserData=()=>{
+        this.setState({loader:true});
         axios({
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
@@ -56,15 +58,16 @@ export default class AboutUser extends Component {
                 workExperience:response.data.workExperience,
                 jobTiming:response.data.role,
                 availability:response.data.hoursAvailable,
-                checkboxArray: response.data.profile,
+                checkboxArray: (response.data.profile!=null)?response.data.profile:[],
                 loader:false,
                })
           }).catch((error) => {
             console.log('get project error', error);
+            this.setState({loader:false})
           });
     }
     renderClass = () => {
-        if (this.state.checkboxArray[0] && this.state.linkdinLink && this.state.workExperience
+        if (this.state.checkboxArray[0] && this.state.linkdinLink && validateUrl(this.state.linkdinLink) && this.state.workExperience
             && this.state.jobTiming && this.state.availability) {
             return "Rectangle-4"
         }
@@ -104,6 +107,10 @@ export default class AboutUser extends Component {
         }
         else if (!this.state.linkdinLink) {
             this.setStateMethod('linkdinLinkClass', true)
+            this.setStateMethod('linkVisiblityError','hidden')
+        }
+        else if(!validateUrl(this.state.linkdinLink)){
+            this.setStateMethod('linkVisiblityError','visible')
         }
         else if (!this.state.workExperience) {
             this.setStateMethod('workExperienceClass', true)
@@ -137,12 +144,12 @@ export default class AboutUser extends Component {
     }
     render() {
         if(this.state.loader){
-          return <div>loading</div>;
+          return <div>loading...</div>
         }
         else{
         return (
             <div>
-                 <div className="input-spacing-radio">
+                <div className="input-spacing-radio">
                     <div className="form-label">
                         You identify yourself as
                     </div>
@@ -153,24 +160,32 @@ export default class AboutUser extends Component {
                         Please identify yourself
                     </div>
                 </div>
-                <div className="input-spacing" style={{display:'flex'}}>
+                <div style={{display:'flex'}}>
                     <input
                         style={{color:this.state.linkdinLinkColor,width:'85%'}}
                         value={this.state.linkdinLink}
                         className={this.state.linkdinLinkClass ? "Error-input" : "simple-input"}
                         placeholder="Paste your linkdin profile link"
-                        onChange={(e) => {if(validateUrl(e.target.value)){
-                                            this.setStateMethod('linkdinLink', e.target.value)
-                                            this.setStateMethod('linkdinLinkColor','#0d65d8')
+                        onChange={(e) => {
+                                        this.setStateMethod('linkdinLink', e.target.value)
+                                            if(validateUrl(e.target.value)){
+                                                this.setStateMethod('linkdinLinkColor','#0d65d8')
+                                                this.setStateMethod('linkVisiblityError','hidden')
                                             }
                                             else{
                                                 this.setStateMethod('linkdinErrorMessage','Please enter valid URL')
                                                 this.setStateMethod('linkdinLinkColor','#030303')
+                                               // this.setStateMethod('linkVisiblityError','visible')
                                             }}} />
                     <div style={{height:'40px'}}>
                         <OverlayTrigger placement="top" overlay={tooltip}>
                             <div className="tooltip-image"></div>
                         </OverlayTrigger>
+                    </div>
+                </div>
+                <div style={{marginBottom:'35px'}}>
+                    <div style={{ visibility: this.state.linkVisiblityError }} className='display-error'>
+                        Please Enter Valid I'D
                     </div>
                 </div>
                 <div className="input-spacing">
@@ -196,6 +211,7 @@ export default class AboutUser extends Component {
                 </div>
                 <div className="input-spacing" style={{display:'flex'}}>
                     <input
+                        onKeyPress={(e)=>numberOnly(e)}
                         style={{width:'85%'}}
                         value={this.state.availability}
                         className={this.state.availabilityClass ? "Error-input" : "simple-input"}
@@ -212,7 +228,7 @@ export default class AboutUser extends Component {
                         <span>NEXT</span>
                         <span><img src={require('../Images/arrow-down.svg')}/></span>
                     </span>
-                </button> 
+                </button>
             </div>
         )
     }

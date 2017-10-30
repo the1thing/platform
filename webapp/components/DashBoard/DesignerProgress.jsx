@@ -29,26 +29,26 @@ export default class DesignerProgress extends Component {
             onboarding_data:['Onboarding','About yourself','Your Expertise','Your perspective', 'How you think'],
             onboarding:{
                         completed:{
-                                   value:true,
+                                   value:false,
                                   },
                         dateOfCompletion:{
-                                         value:'30 sep'
+                                         value:''
                                         },
                         aboutYourself:{
-                                      completed:true,
-                                      completedDate:'30 sep'
+                                      completed:false,
+                                      completedDate:''
                                       },
                        yourExpertise:{
-                                        completed:true,
-                                        completedDate:'30 sep'
+                                        completed:false,
+                                        completedDate:''
                                     },   
                        yourPerspective:{
                                         completed:false,
-                                        completedDate:'30 sep'
+                                        completedDate:''
                                     }, 
                        howYouThink:{
                                         completed:false,
-                                        completedDate:'30 sep'
+                                        completedDate:''
                                     }, 
                        },
                        assignment:{
@@ -81,11 +81,11 @@ export default class DesignerProgress extends Component {
                                         },
                         inProcess:{
                                       completed:false,
-                                      completedDate:'30 sep'
+                                      completedDate:''
                                       },
                        received:{
                                         completed:false,
-                                        completedDate:'30 sep'
+                                        completedDate:''
                                     },   
                        approval:{
                                         completed:false,
@@ -103,34 +103,36 @@ export default class DesignerProgress extends Component {
             method: 'get',
             url: basepath + 'user/getUser/'+localStorage.getItem('designerProgressId'),
         }).then((response) => {
-            this.state.onboarding.dateOfCompletion=response.data.data.statusBar.thinkAboutYourself.completedDate;
-            this.state.onboarding.aboutYourself=response.data.data.statusBar.aboutYourself;
-            this.state.onboarding.yourExpertise=response.data.data.statusBar.expertise;
-            this.state.onboarding.yourPerspective=response.data.data.statusBar.perspective;
-            this.state.onboarding.howYouThink=response.data.data.statusBar.thinkAboutYourself;
+            let _tempStatus=response.data.data.statusBar;
+            this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
+            this.state.onboarding.aboutYourself=_tempStatus.aboutYourself;
+            this.state.onboarding.yourExpertise=_tempStatus.expertise;
+            this.state.onboarding.yourPerspective=_tempStatus.perspective;
+            this.state.onboarding.howYouThink=_tempStatus.thinkAboutYourself;
  
-            if(!response.data.data.statusBar.aboutYourself.completed)
+            if(!_tempStatus.aboutYourself.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
                      onboarding:this.state.onboarding,
+                     loading:false,
                      })
                     
                 }
-              else if(!response.data.data.statusBar.expertise.completed)
+              else if(!_tempStatus.expertise.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
-                     onboarding:this.state.onboarding,
+                       onboarding:this.state.onboarding,
                      })
                     
                 }
-               else if(!response.data.data.statusBar.perspective.completed)
+               else if(!_tempStatus.perspective.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
                      onboarding:this.state.onboarding,
                      })
                     
                 } 
-                else if(!response.data.data.statusBar.thinkAboutYourself.completed)
+                else if(!_tempStatus.thinkAboutYourself.completed)
                 {
                     this.state.onboarding.completed.value=false,
                      this.setState({
@@ -143,15 +145,23 @@ export default class DesignerProgress extends Component {
                      this.setState({
                      requirement:this.state.requirement,
                      })
-               }          
+               }
+                      
+          
+
+            console.log('checkinggggggggg  get about product', response,
+                            '******************', this.state.onboarding.yourPerspective,
+                                                this.state.onboarding.aboutYourself,
+                                                this.state.onboarding.howYouThink,
+                                                 this.state.onboarding.yourExpertise,
+                                                );
+        }).then(()=>{
             this.setState({
                 requirement:this.state.requirement,
                 loading:false,
             })
-
-            console.log('checkinggggggggg  get about product', response);
-        }).then(()=>{
             this.checkRenderStaus();
+
         })
         .catch((error) => {
             console.log('get project error', error);
@@ -193,7 +203,6 @@ export default class DesignerProgress extends Component {
                 margin_bu8_assignment:"margin_bu8_subpart_completed",
                 margin_bu8_pricing_bandwidth:"margin_bu8_subpart_completed",
              })
-
          }
       }
     updateOnboardingState=()=>{
@@ -329,9 +338,14 @@ export default class DesignerProgress extends Component {
    )
 }
     render() {
-        console.log("************** yourexxx",this.state.onboarding.yourPerspective.completed)
-        console.log("ntcrappr",this.state.not_cross_approval)
-        return (
+        if(this.state.loading){
+            return(
+                <div>
+                    loading...
+                </div>
+            )
+        }
+       else  return (
             <Grid style={{width:'90%'}}>
               <Row className="margin_bu28" >
                   <Col  md={1}> <div  className="box"></div></Col>

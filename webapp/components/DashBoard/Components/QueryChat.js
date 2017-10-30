@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import '../Styles/queryChat.scss'
+import '../Styles/queryChat.css'
 // import ReactTooltip from 'react-tooltip';
 
 export default class QueryChat extends Component {

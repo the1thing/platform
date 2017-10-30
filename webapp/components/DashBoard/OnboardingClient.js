@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+import logo from './logo.svg';
 import OnboardingMonochromeForms from './OnboardingMonochromeForms';
 import  DashboardHeader from './DashboardHeader'
 import  DashboardClientInfo from './DashboardClientInfo'
@@ -9,7 +9,7 @@ import OnboardAssignment from './OnboardAssignment'
 import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat'
 
-import './App.scss';
+import './App.css';
 class OnboardingClient extends Component {
   render() {
     return (
@@ -31,9 +31,11 @@ class OnboardingClient extends Component {
            <QueryChat/>
           </div>
         </div>
-         <div >
-            <img width='1260px' src={require('./Images/map.svg')} />
-         </div>
+                {/* very important      -------------   dont remove------- */}
+           {/* <div >
+               <img width='1260px' src={require('./Images/map.svg')} />
+            </div> */}
+
       </div>
     );
   }

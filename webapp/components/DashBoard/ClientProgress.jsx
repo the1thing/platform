@@ -32,19 +32,19 @@ export default class ClientProgress extends Component {
                                    value:false,
                                   },
                         dateOfCompletion:{
-                                         value:'30 sep'
+                                         value:''
                                         },
                         aboutProduct:{
-                                      completed:true,
-                                      completedDate:'30 sep'
+                                      completed:false,
+                                      completedDate:''
                                       },
                        aboutDesign:{
-                                        completed:true,
-                                        completedDate:'30 sep'
+                                        completed:false,
+                                        completedDate:''
                                     },   
                       aboutTimeline:{
                                         completed:false,
-                                        completedDate:'30 sep'
+                                        completedDate:''
                                     }, 
                        },
                        proposal:{

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, FormGroup, Checkbox } from 'react-bootstrap';
-import '../Styles/UserPerspective.scss';
+import '../Styles/UserPerspective.css';
 import RadioBoxComp from '../Components/RadioBoxComp';
 import {basepath} from '../utils/constant';
 import {validateUrl} from '../utils/Methods';
@@ -40,6 +40,9 @@ let LinkWithTextArea = (props) => {
                 <div>
                     <input 
                       value={props.input_value} style={{color:props.color}} onChange={props.onChangeTitile} className={props.linkClass ? "Error-link-input" : "link-input"} placeholder="http://product1.com" />
+                    <div style={{ display: props.visibility}} className='display-error'>
+                        Please Enter Valid URL
+                    </div>
                     <textarea
                         value={props.area_value}
                         className={props.linkClass ? "Error-link-textares" : "about-link-textares"}
@@ -71,6 +74,12 @@ export default class UserPerspective extends Component {
             linkClass1: false,
             linkClass2: false,
             linkClass3: false,
+            linkVisiblityError1:'none',
+            linkColor1:'#0d65d8',
+            linkVisiblityError2:'none',
+            linkColor2:'#0d65d8',
+            linkVisiblityError3:'none',
+            linkColor3:'#0d65d8',
             userPersonalityVisiblityError:'hidden',
             workSpaceVisiblityError: 'hidden',
             necessaryThings1Class: false,
@@ -130,14 +139,32 @@ export default class UserPerspective extends Component {
         })
     }
     goTo = () => {
-        if (!this.state.productTitle1 || !this.state.productContent1) {
+        if (!this.state.productTitle1) {
             this.setstateMethod('linkClass1', true)
         }
-        else if (!this.state.productTitle2 || !this.state.productContent2) {
+        else if(!validateUrl(this.state.productTitle1)){
+            this.setstateMethod('linkVisiblityError1','block')
+        }
+        else if(!this.state.productContent1){
+            this.setstateMethod('linkClass1',true)
+        }
+        else if (!this.state.productTitle2) {
             this.setstateMethod('linkClass2', true)
         }
-        else if (!this.state.productTitle3 || !this.state.productContent3) {
+        else if(!validateUrl(this.state.productTitle2)){
+            this.setstateMethod('linkVisiblityError2','block')
+        }
+        else if(!this.state.productContent2){
+            this.setstateMethod('linkClass2',true)
+        }
+        else if (!this.state.productTitle3) {
             this.setstateMethod('linkClass3', true)
+        }
+        else if(!validateUrl(this.state.productTitle3)){
+            this.setstateMethod('linkVisiblityError3','block')
+        }
+        else if(!this.state.productContent3){
+            this.setstateMethod('linkClass3',true)
         }
         else if (!this.state.workSpace) {
             this.setstateMethod('workSpaceVisiblityError', 'visible')
@@ -183,7 +210,7 @@ export default class UserPerspective extends Component {
     }
     render() {
         if(this.state.loader){
-            return <div>loading</div>
+            return <div>loading...</div>
         }
         else 
         return (
@@ -197,63 +224,77 @@ export default class UserPerspective extends Component {
                             input_value={this.state.productTitle1}
                             area_value={this.state.productContent1}
                             linkClass={this.state.linkClass1}
+                            visibility={this.state.linkVisiblityError1}
                             no='1'
-                            color={this.state.productColor1}
+                            color={this.state.linkColor1}
                             onChangeTitile={(e) => {
+                                this.setstateMethod('linkVisiblityError1','none')
                                 this.setstateMethod('productTitle1', e.target.value)
                                 this.setstateMethod('linkClass1', false)
                                 if(validateUrl(e.target.value)){
-                                    this.setstateMethod('productColor1',' #0d65d8')
+                                    this.setstateMethod('linkColor1',' #0d65d8')
                                 }
                                 else{
-                                    this.setstateMethod('productColor1','#030303')
+                                    this.setstateMethod('linkColor1','#030303')
                                 }
                             }}
                             onChangeContent={(e) => {
                                 this.setstateMethod('productContent1', e.target.value)
                                 this.setstateMethod('linkClass1', false)
                             }} />
+                        
                         <LinkWithTextArea
-                        input_value={this.state.productTitle2}
-                        area_value={this.state.productContent2}
+                            input_value={this.state.productTitle2}
+                            area_value={this.state.productContent2}
                             linkClass={this.state.linkClass2}
+                            visibility={this.state.linkVisiblityError2}
                             no='2'
-                            color={this.state.productColor2}
+                            color={this.state.linkColor2}
                             onChangeTitile={(e) => {
+                                this.setstateMethod('linkVisiblityError2','none')
                                 this.setstateMethod('productTitle2', e.target.value)
                                 this.setstateMethod('linkClass2', false)
                                 if(validateUrl(e.target.value)){
-                                    this.setstateMethod('productColor2',' #0d65d8')
+                                    this.setstateMethod('linkColor2',' #0d65d8')
                                 }
                                 else{
-                                    this.setstateMethod('productColor2','#030303')
+                                    this.setstateMethod('linkColor2','#030303')
                                 }
                             }}
                             onChangeContent={(e) => {
                                 this.setstateMethod('productContent2', e.target.value)
                                 this.setstateMethod('linkClass2', false)
                             }} />
+                        {/* <div style={{ visibility: this.state.linkVisiblityError2,marginLeft:'52px' }} className='display-error'>
+                            Please Enter Valid URL
+                        </div> */}
+                        
                         <LinkWithTextArea
-                        input_value={this.state.productTitle3}
-                        area_value={this.state.productContent3}
+                            input_value={this.state.productTitle3}
+                            area_value={this.state.productContent3}
                             linkClass={this.state.linkClass3}
+                            visibility={this.state.linkVisiblityError3}
                             no='3'
-                            color={this.state.productColor3}
+                            color={this.state.linkColor3}
                             onChangeTitile={(e) => {
+                                this.setstateMethod('linkVisiblityError3','none')
                                 this.setstateMethod('productTitle3', e.target.value)
                                 this.setstateMethod('linkClass3', false)
                                 if(validateUrl(e.target.value)){
-                                    this.setstateMethod('productColor3',' #0d65d8')
+                                    this.setstateMethod('linkColor3',' #0d65d8')
                                 }
                                 else{
-                                    this.setstateMethod('productColor3','#030303')
+                                    this.setstateMethod('linkColor3','#030303')
                                 }
                             }}
                             onChangeContent={(e) => {
                                 this.setstateMethod('productContent3', e.target.value)
                                 this.setstateMethod('linkClass3', false)
                             }} />
-
+                        {/* <div style={{ visibility: this.state.linkVisiblityError3,marginLeft:'52px' }} className='display-error'>
+                            Please Enter Valid URL
+                        </div> */}
+                        
                     </div>
                 </div>
                 <div className="input-spacing-radio">

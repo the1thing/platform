@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/RatingUserself.scss';
+import '../Styles/RatingUserself.css';
 import { FormGroup, Checkbox, Row, Col } from 'react-bootstrap';
 import RadioBoxCom from '../Components/RadioBoxComp';
 import axios from 'axios';
@@ -228,7 +228,7 @@ export default class RatingUserself extends Component {
     }
     render() {
         if(this.state.loading){
-            return <div>loading</div>
+            return <div>loading...</div>
         }
         else return (
             <div>

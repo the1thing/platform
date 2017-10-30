@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Styles/OnboardAssignment.scss';
+import './Styles/OnboardAssignment.css';
 const styles={
    borders:{
        border:'1px solid #f7f7f7'

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/AboutTimeline.scss';
+import '../Styles/AboutTimeline.css';
 import { Row, Col, MenuItem, DropdownButton, FormGroup, Checkbox} from 'react-bootstrap';
 import {Selection,SelectMultiple} from '../Components/Selection'; 
 import {basepath} from '../utils/constant';
@@ -25,7 +25,7 @@ export default class AboutTimeline extends Component {
       radioCircle:'radio-circle',
       radioText:'radio-text',
       defaultValue:'',
-      loading:false,
+      loading:true,
       edit:true,
 
     }
@@ -34,8 +34,10 @@ export default class AboutTimeline extends Component {
     //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
     //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
 
-
-    this.getTimeLineData();
+  setTimeout(()=> {
+    this.getTimeLineData();  
+  }, 1000);
+    
 }
 getTimeLineData=()=>{
    
@@ -56,7 +58,9 @@ getTimeLineData=()=>{
             });
             if(_tempUserPropsal.budgetRange =='Later' || _tempUserPropsal.budgetRange == "I'm here for top quality" ){
                 this.setState({
+                    budgetRange:_tempUserPropsal.budgetRange,
                     defaultValue:_tempUserPropsal.budgetRange,
+                    budgetRange:_tempUserPropsal.budgetRange,
                 })
             }
             else{
@@ -182,6 +186,7 @@ getTimeLineData=()=>{
     handleRadioClick=(value)=>{
         this.setStateMethod('defaultValue','');
         this.setState({
+            budgetRangeClass:false,
             defaultValue:value,
             budgetRange:value,
             defaultRange:'',
@@ -210,7 +215,9 @@ getTimeLineData=()=>{
                                 optionList={this.state.timeList}
                                // error={this.state.productTypeClass}
                                 onclick={(value,key)=>{  
-                                          this.setState({time:value});
+                                          this.setState({time:value,
+                                                        edit:false,
+                                                    });
                                                    }
                                 }
                       /> 
@@ -226,7 +233,7 @@ getTimeLineData=()=>{
                                // error={this.state.productTypeClass}
                                 onclick={(value,key)=>{  
                                     console.log('************',value);
-                                          this.setState({timeline:value});
+                                          this.setState({timeline:value,edit:false,});
                                                    }
                                 }
                       /> 
@@ -260,12 +267,7 @@ getTimeLineData=()=>{
                 value={this.state.defaultRange}
                 className={this.state.budgetRangeClass ? "Error-input" : "simple-input"} 
                 placeholder="Enter budget"
-<<<<<<< HEAD
                 onKeyPress={(event)=>{if(!(event.charCode>=48 && event.charCode<=57) ){event.preventDefault()}}}
-=======
-                onKeyPress={(event)=>{if(!(event.charCode>=47 && event.charCode<=57)){event.preventDefault()}}}
-                maxLength={10}
->>>>>>> 24a2cfc269bc8cda861f402c1544f676b9570902
                 onChange={(e)=>{
                   this.setStateMethod('defaultRange',e.target.value);
                   this.setStateMethod('budgetRange',e.target.value)

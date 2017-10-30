@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Styles/onboard_manifesto.scss';
+import './Styles/onboard_manifesto.css';
 import {React_Bootstrap_Carousel} from 'react-bootstrap-carousel';
 import {Row,Col,Grid} from 'react-bootstrap';
 import TweetEmbed from 'react-tweet-embed';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {validateUrl} from '../utils/Methods';
-import '../Styles/AddLink.scss';
+import '../Styles/AddLink.css';
 
 export class AddLink extends Component {
     constructor(props) {
@@ -102,7 +102,8 @@ export class AddLink extends Component {
                     onChange={(e) => { this.handleButtonClick(e) }}/>
                 <div className="input-spacing">
                     <div  style={{ visibility: this.state.buttonVisiblity,cursor:'notAllowed'}}>
-                        <AddButton checkDisable={this.state.btnDisability} onclick={(e) => { if(!this.state.btnDisability){ this.addAnotherLink(e) } }}/> 
+                        <AddButtonLink checkDisable={this.state.btnDisability} onclick={(e) => { if(!this.state.btnDisability){ this.addAnotherLink(e); } }}
+                        clearParentState={()=>{this.props.clearDocument}}/> 
                     </div>
                 </div>
             </div>
@@ -111,32 +112,35 @@ export class AddLink extends Component {
 }
 
 // import React, { Component } from 'react'
-
 export class AddButton extends Component {
     render() {
         return (
             <div 
                 className={this.props.disabledClass === true ? 'add-button-disabled': 
                            this.props.checkDisable?'add-button-disabled':'add-button'} 
-                onClick={(e) => { this.props.onclick(e) }}/> 
+                onClick={(e) => { this.props.onclick(e); }}/> 
+        )
+    }
+}
+
+export class AddButtonLink extends Component {
+    render() {
+        return (
+            <div 
+                className={this.props.disabledClass === true ? 'add-button-disabled': 
+                           this.props.checkDisable?'add-button-disabled':'add-button'} 
+                onClick={(e) => { this.props.onclick(e); this.props.clearParentState(); }}/> 
         )
     }
 }
 export class AddButtonDomain extends Component {
     render() {
         return (
-            // <div 
-            //     className={this.props.disabledClass === true ? 'add-button-disabled': 'add-button'} 
-            //     onClick={ this.props.onclick }
-            //     /> 
-            <div>
-                <button
-                       // className={this.props.disabledClass?'add-button-disabled':'add-button'}
-                        // disabled={this.props.disabledClass}
-                    //     onclick={()=>{console.log('called ina dd')}}
-                         >+</button>
-                         <button onclick={(event)=>{alert('called')}}>add</button>
-            </div>
+            <div 
+                className={this.props.disabledClass === true ? 'add-button-disabled': 'add-button'} 
+                onClick={ this.props.onclick }
+                /> 
+          
         )
     }
 }

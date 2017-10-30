@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Styles/MyComponents.scss';
+import './Styles/MyComponents.css';
 import ClientTitleMenu from './Components/ClientTitleMenu';
 import OnBoardingTitles from './Components/OnBoardingTitles';
 import { Panel, FormGroup, Checkbox } from 'react-bootstrap';
@@ -16,6 +16,8 @@ import  DashboardClientInfo from './DashboardClientInfo';
 import axios from 'axios';
 import { basepath } from './utils/constant'
 import {returnDate} from './utils/Methods'
+import Tooltip from './Components/Tooltip';
+
 
 export default class OnboardingMonochromeForms extends Component {
   constructor(props){
@@ -43,17 +45,24 @@ export default class OnboardingMonochromeForms extends Component {
          }
         ).then((response)=>{
           var _response=response.data.statusBar;
-            console.log('1111111111111111111',response.data.statusBar);
-            if(response.data){
+            console.log('1111111111111111111',response);
+            if(response.data._id){
+              localStorage.setItem('projectId',response.data._id)
+              this.setState({
+                  product_date: _response.product.completedDate,
+                  design_date: _response.design.completedDate,
+                  timeline_date: _response.timeline.completedDate,
+                  loading:false,
+                })
+              localStorage.setItem('projectId',response.data._id)
+          }
+          else{
             this.setState({
-                product_date: _response.product.completedDate,
-                design_date: _response.design.completedDate,
-                 timeline_date: _response.timeline.completedDate,
-                loading:false,
+              loading:false,
             })
           }
         }).catch((error)=>{console.log('error',error)
-                this.setState({loading:false})
+           this.setState({loading:false})
       });
   }
   openPanel=()=>{
@@ -61,6 +70,14 @@ export default class OnboardingMonochromeForms extends Component {
   }
   
   render() {
+    if(this.state.loading){
+      return(
+      <div>
+        loading ....
+      </div>
+      )
+    }
+    else{
     return (
       <div>
          <div className="title-content" style={{display:this.state.client_info_display,marginBottom:'32px'}} >
@@ -147,13 +164,18 @@ export default class OnboardingMonochromeForms extends Component {
             )}
           />
         </div>
+         <div><Tooltip/></div>
         <div className="title-content" style={{display:this.state.proposal_display}}>
          <MonochromeProposal/>
          </div>
-        <div className="title-content" style={{display:this.state.manifesto_display}}>
+              {/* very important      -------------   dont remove------- */}
+
+        {/* <div className="title-content" style={{display:this.state.manifesto_display}}>
         <OnboardManifesto/>
-        </div>
+        </div> */}
+
       </div>
     )
   }
+}
 }

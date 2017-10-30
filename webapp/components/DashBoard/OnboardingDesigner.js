@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
+import logo from './logo.svg';
 import OnboardingDesignerForms from './OnboardingDesignerForms';
 import  DashboardHeader from './DashboardHeader'
 import  DashboardDesignerInfo from './DashboardDesignerInfo'
@@ -10,7 +10,7 @@ import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
 import Tooltip from './Components/Tooltip';
 
-import './App.scss';
+import './App.css';
 class OnboardingDesigner extends Component {
   render() {
     return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/Tooltip.scss';
+import '../Styles/Tooltip.css';
 
 export default class Toottip extends Component {
   render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Styles/MyComponents.scss';
+import './Styles/MyComponents.css';
 import DesignerTitleMenu from './Components/DesignerTitleMenu';
 import OnBoardingTitles from './Components/OnBoardingTitles';
 import { Panel, FormGroup, Checkbox } from 'react-bootstrap';
@@ -14,6 +14,9 @@ import OnboardAssignment from './OnboardAssignment';
 import  OnboardManifesto from './OnboardManifesto';
 import  DashboardDesignerInfo from './DashboardDesignerInfo';
 import Tooltip from './Components/Tooltip';
+import {returnDate} from './utils/Methods';
+import axios from 'axios';
+import { basepath } from './utils/constant'
 
 
 
@@ -28,15 +31,52 @@ export default class OnboardingDesignerForms extends Component {
       welAboard_display:'none',
       manifesto_display:'block',
       designer_info_display:'block',
+      //************************** panel dates ****************//
+      aboutYourselfDate:'',
+      expertiseDate:'',
+      perspectiveDate:'',
+      thinkAboutYourselfDate:'',
+      loading:false,
 
       
     }
   }
+  
+  componentWillMount() {
+    this.setState({loading:true});
+    axios({
+            method: 'get',
+            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
+           }).then((response) => {
+           console.log('response of get about userrrrrrrrrrr11111', response.data.statusBar);
+           let _tempStatus=response.data.statusBar;
+            this.setState({
+                aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
+                expertiseDate:_tempStatus.expertise.completedDate,
+                perspectiveDate:_tempStatus.perspective.completedDate,
+                thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
+                loading:false,
+               })
+          }).catch((error) => {
+            console.log('get project error', error);
+             this.setState({loading:false});
+          });
+            //aboutYourself
+            //expertise
+           //perspective
+           //thinkAboutYourself
+  }
+  
   openPanel=()=>{
     this.refs.openPanel();
   }
   render() {
-    return (
+    if(this.state.loading){
+      return <div>
+        loading...
+      </div>
+    }
+    else   return (
       <div>
          <div className="title-content" style={{display:this.state.designer_info_display,marginBottom:'32px'}} >
          <DashboardDesignerInfo/>
@@ -93,6 +133,7 @@ export default class OnboardingDesignerForms extends Component {
             color='linear-gradient(248deg, #8776ff, #743afe)'
             borderRadius='4px'
             active={true}
+           date={returnDate(this.state.aboutYourselfDate)}
             title={<span>1.<span className="title-padding">About yourself</span></span>}
             panelContent={(
               <AboutUser openPanel={()=>{this.openPanel()}}/>
@@ -103,6 +144,7 @@ export default class OnboardingDesignerForms extends Component {
             color='linear-gradient(248deg, #28e5c0 1%, #06c9a4)'
             borderRadius='4px'
             active={true}
+            date={returnDate(this.state.expertiseDate)}
             title={<span>2.<span className="title-padding">Your expertise</span></span>}
             panelContent={(
               <UserExperties openPanel={()=>{this.openPanel()}}/>
@@ -113,6 +155,7 @@ export default class OnboardingDesignerForms extends Component {
             color=' linear-gradient(248deg, #d878ef, #c45edd)'
             borderRadius='4px'
             active={true}
+            date={returnDate(this.state.perspectiveDate)}
             title={<span>3.<span className="title-padding">Your perspective</span></span>}
             panelContent={(
               <UserPerspective openPanel={()=>{this.openPanel()}}/>
@@ -123,6 +166,7 @@ export default class OnboardingDesignerForms extends Component {
             color='linear-gradient(227deg, #ffb061, #ff9c39)'
             borderRadius='4px'
             active={true}
+            date={returnDate(this.state.thinkAboutYourselfDate)}
             title={<span>4.<span className="title-padding">How you think about yourself</span></span>}
             panelContent={(
               <RatingUserself openPanel={()=>{this.openPanel()}}/>
@@ -134,9 +178,12 @@ export default class OnboardingDesignerForms extends Component {
         <div className="title-content" style={{display:this.state.assignment_display}}>
            <OnboardAssignment/>
          </div>
-        <div className="title-content" style={{display:this.state.manifesto_display}}>
+        {/* very important      -------------   dont remove------- */}
+
+        {/* <div className="title-content" style={{display:this.state.manifesto_display}}>
          <OnboardManifesto/>
-         </div>
+         </div> */}
+         
       </div>
     )
   }

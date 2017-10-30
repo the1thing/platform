@@ -218,11 +218,16 @@ export default class UserExperties extends Component {
             {
             this.setStateMethod('platformsVisiblityError', 'visible')                 
             }
-        else if( (this.state.domainArray[len-1].name=='' && this.state.domainArray[len-1].info=='')){
+        else if( this.state.domainArray[len-1].name==''){
                    this.setState({
                        domainError:true
                    });
              }     
+             else if( this.state.domainArray[len-1].info==''){
+                this.setState({
+                    domainError:true
+                });
+             }
         else{
                 this.submitExpertise();
             }
@@ -282,7 +287,7 @@ export default class UserExperties extends Component {
     {
         if(this.state.loading)
             {
-                 return <div/>
+                 return <div>loading...</div>
             }
             else return (
             <div>
@@ -331,7 +336,7 @@ export default class UserExperties extends Component {
                                 <div style={{ paddingLeft: '16px' }}>
                                     <div>
                                         <AddButton
-                                            disabledClass={this.state.domainArray[this.state.domainArray.length-1].name!='' && this.state.domainArray[this.state.domainArray.length-1].info!='' ?  true:false }
+                                            disabledClass={this.state.domainArray[this.state.domainArray.length-1].name=='' || this.state.domainArray[this.state.domainArray.length-1].info=='' ?  true:false }
                                             onclick={(e) => { this.handleAddButton(e) }} />
                                     </div>
                                 </div>

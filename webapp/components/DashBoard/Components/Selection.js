@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/Selection.scss';
+import '../Styles/Selection.css';
 import { AddButton } from './AddLink';
 import { Row, Col } from 'react-bootstrap';
 
@@ -204,11 +204,21 @@ export class SelectMultiple extends Component {
     }
     count = 0;
     componentWillMount = () => {
+        this.temp=this.props.optionList;
+        // if(this.props.defaultValue.length>0){
+        //     this.props.defaultValue.map((value1,key1)=>{
+        //         this.temp.map((value2,key2)=>{
+        //             if(value1 == value2)
+        //             this.temp.splice(key2, 1)
+        //         })
+        //     })
+        // }
+        
         if (this.props.placeholder && this.props.defaultValue) {
             this.setState({
                 toggleVisiblity: true,
                 optionList: this.props.optionList,
-               selectedList:this.props.defaultValue
+               selectedList:this.props.defaultValue,
             })
         } else {
             this.setState({
@@ -220,7 +230,14 @@ export class SelectMultiple extends Component {
             
         }
         if(this.props.defaultValue.length>0){
+            this.props.defaultValue.map((value1,key1)=>{
+                this.temp.map((value2,key2)=>{
+                    if(value1 == value2)
+                    this.temp.splice(key2, 1)
+                })
+            })
             this.setState({
+                optionList:this.temp,
                 toggleVisiblity:false,
                 containerClass: 'popover-container change-width',
             })
@@ -270,6 +287,7 @@ export class SelectMultiple extends Component {
     }
 
     handleRemoval = (value, key) => {
+        this.props.handleRemoval();
         let list = this.state.optionList;
         let removeList = this.state.selectedList;
         list = list.concat(value);
@@ -317,9 +335,7 @@ export class SelectMultiple extends Component {
         }
 
         return (
-            <div style={{ display: '-webkit-box', width: this.props.width }}>
-            <h1>{console.log('demooooooossss in selection',this.state.selectedList)}</h1>
-                {console.log("list", this.state.selectedList)}
+            <div style={{ display: 'flex', flexWrap:'wrap', width: this.props.width}}>
                 {this.renderSelectedList()}
                 <div className='popover-container' onClick={this.handleClick} ref={node => { this.node = node; }}>
                     <div className={this.state.containerClass}>

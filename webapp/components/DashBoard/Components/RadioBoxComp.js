@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Radio, FormGroup } from 'react-bootstrap';
-import '../Styles/RadioBoxComp.scss';
+import '../Styles/RadioBoxComp.css';
 
 export default class RadioBoxComp extends Component {
     constructor()
@@ -63,7 +63,7 @@ export default class RadioBoxComp extends Component {
         )
     }
         return (
-            <div className="radio-group-container" style={{display:'flex'}}>
+            <div className="radio-group-container">
                 {renderRadioList()}
             </div>
         )

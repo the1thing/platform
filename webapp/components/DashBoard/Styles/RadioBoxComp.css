@@ -1,3 +1,7 @@
+.radio-group-container {
+  display: flex;
+  flex-wrap: wrap; }
+
 .radio-circle {
   width: 16px;
   height: 16px;
@@ -8,6 +12,7 @@
 .radio-container {
   border: 1px solid #f0f0f0;
   display: flex;
+  margin-bottom: 8px;
   border-radius: 100px;
   height: 48px;
   margin-right: 8px; }

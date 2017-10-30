@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Panel } from 'react-bootstrap';
-import '../Styles/OnBoardingTitles.scss';
+import '../Styles/OnBoardingTitles.css';
 
 export default class OnboardingTitles extends Component {
   constructor(props){

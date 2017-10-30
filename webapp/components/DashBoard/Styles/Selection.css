@@ -3,7 +3,7 @@
   display: block;
   border-radius: 4px;
   overflow-y: scroll;
-  width: 100%;
+  width: 400px;
   position: absolute;
   top: 100%;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
@@ -19,7 +19,6 @@
   font-size: 24px;
   font-family: EkMukta-ExtraLight;
   justify-content: space-between;
-  width: 100%;
   position: relative; }
 
 .popover-container .arrow-container {
@@ -80,6 +79,9 @@
   text-align: left;
   color: #030303; }
 
+.multiple-selection-button-container {
+  margin-bottom: 8px; }
+
 .multiple-selection-button-container:hover .cross-image {
   display: block !important; }
 
@@ -132,11 +134,13 @@
   font-weight: 200; }
 
 .selection-placeholder {
+  width: 254px;
   color: #7f7f7f;
   opacity: 0.5;
   font-family: EkMukta-ExtraLight; }
 
 .selection-error-placeholder {
+  width: 566px;
   font-family: EkMukta-ExtraLight;
   color: #eb444c;
   opacity: 0.5; }

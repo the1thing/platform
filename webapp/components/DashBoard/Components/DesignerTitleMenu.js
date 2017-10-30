@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/TitleMenu.scss';
+import '../Styles/TitleMenu.css';
 
 export default class DisignerTitleMenu extends Component {
     constructor(props){
