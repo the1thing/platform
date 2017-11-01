@@ -9,9 +9,21 @@ import OnboardAssignment from './OnboardAssignment'
 import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
 import Tooltip from './Components/Tooltip';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 
 import './App.css';
 class OnboardingDesigner extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      setUserProgress:[],
+    }
+  }
   render() {
     return (
       <div>
@@ -21,12 +33,23 @@ class OnboardingDesigner extends Component {
            />
         </div>
         <div className="dashboard-container">
-          <div style={{width:'65%'}}>
-            <OnboardingDesignerForms/>
+          <div style={{width:'65%',marginTop:'32px'}}>
+            <Router>
+              <div>
+              <Route exact path='/'
+                  render={(props)=>{return <OnboardingDesignerForms {...props} reloadProgress={(e)=>
+              this.setState({setUserProgress:e})
+              }/>}}/>
+                {/* <Route exact path='/' render={(props)=>{<OnboardingDesignerForms {...props} reloadProgress={(e)=>{this.setState({setUserProgress:e})}}/>}}/> */}
+                <Route path='/assignment' component={OnboardAssignment}/>
+                {/* <Route path='/Pricing&Bandwidth' component={Pricing & Bandwidth}/> */}
+                {/* <Route path='welcomeaboard' component={welcome aboard}/> */}
+              </div>
+            </Router>
           </div>
-          <div style={{width:'35%'}}>
+          <div  className="progressbar-container">
             <div className="progress-container">
-              <DesignerProgress/>   
+              <DesignerProgress setUserProgress={this.state.setUserProgress}/>   
             </div>
            <QueryChat/>
           </div>

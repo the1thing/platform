@@ -97,7 +97,7 @@ export default class RatingUserself extends Component {
     }
     renderMyList = (no) => {
             return (
-            <div key={no} style={{overflow:'hidden'}}>
+            <div key={no} style={{overflow:'hidden'}} id={no}>
                 <Row>
                     <Col md={1} className="form-label">{no}.</Col>
                     <Col md={11}>
@@ -185,6 +185,7 @@ export default class RatingUserself extends Component {
         if(this.state.useToolQuality == ''){
             let temp=this.state.error;
             temp[1]='visible';
+            document.getElementById('1').scrollIntoView();
             this.setState({
                 error:temp,
             })
@@ -192,6 +193,7 @@ export default class RatingUserself extends Component {
         else if(this.state.commSkills == ''){
             let temp=this.state.error;
             temp[2]='visible';
+            document.getElementById('2').scrollIntoView();
             this.setState({
                 error:temp,
             })
@@ -199,6 +201,7 @@ export default class RatingUserself extends Component {
         else if(this.state.proManagement == ''){
             let temp=this.state.error;
             temp[3]='visible';
+            document.getElementById('3').scrollIntoView();
             this.setState({
                 error:temp,
             })
@@ -206,6 +209,7 @@ export default class RatingUserself extends Component {
         else if(this.state.teamWorking == ''){
             let temp=this.state.error;
             temp[4]='visible';
+            document.getElementById('4').scrollIntoView();
             this.setState({
                 error:temp,
             })
@@ -213,11 +217,13 @@ export default class RatingUserself extends Component {
         else if(this.state.leadingTeam == ''){
             let temp=this.state.error;
             temp[5]='visible';
+            document.getElementById('5').scrollIntoView();
             this.setState({
                 error:temp,
             })
         }
         else if(this.state.designQuality == ''){
+            document.getElementById('designQuality').scrollIntoView();
             this.setState({
                 designQualityError:'visible',
             })
@@ -228,7 +234,7 @@ export default class RatingUserself extends Component {
     }
     render() {
         if(this.state.loading){
-            return <div>loading...</div>
+            return <div>loading ...</div>
         }
         else return (
             <div>
@@ -254,7 +260,7 @@ export default class RatingUserself extends Component {
                                 How did you learn about 1THING?
                             </div>
                         </Col>
-                        <Col md={11} mdOffset={1}>
+                        <Col md={11} mdOffset={1} id='designQuality'>
                             <div className="subcomponent-spacing">
                                 <RadioBoxCom 
                                     defaultValue={this.state.designQuality}

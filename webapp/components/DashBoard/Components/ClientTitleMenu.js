@@ -61,7 +61,7 @@ export default class ClientTitleMenu extends Component {
         <ul className="menu" onClick={(e) => this.openMenuList(e)} style={{ display: this.state.menu_title_visiblity }}>
           <li style={{ color: '#ffbc00'}}>
             <div className="menu-top-border" style={{background:'#ffbc00'}}></div>
-            <span className="menu-title" style={{ visibility: this.state.menu_requirements_visiblity }}>REQUIREMENTS</span>
+            <span className="menu-title" style={{ visibility: this.state.menu_requirements_visiblity,textTransform: 'uppercase' }}>{this.props.title}</span>
           </li>
           {/* <li style={{ color: '#118bf3'}}>
             <div className="menu-top-border" style={{background:'#118bf3'}}></div>

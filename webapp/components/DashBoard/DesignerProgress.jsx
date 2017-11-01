@@ -97,12 +97,67 @@ export default class DesignerProgress extends Component {
 
               }
       }
+      
+      componentWillReceiveProps=(nextProps)=> {
+          console.log('%%%%%%%%%%%%%%%%%%%%%%%5---------------next props------------------',nextProps)
+          let gotProgressData=nextProps.setUserProgress
+            if(!gotProgressData.aboutUser)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     loading:false,
+                     })
+                    
+                }
+              else if(!gotProgressData.aboutExpertise)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                       onboarding:this.state.onboarding,
+                     })
+                    
+                }
+               else if(!gotProgressData.aboutPerspective)
+                {     this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                } 
+                else if(!gotProgressData.userRating)
+                {
+                    this.state.onboarding.completed.value=false,
+                     this.setState({
+                     onboarding:this.state.onboarding,
+                     })
+                    
+                }
+               else{
+                    this.state.onboarding.completed.value=true,
+                     this.setState({
+                     requirement:this.state.requirement,
+                     })
+               }
+               
+             this.state.onboarding.aboutYourself.completed=gotProgressData.aboutUser;
+             this.state.onboarding.yourExpertise.completed=gotProgressData.aboutExpertise;
+             this.state.onboarding.yourPerspective.completed=gotProgressData.aboutPerspective;
+             this.state.onboarding.howYouThink.completed=gotProgressData.userRating;
+             this.state.onboarding.howYouThink.completedDate=gotProgressData.userRatingDate;
+             this.state.onboarding.dateOfCompletion=gotProgressData.userRatingDate;
+               this.setState({
+                 requirement:this.state.requirement,
+                 loading:false,
+                 })
+      this.checkRenderStaus();
+      }
       getClientStatus=()=>{
          this.setState({loading:true});
         axios({
             method: 'get',
             url: basepath + 'user/getUser/'+localStorage.getItem('designerProgressId'),
         }).then((response) => {
+            console.log("darta--------->",response)
+            if(response.data!=null){
             let _tempStatus=response.data.data.statusBar;
             this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
             this.state.onboarding.aboutYourself=_tempStatus.aboutYourself;
@@ -146,15 +201,7 @@ export default class DesignerProgress extends Component {
                      requirement:this.state.requirement,
                      })
                }
-                      
-          
-
-            console.log('checkinggggggggg  get about product', response,
-                            '******************', this.state.onboarding.yourPerspective,
-                                                this.state.onboarding.aboutYourself,
-                                                this.state.onboarding.howYouThink,
-                                                 this.state.onboarding.yourExpertise,
-                                                );
+            }
         }).then(()=>{
             this.setState({
                 requirement:this.state.requirement,
@@ -180,6 +227,7 @@ export default class DesignerProgress extends Component {
          else if(!this.state.assignment.completed.value)
          {  
              this.setState({
+                margin_bu8_assignment:"margin_bu8_subpart",
                 margin_bu8_onboarding:"margin_bu8_subpart_completed",
                 check_assignment_nextpart:true,
                 check_pricing_bandwidth_nextpart:false,
@@ -190,6 +238,7 @@ export default class DesignerProgress extends Component {
          else if(!this.state.pricing_bandwidth.completed.value)
          {
             this.setState({
+                margin_bu8_pricing_bandwidth:"margin_bu8_subpart",
                 check_assignment_nextpart:true,
                 check_pricing_bandwidth_nextpart:true,
                 margin_bu8_onboarding:"margin_bu8_subpart_completed",

@@ -26,9 +26,16 @@
     font-family: EkMukta-ExtraBold;
     src: url(./Fonts/ek-mukta.extrabold.ttf);
 }
+.progressbar-container{
+    margin-top: 32px;
+    position: fixed;
+    width: 35%;
+    right: 0;
+}
 .dashboard-container{
     margin-left: 12%;
     display: flex;
+    margin-top: 76px;
 }
 .dashboard-switch-div{
     width: 87%;
@@ -51,16 +58,21 @@
     padding-left: 15%
 }
 ._header{
+    width: 100%;
+    left:0;
+    top: 0;
+    position: fixed;
+    background: #fff;
     border-bottom: 1px solid #f0f0f0;
-    margin-bottom: 32px;
+    // margin-bottom: 32px;
     font-family: EkMukta-Regular;
     font-size: 16px;
-    margin-top: 21px;
+    padding-top: 21px;
     letter-spacing: 2px;
     text-align: left;
     color: #030303;
-    padding-bottom: 9px;
-    margin-left: 12%;
+    padding-bottom: 32px;
+    padding-left: 12%;
     }
     .Oval-2 {
         width: 24px;
@@ -295,6 +307,10 @@
 .margin_bu8_subpart_completed
 {
     display: none;
+}
+.margin_bu8_subpart_hide{
+    display: none;
+    
 }
 // .margin_le20{
 //     margin-left:-20px;

@@ -54,59 +54,65 @@ export default class AboutDesign extends Component {
             projectId: '',
         }
     }
-    componentWillMount = () => {
-        setTimeout(() => { this.getAboutDesignData() }, 500)
-        //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
-        //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
-        // this.getAboutDesignData();
-    }
+    // componentWillMount = () => {
+    //    getAboutDesignData();
+    //     //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
+    //     //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
+    //     // this.getAboutDesignData();
+    // }
   
   componentWillMount = () => {
-    this.getAboutDesignData()
-   //   setTimeout(()=>{this.getAboutDesignData()},10)
-    //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
-    //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
-   // this.getAboutDesignData();
-}
-
-// componentDidMount() {
-//     setTimeout(()=>{this.getAboutDesignData()},1000)
-// }
-getAboutDesignData=()=>{
-    if(localStorage.getItem("projectId"))
+      this.getAboutDesignData()
+    }
+  getAboutDesignData=()=>{
+    if(localStorage.getItem('projectId'))
     {
         this.setState({
             loading:true,
         })
      axios({
         method: 'get',
-        url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId')+'?stage=2',
+        url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId') +'?stage=2',
         }).then((response) => {
-        console.log("about design response",response.data)
+        console.log("about design response",response)
         var _response=response.data;
-      //  console.log('get about design****', response.data);
+        console.log('get about design response********', response.data);
         var _tempUserPropsal=response.data.userProposal;
         //designServices  designObjective
         this.setState({
-            platforms: (_response.platform !=null || _response.platform.length>0)?_response.platform:[],
+             platforms: (_response.platform !=null )?_response.platform:[],
             services:_tempUserPropsal.designServices,
             objective:_tempUserPropsal.designObjective,
-            addLink:(_tempUserPropsal.referenceLink.length>0 || _tempUserPropsal.referenceLink!=null)?_tempUserPropsal.referenceLink:[],
+            addLink:(_tempUserPropsal.referenceLink!=null)?_tempUserPropsal.referenceLink:[],
             loading:false,
            })
-
-      }).catch((error) => {
-        console.log('get project error stage 2', error.response);
+           
+      })
+      .then((res)=>{
+        console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
+        
         this.setState({
+           
+            platforms:this.state.platforms,
+            services:this.state.services,
+            addLink:this.state.addLink,
+            objective:this.state.objective,
             loading:false,
         })
-    });
+        console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
+        
+      })
+       .catch((error) => {
+          console.log('get project error stage 2', error.response);
+           this.setState({
+             loading:false,
+           })
+        });
+      }
+     console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
 }
 
-
-}
-
-    renderClass = () => {
+ renderClass = () => {
         if (this.state.platforms.length > 0
             && this.state.services
             && this.state.objective
@@ -126,34 +132,41 @@ setStateMethod=(label,value)=>{
 goTo=()=>{
     console.log("platform--->",this.state.platforms)
     if(this.state.platforms.length==0){
-        alert("called")
+        document.getElementById('platforms').scrollIntoView();
         this.setStateMethod('platformClass',true)
     }
     else if(!this.state.services){
+        document.getElementById('services').scrollIntoView();
         this.setStateMethod('servicesClass',true)
     
     }
     else if(!this.state.objective){
+        document.getElementById('objective').scrollIntoView();
         this.setStateMethod('objectiveClass',true)
     }
     else if(!this.state.addLink[0]){
-        this.setStateMethod('linkClass',true)
+        if(validateUrl(this.state.document))
+        {
+           this.state.addLink.push(this.state.document)
+           this.postAboutDesignData();
+        }
+        else{
+            this.setStateMethod('linkClass',true)
+            document.getElementById('addLink').scrollIntoView();
+       }
     }
     else{
-        if(this.state.document==''){
-            let list=this.state.addLink;
-            this.postAboutDesignData(list)
-            // this.state.addLink.push(this.state.document);
-            // this.setState({addLink:this.state.addLink});
+        if(validateUrl(this.state.document))
+        {
+           this.state.addLink.push(this.state.document)
+           this.postAboutDesignData();
         }
-        else if(validateUrl(this.state.document)){
-              let list=this.state.addLink;
-              list=list.concat(this.state.document);
-              this.postAboutDesignData(list);
-           }
+       else{
+        this.postAboutDesignData();
+       }
+       
       
      }
-        console.log('ddddddd',this.state.servicesClass)
 }
 postAboutDesignData=(link_list)=>{
     axios({
@@ -163,15 +176,17 @@ postAboutDesignData=(link_list)=>{
             platform:this.state.platforms,
             designServices:this.state.services,
             designObjective:this.state.objective,
-            referenceLink:link_list,
+            referenceLink:this.state.addLink,
             projectId:localStorage.getItem('projectId'),
         },
     })
     .then((resp)=>{
+        
         this.setState({
             edit:true,
         })
-        this.props.openPanel()
+        this.props.openPanel();
+        // window.location.reload();
         console.log("about design---------->",resp);
     })
     .catch((err)=>{
@@ -184,8 +199,8 @@ postAboutDesignData=(link_list)=>{
             return <div>loading</div>
         }
         else return (
-            <div>
-                <div className="input-spacing platform-selection">
+            <div>{console.log("design------------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)}
+                <div className="input-spacing platform-selection" id='platforms'>
                     {/********************* Select Multiple *****  */}
 
                     <SelectMultiple
@@ -202,7 +217,7 @@ postAboutDesignData=(link_list)=>{
                         }} />
                 </div>
                 {/* ***************** selection dsign service  ***** */}
-                <div className="input-spacing">
+                <div className="input-spacing" id='services'>
                     <Selection
                         defaultValue={this.state.services}
                         value={this.state.services}
@@ -220,7 +235,7 @@ postAboutDesignData=(link_list)=>{
                     />
                 </div>
                 {/* ***************** selection Design Objective  ***** */}
-                <div className="input-spacing">
+                <div className="input-spacing" id='objective'>
                     <Selection
                         defaultValue={this.state.objective}
                         value={this.state.objective}
@@ -253,11 +268,22 @@ postAboutDesignData=(link_list)=>{
                     this.setStateMethod('scopeDocumentClass', false)
                 }} /> */}
                 <AddLink
+                    id='addLink'
                     defaultValue={this.state.addLink}
                     error={this.state.linkClass}
                     placeholder='Link(s) to references (apps/sites you like)'
                     onclick={(e) => {
-                        this.setStateMethod('document', e.target.value)
+                        this.setState({document:e.target.value})
+                        if(validateUrl(e.target.value)){
+                            this.setState({
+                                edit:false,
+                            })
+                        }
+                        else{
+                            this.setState({
+                                edit:true,
+                            })
+                        }
                     }}
                     addAnotherLink={(e) => {
                         let list = this.state.addLink;

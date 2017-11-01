@@ -316,7 +316,7 @@ export class SelectMultiple extends Component {
         
         return this.state.selectedList.map((value, key) => {
             console.log("check list22", value, key)
-            return <div className="multiple-selection-button-container">
+            return <div key={key} className="multiple-selection-button-container">
                 <div className="multiple-selection-button">
                     <span>{value}</span>
                 </div>
@@ -328,7 +328,7 @@ export class SelectMultiple extends Component {
        
             let renderList = () => {
             return this.state.optionList.map((value, key) => {
-                return <li className="list" onClick={(e) => this.handleListClick(value, key)}>
+                return <li className="list" key={key} onClick={(e) => this.handleListClick(value, key)}>
                     {value}
                 </li>
             })

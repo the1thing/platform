@@ -9,7 +9,7 @@ export default class Toottip extends Component {
           💡
         </div>
         <div style={{lineHeight:'26px'}}>
-          Right after you are done with these 3 steps, we'll share a proposal with you in next 48 hours.
+          {this.props.title}
         </div>
       </div>
     )

@@ -110,7 +110,7 @@ export default class Dashboard extends Component {
         else {
             return (
                 <div>
-                    {/* <OnboardingClient/>   */}
+                    {/* {<OnboardingClient/>  } */}
                     You have no workspace. Please start Afresh.
                {/* <OnboardingDesigner/>    */}
                 </div>

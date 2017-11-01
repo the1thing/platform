@@ -47,13 +47,8 @@ export default class AboutProduct extends Component {
     }
     componentWillMount = () => {
         this.getAllProjectsForWorkspace();
-        this.getAboutProductData();
-    }
-    componentWillUpdate=()=>{
-        
     }
     getAllProjectsForWorkspace = () => {
-        console.log("checkin localstorage",localStorage.getItem('userId'))
         this.setState({loading:true});
         axios({
             method: 'get',
@@ -103,9 +98,9 @@ export default class AboutProduct extends Component {
                 productName: response.data.name,
                 productType: response.data.projectType.projectType,
                 productLink: response.data.projectType.link,
-                domains: response.data.domain,
+                domains: response.data.domain!=null?response.data.domain:[],
                 otherProduct: response.data.similarProduct,
-                scopeDocument: response.data.userDocumentLink,
+                scopeDocument: response.data.userDocumentLink!=null?response.data.userDocumentLink:[],
                 loading:false,
                })
                if(response.data.projectType.projectType === 'Existing Product'){
@@ -125,7 +120,7 @@ export default class AboutProduct extends Component {
             edit:false
         })
     }
-    postDataOfProduct = (listLink)=>{
+    postDataOfProduct = ()=>{
         console.log('*******',this.state.apiMethode);
         axios({
             method: this.state.apiMethode,
@@ -134,7 +129,7 @@ export default class AboutProduct extends Component {
                 projectName: this.state.productName,
                 type: this.state.productType,
                 link: this.state.productLink,
-                userDocumentLink:listLink,
+                userDocumentLink:this.state.scopeDocument,
                 domain: this.state.domains,
                 similarProduct: this.state.otherProduct,
                 userId: localStorage.getItem('userId'),
@@ -144,12 +139,12 @@ export default class AboutProduct extends Component {
         })
             .then((response) => {
                 console.log('############123',response)
+                this.props.openPanel();
                 this.setState({edit:true})
                 if(this.state.apiMethode=='post')
                 {
                   localStorage.setItem('projectId', response.data.data._id)
                  }
-                 this.props.openPanel();
             })
             .catch((err) => {
                 console.log("about priduct error", err)
@@ -157,51 +152,69 @@ export default class AboutProduct extends Component {
     }
 
     goTo = () => {
-        
         if (!this.state.productName) {
-           
+            document.getElementById('productName').scrollIntoView();
             this.setStateMethod('productNameClass', 'Error-input')
         }
         else if (!this.state.productType) {
+            document.getElementById('productType').scrollIntoView();
             this.setStateMethod('productTypeClass', true)
         }
         else if (this.state.productType === 'Existing Product' && !this.state.productLink) {
+            document.getElementById('productType').scrollIntoView();
             this.setStateMethod('productLinkClass', 'Error-input')
         }
         else if (this.state.productType === 'Existing Product' && !validateUrl(this.state.productLink)) {
+            document.getElementById('productType').scrollIntoView();
             this.setStateMethod('productLinkVisiblityError','visible')
         }
         else if (this.state.domains.length==0) {
+            document.getElementById('domains').scrollIntoView();
             this.setStateMethod('domainsClass', true)
         }
         else if (!this.state.otherProduct) {
+            document.getElementById('otherProduct').scrollIntoView();
             this.setStateMethod('otherProductClass', 'Error-input')
         }
         else if (!this.state.scopeDocument[0]){
-            this.setStateMethod('scopeDocumentClass', true)
+            //this.setStateMethod('scopeDocumentClass', true)
+               if(validateUrl(this.state.document))
+                       {
+                          this.state.scopeDocument.push(this.state.document)
+                          this.postDataOfProduct();
+                       }
+                      else{
+                         this.setStateMethod('scopeDocumentClass', true)
+                         document.getElementById('scopeDocument').scrollIntoView();
+                      }
         }
         else {
-             if(this.state.document==''){
-                let list=this.state.scopeDocument;
-                 this.postDataOfProduct(list);
-               }
-           else if(validateUrl(this.state.document)){
-                let list=this.state.scopeDocument;
-                list=list.concat(this.state.document);
-                this.postDataOfProduct(list);
-               }
-           
-        }
-        
-    }
+            if(validateUrl(this.state.document))
+            {
+               this.state.scopeDocument.push(this.state.document)
+               this.postDataOfProduct();
+            }
+           else{
+            this.postDataOfProduct();
+           }
+            //  if(this.state.document==''){
+            //     let list=this.state.scopeDocument;
+            //      this.postDataOfProduct(list);
+            //    }
+            //else if(validateUrl(this.state.document)){
+             //  let list=this.state.scopeDocument;
+            //    list=list.concat(this.state.document);
+          }
+     }
     renderClass = () => {
         
         if (this.state.productName && (this.state.productType === 'Starting Afresh'
                 || (this.state.productType === 'Existing Product'
                     && this.state.productLink
                 ))
-            && (this.state.domains.length>0 || this.state.document)
+            && (this.state.domains.length>0)
             && this.state.otherProduct
+            &&(this.state.scopeDocument.length>0||this.state.document) 
         ) {
             return "Rectangle-4"
         }
@@ -267,7 +280,7 @@ render() {
     }
     else return (
         <div>
-            <div className="input-spacing">
+            <div className="input-spacing" id='productName'>
                 <input
                     className={this.state.productNameClass}
                     placeholder="Product Name"
@@ -279,7 +292,7 @@ render() {
             </div>
             <div>
                 <Row>
-                    <Col md={6}>
+                    <Col md={6} id='productType'>
                         <Selection
                                 defaultValue={this.state.productType}
                                 onChange={(e) => { this.handleButtonClick(e) }}  placeholder="Stage of your product"
@@ -324,7 +337,7 @@ render() {
             <div style={{visibility:this.state.productLinkVisiblityError,marginBottom:'35px',marginLeft:'314px'}}>
                 Please Enter Valid URL
             </div>
-            <div className="input-spacing">
+            <div className="input-spacing" id='domains'>
                  <SelectMultiple
                     handleRemoval={()=>{this.setStateMethod('edit',false)}}
                     placeholder="Select Domain"
@@ -340,6 +353,7 @@ render() {
             </div>
             <div className="input-spacing">
                 <input
+                    id='otherProduct'
                     className={this.state.otherProductClass}
                     placeholder="Write similar products (India/Outside)"
                     onChange={(e) => {
@@ -349,13 +363,18 @@ render() {
                 />
             </div>
             <AddLink
+                id='scopeDocument'
                 defaultValue={this.state.scopeDocument}
                 error={this.state.scopeDocumentClass}
                 placeholder="Link(s) to scope document, if any"
                 onclick={(e) => {
+                    this.setState({document:e.target.value})
                     if(validateUrl(e.target.value)){
-                       this.setStateMethod('document', e.target.value)
-                     }
+                      this.setState({edit:false})
+                   }
+                   else{
+                      this.setState({edit:true}) 
+                    }
                 }}
                 clearDocument={()=>{this.setState({document:''})}}
                 addAnotherLink={(e) => {

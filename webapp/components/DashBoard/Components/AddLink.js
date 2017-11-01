@@ -91,7 +91,7 @@ export class AddLink extends Component {
     }
     render() {
         return (
-            <div>
+            <div id={this.props.id}>
                 
                 {this.renderLinkList()}
                 <input 

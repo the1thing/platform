@@ -94,8 +94,11 @@ export default class AboutUser extends Component {
             },
         })
         .then((resp)=>{
-            this.props.openPanel()
+            //this.props.openPanel()
             console.log("about design---------->",resp);
+        }).then(()=>{
+            this.props.openPanel()
+            
         })
         .catch((err)=>{
             console.log("about design  error",err)
@@ -103,22 +106,28 @@ export default class AboutUser extends Component {
     }
     goTo = () => {
         if (this.state.checkboxArray.length==0) {
+            document.getElementById('id').scrollIntoView();
             this.setStateMethod('idVisiblityError', 'visible');
         }
         else if (!this.state.linkdinLink) {
+            document.getElementById('linkedin').scrollIntoView();
             this.setStateMethod('linkdinLinkClass', true)
             this.setStateMethod('linkVisiblityError','hidden')
         }
         else if(!validateUrl(this.state.linkdinLink)){
+            document.getElementById('linkedin').scrollIntoView();
             this.setStateMethod('linkVisiblityError','visible')
         }
         else if (!this.state.workExperience) {
+            document.getElementById('workExperience').scrollIntoView();
             this.setStateMethod('workExperienceClass', true)
         }
         else if (!this.state.jobTiming) {
+            document.getElementById('jobTiming').scrollIntoView();
             this.setStateMethod('jobTimingError', 'visible')
         }
         else if (!this.state.availability) {
+            document.getElementById('availability').scrollIntoView();
             this.setStateMethod('availabilityClass', true)
         }
         else {
@@ -150,7 +159,7 @@ export default class AboutUser extends Component {
         return (
             <div>
                 <div className="input-spacing-radio">
-                    <div className="form-label">
+                    <div className="form-label" id="id">
                         You identify yourself as
                     </div>
                     <div className="subcomponent-spacing">
@@ -162,6 +171,7 @@ export default class AboutUser extends Component {
                 </div>
                 <div style={{display:'flex'}}>
                     <input
+                        id="linkedin"
                         style={{color:this.state.linkdinLinkColor,width:'85%'}}
                         value={this.state.linkdinLink}
                         className={this.state.linkdinLinkClass ? "Error-input" : "simple-input"}
@@ -188,7 +198,7 @@ export default class AboutUser extends Component {
                         Please Enter Valid I'D
                     </div>
                 </div>
-                <div className="input-spacing">
+                <div className="input-spacing" id="workExperience">
                     <input
                         onKeyPress={(e)=>numberOnly(e)}
                         value={this.state.workExperience}
@@ -199,7 +209,7 @@ export default class AboutUser extends Component {
                 </div>
                 <div className="input-spacing-radio">
                     <div className="form-label">You are here for?</div>
-                    <div className="subcomponent-spacing">
+                    <div className="subcomponent-spacing" id="jobTiming">
                         <RadioBoxComp
                             defaultValue={this.state.jobTiming}
                             radioList={['Part time', 'Full time']} 
@@ -211,6 +221,7 @@ export default class AboutUser extends Component {
                 </div>
                 <div className="input-spacing" style={{display:'flex'}}>
                     <input
+                        id="availability"
                         onKeyPress={(e)=>numberOnly(e)}
                         style={{width:'85%'}}
                         value={this.state.availability}

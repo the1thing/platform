@@ -10,7 +10,7 @@ let linkcount = 0;
 let inputcount = 0;
 let TextInput = (props) => {
     return (
-        <Row style={{ marginBottom: '24px' }}>
+        <Row style={{ marginBottom: '24px' }} id={props.id}>
             <Col md={1} style={{ fontSize: '24px' }} className="about-link-textares">{props.no}.</Col>
             <Col md={11}>
                 <div>
@@ -34,7 +34,7 @@ let CreateRadio = (props) => {
 }
 let LinkWithTextArea = (props) => {
     return (
-        <Row style={{ marginBottom: '24px' }}>
+        <Row style={{ marginBottom: '24px' }} id={props.id}>
             <Col md={1} style={{ fontSize: '24px' }} className="about-link-textares">{props.no}.</Col>
             <Col md={11}>
                 <div>
@@ -140,45 +140,59 @@ export default class UserPerspective extends Component {
     }
     goTo = () => {
         if (!this.state.productTitle1) {
+            document.getElementById('product1').scrollIntoView();
             this.setstateMethod('linkClass1', true)
         }
         else if(!validateUrl(this.state.productTitle1)){
+            document.getElementById('product1').scrollIntoView();
             this.setstateMethod('linkVisiblityError1','block')
         }
         else if(!this.state.productContent1){
+            document.getElementById('product1').scrollIntoView();
             this.setstateMethod('linkClass1',true)
         }
         else if (!this.state.productTitle2) {
+            document.getElementById('product2').scrollIntoView();
             this.setstateMethod('linkClass2', true)
         }
         else if(!validateUrl(this.state.productTitle2)){
+            document.getElementById('product2').scrollIntoView();
             this.setstateMethod('linkVisiblityError2','block')
         }
         else if(!this.state.productContent2){
+            document.getElementById('product2').scrollIntoView();
             this.setstateMethod('linkClass2',true)
         }
         else if (!this.state.productTitle3) {
+            document.getElementById('product3').scrollIntoView();
             this.setstateMethod('linkClass3', true)
         }
         else if(!validateUrl(this.state.productTitle3)){
+            document.getElementById('product3').scrollIntoView();
             this.setstateMethod('linkVisiblityError3','block')
         }
         else if(!this.state.productContent3){
+            document.getElementById('product3').scrollIntoView();
             this.setstateMethod('linkClass3',true)
         }
         else if (!this.state.workSpace) {
+            document.getElementById('workSpace').scrollIntoView();
             this.setstateMethod('workSpaceVisiblityError', 'visible')
         }
         else if (!this.state.necessaryThings1) {
+            document.getElementById('thing1').scrollIntoView();
             this.setstateMethod('necessaryThings1Class', true)
         }
         else if (!this.state.necessaryThings2) {
+            document.getElementById('thing2').scrollIntoView();
             this.setstateMethod('necessaryThings2Class', true)
         }
         else if (!this.state.necessaryThings3) {
+            document.getElementById('thing3').scrollIntoView();
             this.setstateMethod('necessaryThings3Class', true)
         }
         else if(!this.state.userPersonality){
+            document.getElementById('userPersonality').scrollIntoView();
             this.setstateMethod('userPersonalityVisiblityError','visible')
         }
         else{
@@ -210,7 +224,7 @@ export default class UserPerspective extends Component {
     }
     render() {
         if(this.state.loader){
-            return <div>loading...</div>
+            return <div> loading ...</div>;
         }
         else 
         return (
@@ -221,6 +235,7 @@ export default class UserPerspective extends Component {
                     </div>
                     <div className="subcomponent-spacing" style={{ overflow: 'hidden' }}>
                         <LinkWithTextArea
+                            id='product1'
                             input_value={this.state.productTitle1}
                             area_value={this.state.productContent1}
                             linkClass={this.state.linkClass1}
@@ -244,6 +259,7 @@ export default class UserPerspective extends Component {
                             }} />
                         
                         <LinkWithTextArea
+                            id='product2'
                             input_value={this.state.productTitle2}
                             area_value={this.state.productContent2}
                             linkClass={this.state.linkClass2}
@@ -270,6 +286,7 @@ export default class UserPerspective extends Component {
                         </div> */}
                         
                         <LinkWithTextArea
+                            id='product3'
                             input_value={this.state.productTitle3}
                             area_value={this.state.productContent3}
                             linkClass={this.state.linkClass3}
@@ -301,7 +318,7 @@ export default class UserPerspective extends Component {
                     <div className="form-label">
                         Where do you work from?
                     </div>
-                    <div className="subcomponent-spacing">
+                    <div className="subcomponent-spacing" id='workSpace'>
                         <RadioBoxComp 
                             defaultValue={this.state.workSpace}
                             radioList={['UI Designer','Co-working space','Personal office']}
@@ -320,19 +337,22 @@ export default class UserPerspective extends Component {
                     </div>
                     <div className="subcomponent-spacing" style={{ overflow: 'hidden' }}>
                         <TextInput
+                            id='thing1'
                            value={this.state.necessaryThings1}
                             no='1'
                             className={this.state.necessaryThings1Class}
                             placeholder='Communication'
                             onChange={(e) => { this.setstateMethod('necessaryThings1', e.target.value) }} />
                         <TextInput
+                            id='thing2'
                            value={this.state.necessaryThings2}
                             no='2'
                             className={this.state.necessaryThings2Class}
                             placeholder='Clarity'
                             onChange={(e) => { this.setstateMethod('necessaryThings2', e.target.value) }} />
                         <TextInput
-                           value={this.state.necessaryThings3}
+                            id='thing3'
+                            value={this.state.necessaryThings3}
                             no='3'
                             className={this.state.necessaryThings3Class}
                             placeholder='Active Collaboration'
@@ -340,7 +360,7 @@ export default class UserPerspective extends Component {
                     </div>
                 </div>
                 <div className="input-spacing-radio">
-                    <div className="form-label">
+                    <div className="form-label" id='userPersonality'>
                         Choose one over the other two
                     </div>
                     <div className="subcomponent-spacing">

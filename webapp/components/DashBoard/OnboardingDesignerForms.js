@@ -16,7 +16,14 @@ import  DashboardDesignerInfo from './DashboardDesignerInfo';
 import Tooltip from './Components/Tooltip';
 import {returnDate} from './utils/Methods';
 import axios from 'axios';
-import { basepath } from './utils/constant'
+import { basepath } from './utils/constant';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from 'react-router-dom'
+
 
 
 
@@ -24,7 +31,10 @@ export default class OnboardingDesignerForms extends Component {
   constructor(props){
     super(props);
     this.state={
-      about_user_view:true,
+      aboutUserActive:true,
+      aboutExpertiseActive:false,
+      aboutPerspectiveActive:false,
+      userRatingActive:false,
       onboarding_display:'block',
       assignment_display:'none',
       pricing_bandwidth_display:'none',
@@ -36,14 +46,26 @@ export default class OnboardingDesignerForms extends Component {
       expertiseDate:'',
       perspectiveDate:'',
       thinkAboutYourselfDate:'',
-      loading:false,
+      aboutUserCompleted:'',
+      expertiseCompleted:'',
+      perspectiveCompleted:'',
+      userRatingCompleted:'',
+      userRatingCompletedDate:'',
+      
+      
 
+
+      loading:false,
+      redirect:false,
       
     }
   }
   
   componentWillMount() {
     this.setState({loading:true});
+    this.getUserData();
+  }
+  getUserData=()=>{
     axios({
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
@@ -52,12 +74,37 @@ export default class OnboardingDesignerForms extends Component {
            let _tempStatus=response.data.statusBar;
             this.setState({
                 aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
+                aboutExpertiseActive:_tempStatus.aboutYourself.completed,
                 expertiseDate:_tempStatus.expertise.completedDate,
+                aboutPerspectiveActive:_tempStatus.expertise.completed,
                 perspectiveDate:_tempStatus.perspective.completedDate,
+                userRatingActive:_tempStatus.perspective.completed,
                 thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
                 loading:false,
+                aboutUserCompleted:_tempStatus.aboutYourself.completed,
+                expertiseCompleted:_tempStatus.expertise.completed,
+                perspectiveCompleted:_tempStatus.perspective.completed,
+                userRatingCompleted:_tempStatus.thinkAboutYourself.completed,
+                userRatingCompletedDate:_tempStatus.thinkAboutYourself.completedDate,
+                
+                
                })
-          }).catch((error) => {
+               let temp={
+                aboutUser:this.state.aboutUserCompleted,
+                aboutExpertise:this.state.expertiseCompleted,
+                aboutPerspective:this.state.perspectiveCompleted,
+                userRating:this.state.userRatingCompleted,
+                userRatingDate:this.state.userRatingCompletedDate
+              };
+               this.props.reloadProgress(temp);
+              // alert("hiii")
+              
+            }).then(()=>{
+              if(this.state.userRatingCompleted && this.state.redirect){
+                this.props.history.push('/assignment');
+              }
+              // this.props.reloadProgress(temp);
+            }).catch((error) => {
             console.log('get project error', error);
              this.setState({loading:false});
           });
@@ -65,11 +112,42 @@ export default class OnboardingDesignerForms extends Component {
             //expertise
            //perspective
            //thinkAboutYourself
+  
   }
   
+  // componentWillReceiveProps=(nextProps)=> {
+  //   this.setState({loading:true});
+  //   axios({
+  //           method: 'get',
+  //           url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
+  //          }).then((response) => {
+  //          console.log('props props  response of get about userrrrrrrrrrr11111', response);
+  //          let _tempStatus=response.data.statusBar;
+  //           this.setState({
+  //               aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
+  //               aboutExpertiseActive:_tempStatus.aboutYourself.completed,
+  //               expertiseDate:_tempStatus.expertise.completedDate,
+  //               aboutPerspectiveActive:_tempStatus.expertise.completed,
+  //               perspectiveDate:_tempStatus.perspective.completedDate,
+  //               userRatingActive:_tempStatus.perspective.completed,
+  //               thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
+  //               loading:false,
+  //              })
+  //         })
+  //         .catch((error) => {
+  //           console.log('get project error', error);
+  //            this.setState({loading:false});
+  //         });
+  // }
+
   openPanel=()=>{
     this.refs.openPanel();
+    this.getUserData();
+    // if(this.state.userRatingCompleted){
+    //   this.props.history.push('/assignment');
+    // }
   }
+
   render() {
     if(this.state.loading){
       return <div>
@@ -132,8 +210,8 @@ export default class OnboardingDesignerForms extends Component {
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(248deg, #8776ff, #743afe)'
             borderRadius='4px'
-            active={true}
-           date={returnDate(this.state.aboutYourselfDate)}
+            active={this.state.aboutUserActive}
+            date={returnDate(this.state.aboutYourselfDate)}
             title={<span>1.<span className="title-padding">About yourself</span></span>}
             panelContent={(
               <AboutUser openPanel={()=>{this.openPanel()}}/>
@@ -143,7 +221,7 @@ export default class OnboardingDesignerForms extends Component {
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(248deg, #28e5c0 1%, #06c9a4)'
             borderRadius='4px'
-            active={true}
+            active={this.state.aboutExpertiseActive}
             date={returnDate(this.state.expertiseDate)}
             title={<span>2.<span className="title-padding">Your expertise</span></span>}
             panelContent={(
@@ -154,7 +232,7 @@ export default class OnboardingDesignerForms extends Component {
            openPanel={refs=>this.refs=refs}
             color=' linear-gradient(248deg, #d878ef, #c45edd)'
             borderRadius='4px'
-            active={true}
+            active={this.state.aboutPerspectiveActive}
             date={returnDate(this.state.perspectiveDate)}
             title={<span>3.<span className="title-padding">Your perspective</span></span>}
             panelContent={(
@@ -165,15 +243,17 @@ export default class OnboardingDesignerForms extends Component {
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(227deg, #ffb061, #ff9c39)'
             borderRadius='4px'
-            active={true}
+            active={this.state.userRatingActive}
             date={returnDate(this.state.thinkAboutYourselfDate)}
             title={<span>4.<span className="title-padding">How you think about yourself</span></span>}
             panelContent={(
-              <RatingUserself openPanel={()=>{this.openPanel()}}/>
+              <RatingUserself openPanel={()=>{this.setState({redirect:true});this.openPanel()}}/>
             )}
           />
-          <div><Tooltip/></div>
-          
+          <div>
+            <Tooltip
+              title="Right after you are done with these 4 steps, we'll share a assignment with you in next 48 hours."/>
+          </div>
         </div>
         <div className="title-content" style={{display:this.state.assignment_display}}>
            <OnboardAssignment/>

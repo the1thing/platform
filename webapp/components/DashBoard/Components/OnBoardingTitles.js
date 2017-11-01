@@ -37,6 +37,12 @@ export default class OnboardingTitles extends Component {
   openPanel=(e)=>{
     this.props.openPanel(this)
     if(this.props.active){
+      // this.setState({
+      //   panelClass:'active',
+      //   container_class:'Rectangle-3',
+      //   title_class:'-About-yourself',
+      //   plus_cursor:'pointer',
+      // });
       if(this.state.about_user_view){
         this.setState({
           plus_visiblity:'inline',
@@ -57,12 +63,12 @@ export default class OnboardingTitles extends Component {
   render() {
     return (
       <div>
-        <div className={this.state.container_class} style={{backgroundImage:this.props.color,borderRadius:this.props.borderRadius}} onClick={(e) => {this.openPanel(e)}}>
-          <div className={this.state.title_class}>{this.props.title}</div>
-          <div className={this.state.title_class} 
-               style={{ cursor: this.state.plus_cursor }} 
+        <div className={this.props.active ? 'Rectangle-3' : 'unactive-title'} style={{backgroundImage:this.props.active ? this.props.color : '',borderRadius:this.props.borderRadius}} onClick={(e) => {this.openPanel(e)}}>
+          <div className={this.props.active ? '-About-yourself' : '-Your-expertise'}>{this.props.title}</div>
+          <div className={this.props.active ? '-About-yourself' : '-Your-expertise'} 
+               style={{ cursor: this.props.active ? 'pointer' : 'not-allowed' }} 
                onClick={(e) => this.openPanel(e)}>
-               <div style={{display:'inline-flex'}} className="date-container">
+               <div className="date-container">
                  <div className='Done-Sep-29-740p'> {typeof this.props.date=='undefined'||this.props.date==''?'':'Done  , '+this.props.date}</div>
                  <div style={{marginLeft:'8px'}}>
                  {typeof this.props.date=='undefined'||this.props.date==''?'': <img src={require('../Images/done.svg')}/>}
@@ -78,7 +84,7 @@ export default class OnboardingTitles extends Component {
                </div>
          </div>
         </div>
-        <div className={this.state.panelClass}>
+        <div className={this.props.active ? 'active' : 'unactive'}>
           <Panel collapsible expanded={this.state.about_user_view}>
             {this.props.panelContent}
           </Panel>

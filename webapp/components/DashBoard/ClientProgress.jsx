@@ -91,19 +91,66 @@ export default class ClientProgress extends Component {
                        }
               }
       }
+      componentWillMount=()=> {
+          this.getClientStatus();
+       }
+      componentWillReceiveProps=(nextProps)=> {
+           console.log('%%%%%%%%%%%%%%%%%%%%%%%5---------------next props------------------',nextProps)
+          let gotProgressData=nextProps.setUserProgress
+          this.state.requirement.aboutProduct.completed=gotProgressData.aboutDesign;
+             this.state.requirement.aboutDesign.completed=gotProgressData.aboutDesign;
+             this.state.requirement.aboutTimeline.completed=gotProgressData.aboutTimeline;
+             this.state.requirement.aboutTimeline.completedDate=gotProgressData.aboutTimelineDate;
+             this.state.requirement.dateOfCompletion=gotProgressData.aboutTimelineDate;
+
+            if(!gotProgressData.aboutProduct)
+                {    this.state.requirement.completed.value=false,
+                     this.setState({
+                     requirement:this.state.requirement,
+                     loading:false,
+                     })
+                    
+                }
+              else if(!gotProgressData.aboutDesign)
+                {     this.state.requirement.completed.value=false,
+                     this.setState({
+                       requirement:this.state.requirement,
+                     })
+                    
+                }
+               else if(!gotProgressData.aboutTimeline)
+                {     this.state.requirement.completed.value=false,
+                     this.setState({
+                     requirement:this.state.requirement,
+                     })
+                    
+                } 
+               else{
+                    this.state.requirement.completed.value=true,
+                     this.setState({
+                     requirement:this.state.requirement,
+                     })
+               }
+           
+               this.setState({
+                    requirement:this.state.requirement,
+                    loading:false,
+                 })
+           setTimeout(()=>{this.checkRenderStaus()},5);
+      }
     checkRenderStaus=()=>{
-        console.log('--------------------------',this.state.requirement.aboutDesign.completed)
         if(!this.state.requirement.completed.value)
         {
-            this.updateRequirementState();
-            this.setState({
+             this.setState({
                 margin_bu8_proposal:"margin_bu8_subpart_completed",
                 check_proposal_nextpart:false,
              })
+            this.updateRequirementState();
          }
          else if(!this.state.proposal.completed.value)
          {  
              this.setState({
+                margin_bu8_proposal:"margin_bu8_subpart",
                 margin_bu8_requirement:"margin_bu8_subpart_completed",
                 check_proposal_nextpart:true,
                 check_design_nextpart:false,
@@ -114,6 +161,7 @@ export default class ClientProgress extends Component {
          else if(!this.state.design.completed.value)
          {
             this.setState({
+                margin_bu8_design:"margin_bu8_subpart",
                 check_proposal_nextpart:true,
                 check_design_nextpart:true,
                 margin_bu8_requirement:"margin_bu8_subpart_completed",
@@ -137,7 +185,6 @@ export default class ClientProgress extends Component {
             not_cross_aboutDesign:false,
             not_cross_aboutTimeline:false,
         })
-
         }
         else if(!this.state.requirement.aboutDesign.completed)
         {
@@ -189,21 +236,24 @@ export default class ClientProgress extends Component {
         }
     }
     
-    componentWillMount=()=> {
-          this.getClientStatus();
-       }
+   
      getClientStatus=()=>{
          this.setState({loading:true});
         axios({
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
-        }).then((response) => {
+           }).then((response) => {
+              console.log('get !!!!!!!!',response)
+         if(response.data!=null)
+              {
             this.state.requirement.dateOfCompletion=response.data.statusBar.timeline.completedDate;
             this.state.requirement.aboutProduct=response.data.statusBar.product;
             this.state.requirement.aboutDesign=response.data.statusBar.design;
             this.state.requirement.aboutTimeline=response.data.statusBar.timeline;
+
             if(!response.data.statusBar.product.completed)
-                {     this.state.requirement.completed.value=false,
+                {  
+                     this.state.requirement.completed.value=false,
                      this.setState({
                      requirement:this.state.requirement,
                      })
@@ -228,23 +278,20 @@ export default class ClientProgress extends Component {
                      this.setState({
                      requirement:this.state.requirement,
                      })
-               }          
-            this.setState({
-                requirement:this.state.requirement,
-                loading:false,
-            })
-
-            console.log('checkinggggggggg  get about product', response);
+               }    
+            }      
+             this.setState({
+                 requirement:this.state.requirement,
+                 loading:false,
+                })
         }).then(()=>{
             this.checkRenderStaus();
         })
         .catch((error) => {
-            console.log('get project error', error);
-             this.setState({loading:false});
+            this.setState({loading:false});
         });
     }
      renderRequirementStatus=()=>{
-         console.log("bbbbbbbbbb",this.state.not_cross_aboutDesign)
                      return(
                      <div>
                         <Row  className="margin_bu16">
@@ -303,7 +350,13 @@ export default class ClientProgress extends Component {
    )
 }
     render() {
-        console.log("ntcrappr",this.state.not_cross_approval)
+        if(this.state.loading){
+            return(
+                <div>
+                    loading...
+                </div>
+            )
+        }else{
         return (
             <Grid style={{width:'90%'}}>
               <Row className="margin_bu28" >
@@ -326,6 +379,6 @@ export default class ClientProgress extends Component {
               
             </Grid>
         )
-
+      }
     }
 }

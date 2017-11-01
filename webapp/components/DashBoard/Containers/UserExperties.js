@@ -5,7 +5,8 @@ import { AddButton } from '../Components/AddLink';
 import CheckBoxComp from '../Components/CheckBoxComp';
 import RadioBoxComp from '../Components/RadioBoxComp';
 import { getCheckBoxValue } from '../utils/Methods';
-import {basepath} from '../utils/constant';
+import { basepath } from '../utils/constant';
+import '../Styles/UserExperties.css';
 import axios from 'axios';
 
 let count = 0;
@@ -23,26 +24,26 @@ export default class UserExperties extends Component {
             platformsVisiblityError: 'hidden',
             checkboxList: ['Web App', 'Android App', 'iOS App', 'Responsive Web', 'Windows App',
                 'Mac App', 'Android wearable', 'VR/AR', 'Apple Watch'],
-            options:['Ecommerce', 'Social Network','Payments','News + Content',
-                            'IoT Analytics','Chatbots','OnDemand','Marketplace','Travel','Edu-tech',
-                            'Food-tech','Fin-tech','VR/AR','Health-tech','AI powered','Others'],    
+            options: ['Ecommerce', 'Social Network', 'Payments', 'News + Content',
+                'IoT Analytics', 'Chatbots', 'OnDemand', 'Marketplace', 'Travel', 'Edu-tech',
+                'Food-tech', 'Fin-tech', 'VR/AR', 'Health-tech', 'AI powered', 'Others'],
             //*******************************************//
-            domainArray:[{name:'',info:''}] ,
-            loading:false,  
-            domainError:false 
+            domainArray: [{ name: '', info: '' }],
+            loading: false,
+            domainError: false
         }
     }
     renderClass = () => {
-        
 
-        if (this.state.platforms.length>0 && (this.state.domainArray[0].name!='' && this.state.domainArray[0].info!='')) {
+
+        if (this.state.platforms.length > 0 && (this.state.domainArray[0].name != '' && this.state.domainArray[0].info != '')) {
             return "Rectangle-4"
         }
         else {
             return "button-block-class"
         }
     }
- removeDuplicates=(myArr, prop)=> {
+    removeDuplicates = (myArr, prop) => {
         return myArr.filter((obj, pos, arr) => {
             return arr.map(mapObj => mapObj[prop]).indexOf(obj[prop]) === pos;
         });
@@ -63,7 +64,7 @@ export default class UserExperties extends Component {
         //                         content: e.target.value,
         //                     })}/>
         // );
-         this.getExpertiseData();
+        this.getExpertiseData();
 
     }
     setStateMethod = (label, value) => {
@@ -72,43 +73,43 @@ export default class UserExperties extends Component {
         })
     }
 
-    
-    renderSelectionList = ()=>{
-        return this.state.domainArray.map((value,key)=>{
+
+    renderSelectionList = () => {
+        return this.state.domainArray.map((value, key) => {
             return <div>
-                    <Row>
-                        <Col md={1}><h4>{key+1}.</h4></Col>
-                        <Col md={11} style={{marginTop:'-6px'}}>
-                        
-                            <Selection
-                                optionList={this.state.options}
-                                defaultValue={this.state.domainArray[key].name}
-                                onChange={(e) => { this.handleButtonClick(e) }}    
-                                placeholder="Select your preferred domain"
-                                error={this.state.productTypeClass}
-                                onclick={(value)=>{
-                                    this.renderClass();
-                                    console.log(value);
-                                      this.state.domainArray[key].name=value;
-                                      this.setState({domainArray:this.state.domainArray,domainError:false})
-                                  }
-                                }
-                              />
-                              <textarea
-                               rows={3}
-                               value={this.state.domainArray[key].info}
-                               className={'about-link-textares'}  
-                               style={{ width: '100%' }}
-                               placeholder="Write all the modules in Social (if Social  is selected) you have worked upon. Ex - chronological feed about updates from friends/connections"
-                                onChange={(event)=>{
-                                      this.state.domainArray[key].info=event.target.value;
-                                      this.setState({domainArray:this.state.domainArray,domainError:false});
-                                      this.renderClass();
-                                }} />
-                        </Col>
-                    </Row>
-                          
-                     </div>
+                <Row>
+                    <Col md={1}><h4>{key + 1}.</h4></Col>
+                    <Col md={11} style={{ marginTop: '-6px' }}>
+
+                        <Selection
+                            optionList={this.state.options}
+                            defaultValue={this.state.domainArray[key].name}
+                            onChange={(e) => { this.handleButtonClick(e) }}
+                            placeholder="Select your preferred domain"
+                            error={this.state.productTypeClass}
+                            onclick={(value) => {
+                                this.renderClass();
+                                console.log(value);
+                                this.state.domainArray[key].name = value;
+                                this.setState({ domainArray: this.state.domainArray, domainError: false })
+                            }
+                            }
+                        />
+                        <textarea
+                            rows={3}
+                            value={this.state.domainArray[key].info}
+                            className={'about-link-textares'}
+                            style={{ width: '100%' }}
+                            placeholder="Write all the modules in Social (if Social  is selected) you have worked upon. Ex - chronological feed about updates from friends/connections"
+                            onChange={(event) => {
+                                this.state.domainArray[key].info = event.target.value;
+                                this.setState({ domainArray: this.state.domainArray, domainError: false });
+                                this.renderClass();
+                            }} />
+                    </Col>
+                </Row>
+
+            </div>
         })
         // let list = this.state.selectionList;
         // list = list.concat(
@@ -129,12 +130,11 @@ export default class UserExperties extends Component {
         // this.setStateMethod('selectionList', list)
     }
     handleAddButton = (e) => {
-        let len=this.state.domainArray.length;
-        if(this.state.domainArray[len-1].name!='' && this.state.domainArray[len-1].info!='')
-            {
-        this.state.domainArray.push({name:'',info:''});
-        this.setState({domainArray:this.state.domainArray})
-            }
+        let len = this.state.domainArray.length;
+        if (this.state.domainArray[len - 1].name != '' && this.state.domainArray[len - 1].info != '') {
+            this.state.domainArray.push({ name: '', info: '' });
+            this.setState({ domainArray: this.state.domainArray })
+        }
         // if (this.state.domain && this.state.content) {
         //     let list = this.state.selectionList;
         //     list = list.concat(
@@ -159,80 +159,80 @@ export default class UserExperties extends Component {
         //     this.setStateMethod('domainsClass',false)
         //     this.setStateMethod('domain','')
         //     this.setStateMethod('content','')
-            
+
         // }
     }
-      submitExpertise=()=>{
-          this.setState({loading:true});
-          let len=this.state.domainArray.length;
-        if(this.state.domainArray[len-1].name=='' && this.state.domainArray[len-1].info=='')
-            {
+    submitExpertise = () => {
+        this.setState({ loading: true });
+        let len = this.state.domainArray.length;
+        if (this.state.domainArray[len - 1].name == '' && this.state.domainArray[len - 1].info == '') {
             this.state.domainArray.pop();
-           this.setState({domainArray:this.state.domainArray})
-            }
+            this.setState({ domainArray: this.state.domainArray })
+        }
         //  let filterarr=this.removeDuplicates(this.state.domainArray,'info');
 
-          axios({
+        axios({
             method: 'put',
-            url: basepath + 'designer/addExpertigeForWorkspace' ,
+            url: basepath + 'designer/addExpertigeForWorkspace',
             data: {
-                expertisePlatform:this.state.platforms,
-                expertiseDomain:this.state.domainArray,
-                designerId:localStorage.getItem('userId'),
+                expertisePlatform: this.state.platforms,
+                expertiseDomain: this.state.domainArray,
+                designerId: localStorage.getItem('userId'),
             },
         })
             .then((response) => {
-                this.setState({loading:false});
-                console.log('------>>',response);
-            })
-            .then((
+                this.setState({ loading: false });
+                console.log('------>>', response);
+            }) 
+            .then((res)=>{
                 this.props.openPanel()
-            ))
+            })
             .catch((err) => {
                 console.log("about priduct error", err)
-                this.setState({loading:false});
+                this.setState({ loading: false });
             })
 
-      }
-    getExpertiseData=()=>{
-        this.setState({loading:true});
+    }
+    getExpertiseData = () => {
+        this.setState({ loading: true });
         axios({
-               method: 'get',
-               url: basepath + 'designer/getDesignerDetailsByStage/' + localStorage.getItem('userId')+'?stage=2',
-             }).then((response) => {
-                     console.log('=========>>>>> stage 2',response);
-                     this.setState({
-                            platforms:response.data.expertisePlatform,
-                            domainArray:(response.data==null||response.data.expertiseDomain.length>0)?response.data.expertiseDomain:[{name:'',info:''}],
-                            loading:false
-                     })
-                }).catch((error) => {
-                    console.log('get project error', error.response);
-                    this.setState({loading:false});
-                });
-              }
-        
-    goTo = () => {
-           let len=this.state.domainArray.length;
-        if(this.state.platforms.length==0)
-            {
-            this.setStateMethod('platformsVisiblityError', 'visible')                 
-            }
-        else if( this.state.domainArray[len-1].name==''){
-                   this.setState({
-                       domainError:true
-                   });
-             }     
-             else if( this.state.domainArray[len-1].info==''){
-                this.setState({
-                    domainError:true
-                });
-             }
-        else{
-                this.submitExpertise();
-            }
+            method: 'get',
+            url: basepath + 'designer/getDesignerDetailsByStage/' + localStorage.getItem('userId') + '?stage=2',
+        }).then((response) => {
+            console.log('=========>>>>> stage 2', response);
+            this.setState({
+                platforms: response.data.expertisePlatform,
+                domainArray: (response.data == null || response.data.expertiseDomain.length > 0) ? response.data.expertiseDomain : [{ name: '', info: '' }],
+                loading: false
+            })
+        }).catch((error) => {
+            console.log('get project error', error.response);
+            this.setState({ loading: false });
+        });
+    }
 
-        
+    goTo = () => {
+        let len = this.state.domainArray.length;
+        if (this.state.platforms.length == 0) {
+            document.getElementById('platforms').scrollIntoView();
+            this.setStateMethod('platformsVisiblityError', 'visible')
+        }
+        else if (this.state.domainArray[len - 1].name == '') {
+            document.getElementById('domains').scrollIntoView();
+            this.setState({
+                domainError: true
+            });
+        }
+        else if (this.state.domainArray[len - 1].info == '') {
+            this.setState({
+                domainError: true
+            });
+        }
+        else {
+            this.submitExpertise();
+        }
+
+
         // if(this.state.domains.length>1)
         // {
         //     this.state.domains.spl
@@ -246,19 +246,19 @@ export default class UserExperties extends Component {
         //         domains:this.state.domains,
         //     });
         // }
-        
+
         // if (this.state.platforms.length<1) {
         //     this.setStateMethod('platformsVisiblityError', 'visible')
         // }
         // else if (!this.state.content || !this.state.domain) {
         //     this.setStateMethod('domainsClass', true)
         // }
-        
+
         // else{
         //     this.submitExpertise();
         // }
-         
-        
+
+
     }
     setStateMethod = (label, value) => {
         this.setState({
@@ -271,8 +271,8 @@ export default class UserExperties extends Component {
                 return (
                     <CheckBoxComp
                         label={value}
-                        isChecked={this.state.platforms.indexOf(value)>=0}
-                        toggle={this.state.platforms.indexOf(value)>=0}
+                        isChecked={this.state.platforms.indexOf(value) >= 0}
+                        toggle={this.state.platforms.indexOf(value) >= 0}
                         checkboxOnClick={(e) => {
                             this.renderClass();
                             this.setStateMethod('platforms', getCheckBoxValue(e, this.state.platforms))
@@ -282,17 +282,15 @@ export default class UserExperties extends Component {
             })
         )
     }
-  
-    render() 
-    {
-        if(this.state.loading)
-            {
-                 return <div>loading...</div>
-            }
-            else return (
+
+    render() {
+        if (this.state.loading) {
+            return <div>loading ...</div>
+        }
+        else return (
             <div>
                 <div className="input-spacing-radio">
-                    <div className="form-label">
+                    <div className="form-label" id='platforms'>
                         Select your preferred platforms
                     </div>
                     <div className="subcomponent-spacing">
@@ -302,17 +300,17 @@ export default class UserExperties extends Component {
                         Please identify yourself
                     </div>
                 </div>
-                <div className="input-spacing">
-                    <div className="form-label">
+                <div className="input-spacing selection-content">
+                    <div className="form-label" id='domains'>
                         Select domain you worked upon
                     </div>
                     <div>
                         {this.renderSelectionList()}
-                        {<p style={{color:'#eb444c',marginLeft:'46px'}}>
-                            {this.state.domainError?'Please Select All values':""}
-                            </p>}
+                        {<p style={{ color: '#eb444c', marginLeft: '46px' }}>
+                            {this.state.domainError ? 'Please Select All values' : ""}
+                        </p>}
                         {/* {this.renderDomainArray()} */}
-                         {/* <SelectContent
+                        {/* <SelectContent
                             defaultValue=''
                            // textAreaDefaultValues={this.state.domains[0].content}
                             placeholder="Select your preferred domain"
@@ -329,14 +327,14 @@ export default class UserExperties extends Component {
                                 this.setStateMethod('domainsClass',false)}} />  */}
 
                     </div>
-                     {this.state.selectionList} 
+                    {this.state.selectionList}
                     <div>
                         <Row>
                             <Col md={1} style={{ padding: '0' }}>
                                 <div style={{ paddingLeft: '16px' }}>
                                     <div>
                                         <AddButton
-                                            disabledClass={this.state.domainArray[this.state.domainArray.length-1].name=='' || this.state.domainArray[this.state.domainArray.length-1].info=='' ?  true:false }
+                                            disabledClass={this.state.domainArray[this.state.domainArray.length - 1].name == '' || this.state.domainArray[this.state.domainArray.length - 1].info == '' ? true : false}
                                             onclick={(e) => { this.handleAddButton(e) }} />
                                     </div>
                                 </div>
@@ -350,13 +348,13 @@ export default class UserExperties extends Component {
                         </Row>
                     </div>
                 </div>
-                <button className={this.renderClass()} 
+                <button className={this.renderClass()}
                     onClick={() => this.goTo()}>
                     <span className="button-title">
-                    <span>NEXT</span>
-                        <span><img src={require('../Images/arrow-down.svg')}/></span>
+                        <span>NEXT</span>
+                        <span><img src={require('../Images/arrow-down.svg')} /></span>
                     </span>
-                
+
                 </button>
             </div>
         )
