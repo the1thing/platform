@@ -69,40 +69,40 @@ export default class OnboardingDesignerForms extends Component {
     axios({
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-           }).then((response) => {
+           })
+           .then((response)=>{
            console.log('response of get about userrrrrrrrrrr11111', response.data.statusBar);
-           let _tempStatus=response.data.statusBar;
+             let _tempStatus=response.data.statusBar;
             this.setState({
-                aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
-                aboutExpertiseActive:_tempStatus.aboutYourself.completed,
-                expertiseDate:_tempStatus.expertise.completedDate,
-                aboutPerspectiveActive:_tempStatus.expertise.completed,
-                perspectiveDate:_tempStatus.perspective.completedDate,
-                userRatingActive:_tempStatus.perspective.completed,
-                thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
-                loading:false,
-                aboutUserCompleted:_tempStatus.aboutYourself.completed,
-                expertiseCompleted:_tempStatus.expertise.completed,
-                perspectiveCompleted:_tempStatus.perspective.completed,
-                userRatingCompleted:_tempStatus.thinkAboutYourself.completed,
-                userRatingCompletedDate:_tempStatus.thinkAboutYourself.completedDate,
-                
-                
+                        aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
+                        aboutExpertiseActive:_tempStatus.aboutYourself.completed,
+                        expertiseDate:_tempStatus.expertise.completedDate,
+                        aboutPerspectiveActive:_tempStatus.expertise.completed,
+                        perspectiveDate:_tempStatus.perspective.completedDate,
+                        userRatingActive:_tempStatus.perspective.completed,
+                        thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
+                        loading:false,
+                        aboutUserCompleted:_tempStatus.aboutYourself.completed,
+                        expertiseCompleted:_tempStatus.expertise.completed,
+                        perspectiveCompleted:_tempStatus.perspective.completed,
+                        userRatingCompleted:_tempStatus.thinkAboutYourself.completed,
+                        userRatingCompletedDate:_tempStatus.thinkAboutYourself.completedDate,
+                        })
                })
-               let temp={
-                aboutUser:this.state.aboutUserCompleted,
-                aboutExpertise:this.state.expertiseCompleted,
-                aboutPerspective:this.state.perspectiveCompleted,
-                userRating:this.state.userRatingCompleted,
-                userRatingDate:this.state.userRatingCompletedDate
-              };
-               this.props.reloadProgress(temp);
-              // alert("hiii")
-              
-            }).then(()=>{
-              if(this.state.userRatingCompleted && this.state.redirect){
-                this.props.history.push('/assignment');
-              }
+               .then((res)=>{ 
+                      let temp={
+                      aboutUser:this.state.aboutUserCompleted,
+                      aboutExpertise:this.state.expertiseCompleted,
+                      aboutPerspective:this.state.perspectiveCompleted,
+                      userRating:this.state.userRatingCompleted,
+                      userRatingDate:this.state.userRatingCompletedDate
+                      };
+                  this.props.route.reloadProgress(temp);
+               })
+               .then((res)=>{
+                 if(this.state.userRatingCompleted && this.state.redirect){
+                   this.props.history.push('/assignment');
+                  }
               // this.props.reloadProgress(temp);
             }).catch((error) => {
             console.log('get project error', error);

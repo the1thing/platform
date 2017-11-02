@@ -82,7 +82,7 @@ export default class OnboardingMonochromeForms extends Component {
                   aboutTimeline:this.state.aboutTimelineCompleted,
                   aboutTimelineDate:this.state.timeline_date
                 };
-                 this.props.reloadProgress(temp);
+                 this.props.route.reloadProgress(temp);
             
             }
           else{

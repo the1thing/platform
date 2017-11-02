@@ -7,6 +7,7 @@ import Root from 'components/root.jsx';
 
 import claimAccountRoute from 'routes/route_claim.jsx';
 import mfaRoute from 'routes/route_mfa.jsx';
+import dashboardRoute from 'routes/route_dashboard.jsx';
 import createTeamRoute from 'routes/route_create_team.jsx';
 import teamRoute from 'routes/route_team.jsx';
 import helpRoute from 'routes/route_help.jsx';
@@ -169,7 +170,8 @@ export default {
                             )
                         },
                         teamRoute,
-                        mfaRoute
+                        mfaRoute,
+                        dashboardRoute
                     ]
                 )
             },

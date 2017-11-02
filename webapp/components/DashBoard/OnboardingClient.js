@@ -8,12 +8,15 @@ import OnboardManifesto from './OnboardManifesto'
 import OnboardAssignment from './OnboardAssignment'
 import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
+import { browserHistory, Route, Router } from 'react-router';
+import TeamButton from '../team_sidebar/components/team_button';
+
 // import MonochromeProposal from './Components/MonochromeProposal';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+// import {
+//   BrowserRouter as Router,
+//   Route,
+//   Link
+// } from 'react-router-dom'
 
 
 import './App.css';
@@ -40,24 +43,21 @@ class OnboardingClient extends Component {
         </div>
         <div className="dashboard-container">
           <div style={{ width: '65%', marginTop: '32px' }}>
-    
-            <Router>
-              <div>
-                <Route exact path='/'
-                  render={(props)=>{return <OnboardingMonochromeForms {...props} reloadProgress={(e)=>
-              this.setState({setUserProgress:e})
-              }/>}}/>
-                <Route path='/proposal' component={MonochromeProposal} />
-                {/* <Route path='/Design' component={Design}/> */}
-                {/* <Route path='/Feedback' component={Feedback}/> */}
-              </div>
-            </Router>
-          </div>
+          <Router>
+          <Route path='/'
+          component={OnboardingMonochromeForms}
+          reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
+          />
+          <Route  path='/proposal' component={MonochromeProposal} />
+          {/* <Route path='/Design' component={Design}/> */}
+          {/* <Route path='/Feedback' component={Feedback}/> */}
+          </Router>
+    </div>
           <div className="progressbar-container">
             <div className="progress-container">
               <ClientProgress setUserProgress={this.state.setUserProgress} />
             </div>
-               <QueryChat/>
+               <QueryChat setUserProgress={this.state.setUserProgress} />
            </div>
         </div>
         {/* very important      -------------   dont remove------- */}

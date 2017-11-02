@@ -21,15 +21,21 @@ export default class App extends Component {
          // new designer  bkxrfe5jhjgxjmer1suehk8dnc
          ///  new client  su3x1a3p83fnxy7ep7usbh9k6r
          //new designer aaf5yhz9pjbfjnabwsccctus5e
-        axios.get(basepath+'user/getUser/aaf5yhz9pjbfjnabwsccctus5e')
+         ///  client   bq9x35q5m7dmzc9ccozmrdjrye
+         /// client  5ukm6wohbjr1mkyj1y4uox6s4c
+         //  designer   3kfn9qyugtfqbed48qiqs6grxc
+         // des mnawartzcpraff5di1x33j6dnw
+         /// work space  http://staging.1thing.io/dashboard
+         // new designer   ferwodkzabgtucoi4bscd6hepw
+        axios.get(basepath+'user/getUser/ferwodkzabgtucoi4bscd6hepw')
         .then((resp)=>{
             this.setState({
                        userType:resp.data.data.userType,
                      })
                 localStorage.setItem('userName',resp.data.data.name);
                 localStorage.setItem('userId',resp.data.data._id);
+                localStorage.setItem('userType',resp.data.data.userType),
                 localStorage.setItem('signUpDate',resp.data.data.createdAt)
-                localStorage.setItem('designerProgressId','cnhn6y9osbraidjxyxjzcf9ryc')
            })
            .then((resp)=>{
             this.setState({

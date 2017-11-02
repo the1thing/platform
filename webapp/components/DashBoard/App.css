@@ -39,8 +39,7 @@
 
 .dashboard-switch-div {
   width: 87%;
-  padding-left: 13%;
-  border: 1px solid yellow; }
+  padding-left: 13%; }
 
 .view-container {
   font-family: 'EkMukta-Light';
@@ -52,7 +51,7 @@
   line-height: 36px; }
 
 .progress-container {
-  padding-left: 15%; }
+  padding-left: 33%; }
 
 ._header {
   width: 100%;

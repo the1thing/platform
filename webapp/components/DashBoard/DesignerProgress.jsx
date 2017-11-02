@@ -154,11 +154,11 @@ export default class DesignerProgress extends Component {
          this.setState({loading:true});
         axios({
             method: 'get',
-            url: basepath + 'user/getUser/'+localStorage.getItem('designerProgressId'),
+            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
         }).then((response) => {
-            console.log("darta--------->",response)
+            console.log("chhhhhhhhhhhhhhhh--------->",response)
             if(response.data!=null){
-            let _tempStatus=response.data.data.statusBar;
+            let _tempStatus=response.data.statusBar;
             this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
             this.state.onboarding.aboutYourself=_tempStatus.aboutYourself;
             this.state.onboarding.yourExpertise=_tempStatus.expertise;

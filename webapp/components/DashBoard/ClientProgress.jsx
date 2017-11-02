@@ -97,7 +97,7 @@ export default class ClientProgress extends Component {
       componentWillReceiveProps=(nextProps)=> {
            console.log('%%%%%%%%%%%%%%%%%%%%%%%5---------------next props------------------',nextProps)
           let gotProgressData=nextProps.setUserProgress
-          this.state.requirement.aboutProduct.completed=gotProgressData.aboutDesign;
+          this.state.requirement.aboutProduct.completed=gotProgressData.aboutProduct;
              this.state.requirement.aboutDesign.completed=gotProgressData.aboutDesign;
              this.state.requirement.aboutTimeline.completed=gotProgressData.aboutTimeline;
              this.state.requirement.aboutTimeline.completedDate=gotProgressData.aboutTimelineDate;
@@ -253,6 +253,8 @@ export default class ClientProgress extends Component {
 
             if(!response.data.statusBar.product.completed)
                 {  
+               alert('get data api cke if')
+                    
                      this.state.requirement.completed.value=false,
                      this.setState({
                      requirement:this.state.requirement,

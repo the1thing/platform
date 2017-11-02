@@ -9,11 +9,14 @@ import OnboardAssignment from './OnboardAssignment'
 import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
 import Tooltip from './Components/Tooltip';
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+import { browserHistory, Route, Router } from 'react-router';
+import TeamButton from '../team_sidebar/components/team_button';
+
+// import {
+//   BrowserRouter as Router,
+//   Route,
+//   Link
+// } from 'react-router-dom'
 
 
 import './App.css';
@@ -34,24 +37,28 @@ class OnboardingDesigner extends Component {
         </div>
         <div className="dashboard-container">
           <div style={{width:'65%',marginTop:'32px'}}>
-            <Router>
-              <div>
-              <Route exact path='/'
-                  render={(props)=>{return <OnboardingDesignerForms {...props} reloadProgress={(e)=>
-              this.setState({setUserProgress:e})
-              }/>}}/>
-                {/* <Route exact path='/' render={(props)=>{<OnboardingDesignerForms {...props} reloadProgress={(e)=>{this.setState({setUserProgress:e})}}/>}}/> */}
-                <Route path='/assignment' component={OnboardAssignment}/>
-                {/* <Route path='/Pricing&Bandwidth' component={Pricing & Bandwidth}/> */}
-                {/* <Route path='welcomeaboard' component={welcome aboard}/> */}
-              </div>
-            </Router>
+          <Router>
+          <div>
+          <Route 
+            path='/'
+            component={OnboardingDesignerForms}
+            reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
+            />
+              {/* render={(props)=>{return <OnboardingDesignerForms {...props} reloadProgress={(e)=>
+          this.setState({setUserProgress:e})
+          }/>}}/> */}
+            {/* <Route exact path='/' render={(props)=>{<OnboardingDesignerForms {...props} reloadProgress={(e)=>{this.setState({setUserProgress:e})}}/>}}/> */}
+            <Route path='/assignment' component={OnboardAssignment}/>
+            {/* <Route path='/Pricing&Bandwidth' component={Pricing & Bandwidth}/> */}
+            {/* <Route path='welcomeaboard' component={welcome aboard}/> */}
           </div>
+        </Router>
+      </div>
           <div  className="progressbar-container">
             <div className="progress-container">
               <DesignerProgress setUserProgress={this.state.setUserProgress}/>   
             </div>
-           <QueryChat/>
+           <QueryChat setUserProgress={this.state.setUserProgress}/>
           </div>
         </div>
       </div>

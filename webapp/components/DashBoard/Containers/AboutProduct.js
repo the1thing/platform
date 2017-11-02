@@ -139,12 +139,14 @@ export default class AboutProduct extends Component {
         })
             .then((response) => {
                 console.log('############123',response)
-                this.props.openPanel();
                 this.setState({edit:true})
                 if(this.state.apiMethode=='post')
                 {
                   localStorage.setItem('projectId', response.data.data._id)
                  }
+            })
+            .then((res)=>{
+                this.props.openPanel();
             })
             .catch((err) => {
                 console.log("about priduct error", err)

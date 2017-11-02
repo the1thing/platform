@@ -216,9 +216,12 @@ export default class UserPerspective extends Component {
                 designerId:localStorage.getItem('userId'),
             }
         }).then((response)=>{
-            this.props.openPanel()
             console.log("User Perspective Data---------->",response.data);
-        }).catch((error)=>{
+        })
+        .then((res)=>{
+            this.props.openPanel()
+        })
+        .catch((error)=>{
             console.log("User Perspective Error--------->",error)
         })
     }
