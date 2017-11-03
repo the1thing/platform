@@ -27,8 +27,15 @@ export default class App extends Component {
          // des mnawartzcpraff5di1x33j6dnw
          /// work space  http://staging.1thing.io/dashboard
          // new designer   ferwodkzabgtucoi4bscd6hepw
-        axios.get(basepath+'user/getUser/ferwodkzabgtucoi4bscd6hepw')
-        .then((resp)=>{
+         // new desi    31sa6oomb7b19m71us3ihgkbyr//izkfhkwfqfygzf9gu1aan9dc5o
+         // new clien  yco81a7iu7rrjy1cnfhi68wice
+         // client   ri3nod3nwtnpppous9xcbxmp7o\
+         //  designer   5euyqmk573bypj7ie3q9zmrecy
+         // client  3pimn5oa97y4zpsggk9dqjo3nc
+         // desig   f6xnc8b8fffwdnjbuz1fkwu8hr
+        axios.get(basepath+'user/getUser/f6xnc8b8fffwdnjbuz1fkwu8hr')
+         .then((resp)=>{
+            console.log('appapp@@@@@@@@@@@@',resp)
             this.setState({
                        userType:resp.data.data.userType,
                      })

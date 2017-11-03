@@ -215,15 +215,18 @@ export default class UserExperties extends Component {
         let len = this.state.domainArray.length;
         if (this.state.platforms.length == 0) {
             document.getElementById('platforms').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('platformsVisiblityError', 'visible')
         }
         else if (this.state.domainArray[len - 1].name == '') {
             document.getElementById('domains').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setState({
                 domainError: true
             });
         }
         else if (this.state.domainArray[len - 1].info == '') {
+            window.scrollBy(0, -100); 
             this.setState({
                 domainError: true
             });
@@ -306,7 +309,7 @@ export default class UserExperties extends Component {
                     </div>
                     <div>
                         {this.renderSelectionList()}
-                        {<p style={{ color: '#eb444c', marginLeft: '46px' }}>
+                        {<p style={{ color: '#eb444c', marginLeft: '52px' }} className="display-error">
                             {this.state.domainError ? 'Please Select All values' : ""}
                         </p>}
                         {/* {this.renderDomainArray()} */}

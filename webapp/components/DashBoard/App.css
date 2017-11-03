@@ -67,7 +67,8 @@
   text-align: left;
   color: #030303;
   padding-bottom: 32px;
-  padding-left: 12%; }
+  padding-left: 12%;
+  z-index: 999; }
 
 .Oval-2 {
   width: 24px;

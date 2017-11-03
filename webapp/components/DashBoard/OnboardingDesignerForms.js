@@ -161,6 +161,7 @@ export default class OnboardingDesignerForms extends Component {
         </div> 
         <div>
           <DesignerTitleMenu
+          title='Onboarding'
           getOnboarding={()=>{this.setState({
                                             onboarding_display:'block',
                                             assignment_display:'none',

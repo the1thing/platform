@@ -55,7 +55,6 @@ export class Selection extends Component {
         this.handleClick(e);
     }
     handleListClick = (value, key) => {
-        console.log("handle click", value, key)
         this.setState({
             selectedValue: value,
             toggleVisiblity: false,
@@ -64,7 +63,7 @@ export class Selection extends Component {
     }
     renderList = () => {
         return this.props.optionList.map((value, key) => {
-            return <li className="list" onClick={(e) => this.handleListClick(value, key)}>
+            return <li key={key} className="list" onClick={(e) => this.handleListClick(value, key)}>
                 {value}
             </li>
         })
@@ -173,7 +172,6 @@ export class SelectContent extends Component {
                             disableClick={this.props.disableClick}
                             defaultValue={this.props.defaultValue}
                             onclick={(value,key)=>this.props.onSelectionClick(value,key)} />
-                            {console.log("errrrrruuuuuuuuu",this.props.error)}
                         <textarea
                             rows={3}
                             readOnly={this.props.textAreaReadOnly}
@@ -273,7 +271,6 @@ export class SelectMultiple extends Component {
         this.handleClick(e);
     }
     handleListClick = (value, key) => {
-        console.log("check list11", value, key)
         this.state.optionList.splice(key, 1)
         let list = this.state.selectedList;
         list = list.concat(value);
@@ -282,17 +279,16 @@ export class SelectMultiple extends Component {
             selectedList: list,
             toggleVisiblity: false,
         });
-        console.log("check list33", this.state.selectedList[0])
-       this.props.onclick(value, key);
+        this.props.onclick(value, key);
     }
 
     handleRemoval = (value, key) => {
-        this.props.handleRemoval();
+        //this.props.handleRemoval();
         let list = this.state.optionList;
         let removeList = this.state.selectedList;
         list = list.concat(value);
         removeList.splice(key, 1);
-        console.log("check list---->", value, key, "kk", this.state.optionList, list)
+        this.props.handleRemoval(removeList);
         this.setState({
             optionList: list,
         });
@@ -304,7 +300,6 @@ export class SelectMultiple extends Component {
             })
 
         }
-        console.log("lllll", value.value, value.key)
     }
     renderSelectedList = () => {
         // if(this.props.defaultValue.length>0){
@@ -315,7 +310,6 @@ export class SelectMultiple extends Component {
         // }
         
         return this.state.selectedList.map((value, key) => {
-            console.log("check list22", value, key)
             return <div key={key} className="multiple-selection-button-container">
                 <div className="multiple-selection-button">
                     <span>{value}</span>
@@ -414,7 +408,6 @@ export class SelectMultipleBox extends Component {
         this.handleClick(e);
     }
     handleListClick = (value, key) => {
-        console.log("check list11", value, key);
         this.state.optionList.splice(key, 1)
         let list = this.state.selectedList;
         list = list.concat({
@@ -425,7 +418,6 @@ export class SelectMultipleBox extends Component {
             selectedList: list,
             toggleVisiblity: false,
         });
-        console.log("check list33", this.state.selectedList[0])
         this.props.onclick(value, key);
     }
     handleRemoval = (value, key) => {
@@ -434,7 +426,6 @@ export class SelectMultipleBox extends Component {
         let removeList = this.state.selectedList;
         list = list.concat(value);
         removeList.splice(key, 1);
-        console.log("check list---->", value, key, "kk", this.state.optionList, list)
         this.setState({
             optionList: list,
         });
@@ -446,11 +437,9 @@ export class SelectMultipleBox extends Component {
             })
 
         }
-        console.log("lllll", value.value, value.key)
     }
     renderSelectedList = () => {
         return this.state.selectedList.map((value, key) => {
-            console.log("check list22", value, key)
             return <div key={key} className="multiple-selection-button-container">
                 <div className="multiple-selection-button">
                     <span>{value.value}</span>
@@ -472,7 +461,6 @@ export class SelectMultipleBox extends Component {
 
         return (
             <div style={{ display: '-webkit-box', width: this.props.width }}>
-                {console.log("list", this.state.selectedList)}
                 {this.renderSelectedList()}
                 <div className='popover-container' onClick={this.handleClick} ref={node => { this.node = node; }}>
                     <div className={this.state.containerClass}>

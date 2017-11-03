@@ -10,7 +10,8 @@ import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
 import Tooltip from './Components/Tooltip';
 import { browserHistory, Route, Router } from 'react-router';
-import TeamButton from '../team_sidebar/components/team_button';
+// import TeamSidebar from '../team_sidebar/team_sidebar_controller.jsx';
+import TeamSidebar from '../team_sidebar/index';
 
 // import {
 //   BrowserRouter as Router,
@@ -30,6 +31,7 @@ class OnboardingDesigner extends Component {
   render() {
     return (
       <div>
+        <div className="dashboard-sidebar"><TeamSidebar/></div>
         <div className="_header">
           <DashboardHeader
            header_title1="ONBOARDING"
@@ -37,6 +39,7 @@ class OnboardingDesigner extends Component {
         </div>
         <div className="dashboard-container">
           <div style={{width:'65%',marginTop:'32px'}}>
+          <TeamSidebar/>
           <Router>
           <div>
           <Route 
@@ -44,10 +47,6 @@ class OnboardingDesigner extends Component {
             component={OnboardingDesignerForms}
             reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
             />
-              {/* render={(props)=>{return <OnboardingDesignerForms {...props} reloadProgress={(e)=>
-          this.setState({setUserProgress:e})
-          }/>}}/> */}
-            {/* <Route exact path='/' render={(props)=>{<OnboardingDesignerForms {...props} reloadProgress={(e)=>{this.setState({setUserProgress:e})}}/>}}/> */}
             <Route path='/assignment' component={OnboardAssignment}/>
             {/* <Route path='/Pricing&Bandwidth' component={Pricing & Bandwidth}/> */}
             {/* <Route path='welcomeaboard' component={welcome aboard}/> */}

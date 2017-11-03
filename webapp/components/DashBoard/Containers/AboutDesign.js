@@ -35,7 +35,7 @@ export default class AboutDesign extends Component {
         super(props);
         this.state = {
             platforms: [],
-            services: '',
+            services: 'b',
             objective: '',
             domains: '',
             addLink: [],
@@ -52,6 +52,7 @@ export default class AboutDesign extends Component {
             loading: false,
             edit: true,
             projectId: '',
+            documentErrorVisiblity:false,
         }
     }
     // componentWillMount = () => {
@@ -133,37 +134,56 @@ goTo=()=>{
     console.log("platform--->",this.state.platforms)
     if(this.state.platforms.length==0){
         document.getElementById('platforms').scrollIntoView();
+        window.scrollBy(0, -100); 
         this.setStateMethod('platformClass',true)
     }
     else if(!this.state.services){
         document.getElementById('services').scrollIntoView();
+        window.scrollBy(0, -100); 
         this.setStateMethod('servicesClass',true)
     
     }
     else if(!this.state.objective){
         document.getElementById('objective').scrollIntoView();
+        window.scrollBy(0, -100); 
         this.setStateMethod('objectiveClass',true)
     }
     else if(!this.state.addLink[0]){
-        if(validateUrl(this.state.document))
-        {
-           this.state.addLink.push(this.state.document)
-           this.postAboutDesignData();
-        }
-        else{
+        if(!this.state.document){
             this.setStateMethod('linkClass',true)
             document.getElementById('addLink').scrollIntoView();
-       }
+            window.scrollBy(0, -100); 
+        }
+        else{
+            if(validateUrl(this.state.document))
+            {
+                this.state.addLink.push(this.state.document)
+                this.postAboutDesignData();
+            }
+            else{
+                this.setStateMethod('documentErrorVisiblity',true)
+                document.getElementById('addLink').scrollIntoView();
+                window.scrollBy(0, -100); 
+            }
+        }
     }
     else{
-        if(validateUrl(this.state.document))
-        {
-           this.state.addLink.push(this.state.document)
-           this.postAboutDesignData();
+        if(this.state.document){
+            if(validateUrl(this.state.document))
+            {
+            this.state.addLink.push(this.state.document)
+            this.postAboutDesignData();
+            }
+            else{
+                this.setStateMethod('documentErrorVisiblity',true)
+                document.getElementById('addLink').scrollIntoView();
+                window.scrollBy(0, -100); 
+            }
         }
-       else{
-        this.postAboutDesignData();
-       }
+        else
+        {
+            this.postAboutDesignData();
+        }
        
       
      }
@@ -206,25 +226,30 @@ postAboutDesignData=(link_list)=>{
                     <SelectMultiple
                         width='100%'
                         placeholder="Platforms to design"
-                        handleRemoval={() => { this.setStateMethod('edit', false) }}
+                        handleRemoval={(list) => { 
+                            this.setStateMethod('edit', false) 
+                            this.setStateMethod('platforms',list)
+                            }}
                         defaultValue={this.state.platforms}
                         optionList={this.state.platformList}
                         error={this.state.platformClass}
                         onclick={(value, key) => {
-                            console.log('---------------', value)
-                            this.state.platforms.push(value);
-                            this.setStateMethod('platforms', this.state.platforms)
+                            let platform=[];
+                            platform=this.state.platforms;
+                            platform=platform.concat(value);
+                            this.setStateMethod('platforms', platform)
+                            this.setStateMethod('edit',false)
                         }} />
                 </div>
                 {/* ***************** selection dsign service  ***** */}
-                <div className="input-spacing" id='services'>
+                <div style={{display:'none'}} className="input-spacing" id='services'>
                     <Selection
                         defaultValue={this.state.services}
                         value={this.state.services}
                         onChange={(e) => { this.handleButtonClick(e) }}
                         placeholder="Design Services"
                         optionList={this.state.designList}
-                        error={this.state.productTypeClass}
+                        error={this.state.servicesClass}
                         onclick={(value, key) => {
                             this.setState({
                                 edit: false,
@@ -242,7 +267,7 @@ postAboutDesignData=(link_list)=>{
                         // onChange={(e) => { this.handleButtonClick(e) }}    
                         placeholder="Design Objective"
                         optionList={this.state.objectiveList}
-                        error={this.state.productTypeClass}
+                        error={this.state.objectiveClass}
                         onclick={(value, key) => {
                             this.setState({
                                 edit:false,
@@ -271,19 +296,21 @@ postAboutDesignData=(link_list)=>{
                     id='addLink'
                     defaultValue={this.state.addLink}
                     error={this.state.linkClass}
+                    errorLink={this.state.documentErrorVisiblity}
                     placeholder='Link(s) to references (apps/sites you like)'
                     onclick={(e) => {
                         this.setState({document:e.target.value})
-                        if(validateUrl(e.target.value)){
+                        //if(validateUrl(e.target.value)){
                             this.setState({
                                 edit:false,
+                                documentErrorVisiblity:false,
                             })
-                        }
-                        else{
-                            this.setState({
-                                edit:true,
-                            })
-                        }
+                        // }
+                        // else{
+                        //     this.setState({
+                        //         edit:true,
+                        //     })
+                        // }
                     }}
                     addAnotherLink={(e) => {
                         let list = this.state.addLink;

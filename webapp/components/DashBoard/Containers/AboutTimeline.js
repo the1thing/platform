@@ -125,14 +125,17 @@ export default class AboutTimeline extends Component {
     goTo = () => {
         if (!this.state.time) {
             document.getElementById('time').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('timeClass', true);
         }
         else if (!this.state.timeline) {
             document.getElementById('timeline').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('timelineClass', true)
         }
         else if (!this.state.budgetRange) {
             document.getElementById('budgetRange').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('budgetRangeClass', true)
         }
         else {
@@ -212,7 +215,7 @@ export default class AboutTimeline extends Component {
                         // onChange={(e) => { this.handleButtonClick(e) }}    
                         placeholder="Expected start time"
                         optionList={this.state.timeList}
-                        // error={this.state.productTypeClass}
+                        error={this.state.timeClass}
                         onclick={(value, key) => {
                             this.setState({
                                 time: value,
@@ -230,7 +233,7 @@ export default class AboutTimeline extends Component {
                         // onChange={(e) => { this.handleButtonClick(e) }}    
                         placeholder="Expected timeline"
                         optionList={this.state.timeLineList}
-                        // error={this.state.productTypeClass}
+                        error={this.state.timelineClass}
                         onclick={(value, key) => {
                             console.log('************', value);
                             this.setState({ timeline: value, edit: false, });

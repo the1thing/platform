@@ -73,7 +73,7 @@ export default class Dashboard extends Component {
       //  axios.get(basepath + 'user/getUser/'+uId)
       axios({
           method:'get',
-          url:basepath + 'user/getUser/'+'5ukm6wohbjr1mkyj1y4uox6s4c'
+          url:basepath + 'user/getUser/'+'pwgy5iddnfnw9edp7mdb966tke'
       })
             .then((resp) => {
                 console.log(resp.data.data.userType,'------------>',resp)
@@ -83,7 +83,7 @@ export default class Dashboard extends Component {
                 localStorage.setItem('userName', resp.data.data.name);
                 localStorage.setItem('userId', resp.data.data._id);
                 localStorage.setItem('projectDate', resp.data.data.createdAt)
-                localStorage.setItem('designerProgressId','5ukm6wohbjr1mkyj1y4uox6s4c')
+                localStorage.setItem('designerProgressId','pwgy5iddnfnw9edp7mdb966tke')
             })
             .catch((err) => {
                 console.log("errorrrrrrrrrrrrrrrr123", err)

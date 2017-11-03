@@ -38,10 +38,11 @@ let LinkWithTextArea = (props) => {
             <Col md={1} style={{ fontSize: '24px' }} className="about-link-textares">{props.no}.</Col>
             <Col md={11}>
                 <div>
-                    <input 
-                      value={props.input_value} style={{color:props.color}} onChange={props.onChangeTitile} className={props.linkClass ? "Error-link-input" : "link-input"} placeholder="http://product1.com" />
-                    <div style={{ display: props.visibility}} className='display-error'>
+                    <div style={{display:'flex'}}><input 
+                      value={props.input_value} style={{color:props.color,width:'70%'}} onChange={props.onChangeTitile} className={props.linkClass ? "Error-link-input" : "link-input"} placeholder="http://product1.com" />
+                    <div style={{ display: props.visibility,lineHeight:'35px'}} className='display-error'>
                         Please Enter Valid URL
+                    </div>
                     </div>
                     <textarea
                         value={props.area_value}
@@ -141,58 +142,72 @@ export default class UserPerspective extends Component {
     goTo = () => {
         if (!this.state.productTitle1) {
             document.getElementById('product1').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass1', true)
         }
         else if(!validateUrl(this.state.productTitle1)){
             document.getElementById('product1').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkVisiblityError1','block')
         }
         else if(!this.state.productContent1){
             document.getElementById('product1').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass1',true)
         }
         else if (!this.state.productTitle2) {
             document.getElementById('product2').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass2', true)
         }
         else if(!validateUrl(this.state.productTitle2)){
             document.getElementById('product2').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkVisiblityError2','block')
         }
         else if(!this.state.productContent2){
             document.getElementById('product2').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass2',true)
         }
         else if (!this.state.productTitle3) {
             document.getElementById('product3').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass3', true)
         }
         else if(!validateUrl(this.state.productTitle3)){
             document.getElementById('product3').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkVisiblityError3','block')
         }
         else if(!this.state.productContent3){
             document.getElementById('product3').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('linkClass3',true)
         }
         else if (!this.state.workSpace) {
             document.getElementById('workSpace').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('workSpaceVisiblityError', 'visible')
         }
         else if (!this.state.necessaryThings1) {
             document.getElementById('thing1').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('necessaryThings1Class', true)
         }
         else if (!this.state.necessaryThings2) {
             document.getElementById('thing2').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('necessaryThings2Class', true)
         }
         else if (!this.state.necessaryThings3) {
             document.getElementById('thing3').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('necessaryThings3Class', true)
         }
         else if(!this.state.userPersonality){
             document.getElementById('userPersonality').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setstateMethod('userPersonalityVisiblityError','visible')
         }
         else{

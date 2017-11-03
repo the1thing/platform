@@ -107,27 +107,33 @@ export default class AboutUser extends Component {
     goTo = () => {
         if (this.state.checkboxArray.length==0) {
             document.getElementById('id').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('idVisiblityError', 'visible');
         }
         else if (!this.state.linkdinLink) {
             document.getElementById('linkedin').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('linkdinLinkClass', true)
             this.setStateMethod('linkVisiblityError','hidden')
         }
         else if(!validateUrl(this.state.linkdinLink)){
             document.getElementById('linkedin').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('linkVisiblityError','visible')
         }
         else if (!this.state.workExperience) {
             document.getElementById('workExperience').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('workExperienceClass', true)
         }
         else if (!this.state.jobTiming) {
             document.getElementById('jobTiming').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('jobTimingError', 'visible')
         }
         else if (!this.state.availability) {
             document.getElementById('availability').scrollIntoView();
+            window.scrollBy(0, -100); 
             this.setStateMethod('availabilityClass', true)
         }
         else {

@@ -14,6 +14,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
+    console.log('-----------------',getTeams);
     return {
         actions: bindActionCreators({
             getTeams

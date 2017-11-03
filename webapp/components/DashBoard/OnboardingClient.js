@@ -9,7 +9,9 @@ import OnboardAssignment from './OnboardAssignment'
 import MonochromeProposal from './MonochromeProposal'
 import QueryChat from './Components/QueryChat';
 import { browserHistory, Route, Router } from 'react-router';
-import TeamButton from '../team_sidebar/components/team_button';
+// import TeamSidebar from '../team_sidebar/team_sidebar_controller';
+import TeamSidebar from '../team_sidebar/index';
+import Sidebar from '../sidebar.jsx';
 
 // import MonochromeProposal from './Components/MonochromeProposal';
 // import {
@@ -35,6 +37,7 @@ class OnboardingClient extends Component {
   render() {
     return (
       <div>
+        <div className='dashboard-sidebar'><TeamSidebar/></div>
         <div className="_header">
           <DashboardHeader
             header_title1="MONOCHROME"
@@ -60,11 +63,6 @@ class OnboardingClient extends Component {
                <QueryChat setUserProgress={this.state.setUserProgress} />
            </div>
         </div>
-        {/* very important      -------------   dont remove------- */}
-        {/* <div >
-               <img width='1260px' src={require('./Images/map.svg')} />
-            </div> */}
-
       </div>
     );
   }
