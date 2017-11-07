@@ -12,6 +12,8 @@ import { browserHistory, Route, Router } from 'react-router';
 // import TeamSidebar from '../team_sidebar/team_sidebar_controller';
 import TeamSidebar from '../team_sidebar/index';
 import Sidebar from '../sidebar.jsx';
+import ClientDesign from './ClientDesign';
+import ClientFeedback from './ClientFeedback';
 
 // import MonochromeProposal from './Components/MonochromeProposal';
 // import {
@@ -52,8 +54,8 @@ class OnboardingClient extends Component {
           reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
           />
           <Route  path='/proposal' component={MonochromeProposal} />
-          {/* <Route path='/Design' component={Design}/> */}
-          {/* <Route path='/Feedback' component={Feedback}/> */}
+          <Route path='/design' component={ClientDesign}/>
+          <Route path='/feedback' component={ClientFeedback}/>
           </Router>
     </div>
           <div className="progressbar-container">

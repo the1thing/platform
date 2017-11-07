@@ -8,7 +8,7 @@ const styles = {
     }
 }
 
-export default class MonochromeProposal extends Component {
+export default class ClientFeedback extends Component {
     componentWillMount() {
     console.log("gggggggggg",this.props.history)
   }
@@ -30,7 +30,7 @@ pushTOProposal=()=>{
             <div>
                 <div>
                     <ClientTitleMenu
-                    title='proposal'
+                    title='feedback'
                     pushPropsRequire={this.pushTORequire}
                     pushPropsProposal={this.pushTOProposal}
                     pushPropsDesign={this.pushToDesign}
@@ -39,7 +39,7 @@ pushTOProposal=()=>{
                   />
 
                 </div>
-                <div styles={styles.borders} className="assign_info_text">
+                {/* <div styles={styles.borders} className="assign_info_text">
                     <div> <img width='24px' height="24px" src={require('./Images/thumb_up.png')} /></div>
                     <div>
                         We have received your requirements and we are processing it.
@@ -61,7 +61,7 @@ pushTOProposal=()=>{
                             <span className="margin_left"> <img width='20px' height='20px' src={require('./Images/download-arrow.svg')} />Download Proposal</span>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div style={{ marginTop: '35px' }}>
                     <Tooltip
                         title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />

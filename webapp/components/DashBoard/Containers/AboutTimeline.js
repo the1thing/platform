@@ -31,8 +31,6 @@ export default class AboutTimeline extends Component {
         }
     }
     componentWillMount = () => {
-        //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userName'));
-        //console.log("getting uuuuuuuuuuuuuu",localStorage.getItem('userId'));
         this.getTimeLineData();
     }
     getTimeLineData = () => {
@@ -44,7 +42,6 @@ export default class AboutTimeline extends Component {
                 url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId') + '?stage=3',
             }).then((response) => {
 
-                //  console.log('get about timeline*********', response.data);
                 var _tempUserPropsal = response.data.userProposal;
                 this.setState({
                     time: _tempUserPropsal.startTime,
@@ -154,7 +151,6 @@ export default class AboutTimeline extends Component {
                         edit: true
                     })
                     this.props.openPanel()
-                    //  console.log("about timeLine",resp);
                 })
                 .catch((err) => {
                     console.log("about timeLine  error", err)
@@ -200,7 +196,9 @@ export default class AboutTimeline extends Component {
     render() {
         if (this.state.loading) {
             return (
-                <div>Loading....</div>
+                <div>
+                    {/* Loading.... */}
+                 </div>
             )
         }
         return (

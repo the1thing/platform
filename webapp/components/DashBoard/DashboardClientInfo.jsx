@@ -10,8 +10,8 @@ export default class DashboardClientInfo extends Component {
                 This is your space, here you can discuss & design your product with 1THING. For better understanding of 
                 your product you need to enter product details below
                 <img  width='24px' src={require('./Images/1f447.png')}/>  
-                so that we can understand product and find <span className="clickable_text">Right Design Team.</span><br/>
-               <div style={{marginTop:'8px'}}> If you have any query you can also talk to us, 1THING is<span className="clickable_text"> here</span> to guide you ahead.</div>
+                so that we can understand product and find <span onClick={()=>window.open("https://1thing.io/communication/right-design-team").location} className="clickable_text">Right Design Team.</span><br/>
+               <div style={{marginTop:'8px'}}> If you have any query you can also talk to us, 1THING is<span onClick={()=>window.open("https://workspace.1thing.io").location}  className="clickable_text"> here</span> to guide you ahead.</div>
                 </div>
             </div>
           </div>

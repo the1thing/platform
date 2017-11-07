@@ -9,56 +9,32 @@ const styles = {
 }
 
 export default class OnboardAssignment extends Component {
+    componentWillMount() {
+        
+           console.log("gggggggggg",this.props.history)
+   }
+pushToOnboarding=()=>{
+this.props.history.push('/')
+  }
+ pushToAssignment=()=>{
+    this.props.history.push('/assignment')
+  }
+ pushToPricing=()=>{
+  this.props.history.push('/pricing')
+}
+pushToAboard=()=>{
+ this.props.history.push('/aboard')
+}
     render() {
         return (
             <div >
                 <div>
                     <DesignerTitleMenu
                         title="assignment"
-                        getOnboarding={() => {
-                            this.setState({
-                                onboarding_display: 'block',
-                                assignment_display: 'none',
-                                pricing_bandwidth_display: 'none',
-                                welAboard_display: 'none',
-                                manifesto_display: 'block',
-                                designer_info_display: 'block',
-
-                            })
-                        }}
-                        getAssignment={() => {
-                            this.setState({
-                                onboarding_display: 'none',
-                                assignment_display: 'block',
-                                pricing_bandwidth_display: 'none',
-                                welAboard_display: 'none',
-                                manifesto_display: 'none',
-                                designer_info_display: 'none',
-
-                            })
-                        }}
-                        getPricing_bandwidth={() => {
-                            this.setState({
-                                onboarding_display: 'none',
-                                assignment_display: 'none',
-                                pricing_bandwidth_display: 'block',
-                                welAboard_display: 'none',
-                                manifesto_display: 'none',
-                                designer_info_display: 'none',
-
-                            })
-                        }}
-                        getWelAboard={() => {
-                            this.setState({
-                                onboarding_display: 'none',
-                                assignment_display: 'none',
-                                pricing_bandwidth_display: 'none',
-                                welAboard_display: 'block',
-                                manifesto_display: 'none',
-                                designer_info_display: 'none',
-
-                            })
-                        }}
+                        pushPropsOnboarding={this.pushToOnboarding}
+                        pushPropsAssignment={this.pushToAssignment}
+                        pushPropsPricing={this.pushToPricing}
+                        pushPropsAboard={this.pushToAboard} 
                     />
                 </div>
                 <div styles={styles.borders} className="assign_info_text">

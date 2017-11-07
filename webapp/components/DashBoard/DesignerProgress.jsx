@@ -99,7 +99,6 @@ export default class DesignerProgress extends Component {
       }
       
       componentWillReceiveProps=(nextProps)=> {
-          console.log('%%%%%%%%%%%%%%%%%%%%%%%5---------------next props------------------',nextProps)
           let gotProgressData=nextProps.setUserProgress
             if(!gotProgressData.aboutUser)
                 {     this.state.onboarding.completed.value=false,
@@ -156,7 +155,6 @@ export default class DesignerProgress extends Component {
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
         }).then((response) => {
-            console.log("chhhhhhhhhhhhhhhh--------->",response)
             if(response.data!=null){
             let _tempStatus=response.data.statusBar;
             this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
@@ -388,10 +386,10 @@ export default class DesignerProgress extends Component {
 }
     render() {
         if(this.state.loading){
-            return(
+            return (
                 <div>
-                    loading...
-                </div>
+                    {/* Loading ... */}
+              </div>
             )
         }
        else  return (

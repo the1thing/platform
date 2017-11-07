@@ -75,9 +75,7 @@ export default class AboutDesign extends Component {
         method: 'get',
         url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId') +'?stage=2',
         }).then((response) => {
-        console.log("about design response",response)
         var _response=response.data;
-        console.log('get about design response********', response.data);
         var _tempUserPropsal=response.data.userProposal;
         //designServices  designObjective
         this.setState({
@@ -90,7 +88,6 @@ export default class AboutDesign extends Component {
            
       })
       .then((res)=>{
-        console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
         
         this.setState({
            
@@ -100,8 +97,6 @@ export default class AboutDesign extends Component {
             objective:this.state.objective,
             loading:false,
         })
-        console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
-        
       })
        .catch((error) => {
           console.log('get project error stage 2', error.response);
@@ -110,7 +105,6 @@ export default class AboutDesign extends Component {
            })
         });
       }
-     console.log("design-----%%%%%%%%%-------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)
 }
 
  renderClass = () => {
@@ -207,7 +201,6 @@ postAboutDesignData=(link_list)=>{
         })
         this.props.openPanel();
         // window.location.reload();
-        console.log("about design---------->",resp);
     })
     .catch((err)=>{
         console.log("about design  error",err)
@@ -216,7 +209,9 @@ postAboutDesignData=(link_list)=>{
 
     render() {
         if (this.state.loading) {
-            return <div>loading</div>
+            return( <div>
+                {/* loading... */}
+                </div>)
         }
         else return (
             <div>{console.log("design------------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)}

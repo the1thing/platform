@@ -41,7 +41,6 @@ export default class RatingUserself extends Component {
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=4',
         }).then((response) => {
-           console.log('response of get rating Of userssssssss', response)
             this.setState({
                 designQuality:response.data.about1thing,
                 useToolQuality:response.data.rating.tools,
@@ -53,7 +52,6 @@ export default class RatingUserself extends Component {
                })
         
         }).catch((error) => {
-            console.log('get project error', error.response);
                     this.setState({loading:false});
 
         });
@@ -78,7 +76,6 @@ export default class RatingUserself extends Component {
         })
         .then((resp)=>{
             this.props.openPanel()
-            console.log("about put rating---------->",resp);
         })
         .catch((err)=>{
             console.log("about put rating  error",err)
@@ -234,7 +231,9 @@ export default class RatingUserself extends Component {
     }
     render() {
         if(this.state.loading){
-            return <div>loading ...</div>
+            return ( <div>
+                {/* loading ... */}
+                </div>)
         }
         else return (
             <div>

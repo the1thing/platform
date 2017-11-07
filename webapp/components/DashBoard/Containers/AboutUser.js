@@ -52,7 +52,6 @@ export default class AboutUser extends Component {
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
            }).then((response) => {
-           console.log('response of get about userrrrrrrrrrr', response)
             this.setState({
                 linkdinLink:response.data.linkedinProfile,
                 workExperience:response.data.workExperience,
@@ -95,7 +94,6 @@ export default class AboutUser extends Component {
         })
         .then((resp)=>{
             //this.props.openPanel()
-            console.log("about design---------->",resp);
         }).then(()=>{
             this.props.openPanel()
             
@@ -159,7 +157,10 @@ export default class AboutUser extends Component {
     }
     render() {
         if(this.state.loader){
-          return <div>loading...</div>
+          return (<div>
+              {/* loading... */}
+              </div>
+          )
         }
         else{
         return (

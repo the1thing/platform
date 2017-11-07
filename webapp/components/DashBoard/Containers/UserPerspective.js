@@ -102,7 +102,6 @@ export default class UserPerspective extends Component {
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=3',
         }).then((response) => {
             let threeThing=response.data.necessaryThing.things.split(',');
-           console.log('response of get perspectiveeeeee', response)
             this.setState({
                 productTitle1:response.data.work.product1,
                 productContent1:response.data.work.info1,
@@ -231,7 +230,7 @@ export default class UserPerspective extends Component {
                 designerId:localStorage.getItem('userId'),
             }
         }).then((response)=>{
-            console.log("User Perspective Data---------->",response.data);
+            console.log("User Perspective Data---------->");
         })
         .then((res)=>{
             this.props.openPanel()
@@ -242,7 +241,10 @@ export default class UserPerspective extends Component {
     }
     render() {
         if(this.state.loader){
-            return <div> loading ...</div>;
+            return ( <div> 
+                         {/* loading ... */}
+                   </div>
+                )
         }
         else 
         return (

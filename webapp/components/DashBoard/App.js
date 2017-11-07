@@ -33,9 +33,8 @@ export default class App extends Component {
          //  designer   5euyqmk573bypj7ie3q9zmrecy
          // client  3pimn5oa97y4zpsggk9dqjo3nc
          // desig   f6xnc8b8fffwdnjbuz1fkwu8hr
-        axios.get(basepath+'user/getUser/f6xnc8b8fffwdnjbuz1fkwu8hr')
+        axios.get(basepath+'user/getUser/3pimn5oa97y4zpsggk9dqjo3nc')
          .then((resp)=>{
-            console.log('appapp@@@@@@@@@@@@',resp)
             this.setState({
                        userType:resp.data.data.userType,
                      })
@@ -64,7 +63,7 @@ export default class App extends Component {
         if(this.state.loader){
             return(
                 <div>
-                    loading ....
+                    {/* loading .... */}
                 </div>
             )
         }
@@ -74,7 +73,6 @@ export default class App extends Component {
         return (
             <div>
                 <OnboardingClient/>
-                 {/* <OnboardingDesigner/>  */}
             </div>
         )
     }
@@ -82,7 +80,6 @@ export default class App extends Component {
         return (
             <div>
                 <OnboardingDesigner/>
-                {/* <OnboardingClient/> */}
             </div>
         )
     }

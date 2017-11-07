@@ -61,8 +61,8 @@ export default class OnboardingMonochromeForms extends Component {
          }
         ).then((response)=>{
           var _response=response.data.statusBar;
-            console.log('1111111111111111111',response);
             if(response.data._id){
+              console.log("client api data--->",response)
               localStorage.setItem('projectId',response.data._id)
               this.setState({
                 projectId:response.data._id,
@@ -82,8 +82,8 @@ export default class OnboardingMonochromeForms extends Component {
                   aboutTimeline:this.state.aboutTimelineCompleted,
                   aboutTimelineDate:this.state.timeline_date
                 };
+                //  this.props.reloadProgress(temp);
                  this.props.route.reloadProgress(temp);
-            
             }
           else{
             this.setState({
@@ -94,16 +94,29 @@ export default class OnboardingMonochromeForms extends Component {
           if(this.state.aboutTimelineCompleted && this.state.redirect){
             this.props.history.push('/proposal');
           }
-        }).catch((error)=>{console.log('error',error)
+        }).catch((error)=>{
+          console.log('error',error)
            this.setState({loading:false})
       });
+  }
+  pushTORequire=(push_argu)=>{
+                   this.props.history.push('/')
+      }
+pushTOProposal=()=>{
+        this.props.history.push('/proposal')
+    }
+  pushToDesign=()=>{
+    this.props.history.push('/design')
+  }
+  pushTOFeeddback=()=>{
+    this.props.history.push('/feedback')
   }
   render() {
     if (this.state.loading) {
       return (
         <div>
-          loading ....
-      </div>
+            {/* loading ... */}
+       </div>
       )
     }
     else {
@@ -113,51 +126,14 @@ export default class OnboardingMonochromeForms extends Component {
             <DashboardClientInfo />
           </div>
             <ClientTitleMenu
-              title="Requirements"
-              getRequirement={() => {
-                this.setState({
-                  requirement_display: 'block',
-                  proposal_display: 'none',
-                  design_display: 'none',
-                  feedback_display: 'none',
-                  manifesto_display: 'block',
-                  client_info_display: 'block',
+                title='requirement'
+                pushPropsRequire={this.pushTORequire}
+                pushPropsProposal={this.pushTOProposal}
+                pushPropsDesign={this.pushToDesign}
+                pushPropsFeeddback={this.pushTOFeeddback} 
 
-                })
-              }}
-              getProposal={() => {
-                this.setState({
-                  requirement_display: 'none',
-                  proposal_display: 'block',
-                  design_display: 'none',
-                  feedback_display: 'none',
-                  manifesto_display: 'none',
-                  client_info_display: 'none',
+              
 
-                })
-              }}
-              getDesign={() => {
-                this.setState({
-                  requirement_display: 'none',
-                  proposal_display: 'none',
-                  design_display: 'block',
-                  feedback_display: 'none',
-                  manifesto_display: 'none',
-                  client_info_display: 'none',
-
-                })
-              }}
-              getFeedback={() => {
-                this.setState({
-                  requirement_display: 'none',
-                  proposal_display: 'none',
-                  design_display: 'none',
-                  feedback_display: 'block',
-                  manifesto_display: 'none',
-                  client_info_display: 'none',
-
-                })
-              }}
             />
           <div style={{ display: this.state.requirement_display }} className="title-content">
             <div className="Onboarding-content-f">

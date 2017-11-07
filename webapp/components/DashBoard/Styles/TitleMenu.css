@@ -40,3 +40,33 @@
   background-position: center;
   background-size: cover;
   margin-top: 7px; }
+
+.cross_menu_img {
+  background: url("../Images/close.svg");
+  height: 18px;
+  width: 18px;
+  background-position: center;
+  background-size: cover;
+  margin-top: 7px; }
+
+.unselected_menu {
+  font-family: EkMukta-Regular;
+  font-size: 18px;
+  height: 54px;
+  letter-spacing: 2.3px;
+  text-align: left;
+  color: #7f7f7f;
+  padding-right: 32px;
+  padding: 15px; }
+
+.unselected_menu:hover {
+  color: #36cb3b;
+  cursor: pointer; }
+
+.selected_menu_class {
+  font-family: EkMukta-Regular;
+  font-size: 24px;
+  letter-spacing: 3px;
+  text-align: left;
+  color: #ffbc00;
+  padding: 10px 20px 10px 5px; }

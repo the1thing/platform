@@ -54,6 +54,7 @@ export default class Dashboard extends Component {
         super(props);
         this.state = {
             userType: '',
+            loader:false,
         }
     }
     getCookie=(name)=> {
@@ -64,6 +65,9 @@ export default class Dashboard extends Component {
     }
 
     componentWillMount() {
+        this.setState({
+            loader:true,
+        })
         let uId=this.getCookie('MMUSERID');
        // console.log('----->',uId)
         // k5iu4qh1kfy1iyft4dh7gwus3r  designer
@@ -71,50 +75,62 @@ export default class Dashboard extends Component {
         // axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //client
          //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
       //  axios.get(basepath + 'user/getUser/'+uId)
+      //designer aaf5yhz9pjbfjnabwsccctus5e
       axios({
           method:'get',
-          url:basepath + 'user/getUser/'+'pwgy5iddnfnw9edp7mdb966tke'
+          url:basepath + 'user/getUser/'+'aaf5yhz9pjbfjnabwsccctus5e'
       })
             .then((resp) => {
-                console.log(resp.data.data.userType,'------------>',resp)
+                console.log(resp.data.data.userType,'api data------------>',resp)
                 this.setState({
                     userType: resp.data.data.userType,
                 })
                 localStorage.setItem('userName', resp.data.data.name);
                 localStorage.setItem('userId', resp.data.data._id);
                 localStorage.setItem('projectDate', resp.data.data.createdAt)
-                localStorage.setItem('designerProgressId','pwgy5iddnfnw9edp7mdb966tke')
+                localStorage.setItem('signUpDate',resp.data.data.createdAt)
+                this.setState({
+                    loader:false,
+                })
             })
             .catch((err) => {
+                this.setState({
+                    loader:false,
+                })
                 console.log("errorrrrrrrrrrrrrrrr123", err)
             })
     }
 
     render() {
-        if (this.state.userType == 'client') {
-            return (
-                <div>
-                    <OnboardingClient />
-                    {/* <OnboardingDesigner/>  */}
-                </div>
-            )
+        if(this.state.loader){
+         return <div>loader</div>   
         }
-        else if (this.state.userType == 'designer') {
-            return (
-                <div>
-                    {/* <OnboardingClient /> */}
-                     <OnboardingDesigner/>  
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    {/* {<OnboardingClient/>  } */}
-                    You have no workspace. Please start Afresh.
-               {/* <OnboardingDesigner/>    */}
-                </div>
-            )
+        else{
+            if (this.state.userType == 'client') {
+                return (
+                    <div>
+                        <OnboardingClient />
+                        {/* <OnboardingDesigner/>  */}
+                    </div>
+                )
+            }
+            else if (this.state.userType == 'designer') {
+                return (
+                    <div>
+                        {/* <OnboardingClient /> */}
+                        <OnboardingDesigner/>  
+                    </div>
+                )
+            }
+            else {
+                return (
+                    <div>
+                        {/* {<OnboardingClient/>  } */}
+                        You have no workspace. Please start Afresh.
+                {/* <OnboardingDesigner/>    */}
+                    </div>
+                )
+            }
         }
     }
 }

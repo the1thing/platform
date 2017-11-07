@@ -64,6 +64,7 @@ export default class OnboardingDesignerForms extends Component {
   componentWillMount() {
     this.setState({loading:true});
     this.getUserData();
+    console.log("checkoing hostory props",this.props.history)
   }
   getUserData=()=>{
     axios({
@@ -71,7 +72,6 @@ export default class OnboardingDesignerForms extends Component {
             url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
            })
            .then((response)=>{
-           console.log('response of get about userrrrrrrrrrr11111', response.data.statusBar);
              let _tempStatus=response.data.statusBar;
             this.setState({
                         aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
@@ -97,6 +97,7 @@ export default class OnboardingDesignerForms extends Component {
                       userRating:this.state.userRatingCompleted,
                       userRatingDate:this.state.userRatingCompletedDate
                       };
+                  // this.props.reloadProgress(temp);
                   this.props.route.reloadProgress(temp);
                })
                .then((res)=>{
@@ -147,12 +148,25 @@ export default class OnboardingDesignerForms extends Component {
     //   this.props.history.push('/assignment');
     // }
   }
-
+  pushToOnboarding=()=>{
+    this.props.history.push('/')
+  }
+  pushToAssignment=()=>{
+    this.props.history.push('/assignment')
+  }
+ pushToPricing=()=>{
+  this.props.history.push('/pricing')
+}
+pushToAboard=()=>{
+ this.props.history.push('/aboard')
+}
   render() {
     if(this.state.loading){
-      return <div>
-        loading...
-      </div>
+      return (
+                <div>
+                    {/* Loading ... */}
+              </div>
+            )
     }
     else   return (
       <div>
@@ -161,43 +175,11 @@ export default class OnboardingDesignerForms extends Component {
         </div> 
         <div>
           <DesignerTitleMenu
-          title='Onboarding'
-          getOnboarding={()=>{this.setState({
-                                            onboarding_display:'block',
-                                            assignment_display:'none',
-                                            pricing_bandwidth_display:'none',
-                                            welAboard_display:'none',
-                                            manifesto_display:'block',
-                                            designer_info_display:'block',
-                                            
-                                            })}}
-          getAssignment={()=>{this.setState({
-                                            onboarding_display:'none',
-                                            assignment_display:'block',
-                                            pricing_bandwidth_display:'none',
-                                            welAboard_display:'none',
-                                            manifesto_display:'none',
-                                            designer_info_display:'none',
-                                            
-                                                })}}
-          getPricing_bandwidth={()=>{this.setState({
-                                            onboarding_display:'none',
-                                            assignment_display:'none',
-                                            pricing_bandwidth_display:'block',
-                                            welAboard_display:'none',
-                                            manifesto_display:'none',
-                                            designer_info_display:'none',
-                                            
-                                              })}}
-          getWelAboard={()=>{this.setState({
-                                           onboarding_display:'none',
-                                            assignment_display:'none',
-                                            pricing_bandwidth_display:'none',
-                                            welAboard_display:'block',
-                                            manifesto_display:'none',
-                                            designer_info_display:'none',
-                                            
-                                           })}}
+          title='onboarding'
+          pushPropsOnboarding={this.pushToOnboarding}
+          pushPropsAssignment={this.pushToAssignment}
+          pushPropsPricing={this.pushToPricing}
+          pushPropsAboard={this.pushToAboard} 
           />
         </div>
        
@@ -256,9 +238,9 @@ export default class OnboardingDesignerForms extends Component {
               title="Right after you are done with these 4 steps, we'll share a assignment with you in next 48 hours."/>
           </div>
         </div>
-        <div className="title-content" style={{display:this.state.assignment_display}}>
+        {/* <div className="title-content" style={{display:this.state.assignment_display}}>
            <OnboardAssignment/>
-         </div>
+         </div> */}
         {/* very important      -------------   dont remove------- */}
 
         {/* <div className="title-content" style={{display:this.state.manifesto_display}}>

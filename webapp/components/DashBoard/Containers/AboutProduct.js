@@ -78,7 +78,6 @@ export default class AboutProduct extends Component {
         localStorage.getItem("userId")
     })
       .then(response => {
-        console.log("---------------------***********", response.data);
         if (response.data == null) {
           this.setState({
             checkProjectId: "",
@@ -121,7 +120,6 @@ export default class AboutProduct extends Component {
         "?stage=1"
     })
       .then(response => {
-        console.log("response of get about product&&&&&&&&&&", response);
         this.setState({
           productName: response.data.name,
           productType: response.data.projectType.projectType,
@@ -170,7 +168,6 @@ export default class AboutProduct extends Component {
       }
     })
       .then(response => {
-        console.log("############123", response);
         this.setState({ edit: true });
         if (this.state.apiMethode == "post") {
           localStorage.setItem("projectId", response.data.data._id);
@@ -185,11 +182,6 @@ export default class AboutProduct extends Component {
   };
 
   goTo = () => {
-    console.log(
-      "my-list--------->",
-      this.state.document,
-      this.state.scopeDocument
-    );
     if (!this.state.productName) {
       document
         .getElementById("productName")
@@ -303,7 +295,6 @@ export default class AboutProduct extends Component {
     this.getSatgeOfProduct(e);
   };
   handleListClick = (value, key) => {
-    console.log("handle click", value, key);
     this.setState({
       selectedValue: value,
       toggleVisiblity: false
@@ -323,7 +314,9 @@ export default class AboutProduct extends Component {
 
   render() {
     if (this.state.loading) {
-      return <div>loading</div>;
+      return (<div>
+                  {/* loading */}
+         </div>)
     } else
       return (
         <div>

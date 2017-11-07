@@ -89,7 +89,6 @@ export default class UserExperties extends Component {
                             error={this.state.productTypeClass}
                             onclick={(value) => {
                                 this.renderClass();
-                                console.log(value);
                                 this.state.domainArray[key].name = value;
                                 this.setState({ domainArray: this.state.domainArray, domainError: false })
                             }
@@ -182,13 +181,11 @@ export default class UserExperties extends Component {
         })
             .then((response) => {
                 this.setState({ loading: false });
-                console.log('------>>', response);
             }) 
             .then((res)=>{
                 this.props.openPanel()
             })
             .catch((err) => {
-                console.log("about priduct error", err)
                 this.setState({ loading: false });
             })
 
@@ -199,7 +196,6 @@ export default class UserExperties extends Component {
             method: 'get',
             url: basepath + 'designer/getDesignerDetailsByStage/' + localStorage.getItem('userId') + '?stage=2',
         }).then((response) => {
-            console.log('=========>>>>> stage 2', response);
             this.setState({
                 platforms: response.data.expertisePlatform,
                 domainArray: (response.data == null || response.data.expertiseDomain.length > 0) ? response.data.expertiseDomain : [{ name: '', info: '' }],
@@ -288,7 +284,10 @@ export default class UserExperties extends Component {
 
     render() {
         if (this.state.loading) {
-            return <div>loading ...</div>
+            return (<div>
+                {/* loading ... */}
+                </div>
+                )
         }
         else return (
             <div>

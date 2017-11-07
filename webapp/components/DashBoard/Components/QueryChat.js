@@ -47,7 +47,6 @@ export default class QueryChat extends Component {
           })
         if(localStorage.getItem('userType')=='designer')
         {
-          console.log(" designerqqqqqqqq@@@@@@@@@@@",nextProps)
           let check_query=nextProps.setUserProgress;
           if(!check_query.aboutUser)
           {
@@ -100,7 +99,6 @@ export default class QueryChat extends Component {
         }
       else if(localStorage.getItem('userType')=='client')
           {
-             console.log("clientqqqqqqqq@@@@@@@@@@@",nextProps)
              let check_query=nextProps.setUserProgress;
              if(!check_query.aboutProduct)
              {    
@@ -149,7 +147,6 @@ export default class QueryChat extends Component {
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
           }).then((response) => {
-            console.log("client statusBar ~~~~ ~~~~~--------->",response)
             if(response.data==null){
                 this.setState({
                    message1:false,
@@ -161,7 +158,7 @@ export default class QueryChat extends Component {
             }
          })
           .catch((error) => {
-            console.log('get project error', error);
+            console.log( 'err in get cient Query chat',error)
           });
     }
     getDesignerQueryChat=()=>{
@@ -169,7 +166,6 @@ export default class QueryChat extends Component {
            method: 'get',
            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
        }).then((response) => {
-           console.log("chhhhhhhhhhhhhhhh--------->",response)
            if(response.data==null){
             setTimeout(()=>{this.openQueryChatMessage1()},5000)   
             setTimeout(()=>{this.openQueryChatMessage2()},45000)   
@@ -237,11 +233,10 @@ export default class QueryChat extends Component {
     }
     
     render() {
-        console.log('okokok',this.state.visible_requirement_chat)
         return (
             <div>
                
-             <div style={{position:'relative'}} className="chat_icon_div">
+             <div className="chat_icon_div">
               <div style={{position:'absolute'}}>   
             {/* message at comming to dashboard of client and designer */}
                <div style={{display:this.state.message1_visibility}} className="Rectangle-7">
@@ -291,7 +286,7 @@ export default class QueryChat extends Component {
                 </div>
                 <div style={{position:'absolute'}} className="chat_icon">
                     <img onClick={()=>{ window.open('https://workspace.1thing.io','_blank') }}
-                    width='60px' height='60px' src={require('../Images/floating-button.svg')}/>
+                    width='50px' height='50px' src={require('../Images/floating-button.svg')}/>
                 </div>
               </div>
             </div>

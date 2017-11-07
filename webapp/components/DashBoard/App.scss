@@ -324,8 +324,61 @@
 .dashboard-sidebar{
     z-index: 2;
     position: fixed;
-    top:0;
+    top: 0;
 }
+#load {
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 9999999;
+    background: #0D65D8;
+    transform: translateX(100%);
+    display: block;
+    animation: shift-rightwards 1.5s ease-in-out infinite;
+    animation-delay: 2s 0.4s;
+    transition: 1s 0.4s;
+}
+#root{      
+    animation: fade 3s linear forwards;
+  }
+  .loader {
+    position: fixed;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 800;
+    background: #0D65D8;
+    transform: translateX(100%);
+    display: block;
+    animation: shift-rightwards 1.5s ease-in-out infinite;
+    animation-delay: .8s;
+}
+
+@keyframes shift-rightwards {
+    0% {
+        transform: translateX(-100%)
+    }
+    40% {
+        transform: translateX(0)
+    }
+    60% {
+        transform: translateX(0)
+    }
+    100% {
+        transform: translateX(100%)
+    }
+}
+
+
+  @keyframes fade {
+    from { opacity: 0 } 
+     to { opacity: 1 }
+   }
 
 
 

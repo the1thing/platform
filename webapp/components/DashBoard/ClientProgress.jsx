@@ -95,7 +95,6 @@ export default class ClientProgress extends Component {
           this.getClientStatus();
        }
       componentWillReceiveProps=(nextProps)=> {
-           console.log('%%%%%%%%%%%%%%%%%%%%%%%5---------------next props------------------',nextProps)
           let gotProgressData=nextProps.setUserProgress
           this.state.requirement.aboutProduct.completed=gotProgressData.aboutProduct;
              this.state.requirement.aboutDesign.completed=gotProgressData.aboutDesign;
@@ -243,7 +242,6 @@ export default class ClientProgress extends Component {
             method: 'get',
             url: basepath + 'project/getAllProjectsForWorkspace/' + localStorage.getItem('userId'),
            }).then((response) => {
-              console.log('get !!!!!!!!',response)
          if(response.data!=null)
               {
             this.state.requirement.dateOfCompletion=response.data.statusBar.timeline.completedDate;
@@ -355,7 +353,7 @@ export default class ClientProgress extends Component {
         if(this.state.loading){
             return(
                 <div>
-                    loading...
+                    {/* loading ... */}
                 </div>
             )
         }else{

@@ -12,6 +12,8 @@ import Tooltip from './Components/Tooltip';
 import { browserHistory, Route, Router } from 'react-router';
 // import TeamSidebar from '../team_sidebar/team_sidebar_controller.jsx';
 import TeamSidebar from '../team_sidebar/index';
+import DesignerPricing from './DesignerPricing';
+import DesignerAboard from './DesignerAboard';
 
 // import {
 //   BrowserRouter as Router,
@@ -48,8 +50,8 @@ class OnboardingDesigner extends Component {
             reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
             />
             <Route path='/assignment' component={OnboardAssignment}/>
-            {/* <Route path='/Pricing&Bandwidth' component={Pricing & Bandwidth}/> */}
-            {/* <Route path='welcomeaboard' component={welcome aboard}/> */}
+            <Route path='/pricing' component={DesignerPricing}/>
+            <Route path='/aboard' component={DesignerAboard}/>
           </div>
         </Router>
       </div>
