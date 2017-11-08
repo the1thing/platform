@@ -41,7 +41,6 @@ class OnboardingDesigner extends Component {
         </div>
         <div className="dashboard-container">
           <div style={{width:'65%',marginTop:'32px'}}>
-          <TeamSidebar/>
           <Router>
           <div>
           <Route 
