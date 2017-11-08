@@ -85,9 +85,9 @@ export default class Dashboard extends Component {
                 this.setState({
                     userType: resp.data.data.userType,
                 })
-                localStorage.setItem('userName', resp.data.data.name);
-                localStorage.setItem('userId', resp.data.data._id);
-                localStorage.setItem('projectDate', resp.data.data.createdAt)
+                localStorage.setItem('userName',resp.data.data.name);
+                localStorage.setItem('userId',resp.data.data._id);
+                localStorage.setItem('userType',resp.data.data.userType),
                 localStorage.setItem('signUpDate',resp.data.data.createdAt)
                 this.setState({
                     loader:false,
@@ -103,7 +103,11 @@ export default class Dashboard extends Component {
 
     render() {
         if(this.state.loader){
-         return <div>loader</div>   
+         return (
+         <div>
+             {/* loading... */}
+             </div>   
+             )
         }
         else{
             if (this.state.userType == 'client') {

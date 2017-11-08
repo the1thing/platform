@@ -473,10 +473,7 @@ export default class Sidebar extends React.Component {
             <div>
                 <FormattedHTMLMessage
                     id='sidebar.tutorialScreen2'
-                    defaultMessage='<h4>"{townsquare}" and "{offtopic}" channels</h4>
-                    <p>Here are two public channels to start:</p>
-                    <p><strong>{townsquare}</strong> is a place for team-wide communication. Everyone in your team is a member of this channel.</p>
-                    <p><strong>{offtopic}</strong> is a place for fun and humor outside of work-related channels. You and your team can decide what other channels to create.</p>'
+                    defaultMessage='<h4>"{townsquare}" and "{offtopic}" channels</h4><p>Here are two public channels to start:</p><p><strong>{townsquare}</strong> is a place for team-wide communication. Everyone in your team is a member of this channel.</p><p><strong>{offtopic}</strong> is a place for fun and humor outside of work-related channels. You and your team can decide what other channels to create.</p>'
                     values={{
                         townsquare: townSquareDisplayName,
                         offtopic: offTopicDisplayName
@@ -489,9 +486,7 @@ export default class Sidebar extends React.Component {
             <div>
                 <FormattedHTMLMessage
                     id='sidebar.tutorialScreen3'
-                    defaultMessage='<h4>Creating and Joining Channels</h4>
-                    <p>Click <strong>"More..."</strong> to create a new channel or join an existing one.</p>
-                    <p>You can also create a new public or private channel by clicking the <strong>"+" symbol</strong> next to the public or private channel header.</p>'
+                    defaultMessage='<h4>Creating and Joining Channels</h4><p>Click <strong>"More..."</strong> to create a new channel or join an existing one.</p><p>You can also create a new public or private channel by clicking the <strong>"+" symbol</strong> next to the public or private channel header.</p>'
                 />
             </div>
         );
