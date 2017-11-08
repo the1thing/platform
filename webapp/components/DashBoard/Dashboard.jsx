@@ -78,7 +78,7 @@ export default class Dashboard extends Component {
       //designer aaf5yhz9pjbfjnabwsccctus5e
       axios({
           method:'get',
-          url:basepath + 'user/getUser/'+'aaf5yhz9pjbfjnabwsccctus5e'
+          url:basepath + 'user/getUser/'+'b5moybzsetncpqg88y6icxu48o'
       })
             .then((resp) => {
                 console.log(resp.data.data.userType,'api data------------>',resp)
