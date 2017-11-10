@@ -83,6 +83,7 @@ export class Selection extends Component {
                 </div>
                 {this.state.popupVisible && (
                     <ul className="popover">
+                        <li className="list" style={{cursor:'not-allowed',opacity:'0.3'}}>{this.props.placeholder}</li>
                         {this.renderList()}
                     </ul>
                 )}
@@ -198,6 +199,7 @@ export class SelectMultiple extends Component {
             selectedList: [],
             containerClass: 'popover-container',
             optionList: [],
+            mainContainer:'popover-container',
         };
     }
     count = 0;
@@ -238,6 +240,7 @@ export class SelectMultiple extends Component {
                 optionList:this.temp,
                 toggleVisiblity:false,
                 containerClass: 'popover-container change-width',
+                mainContainer:'popover-container main-container-width',
             })
         }
         
@@ -276,6 +279,7 @@ export class SelectMultiple extends Component {
         list = list.concat(value);
         this.setState({
             containerClass: 'popover-container change-width',
+            mainContainer:'popover-container main-container-width',
             selectedList: list,
             toggleVisiblity: false,
         });
@@ -297,6 +301,7 @@ export class SelectMultiple extends Component {
                 toggleVisiblity: true,
                 baseClass: 'arrow-div',
                 containerClass: 'popover-container',
+                mainContainer:'popover-container',
             })
 
         }
@@ -331,7 +336,7 @@ export class SelectMultiple extends Component {
         return (
             <div style={{ display: 'flex', flexWrap:'wrap', width: this.props.width}}>
                 {this.renderSelectedList()}
-                <div className='popover-container' onClick={this.handleClick} ref={node => { this.node = node; }}>
+                <div className={this.state.mainContainer} onClick={this.handleClick} ref={node => { this.node = node; }}>
                     <div className={this.state.containerClass}>
                         <div className={this.props.error ? "selection-error-placeholder" : "selection-placeholder"} style={{ display: this.state.toggleVisiblity ? 'block' : 'none' }}>{this.props.placeholder}</div>
                         <div style={{ color: '#030303', display: this.state.toggleVisiblity ? 'none' : 'block' }}></div>
@@ -343,6 +348,7 @@ export class SelectMultiple extends Component {
                         </div></div>
                     {this.state.popupVisible && (
                         <ul className="popover">
+                            <li className="list" style={{cursor:'not-allowed',opacity:'0.3'}}>{this.props.placeholder}</li>
                             {renderList()}
                         </ul>
                     )}

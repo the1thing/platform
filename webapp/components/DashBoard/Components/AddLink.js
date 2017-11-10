@@ -108,7 +108,7 @@ export class AddLink extends Component {
           style={{ display: this.props.errorLink ? 'block' : 'none' }}
           className="display-error"
         >
-          Please identify yourself
+          Please Enter Valid URL
         </div>
 
         <div className="input-spacing">

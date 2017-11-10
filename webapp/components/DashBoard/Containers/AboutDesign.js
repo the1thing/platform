@@ -80,7 +80,7 @@ export default class AboutDesign extends Component {
         //designServices  designObjective
         this.setState({
              platforms: (_response.platform !=null )?_response.platform:[],
-            services:_tempUserPropsal.designServices,
+            services:'services',
             objective:_tempUserPropsal.designObjective,
             addLink:(_tempUserPropsal.referenceLink!=null)?_tempUserPropsal.referenceLink:[],
             loading:false,
@@ -127,23 +127,27 @@ setStateMethod=(label,value)=>{
 goTo=()=>{
     console.log("platform--->",this.state.platforms)
     if(this.state.platforms.length==0){
+        alert("1")
         document.getElementById('platforms').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('platformClass',true)
     }
     else if(!this.state.services){
+        alert("2")
         document.getElementById('services').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('servicesClass',true)
     
     }
     else if(!this.state.objective){
+        alert("3")
         document.getElementById('objective').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('objectiveClass',true)
     }
     else if(!this.state.addLink[0]){
         if(!this.state.document){
+            alert("4")
             this.setStateMethod('linkClass',true)
             document.getElementById('addLink').scrollIntoView();
             window.scrollBy(0, -100); 
@@ -151,10 +155,12 @@ goTo=()=>{
         else{
             if(validateUrl(this.state.document))
             {
+                alert("5")
                 this.state.addLink.push(this.state.document)
                 this.postAboutDesignData();
             }
             else{
+                alert("6")
                 this.setStateMethod('documentErrorVisiblity',true)
                 document.getElementById('addLink').scrollIntoView();
                 window.scrollBy(0, -100); 
@@ -165,10 +171,12 @@ goTo=()=>{
         if(this.state.document){
             if(validateUrl(this.state.document))
             {
-            this.state.addLink.push(this.state.document)
-            this.postAboutDesignData();
+                alert("7")
+                this.state.addLink.push(this.state.document)
+                this.postAboutDesignData();
             }
             else{
+                alert("8")
                 this.setStateMethod('documentErrorVisiblity',true)
                 document.getElementById('addLink').scrollIntoView();
                 window.scrollBy(0, -100); 
@@ -176,6 +184,7 @@ goTo=()=>{
         }
         else
         {
+            alert("9")
             this.postAboutDesignData();
         }
        
@@ -220,7 +229,7 @@ postAboutDesignData=(link_list)=>{
 
                     <SelectMultiple
                         width='100%'
-                        placeholder="Platforms to design"
+                        placeholder="Product Platforms"
                         handleRemoval={(list) => { 
                             this.setStateMethod('edit', false) 
                             this.setStateMethod('platforms',list)
@@ -292,7 +301,7 @@ postAboutDesignData=(link_list)=>{
                     defaultValue={this.state.addLink}
                     error={this.state.linkClass}
                     errorLink={this.state.documentErrorVisiblity}
-                    placeholder='Link(s) to references (apps/sites you like)'
+                    placeholder='Link(s) to References'
                     onclick={(e) => {
                         this.setState({document:e.target.value})
                         //if(validateUrl(e.target.value)){
@@ -320,7 +329,7 @@ postAboutDesignData=(link_list)=>{
                     onClick={() => this.goTo()}
                     className={this.renderClass()}>
                     <span className="button-title">
-                        <span>NEXT</span>
+                        <span>SAVE</span>
                         <span><img src={require('../Images/arrow-down.svg')} /></span>
                     </span>
 

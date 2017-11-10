@@ -32,6 +32,13 @@ export default class OnboardingTitles extends Component {
         plus_cursor:'not-allowed'
       });
     }
+    this.setState({
+      about_user_view:this.props.view,
+    })
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({about_user_view:nextProps.view});
   }
   
   openPanel=(e)=>{
@@ -62,7 +69,7 @@ export default class OnboardingTitles extends Component {
   
   render() {
     return (
-      <div>
+      <div >
         <div className={this.props.active ? 'Rectangle-3' : 'unactive-title'} style={{backgroundImage:this.props.active ? this.props.color : '',borderRadius:this.props.borderRadius}} onClick={(e) => {this.openPanel(e)}}>
           <div className={this.props.active ? '-About-yourself' : '-Your-expertise'}>{this.props.title}</div>
           <div className={this.props.active ? '-About-yourself' : '-Your-expertise'} 

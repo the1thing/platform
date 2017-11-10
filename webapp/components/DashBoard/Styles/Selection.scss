@@ -25,7 +25,7 @@
     font-size: 24px;
     font-family: EkMukta-ExtraLight;
     justify-content: space-between;
-  // width: 100%;
+  width: 100%;
   position: relative;
 }
 .popover-container .arrow-container{
@@ -142,14 +142,17 @@
     font-weight: 200;
 }
   .selection-placeholder{
-    width: 254px;
+    // width: 254px;
     color: #7f7f7f;
     opacity: 0.5;
     font-family: EkMukta-ExtraLight;
   }
     .selection-error-placeholder{
-      width: 566px;
+      // width: 566px;
       font-family: EkMukta-ExtraLight;
     color: #eb444c;
     opacity: 0.5; 
+  }
+  .main-container-width{
+    width: 52px;
   }

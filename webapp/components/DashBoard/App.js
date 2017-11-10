@@ -3,6 +3,9 @@ import axios from 'axios';
 import OnboardingDesigner from './OnboardingDesigner';
 import OnboardingClient from './OnboardingClient';
 import {basepath} from './utils/constant';
+// import { browserHistory } from 'react-router/es6';
+// import './App.scss';
+
 
 export default class App extends Component {
     constructor(props){
@@ -12,28 +15,47 @@ export default class App extends Component {
             loader:true,
         }
     }
+
+    // getCookie=(name)=> {
+    //     // console.log('-------------->>',name);
+    //      var re = new RegExp(name + "=([^;]+)");
+    //      var value = re.exec(document.cookie);
+    //      return (value != null) ? unescape(value[1]) : null;
+    //  }
+ 
     
     componentWillMount() { 
+        // let uId=this.getCookie('MMUSERID');
+           // console.log('----->',uId)
+        // k5iu4qh1kfy1iyft4dh7gwus3r  designer
+        // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
+        // axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //client
+         //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
+      //  axios.get(basepath + 'user/getUser/'+uId)
+        
+    //   axios({
+    //     method:'get',
+    //     url:basepath + 'user/getUser/'+'pwgy5iddnfnw9edp7mdb966tke'
+    // })
+    //       .then((resp) => {
+    //           console.log(resp.data.data.userType,'------------>',resp)
+    //           this.setState({
+    //               userType: resp.data.data.userType,
+    //           })
+    //           localStorage.setItem('userName', resp.data.data.name);
+    //           localStorage.setItem('userId', resp.data.data._id);
+    //           localStorage.setItem('projectDate', resp.data.data.createdAt)
+    //           localStorage.setItem('designerProgressId','pwgy5iddnfnw9edp7mdb966tke')
+    //       })
+    //       .catch((err) => {
+    //           console.log("errorrrrrrrrrrrrrrrr123", err)
+    //       })
+  
         this.setState({
             loader:true,
           })
         localStorage.clear()
-         // new designer  bkxrfe5jhjgxjmer1suehk8dnc
-         ///  new client  su3x1a3p83fnxy7ep7usbh9k6r
-         //new designer aaf5yhz9pjbfjnabwsccctus5e
-         ///  client   bq9x35q5m7dmzc9ccozmrdjrye
-         /// client  5ukm6wohbjr1mkyj1y4uox6s4c
-         //  designer   3kfn9qyugtfqbed48qiqs6grxc
-         // des mnawartzcpraff5di1x33j6dnw
-         /// work space  http://staging.1thing.io/dashboard
-         // new designer   ferwodkzabgtucoi4bscd6hepw
-         // new desi    31sa6oomb7b19m71us3ihgkbyr//izkfhkwfqfygzf9gu1aan9dc5o
-         // new clien  yco81a7iu7rrjy1cnfhi68wice
-         // client   ri3nod3nwtnpppous9xcbxmp7o\
-         //  designer   5euyqmk573bypj7ie3q9zmrecy
-         // client  3pimn5oa97y4zpsggk9dqjo3nc
-         // desig   f6xnc8b8fffwdnjbuz1fkwu8hr
-        axios.get(basepath+'user/getUser/3pimn5oa97y4zpsggk9dqjo3nc')
+        axios.get(basepath+'user/getUser/nj6bewfbgpncxx4qb147cth68y')
          .then((resp)=>{
             this.setState({
                        userType:resp.data.data.userType,

@@ -50,9 +50,10 @@
   margin-top: 7px; }
 
 .unselected_menu {
+  transition: all 0.5s ease;
   font-family: EkMukta-Regular;
   font-size: 18px;
-  height: 54px;
+  height: 40px;
   letter-spacing: 2.3px;
   text-align: left;
   color: #7f7f7f;
@@ -67,6 +68,26 @@
   font-family: EkMukta-Regular;
   font-size: 24px;
   letter-spacing: 3px;
+  height: 40px;
   text-align: left;
   color: #ffbc00;
   padding: 10px 20px 10px 5px; }
+
+.unselected_menu,
+.cross_menu_img {
+  animation: smooth1 0.7s linear; }
+
+.menu-image {
+  animation: smooth2 0.7s linear; }
+
+@keyframes smooth1 {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes smooth2 {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }

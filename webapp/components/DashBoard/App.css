@@ -352,3 +352,15 @@
     opacity: 0; }
   to {
     opacity: 1; } }
+
+._header .simple-input::-webkit-input-placeholder {
+  font-size: 16px; }
+
+
+
+  /*---------------matter-most-classes-------------*/
+  .team-btn__initials:hover{
+    color: #030303;
+    background: #fff;
+    border-radius: 4px;
+  }

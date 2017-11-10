@@ -7,7 +7,7 @@
   color: #030303; }
 
 .input-spacing-radio {
-  margin-bottom: 8px; }
+  margin-bottom: 32px; }
 
 .Rectangle-5 {
   width: 133px;
@@ -104,9 +104,12 @@ input {
   margin-bottom: 8px; }
 
 .input-spacing {
-  margin-bottom: 48px; }
+  margin-bottom: 56px; }
 
 .Rectangle-4 {
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
   width: 141px;
   height: 48px;
   border-radius: 4px;
@@ -230,3 +233,11 @@ option span {
 
 .tooltip.top .tooltip-arrow {
   border-top-color: #f0f0f0; }
+
+.radio-error .radio-container {
+  border: 1px solid #eb444c;
+  opacity: 0.5; }
+
+.radio-error .checkbox-unbordered {
+  border: 1px solid #eb444c;
+  opacity: 0.5; }

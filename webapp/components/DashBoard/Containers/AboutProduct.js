@@ -151,7 +151,6 @@ export default class AboutProduct extends Component {
     });
   };
   postDataOfProduct = () => {
-    console.log("*******", this.state.apiMethode);
     axios({
       method: this.state.apiMethode,
       url: basepath + this.state.apiLink,
@@ -175,6 +174,7 @@ export default class AboutProduct extends Component {
       })
       .then(res => {
         this.props.openPanel();
+        
       })
       .catch(err => {
         console.log("about priduct error", err);
@@ -359,7 +359,7 @@ export default class AboutProduct extends Component {
                 style={{ visibility: this.state.productLinkVisiblity }}
               >
                 <input
-                  style={{ lineHeight: "46px", color: this.state.linkColor }}
+                  style={{ lineHeight: "48px", color: this.state.linkColor }}
                   onChange={e => {
                     this.handleButtonClick(e);
                   }}
@@ -387,15 +387,22 @@ export default class AboutProduct extends Component {
               </Col>
             </Row>
           </div>
-          <div
+          <div>
+            <Row>
+              <Col mdOffset={6}>
+              <div
             style={{
               visibility: this.state.productLinkVisiblityError,
               marginBottom: "35px",
-              marginLeft: "314px"
+              marginLeft:'16px'
             }}
             className="display-error"
           >
             Please Enter Valid URL
+          </div>
+          
+              </Col>
+            </Row>
           </div>
           <div className="input-spacing" id="domains">
             <SelectMultiple
@@ -420,7 +427,7 @@ export default class AboutProduct extends Component {
             <input
               id="otherProduct"
               className={this.state.otherProductClass}
-              placeholder="Write similar products (India/Outside)"
+              placeholder="Similar Products (India/Outside)"
               onChange={e => {
                 this.setStateMethod("otherProduct", e.target.value);
               }}
@@ -431,7 +438,7 @@ export default class AboutProduct extends Component {
             id="scopeDocument"
             defaultValue={this.state.scopeDocument}
             error={this.state.scopeDocumentClass}
-            placeholder="Link(s) to scope document, if any"
+            placeholder="Link(s) to scope document (if any)"
             errorLink={this.state.documentErrorVisiblity}
             onclick={e => {
               this.setState({ document: e.target.value });
@@ -462,7 +469,7 @@ export default class AboutProduct extends Component {
             }}
           >
             <span className="button-title">
-              <span>NEXT</span>
+              <span>SAVE</span>
               <span>
                 <img src={require("../Images/arrow-down.svg")} />
               </span>

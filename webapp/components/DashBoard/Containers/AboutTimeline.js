@@ -229,7 +229,7 @@ export default class AboutTimeline extends Component {
                         defaultValue={this.state.timeline}
                         value={this.state.timeline}
                         // onChange={(e) => { this.handleButtonClick(e) }}    
-                        placeholder="Expected timeline"
+                        placeholder="Expected Timeline"
                         optionList={this.state.timeLineList}
                         error={this.state.timelineClass}
                         onclick={(value, key) => {
@@ -249,19 +249,19 @@ export default class AboutTimeline extends Component {
                         <div style={{ width: '11%' }} id='budgetRange'>
                             <Selection
                                 defaultValue="INR"
-                                optionList={['INR', '$', 'URO']}
+                                optionList={['INR', '$']}
                                 onclick={(value, key) => {
-                                    if (value === 'Existing Product') {
-                                        this.setState({
-                                            productLinkVisiblity: 'visible',
-                                            productType: 'Existing Product'
-                                        });
-                                    } else {
-                                        this.setState({
-                                            productLinkVisiblity: 'hidden',
-                                            productType: 'Starting Afresh'
-                                        })
-                                    }; console.log("value", this.state.productType)
+                                    // if (value === 'INR') {
+                                    //     this.setState({
+                                    //         productLinkVisiblity: 'visible',
+                                    //         productType: 'Existing Product'
+                                    //     });
+                                    // } else {
+                                    //     this.setState({
+                                    //         productLinkVisiblity: 'hidden',
+                                    //         productType: 'Starting Afresh'
+                                    //     })
+                                    // }; console.log("value", this.state.productType)
                                 }} />
                         </div>
                         <div style={{ width: '21%' }}>
@@ -269,7 +269,7 @@ export default class AboutTimeline extends Component {
                                 onKeyPress={(e) => { numberOnly(e) }}
                                 value={this.state.defaultRange}
                                 className={this.state.budgetRangeClass ? "Error-input" : "simple-input"}
-                                placeholder="Enter budget"
+                                placeholder="Enter Budget"
                                 onKeyPress={(event) => { if (!(event.charCode >= 48 && event.charCode <= 57)) { event.preventDefault() } }}
                                 onChange={(e) => {
                                     this.setStateMethod('defaultRange', e.target.value);
@@ -310,7 +310,7 @@ export default class AboutTimeline extends Component {
                     className={this.renderClass()}
                     onClick={() => this.goTo()}>
                     <span className="button-title">
-                        <span>Done</span>
+                        <span>DONE</span>
                         <span><img src={require('../Images/arrow-right.svg')} /></span>
                     </span>
 

@@ -251,7 +251,6 @@ export default class ClientProgress extends Component {
 
             if(!response.data.statusBar.product.completed)
                 {  
-               alert('get data api cke if')
                     
                      this.state.requirement.completed.value=false,
                      this.setState({

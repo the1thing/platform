@@ -237,7 +237,7 @@ export default class QueryChat extends Component {
             <div>
                
              <div className="chat_icon_div">
-              <div style={{position:'absolute'}}>   
+              <div>   
             {/* message at comming to dashboard of client and designer */}
                <div style={{display:this.state.message1_visibility}} className="Rectangle-7">
                     <div className="profile_pic_div">
@@ -284,7 +284,7 @@ export default class QueryChat extends Component {
                       </div>  
                 </div>
                 </div>
-                <div style={{position:'absolute'}} className="chat_icon">
+                <div className="chat_icon">
                     <img onClick={()=>{ window.open('https://workspace.1thing.io','_blank') }}
                     width='50px' height='50px' src={require('../Images/floating-button.svg')}/>
                 </div>

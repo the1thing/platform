@@ -4,8 +4,8 @@ import { FormGroup, Checkbox, Row, Col } from 'react-bootstrap';
 import RadioBoxCom from '../Components/RadioBoxComp';
 import axios from 'axios';
 import { basepath } from '../utils/constant';
-let myStringList = ['Quality of design.','Ability to use tools.','Communication skills.',
-'Project management.','Working in a team.','Leading a design team.'];
+let myStringList = ['Quality of design','Ability to use tools','Communication Skills',
+'Project management','Working in a team','Leading a design team'];
 let myList = [];
 let CreateRadio = (props) => {
     return (
@@ -28,8 +28,8 @@ export default class RatingUserself extends Component {
             teamWorking:'',
             leadingTeam:'',
             loading:false,
-            error:['','hidden','hidden','hidden','hidden','hidden'],
-            designQualityError:'hidden',
+            error:['','','','','',''],
+            designQualityError:'',
         }
     }
     componentWillMount = () => {
@@ -96,23 +96,27 @@ export default class RatingUserself extends Component {
             return (
             <div key={no} style={{overflow:'hidden'}} id={no}>
                 <Row>
-                    <Col md={1} className="form-label">{no}.</Col>
-                    <Col md={11}>
-                        <div className="form-label">
-                            {myStringList[no]}
-                        </div>
-                    </Col>
-                    <Col md={11} mdOffset={1}>
-                        <div className="subcomponent-spacing">
-                            <RadioBoxCom 
-                                defaultValue={this.renderDefaultValue(no)}
-                                radioList={['10 on 10','9 on 10','8 on 10','Less than 8']}
-                                onclick={(value)=>{this.handleRadioClick(value,no)}}/>
-                        </div>
-                        <div style={{ visibility: this.state.error[no] }} className='display-error'>
-                            Please identify yourself
-                        </div>
-                    </Col>
+                    <div className="input-spacing-radio" style={{overflow:'auto'}}>
+                        <Col md={1} className="form-label">{no}.</Col>
+                        <Col md={11}>
+                            <div className="form-label">
+                                {myStringList[no]}
+                            </div>
+                        </Col>
+                        <Col md={11} mdOffset={1}>
+                            <div className="subcomponent-spacing">
+                                <div className={this.state.error[no]}>
+                                    <RadioBoxCom 
+                                        defaultValue={this.renderDefaultValue(no)}
+                                        radioList={['10 on 10','9 on 10','8 on 10','Less than 8']}
+                                        onclick={(value)=>{this.handleRadioClick(value,no)}}/>
+                                </div>
+                            </div>
+                            {/* <div style={{ visibility: this.state.error[no] }} className='display-error'>
+                                Please identify yourself
+                            </div> */}
+                        </Col>
+                    </div>
                 </Row>
             </div>
             );
@@ -134,7 +138,7 @@ export default class RatingUserself extends Component {
         switch(no){
             case '1':{
                         let temp=this.state.error;
-                        temp[1]='hidden';
+                        temp[1]='';
                         this.setState({
                             useToolQuality:value,
                             error:temp,
@@ -143,7 +147,7 @@ export default class RatingUserself extends Component {
             break;
             case '2':{
                         let temp=this.state.error;
-                        temp[2]='hidden';
+                        temp[2]='';
                         this.setState({
                             commSkills:value,
                             error:temp,
@@ -152,7 +156,7 @@ export default class RatingUserself extends Component {
             break;
             case '3':{
                         let temp=this.state.error;
-                        temp[3]='hidden';
+                        temp[3]='';
                         this.setState({
                             proManagement:value,
                             error:temp,
@@ -161,7 +165,7 @@ export default class RatingUserself extends Component {
             break;
             case '4':{
                         let temp=this.state.error;
-                        temp[4]='hidden';
+                        temp[4]='';
                         this.setState({
                             teamWorking:value,
                             error:temp,
@@ -170,7 +174,7 @@ export default class RatingUserself extends Component {
             break;
             case '5':{
                         let temp=this.state.error;
-                        temp[5]='hidden';
+                        temp[5]='';
                         this.setState({
                             leadingTeam:value,
                             error:temp,
@@ -181,7 +185,7 @@ export default class RatingUserself extends Component {
     goTo=()=>{
         if(this.state.useToolQuality == ''){
             let temp=this.state.error;
-            temp[1]='visible';
+            temp[1]='radio-error';
             document.getElementById('1').scrollIntoView();
             this.setState({
                 error:temp,
@@ -189,7 +193,7 @@ export default class RatingUserself extends Component {
         }
         else if(this.state.commSkills == ''){
             let temp=this.state.error;
-            temp[2]='visible';
+            temp[2]='radio-error';
             document.getElementById('2').scrollIntoView();
             this.setState({
                 error:temp,
@@ -197,7 +201,7 @@ export default class RatingUserself extends Component {
         }
         else if(this.state.proManagement == ''){
             let temp=this.state.error;
-            temp[3]='visible';
+            temp[3]='radio-error';
             document.getElementById('3').scrollIntoView();
             this.setState({
                 error:temp,
@@ -205,7 +209,7 @@ export default class RatingUserself extends Component {
         }
         else if(this.state.teamWorking == ''){
             let temp=this.state.error;
-            temp[4]='visible';
+            temp[4]='radio-error';
             document.getElementById('4').scrollIntoView();
             this.setState({
                 error:temp,
@@ -213,7 +217,7 @@ export default class RatingUserself extends Component {
         }
         else if(this.state.leadingTeam == ''){
             let temp=this.state.error;
-            temp[5]='visible';
+            temp[5]='radio-error';
             document.getElementById('5').scrollIntoView();
             this.setState({
                 error:temp,
@@ -222,7 +226,7 @@ export default class RatingUserself extends Component {
         else if(this.state.designQuality == ''){
             document.getElementById('designQuality').scrollIntoView();
             this.setState({
-                designQualityError:'visible',
+                designQualityError:'radio-error',
             })
         }
         else{
@@ -242,7 +246,7 @@ export default class RatingUserself extends Component {
                         Please rate yourself for each of the following attributes
                     </div>
                 </div>
-                <div className="input-spacing">
+                <div style={{marginBottom:'56px'}}>
                     {this.renderMyList('1')}
                     {this.renderMyList('2')}
                     {this.renderMyList('3')}
@@ -261,26 +265,28 @@ export default class RatingUserself extends Component {
                         </Col>
                         <Col md={11} mdOffset={1} id='designQuality'>
                             <div className="subcomponent-spacing">
-                                <RadioBoxCom 
-                                    defaultValue={this.state.designQuality}
-                                    radioList={['Instagram','Twitter','Google Search','Friends','Monochrome','Other']}
-                                    onclick={(value)=>{
-                                        this.setState({
-                                            designQuality:value,
-                                            designQualityError:'hidden',
-                                        })
-                                    }}/>
+                                <div className={this.state.designQualityError}>
+                                    <RadioBoxCom 
+                                        defaultValue={this.state.designQuality}
+                                        radioList={['Instagram','Twitter','Google Search','Friends','Monochrome','Other']}
+                                        onclick={(value)=>{
+                                            this.setState({
+                                                designQuality:value,
+                                                designQualityError:'',
+                                            })
+                                        }}/>
+                                </div>
                             </div>
-                            <div style={{ visibility: this.state.designQualityError }} className='display-error'>
+                            {/* <div style={{ visibility: this.state.designQualityError }} className='display-error'>
                                 Please identify yourself
-                            </div>
+                            </div> */}
                         </Col>
                     </Row>
                 </div>   
                 <button className={this.renderClass()} onClick={()=>{this.goTo()}}>
                     {/* <span className="button-title">NEXT</span> */}
                     <span className="button-title">
-                        <span>Done</span>
+                        <span>DONE</span>
                         <span><img src={require('../Images/arrow-right.svg')}/></span>
                     </span>
                 

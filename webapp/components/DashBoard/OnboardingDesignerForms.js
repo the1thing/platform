@@ -35,6 +35,10 @@ export default class OnboardingDesignerForms extends Component {
       aboutExpertiseActive:false,
       aboutPerspectiveActive:false,
       userRatingActive:false,
+      aboutUserView:false,
+      aboutExpertiseView:false,
+      aboutPerspectiveView:false,
+      userRatingView:false,
       onboarding_display:'block',
       assignment_display:'none',
       pricing_bandwidth_display:'none',
@@ -62,7 +66,10 @@ export default class OnboardingDesignerForms extends Component {
   }
   
   componentWillMount() {
-    this.setState({loading:true});
+    this.setState({
+      loading:true,
+      
+    });
     this.getUserData();
     console.log("checkoing hostory props",this.props.history)
   }
@@ -76,16 +83,20 @@ export default class OnboardingDesignerForms extends Component {
             this.setState({
                         aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
                         aboutExpertiseActive:_tempStatus.aboutYourself.completed,
+                        aboutUserView:_tempStatus.aboutYourself.completed,
                         expertiseDate:_tempStatus.expertise.completedDate,
                         aboutPerspectiveActive:_tempStatus.expertise.completed,
+                        aboutExpertiseView:_tempStatus.expertise.completed,
                         perspectiveDate:_tempStatus.perspective.completedDate,
                         userRatingActive:_tempStatus.perspective.completed,
+                        aboutPerspectiveView:_tempStatus.perspective.completed,
                         thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
                         loading:false,
                         aboutUserCompleted:_tempStatus.aboutYourself.completed,
                         expertiseCompleted:_tempStatus.expertise.completed,
                         perspectiveCompleted:_tempStatus.perspective.completed,
                         userRatingCompleted:_tempStatus.thinkAboutYourself.completed,
+                        userRatingView:_tempStatus.thinkAboutYourself.completed,
                         userRatingCompletedDate:_tempStatus.thinkAboutYourself.completedDate,
                         })
                })
@@ -193,9 +204,10 @@ pushToAboard=()=>{
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(248deg, #8776ff, #743afe)'
             borderRadius='4px'
+            view={!this.state.aboutUserView && !this.state.aboutExpertiseView && !this.state.aboutPerspectiveView && !this.state.userRatingView ? true : false}
             active={this.state.aboutUserActive}
             date={returnDate(this.state.aboutYourselfDate)}
-            title={<span>1.<span className="title-padding">About yourself</span></span>}
+            title={<span>1.<span className="title-padding">About Yourself</span></span>}
             panelContent={(
               <AboutUser openPanel={()=>{this.openPanel()}}/>
             )}
@@ -204,6 +216,7 @@ pushToAboard=()=>{
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(248deg, #28e5c0 1%, #06c9a4)'
             borderRadius='4px'
+            view={this.state.aboutUserView && !this.state.aboutExpertiseView && !this.state.aboutPerspectiveView && !this.state.userRatingView ? true : false}
             active={this.state.aboutExpertiseActive}
             date={returnDate(this.state.expertiseDate)}
             title={<span>2.<span className="title-padding">Your expertise</span></span>}
@@ -215,6 +228,7 @@ pushToAboard=()=>{
            openPanel={refs=>this.refs=refs}
             color=' linear-gradient(248deg, #d878ef, #c45edd)'
             borderRadius='4px'
+            view={this.state.aboutUserView && this.state.aboutExpertiseView && !this.state.aboutPerspectiveView && !this.state.userRatingView ? true : false}
             active={this.state.aboutPerspectiveActive}
             date={returnDate(this.state.perspectiveDate)}
             title={<span>3.<span className="title-padding">Your perspective</span></span>}
@@ -226,16 +240,19 @@ pushToAboard=()=>{
             openPanel={refs=>this.refs=refs}
             color='linear-gradient(227deg, #ffb061, #ff9c39)'
             borderRadius='4px'
+            view={this.state.aboutUserView && this.state.aboutExpertiseView && this.state.aboutPerspectiveView && !this.state.userRatingView ? true : false}
             active={this.state.userRatingActive}
             date={returnDate(this.state.thinkAboutYourselfDate)}
-            title={<span>4.<span className="title-padding">How you think about yourself</span></span>}
+            title={<span>4.<span className="title-padding">Rate Yourself</span></span>}
             panelContent={(
-              <RatingUserself openPanel={()=>{this.setState({redirect:true});this.openPanel()}}/>
+              <RatingUserself
+              ref="openPanel"
+              openPanel={()=>{this.setState({redirect:true});this.openPanel()}}/>
             )}
           />
-          <div>
+          <div style={{marginBottom:'200px'}}>
             <Tooltip
-              title="Right after you are done with these 4 steps, we'll share a assignment with you in next 48 hours."/>
+              title="After this, an assignment will be shared with you in the next 48 hrs."/>
           </div>
         </div>
         {/* <div className="title-content" style={{display:this.state.assignment_display}}>

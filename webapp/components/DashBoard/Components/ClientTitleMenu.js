@@ -110,7 +110,7 @@ export default class ClientTitleMenu extends Component {
   
   render() {
     return (
-      <div style={{display:'flex'}}>
+      <div style={{display:'flex',cursor:'pointer'}}>
           <span className={this.state.menu_class} style={{marginTop:'15px'}} onClick={this.openMenuList}></span>
               <span onClick={()=>this.selectMenu('requirement')} className={this.state.selected_menu=='requirement'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_requirement,textTransform:'uppercase'}}>REQUIREMENTS</span>
               <span onClick={()=>this.selectMenu('proposal')} className={this.state.selected_menu=='proposal'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_proposal}}>PROPOSAL</span>

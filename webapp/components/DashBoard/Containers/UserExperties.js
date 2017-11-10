@@ -21,7 +21,7 @@ export default class UserExperties extends Component {
             content: '',
             selectionList: [],
             domainsClass: false,
-            platformsVisiblityError: 'hidden',
+            platformsVisiblityError: '',
             checkboxList: ['Web App', 'Android App', 'iOS App', 'Responsive Web', 'Windows App',
                 'Mac App', 'Android wearable', 'VR/AR', 'Apple Watch'],
             options: ['Ecommerce', 'Social Network', 'Payments', 'News + Content',
@@ -76,7 +76,7 @@ export default class UserExperties extends Component {
 
     renderSelectionList = () => {
         return this.state.domainArray.map((value, key) => {
-            return <div>
+            return <div key={key}>
                 <Row>
                     <Col md={1}><h4>{key + 1}.</h4></Col>
                     <Col md={11} style={{ marginTop: '-6px' }}>
@@ -212,7 +212,7 @@ export default class UserExperties extends Component {
         if (this.state.platforms.length == 0) {
             document.getElementById('platforms').scrollIntoView();
             window.scrollBy(0, -100); 
-            this.setStateMethod('platformsVisiblityError', 'visible')
+            this.setStateMethod('platformsVisiblityError', 'radio-error')
         }
         else if (this.state.domainArray[len - 1].name == '') {
             document.getElementById('domains').scrollIntoView();
@@ -268,6 +268,7 @@ export default class UserExperties extends Component {
         return (
             this.state.checkboxList.map((value, key) => {
                 return (
+                    <span key={key}>
                     <CheckBoxComp
                         label={value}
                         isChecked={this.state.platforms.indexOf(value) >= 0}
@@ -275,8 +276,9 @@ export default class UserExperties extends Component {
                         checkboxOnClick={(e) => {
                             this.renderClass();
                             this.setStateMethod('platforms', getCheckBoxValue(e, this.state.platforms))
-                            this.setStateMethod('platformsVisiblityError', 'hidden')
+                            this.setStateMethod('platformsVisiblityError', '')
                         }} />
+                    </span>
                 )
             })
         )
@@ -296,11 +298,13 @@ export default class UserExperties extends Component {
                         Select your preferred platforms
                     </div>
                     <div className="subcomponent-spacing">
-                        {this.renderCheckBox()}
+                        <div className={this.state.platformsVisiblityError}>
+                            {this.renderCheckBox()}
+                        </div>
                     </div>
-                    <div style={{ visibility: this.state.platformsVisiblityError }} className='display-error'>
+                    {/* <div style={{ visibility: this.state.platformsVisiblityError }} className='display-error'>
                         Please identify yourself
-                    </div>
+                    </div> */}
                 </div>
                 <div className="input-spacing selection-content">
                     <div className="form-label" id='domains'>

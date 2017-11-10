@@ -6,7 +6,7 @@ export default class DashboardHeader extends Component {
         return (
             <div>
                  <span >{this.props.header_title1}
-                     <div style={{borderBottom:'2px solid #030303',paddingBottom:'8px',position:'absolute',width:'48px',}}></div>
+                     <div style={{borderBottom:'2px solid #030303',paddingBottom:'31px',position:'absolute',width:'48px',}}></div>
                     </span>
 
                  <span style={{color:"blue",marginLeft:'12px'}}>{this.props.header_title2}

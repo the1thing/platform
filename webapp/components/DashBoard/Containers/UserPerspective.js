@@ -39,7 +39,7 @@ let LinkWithTextArea = (props) => {
             <Col md={11}>
                 <div>
                     <div style={{display:'flex'}}><input 
-                      value={props.input_value} style={{color:props.color,width:'70%'}} onChange={props.onChangeTitile} className={props.linkClass ? "Error-link-input" : "link-input"} placeholder="http://product1.com" />
+                      value={props.input_value} style={{color:props.color,width:'70%'}} onChange={props.onChangeTitile} className={props.linkClass ? "Error-link-input" : "link-input"} placeholder="http://product.com" />
                     <div style={{ display: props.visibility,lineHeight:'35px'}} className='display-error'>
                         Please Enter Valid URL
                     </div>
@@ -81,8 +81,8 @@ export default class UserPerspective extends Component {
             linkColor2:'#0d65d8',
             linkVisiblityError3:'none',
             linkColor3:'#0d65d8',
-            userPersonalityVisiblityError:'hidden',
-            workSpaceVisiblityError: 'hidden',
+            userPersonalityVisiblityError:'',
+            workSpaceVisiblityError: '',
             necessaryThings1Class: false,
             necessaryThings2Class: false,
             necessaryThings3Class: false,
@@ -187,7 +187,7 @@ export default class UserPerspective extends Component {
         else if (!this.state.workSpace) {
             document.getElementById('workSpace').scrollIntoView();
             window.scrollBy(0, -100); 
-            this.setstateMethod('workSpaceVisiblityError', 'visible')
+            this.setstateMethod('workSpaceVisiblityError', 'radio-error')
         }
         else if (!this.state.necessaryThings1) {
             document.getElementById('thing1').scrollIntoView();
@@ -207,7 +207,7 @@ export default class UserPerspective extends Component {
         else if(!this.state.userPersonality){
             document.getElementById('userPersonality').scrollIntoView();
             window.scrollBy(0, -100); 
-            this.setstateMethod('userPersonalityVisiblityError','visible')
+            this.setstateMethod('userPersonalityVisiblityError','radio-error')
         }
         else{
             this.setUserPerpectiveData()
@@ -251,7 +251,7 @@ export default class UserPerspective extends Component {
             <div>
                 <div className="input-spacing">
                     <div className="form-label">
-                        Starting with your favorite prpducts & why?
+                        Product(s) you admire the most
                     </div>
                     <div className="subcomponent-spacing" style={{ overflow: 'hidden' }}>
                         <LinkWithTextArea
@@ -339,21 +339,23 @@ export default class UserPerspective extends Component {
                         Where do you work from?
                     </div>
                     <div className="subcomponent-spacing" id='workSpace'>
-                        <RadioBoxComp 
-                            defaultValue={this.state.workSpace}
-                            radioList={['UI Designer','Co-working space','Personal office']}
-                            onclick={(value)=>{
-                                this.setstateMethod('workSpace', value)
-                                this.setstateMethod('workSpaceVisiblityError', 'hidden')
-                            }}/>
+                        <div className={this.state.workSpaceVisiblityError}>
+                            <RadioBoxComp 
+                                defaultValue={this.state.workSpace}
+                                radioList={['Coffee Shop','Co-Working Space','Personal Office']}
+                                onclick={(value)=>{
+                                    this.setstateMethod('workSpace', value)
+                                    this.setstateMethod('workSpaceVisiblityError', '')
+                                }}/>
+                        </div>
                     </div>
-                    <div style={{ visibility: this.state.workSpaceVisiblityError }} className='display-error'>
+                    {/* <div style={{ visibility: this.state.workSpaceVisiblityError }} className='display-error'>
                         Please identify yourself
-                    </div>
+                    </div> */}
                 </div>
                 <div className="input-spacing">
                     <div className="form-label">
-                        What three things are necessary for you to design? (besides tools)
+                        What three attributes are necessary for you to design?
                     </div>
                     <div className="subcomponent-spacing" style={{ overflow: 'hidden' }}>
                         <TextInput
@@ -381,25 +383,27 @@ export default class UserPerspective extends Component {
                 </div>
                 <div className="input-spacing-radio">
                     <div className="form-label" id='userPersonality'>
-                        Choose one over the other two
+                        Choose one
                     </div>
                     <div className="subcomponent-spacing">
-                        <RadioBoxComp 
-                            defaultValue={this.state.userPersonality}
-                            radioList={['UI Designer','Different Projects','Freedom']}
-                            onclick={(value)=>{
-                                this.setstateMethod('userPersonality', value)
-                                this.setstateMethod('userPersonalityVisiblityError', 'hidden')
-                            }}/>
+                        <div className={this.state.userPersonalityVisiblityError}>
+                            <RadioBoxComp 
+                                defaultValue={this.state.userPersonality}
+                                radioList={['UI Designer','Different Projects','Freedom']}
+                                onclick={(value)=>{
+                                    this.setstateMethod('userPersonality', value)
+                                    this.setstateMethod('userPersonalityVisiblityError', '')
+                                }}/>
+                        </div>
                     </div>
-                    <div style={{ visibility: this.state.userPersonalityVisiblityError }} className='display-error'>
+                    {/* <div style={{ visibility: this.state.userPersonalityVisiblityError }} className='display-error'>
                         Please identify yourself
-                    </div>
+                    </div> */}
                 </div>
                 <button className={this.renderClass()} onClick={() => this.goTo()}>
                     {/* <span className="button-title">NEXT</span> */}
                     <span className="button-title">
-                        <span>NEXT</span>
+                        <span>SAVE</span>
                         <span><img src={require('../Images/arrow-down.svg')}/></span>
                     </span>
                 

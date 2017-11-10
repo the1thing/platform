@@ -39,11 +39,12 @@ pushTOProposal=()=>{
                   />
 
                 </div>
+                <div style={{paddingLeft:'3%'}}>
                 <div styles={styles.borders} className="assign_info_text">
                     <div> <img width='24px' height="24px" src={require('./Images/thumb_up.png')} /></div>
                     <div>
-                        We have received your requirements and we are processing it.
-                 In next 48 hours, we'll send you a proposal with an estimated time and cost for Monochrome.
+                    Wasn’t that easy? We’ve successfully generated your application.
+                    Please allow 2 days for the final project proposal, with an estimated time and cost for Monochrome.
                  </div>
                 </div>
                 <div className="small_info_text margin_top">
@@ -62,9 +63,10 @@ pushTOProposal=()=>{
                         </div>
                     </div>
                 </div>
-                <div style={{ marginTop: '35px' }}>
+                <div style={{ marginTop: '35px',marginBottom:'200px' }}>
                     <Tooltip
-                        title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />
+        title={<span>Meanwhile, you could  <span><u> read</u></span>         about how 1THING works.</span>} />
+                </div>
                 </div>
             </div>
         )

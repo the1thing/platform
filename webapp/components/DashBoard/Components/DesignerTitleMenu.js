@@ -103,7 +103,7 @@ export default class DisignerTitleMenu extends Component {
     }
   render() {
     return (
-        <div style={{display:'flex'}}>
+        <div style={{display:'flex',cursor:'pointer'}}>
           <span className={this.state.menu_class} style={{marginTop:'15px'}} onClick={this.openMenuList}></span>
               <span onClick={()=>this.selectMenu('onboarding')} className={this.state.selected_menu=='onboarding'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_onboarding,textTransform:'uppercase'}}>ONBOARDING</span>
               <span onClick={()=>this.selectMenu('assignment')} className={this.state.selected_menu=='assignment'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_assignment}}>ASSIGNMENT</span>

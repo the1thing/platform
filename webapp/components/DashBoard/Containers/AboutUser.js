@@ -35,8 +35,8 @@ export default class AboutUser extends Component {
             linkdinErrorMessage:'',
             availabilityClass: false,
             linkdinLinkColor:'#0d65d8',
-            idVisiblityError: 'hidden',
-            jobTimingError: 'hidden',
+            idVisiblityError: '',
+            jobTimingError: '',
             linkVisiblityError:'hidden',
             checkboxList: ['UI Designer', 'UX Designer', 'Graphics Designer', 'Branding',
                 'Fron-end Devloper', 'Android Devloper', 'UX Writer']
@@ -95,7 +95,8 @@ export default class AboutUser extends Component {
         .then((resp)=>{
             //this.props.openPanel()
         }).then(()=>{
-            this.props.openPanel()
+            this.props.openPanel();
+            localStorage.setItem('openView','aboutDesign')
             
         })
         .catch((err)=>{
@@ -106,7 +107,7 @@ export default class AboutUser extends Component {
         if (this.state.checkboxArray.length==0) {
             document.getElementById('id').scrollIntoView();
             window.scrollBy(0, -100); 
-            this.setStateMethod('idVisiblityError', 'visible');
+            this.setStateMethod('idVisiblityError', 'radio-error');
         }
         else if (!this.state.linkdinLink) {
             document.getElementById('linkedin').scrollIntoView();
@@ -127,7 +128,7 @@ export default class AboutUser extends Component {
         else if (!this.state.jobTiming) {
             document.getElementById('jobTiming').scrollIntoView();
             window.scrollBy(0, -100); 
-            this.setStateMethod('jobTimingError', 'visible')
+            this.setStateMethod('jobTimingError', 'radio-error')
         }
         else if (!this.state.availability) {
             document.getElementById('availability').scrollIntoView();
@@ -149,7 +150,7 @@ export default class AboutUser extends Component {
                         label={value}
                         checkboxOnClick={(e) => {
                             this.setStateMethod('checkboxArray', getCheckBoxValue(e, this.state.checkboxArray))
-                            this.setStateMethod('idVisiblityError', 'hidden')
+                            this.setStateMethod('idVisiblityError', '')
                         }} />
                  )
             })
@@ -170,11 +171,13 @@ export default class AboutUser extends Component {
                         You identify yourself as
                     </div>
                     <div className="subcomponent-spacing">
-                        {this.renderCheckBox()}
+                        <div className={this.state.idVisiblityError}>
+                            {this.renderCheckBox()}
+                        </div>
                     </div>
-                    <div style={{ visibility: this.state.idVisiblityError }} className='display-error'>
+                    {/* <div style={{ visibility: this.state.idVisiblityError }} className='display-error'>
                         Please identify yourself
-                    </div>
+                    </div> */}
                 </div>
                 <div style={{display:'flex'}}>
                     <input
@@ -182,7 +185,7 @@ export default class AboutUser extends Component {
                         style={{color:this.state.linkdinLinkColor,width:'85%'}}
                         value={this.state.linkdinLink}
                         className={this.state.linkdinLinkClass ? "Error-input" : "simple-input"}
-                        placeholder="Paste your linkdin profile link"
+                        placeholder="Paste your linkedin profile link"
                         onChange={(e) => {
                                         this.setStateMethod('linkdinLink', e.target.value)
                                             if(validateUrl(e.target.value)){
@@ -217,14 +220,16 @@ export default class AboutUser extends Component {
                 <div className="input-spacing-radio">
                     <div className="form-label">You are here for?</div>
                     <div className="subcomponent-spacing" id="jobTiming">
-                        <RadioBoxComp
-                            defaultValue={this.state.jobTiming}
-                            radioList={['Part time', 'Full time']} 
-                            onclick={(e)=>{this.setStateMethod('jobTiming',e);this.setStateMethod('jobTimingError','hidden')}}/>
+                        <div className={this.state.jobTimingError}>
+                            <RadioBoxComp
+                                defaultValue={this.state.jobTiming}
+                                radioList={['Part time', 'Full time']} 
+                                onclick={(e)=>{this.setStateMethod('jobTiming',e);this.setStateMethod('jobTimingError','')}}/>
+                        </div>
                     </div>
-                    <div style={{ visibility: this.state.jobTimingError }} className='display-error'>
-                        Please identify yourself
-                    </div>
+                    {/* <div style={{ visibility: this.state.jobTimingError }} className='display-error'>
+                        Please select at-least
+                    </div> */}
                 </div>
                 <div className="input-spacing" style={{display:'flex'}}>
                     <input

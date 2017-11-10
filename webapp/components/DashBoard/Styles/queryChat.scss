@@ -3,8 +3,11 @@
     // float: right;
     // margin-top: 174px;
     // margin-right: 288px;
-     margin-left: 42%;
-     margin-top: 38%;
+    //  margin-left: 42%;
+    //  margin-top: 38%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
 }
 .Rectangle-7 {
     width: 248px;
@@ -14,8 +17,9 @@
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.06);
   }
   .chat_icon{
-    margin-top: 126px;
-    margin-left: 203px;
+      float: right;
+    // margin-top: 126px;
+    // margin-left: 203px;
   }
   .Rec_7_content{ 
     width: 230px;
