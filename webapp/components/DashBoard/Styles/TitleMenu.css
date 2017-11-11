@@ -74,10 +74,10 @@
   padding: 10px 20px 10px 5px; }
 
 .unselected_menu,
-.cross_menu_img {
+.cross_menu_img, .expand-icon {
   animation: smooth1 0.7s linear; }
 
-.menu-image {
+.menu-image, .collaps-icon {
   animation: smooth2 0.7s linear; }
 
 @keyframes smooth1 {
@@ -91,3 +91,7 @@
     opacity: 0; }
   100% {
     opacity: 1; } }
+
+.panel-collapse {
+  transition-duration: .5s;
+  transition-timing-function: ease-in-out; }

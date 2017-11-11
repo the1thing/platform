@@ -15,23 +15,23 @@
 //     return (
 //       <div>
 //         <div className="_header">
-//            <DashboardHeader/> 
+//            <DashboardHeader/>
 //         </div>
 //          <div className="dashboard-container">
 //           <div style={{border:'1px solid red'}}>
-//               <DashboardInfo/>  
-//                 <MyComponents/>    
+//               <DashboardInfo/>
+//                 <MyComponents/>
 //              <OnboardManifesto/>
 //              <OnboardAssignment/>
-//              <MonochromeProposal/>    
+//              <MonochromeProposal/>
 //           </div>
 //           <div style={{width:'27%'}}>
 //             <div className="progress-container">
-//                <DashboardProgress/>    
+//                <DashboardProgress/>
 //             </div>
-//             <QueryChat/> 
+//             <QueryChat/>
 //           </div>
-//         </div>  
+//         </div>
 //       </div>
 //     );
 //   }
@@ -39,106 +39,104 @@
 
 // export default Dashboard;
 
-
-
-import React, { Component } from 'react'
-import { browserHistory } from 'react-router/es6';
-import axios from 'axios';
-import OnboardingDesigner from './OnboardingDesigner';
-import OnboardingClient from './OnboardingClient';
-import { basepath } from './utils/constant';
-import './App.scss';
+import React, { Component } from "react";
+import { browserHistory } from "react-router/es6";
+import axios from "axios";
+import OnboardingDesigner from "./OnboardingDesigner";
+import OnboardingClient from "./OnboardingClient";
+import { basepath } from "./utils/constant";
+import "./App.scss";
 
 export default class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userType: '',
-            loader:false,
-        }
-    }
-    getCookie=(name)=> {
-       // console.log('-------------->>',name);
-        var re = new RegExp(name + "=([^;]+)");
-        var value = re.exec(document.cookie);
-        return (value != null) ? unescape(value[1]) : null;
+  constructor(props) {
+    super(props);
+    this.state = {
+      userType: "",
+      loader: false,
+      dashboardIconClass:'',
+    };
+  }
+  getCookie = name => {
+    // console.log('-------------->>',name);
+    var re = new RegExp(name + "=([^;]+)");
+    var value = re.exec(document.cookie);
+    return value != null ? unescape(value[1]) : null;
+  };
+
+  componentWillMount() {
+    if (window.location.href.includes("dashboard")) {
+    //   this.setState({
+    //     dashboardIconClass: "dashboard-active-icon"
+    //   });
+    } else {
+      this.setState({
+        dashboardIconClass: ""
+      });
     }
 
-    componentWillMount() {
+    this.setState({
+      loader: true
+    });
+    let uId = this.getCookie("MMUSERID");
+    // console.log('----->',uId)
+    // k5iu4qh1kfy1iyft4dh7gwus3r  designer
+    // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
+    // axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //client
+    //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
+    //  axios.get(basepath + 'user/getUser/'+uId)
+    //designer aaf5yhz9pjbfjnabwsccctus5e
+    axios({
+      method: "get",
+      url: basepath + "user/getUser/" + uId,
+    })
+      .then(resp => {
+        console.log(resp.data.data.userType, "api data------------>", resp);
         this.setState({
-            loader:true,
-        })
-        let uId=this.getCookie('MMUSERID');
-       // console.log('----->',uId)
-        // k5iu4qh1kfy1iyft4dh7gwus3r  designer
-        // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
-        // axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //client
-         //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
-      //  axios.get(basepath + 'user/getUser/'+uId)
-      //designer aaf5yhz9pjbfjnabwsccctus5e
-      axios({
-          method:'get',
-          url:basepath + 'user/getUser/'+uId,
+          userType: resp.data.data.userType
+        });
+        localStorage.setItem("userName", resp.data.data.name);
+        localStorage.setItem("userId", resp.data.data._id);
+        localStorage.setItem("userType", resp.data.data.userType),
+          localStorage.setItem("signUpDate", resp.data.data.createdAt);
+        this.setState({
+          loader: false
+        });
       })
-            .then((resp) => {
-                console.log(resp.data.data.userType,'api data------------>',resp)
-                this.setState({
-                    userType: resp.data.data.userType,
-                })
-                localStorage.setItem('userName',resp.data.data.name);
-                localStorage.setItem('userId',resp.data.data._id);
-                localStorage.setItem('userType',resp.data.data.userType),
-                localStorage.setItem('signUpDate',resp.data.data.createdAt)
-                this.setState({
-                    loader:false,
-                })
-            })
-            .catch((err) => {
-                this.setState({
-                    loader:false,
-                })
-                console.log("errorrrrrrrrrrrrrrrr123", err)
-            })
-    }
+      .catch(err => {
+        this.setState({
+          loader: false
+        });
+        console.log("errorrrrrrrrrrrrrrrr123", err);
+      });
+  }
 
-    render() {
-        if(this.state.loader){
-         return (
-         <div>
-             {/* loading... */}
-             </div>   
-             )
-        }
-        else{
-            if (this.state.userType == 'client') {
-                return (
-                    <div>
-                        <OnboardingClient />
-                        {/* <OnboardingDesigner/>  */}
-                    </div>
-                )
-            }
-            else if (this.state.userType == 'designer') {
-                return (
-                    <div>
-                        {/* <OnboardingClient /> */}
-                        <OnboardingDesigner/>  
-                    </div>
-                )
-            }
-            else {
-                return (
-                    <div>
-                        {/* {<OnboardingClient/>  } */}
-                        You have no workspace. Please start Afresh.
-                {/* <OnboardingDesigner/>    */}
-                    </div>
-                )
-            }
-        }
+  render() {
+    if (this.state.loader) {
+      return <div>{/* loading... */}</div>;
+    } else {
+      if (this.state.userType == "client") {
+        return (
+          <div className={this.state.dashboardIconClass}>
+            <OnboardingClient />
+            {/* <OnboardingDesigner/>  */}
+          </div>
+        );
+      } else if (this.state.userType == "designer") {
+        return (
+          <div className={this.state.dashboardIconClass}>
+            {/* <OnboardingClient /> */}
+            <OnboardingDesigner />
+          </div>
+        );
+      } else {
+        return (
+          <div className={this.state.dashboardIconClass}>
+            {/* {<OnboardingClient/>  } */}
+            You have no workspace. Please start Afresh.
+            {/* <OnboardingDesigner/>    */}
+          </div>
+        );
+      }
     }
+  }
 }
-
-
-
-

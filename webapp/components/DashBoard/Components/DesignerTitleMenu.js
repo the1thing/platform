@@ -26,7 +26,11 @@ export default class DisignerTitleMenu extends Component {
             vis_pricing:'none',
             vis_wel_aboard:'none',
             selected_menu:this.props.title,
-            
+            onboardingColor:'',
+            assignmentColor:'',
+            princingColor:'',
+            abroadColor:'',
+          
         }
     }
     componentWillMount() {
@@ -55,6 +59,10 @@ export default class DisignerTitleMenu extends Component {
             {
               this.props.pushPropsOnboarding();
               this.setState({
+                onboardingColor:'#ffbc00',
+                assignmentColor:'',
+                princingColor:'',
+                abroadColor:'',
                 vis_onboarding:'block',
                 vis_assignment:'none',
                 vis_pricing:'none',
@@ -67,6 +75,10 @@ export default class DisignerTitleMenu extends Component {
             {
               this.props.pushPropsAssignment();
               this.setState({
+                onboardingColor:'',
+                assignmentColor:'#118bf3',
+                princingColor:'',
+                abroadColor:'',
                 vis_onboarding:'none',
                 vis_assignment:'block',
                 vis_pricing:'none',
@@ -80,6 +92,10 @@ export default class DisignerTitleMenu extends Component {
        {
         this.props.pushPropsPricing();
         this.setState({
+          onboardingColor:'',
+          assignmentColor:'',
+          princingColor:'#36cb3b',
+          abroadColor:'',
           vis_onboarding:'none',
           vis_assignment:'none',
           vis_pricing:'block',
@@ -92,7 +108,11 @@ export default class DisignerTitleMenu extends Component {
        {
         this.props.pushPropsAboard();
          this.setState({
-           vis_onboarding:'none',
+          onboardingColor:'',
+          assignmentColor:'',
+          princingColor:'',
+          abroadColor:'#7560fd',
+          vis_onboarding:'none',
            vis_assignment:'none',
            vis_pricing:'none',
            vis_wel_aboard:'block',
@@ -105,10 +125,10 @@ export default class DisignerTitleMenu extends Component {
     return (
         <div style={{display:'flex',cursor:'pointer'}}>
           <span className={this.state.menu_class} style={{marginTop:'15px'}} onClick={this.openMenuList}></span>
-              <span onClick={()=>this.selectMenu('onboarding')} className={this.state.selected_menu=='onboarding'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_onboarding,textTransform:'uppercase'}}>ONBOARDING</span>
-              <span onClick={()=>this.selectMenu('assignment')} className={this.state.selected_menu=='assignment'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_assignment}}>ASSIGNMENT</span>
-              <span onClick={()=>this.selectMenu('pricing')} className={this.state.selected_menu=='pricing'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_pricing}}>PRICING & BANDWIDTH</span>
-              <span onClick={()=>this.selectMenu('aboard')} className={this.state.selected_menu=='aboard'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_wel_aboard}}>WELCOME ABOARD</span>
+              <span onClick={()=>this.selectMenu('onboarding')} className={this.state.selected_menu=='onboarding'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_onboarding,textTransform:'uppercase',color:this.state.onboardingColor}}>ONBOARDING</span>
+              <span onClick={()=>this.selectMenu('assignment')} className={this.state.selected_menu=='assignment'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_assignment,color:this.state.assignmentColor}}>ASSIGNMENT</span>
+              <span onClick={()=>this.selectMenu('pricing')} className={this.state.selected_menu=='pricing'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_pricing,color:this.state.princingColor}}>PRICING & BANDWIDTH</span>
+              <span onClick={()=>this.selectMenu('aboard')} className={this.state.selected_menu=='aboard'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_wel_aboard,color:this.state.abroadColor}}>WELCOME ABOARD</span>
         </div>  
     )
   }

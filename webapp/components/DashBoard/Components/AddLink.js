@@ -99,7 +99,7 @@ export class AddLink extends Component {
           style={{ color: this.state.linkColor, marginBottom: "8px" }}
           value={this.state.defaultInputValue}
           className={this.props.error ? "Error-input" : "simple-input"}
-          placeholder="Link(s) to scope document, if any"
+          placeholder={this.props.placeholder}
           onChange={e => {
             this.handleButtonClick(e);
           }}

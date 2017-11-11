@@ -295,7 +295,7 @@ export default class ClientProgress extends Component {
                      <div>
                         <Row  className="margin_bu16">
                             <Col  md={1} ><div className={this.state.requirement.completed.value?"check_Oval_md":"Oval_md"}></div></Col>
-                            <Col  md={6} className={this.state.requirement.completed.value?"checked_progress_text":"progress_text_dark"}> requirement</Col>
+                            <Col  md={6} className={this.state.requirement.completed.value?"checked_progress_text":"progress_text_dark"}> Requirements</Col>
                             <Col  md={4} className={!this.state.requirement.completed.value?"hide_progress_text":"progress_text_position"}>{ returnDate(this.state.requirement.dateOfCompletion)}</Col>
                         </Row>
                         <Row className={this.state.margin_bu8_requirement}>
@@ -306,12 +306,12 @@ export default class ClientProgress extends Component {
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.requirement.aboutDesign.completed?"check_Oval_sm":this.state.not_cross_aboutDesign?"Oval_sm":"dim_Oval_sm"}></div></Col>
-                            <Col  md={6}  className={this.state.requirement.aboutDesign.completed?"checked_progress_text_sub":this.state.not_cross_aboutDesign?"progress_text_subpart":"progress_text_sub_dim"}> about design</Col>
+                            <Col  md={6}  className={this.state.requirement.aboutDesign.completed?"checked_progress_text_sub":this.state.not_cross_aboutDesign?"progress_text_subpart":"progress_text_sub_dim"}> About design</Col>
                             <Col  md={4}  className={!this.state.not_cross_aboutDesign?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         <Row  className="margin_bu8">
                             <Col  md={1} ><div className={this.state.requirement.aboutTimeline.completed?"check_Oval_sm":this.state.not_cross_aboutTimeline?"Oval_sm":"dim_Oval_sm"}></div></Col>
-                            <Col  md={6}  className={this.state.requirement.aboutTimeline.completed?"checked_progress_text_sub":this.state.not_cross_aboutTimeline?"progress_text_subpart":"progress_text_sub_dim"}> aboutTimeline</Col>
+                            <Col  md={6}  className={this.state.requirement.aboutTimeline.completed?"checked_progress_text_sub":this.state.not_cross_aboutTimeline?"progress_text_subpart":"progress_text_sub_dim"}> AboutTimeline</Col>
                             <Col  md={4}  className={!this.state.not_cross_aboutTimeline?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
                         </Row>
                         
@@ -341,7 +341,7 @@ export default class ClientProgress extends Component {
            </Row>
            <Row  className="margin_bu8">
                <Col  md={1} ><div className={this.state.proposal.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
-               <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approval</Col>
+               <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approved</Col>
                <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
         </div>
@@ -360,7 +360,7 @@ export default class ClientProgress extends Component {
             <Grid style={{width:'90%'}}>
               <Row className="margin_bu28" >
                   <Col  md={1}> <div  className="box"></div></Col>
-                  <Col  md={8} className="progress_text">your journey with 1thing</Col>
+                  <Col  md={8} className="progress_text">your journey with 1thing...</Col>
                   <Col  md={2} >
                   <div className="Oval"></div>
                   <div className="Oval"></div>

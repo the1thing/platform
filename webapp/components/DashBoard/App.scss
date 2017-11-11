@@ -33,7 +33,7 @@
     right: 0;
 }
 .dashboard-container{
-    margin-left: 12%;
+    margin-left: 120px;
     display: flex;
     margin-top: 76px;
 }
@@ -71,7 +71,7 @@
     text-align: left;
     color: #030303;
     padding-bottom: 32px;
-    padding-left: 12%;
+    padding-left: 144px;
     z-index: 1;
     }
     .Oval-2 {
@@ -373,14 +373,25 @@
         transform: translateX(100%)
     }
 }
-
+.dashboard-active-icon .dashboard-icon{
+    border-left: 2px solid #fff;
+}
+.dashboard-active-icon .dashboard-btn-initials{
+    background: #fff;
+    border-radius: 4px;
+    color: #030303 !important;
+}
 
   @keyframes fade {
     from { opacity: 0 } 
      to { opacity: 1 }
    }
 
-
+   .dashboard-active-icon .team-btn{
+    //    background: rgba(255, 255, 255, 0.1) !important;
+    background: #243c5e !important;
+       color: rgba(255, 255, 255, 0.5) !important;
+   }
    ._header .simple-input::-webkit-input-placeholder{
         font-size: 16px;
    }

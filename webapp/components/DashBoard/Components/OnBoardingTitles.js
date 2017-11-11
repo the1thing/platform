@@ -65,7 +65,14 @@ export default class OnboardingTitles extends Component {
         });
       }
     }
+    this.showCoords(e)  
   }
+  showCoords(event) {
+    var y = event.clientY;
+    if(y>=628){
+      window.scrollBy(0,+100);
+    }
+}
   
   render() {
     return (
@@ -82,10 +89,10 @@ export default class OnboardingTitles extends Component {
                  </div>
                </div>
                <div>
-                <div style={{display:this.state.plus_visiblity,marginLeft:'103px'}}>
+                <div style={{display:this.state.plus_visiblity,marginLeft:'103px'}} className="expand-icon">
                   <img src={require('../Images/expand.svg')}/>
                 </div>
-                <div style={{display:this.state.minus_visiblity,marginLeft:'103px'}}>
+                <div style={{display:this.state.minus_visiblity,marginLeft:'103px'}} className="collaps-icon">
                   <img src={require('../Images/collaps.svg')}/>
                 </div>
                </div>

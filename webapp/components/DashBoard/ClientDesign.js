@@ -1,45 +1,46 @@
-import React, { Component } from 'react';
-import './Styles/OnboardAssignment.css';
-import ClientTitleMenu from './Components/ClientTitleMenu';
-import Tooltip from './Components/Tooltip';
+import React, { Component } from "react";
+import "./Styles/OnboardAssignment.css";
+import ClientTitleMenu from "./Components/ClientTitleMenu";
+import Tooltip from "./Components/Tooltip";
 const styles = {
-    borders: {
-        border: '1px solid #f7f7f7'
-    }
-}
+  borders: {
+    border: "1px solid #f7f7f7"
+  }
+};
 
 export default class ClientDesign extends Component {
-    componentWillMount() {
-    console.log("gggggggggg",this.props.history)
+  componentWillMount() {
+    console.log("gggggggggg", this.props.history);
   }
-  
- pushTORequire=(push_argu)=>{
-                   this.props.history.push('/')
-      }
-pushTOProposal=()=>{
-        this.props.history.push('/proposal')
-    }
-  pushToDesign=()=>{
-    this.props.history.push('/design')
+  componentDidMount() {
+    window.scrollTo(0, 0);
   }
-  pushTOFeeddback=()=>{
-    this.props.history.push('/feedback')
-  }
-    render() {
-        return (
-            <div>
-                <div>
-                    <ClientTitleMenu
-                    title='design'
-                    pushPropsRequire={this.pushTORequire}
-                    pushPropsProposal={this.pushTOProposal}
-                    pushPropsDesign={this.pushToDesign}
-                    pushPropsFeeddback={this.pushTOFeeddback} 
 
-                  />
-
-                </div>
-                {/* <div styles={styles.borders} className="assign_info_text">
+  pushTORequire = push_argu => {
+    this.props.history.push("/");
+  };
+  pushTOProposal = () => {
+    this.props.history.push("/proposal");
+  };
+  pushToDesign = () => {
+    this.props.history.push("/design");
+  };
+  pushTOFeeddback = () => {
+    this.props.history.push("/feedback");
+  };
+  render() {
+    return (
+      <div>
+        <div>
+          <ClientTitleMenu
+            title="design"
+            pushPropsRequire={this.pushTORequire}
+            pushPropsProposal={this.pushTOProposal}
+            pushPropsDesign={this.pushToDesign}
+            pushPropsFeeddback={this.pushTOFeeddback}
+          />
+        </div>
+        {/* <div styles={styles.borders} className="assign_info_text">
                     <div> <img width='24px' height="24px" src={require('./Images/thumb_up.png')} /></div>
                     <div>
                         We have received your requirements and we are processing it.
@@ -62,11 +63,10 @@ pushTOProposal=()=>{
                         </div>
                     </div>
                 </div> */}
-                <div style={{ marginTop: '35px' }}>
-                    <Tooltip
-                        title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />
-                </div>
-            </div>
-        )
-    }
+        <div style={{ marginTop: "35px" }}>
+          <Tooltip title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />
+        </div>
+      </div>
+    );
+  }
 }

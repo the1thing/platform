@@ -53,6 +53,7 @@ export default class OnboardingMonochromeForms extends Component {
   openPanel = () => {
     this.refs.openPanel();
     this.getUserData();
+    
   };
   getUserData = () => {
     axios({
@@ -146,11 +147,11 @@ export default class OnboardingMonochromeForms extends Component {
             className="title-content"
           >
             <div className="Onboarding-content-f">
-              Requirements content three steps 1st is product where you tell us
+              {/* Requirements content three steps 1st is product where you tell us
               about your product, what kinda product you want to build, 2nd is
               about design, which type of design philosophy you want to follow
               and 3rd about timeline.. here it is
-              <img width="24px" src={require("./Images/1f447.png")} />
+              <img width="24px" src={require("./Images/1f447.png")} /> */}
             </div>
             <OnBoardingTitles
               openPanel={refs => (this.refs = refs)}
@@ -161,7 +162,7 @@ export default class OnboardingMonochromeForms extends Component {
               date={returnDate(this.state.product_date)}
               title={
                 <span>
-                  1.<span className="title-padding">About your Product</span>
+                  1.<span className="title-padding">About Product</span>
                 </span>
               }
               panelContent={
@@ -218,7 +219,7 @@ export default class OnboardingMonochromeForms extends Component {
               }
             />
             <div style={{marginBottom:'200px'}}>
-              <Tooltip title="After this, allow us 2 days so that we can share the final proposal with you." />
+              <Tooltip title="We'll share the Right Design Team & Product plan with you in 48 hours of your completion of these 3 steps." />
             </div>
           </div>
 

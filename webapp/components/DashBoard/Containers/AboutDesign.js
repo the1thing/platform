@@ -47,8 +47,8 @@ export default class AboutDesign extends Component {
             designList: ['a', 'b'],
             objectiveList: ['New platform', 'Improve conversions', 'Improve engagement',
                 'Improve retention', 'Improve overall experience', 'Improve aesthetics'],
-            platformList: ['Mac App', 'Android wearable', 'Apple watch', 'VR',
-                'Windows app', 'IOS app', 'Android app', 'Web app', 'Responsive web'],
+            platformList: ['Web app', 'Responsive web', 'Android app', 'IOS app','Desktop App (W)', 
+            'Desktop App (Mac)', 'Android wearable', 'Apple Watch', 'AR/VR', ],
             loading: false,
             edit: true,
             projectId: '',
@@ -125,29 +125,24 @@ setStateMethod=(label,value)=>{
     });
 }
 goTo=()=>{
-    console.log("platform--->",this.state.platforms)
     if(this.state.platforms.length==0){
-        alert("1")
         document.getElementById('platforms').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('platformClass',true)
     }
     else if(!this.state.services){
-        alert("2")
         document.getElementById('services').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('servicesClass',true)
     
     }
     else if(!this.state.objective){
-        alert("3")
         document.getElementById('objective').scrollIntoView();
         window.scrollBy(0, -100); 
         this.setStateMethod('objectiveClass',true)
     }
     else if(!this.state.addLink[0]){
         if(!this.state.document){
-            alert("4")
             this.setStateMethod('linkClass',true)
             document.getElementById('addLink').scrollIntoView();
             window.scrollBy(0, -100); 
@@ -155,12 +150,10 @@ goTo=()=>{
         else{
             if(validateUrl(this.state.document))
             {
-                alert("5")
                 this.state.addLink.push(this.state.document)
                 this.postAboutDesignData();
             }
             else{
-                alert("6")
                 this.setStateMethod('documentErrorVisiblity',true)
                 document.getElementById('addLink').scrollIntoView();
                 window.scrollBy(0, -100); 
@@ -171,12 +164,10 @@ goTo=()=>{
         if(this.state.document){
             if(validateUrl(this.state.document))
             {
-                alert("7")
                 this.state.addLink.push(this.state.document)
                 this.postAboutDesignData();
             }
             else{
-                alert("8")
                 this.setStateMethod('documentErrorVisiblity',true)
                 document.getElementById('addLink').scrollIntoView();
                 window.scrollBy(0, -100); 
@@ -184,7 +175,6 @@ goTo=()=>{
         }
         else
         {
-            alert("9")
             this.postAboutDesignData();
         }
        
@@ -223,7 +213,7 @@ postAboutDesignData=(link_list)=>{
                 </div>)
         }
         else return (
-            <div>{console.log("design------------->",this.state.platforms,this.state.services,this.state.objective,this.state.addLink)}
+            <div>
                 <div className="input-spacing platform-selection" id='platforms'>
                     {/********************* Select Multiple *****  */}
 
@@ -301,7 +291,7 @@ postAboutDesignData=(link_list)=>{
                     defaultValue={this.state.addLink}
                     error={this.state.linkClass}
                     errorLink={this.state.documentErrorVisiblity}
-                    placeholder='Link(s) to References'
+                    placeholder='Link to a site or an app you like'
                     onclick={(e) => {
                         this.setState({document:e.target.value})
                         //if(validateUrl(e.target.value)){

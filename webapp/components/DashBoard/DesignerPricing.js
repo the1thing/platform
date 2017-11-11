@@ -1,43 +1,46 @@
-import React, { Component } from 'react';
-import DesignerTitleMenu from './Components/DesignerTitleMenu';
-import './Styles/OnboardAssignment.css';
-import Tooltip from './Components/Tooltip';
+import React, { Component } from "react";
+import DesignerTitleMenu from "./Components/DesignerTitleMenu";
+import "./Styles/OnboardAssignment.css";
+import Tooltip from "./Components/Tooltip";
 const styles = {
-    borders: {
-        border: '1px solid #f7f7f7'
-    }
-}
+  borders: {
+    border: "1px solid #f7f7f7"
+  }
+};
 
 export default class DesignerPricing extends Component {
-    componentWillMount() {
-        
-           console.log("gggggggggg",this.props.history)
-   }
-pushToOnboarding=()=>{
-this.props.history.push('/')
+  componentWillMount() {
+    console.log("gggggggggg", this.props.history);
   }
- pushToAssignment=()=>{
-    this.props.history.push('/assignment')
+  componentDidMount() {
+    window.scrollTo(0, 0);
   }
- pushToPricing=()=>{
-  this.props.history.push('/pricing')
-}
-pushToAboard=()=>{
- this.props.history.push('/aboard')
-}
-    render() {
-        return (
-            <div >
-                <div>
-                    <DesignerTitleMenu
-                        title="pricing"
-                        pushPropsOnboarding={this.pushToOnboarding}
-                        pushPropsAssignment={this.pushToAssignment}
-                        pushPropsPricing={this.pushToPricing}
-                        pushPropsAboard={this.pushToAboard} 
-                    />
-                </div>
-                {/* <div styles={styles.borders} className="assign_info_text">
+
+  pushToOnboarding = () => {
+    this.props.history.push("/");
+  };
+  pushToAssignment = () => {
+    this.props.history.push("/assignment");
+  };
+  pushToPricing = () => {
+    this.props.history.push("/pricing");
+  };
+  pushToAboard = () => {
+    this.props.history.push("/aboard");
+  };
+  render() {
+    return (
+      <div>
+        <div>
+          <DesignerTitleMenu
+            title="pricing"
+            pushPropsOnboarding={this.pushToOnboarding}
+            pushPropsAssignment={this.pushToAssignment}
+            pushPropsPricing={this.pushToPricing}
+            pushPropsAboard={this.pushToAboard}
+          />
+        </div>
+        {/* <div styles={styles.borders} className="assign_info_text">
                     <div> <img width='24px' height="24px" src={require('./Images/thumb_up.png')} /></div>
                     <div>
                         We have received your information regarding onboarding and we are processing it ..
@@ -60,11 +63,10 @@ pushToAboard=()=>{
                         </div>
                     </div>
                 </div> */}
-                <div style={{ marginTop: '35px' }}>
-                    <Tooltip
-                        title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />
-                </div>
-            </div>
-        )
-    }
+        <div style={{ marginTop: "35px" }}>
+          <Tooltip title="Meanwhile, you should check out how 1THING selects the right design team and how it makes sure that you get the best designs, in time." />
+        </div>
+      </div>
+    );
+  }
 }

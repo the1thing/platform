@@ -26,6 +26,10 @@ export default class ClientTitleMenu extends Component {
       vis_design:'none',
       vis_feedback:'none',
       selected_menu:this.props.title,
+      requirementColor:'',
+      proposalColor:'',
+      designColor:'',
+      feedbackColor:'',
       loader:true,
     }
   }
@@ -56,6 +60,10 @@ export default class ClientTitleMenu extends Component {
             {
               this.props.pushPropsRequire();
               this.setState({
+                requirementColor:'ffbc00',
+                proposalColor:'',
+                designColor:'',
+                feedbackColor:'',
                  vis_requirement:'block',
                 vis_proposal:'none',
                 vis_design:'none',
@@ -69,7 +77,11 @@ export default class ClientTitleMenu extends Component {
             {
               this.props.pushPropsProposal();
               this.setState({
-                 vis_requirement:'none',
+                proposalColor:'#118bf3',
+                requirementColor:'',
+                designColor:'',
+                feedbackColor:'',
+                vis_requirement:'none',
                 vis_proposal:'block',
                 vis_design:'none',
                 vis_feedback:'none',
@@ -83,7 +95,11 @@ export default class ClientTitleMenu extends Component {
        {
         this.props.pushPropsDesign()
         this.setState({
-           vis_requirement:'none',
+          proposalColor:'',
+          requirementColor:'',
+          designColor:'#36cb3b',
+          feedbackColor:'',
+          vis_requirement:'none',
           vis_proposal:'none',
           vis_design:'block',
           vis_feedback:'none',
@@ -97,6 +113,10 @@ export default class ClientTitleMenu extends Component {
        {
         this.props.pushPropsFeeddback()
          this.setState({
+            proposalColor:'',
+            requirementColor:'',
+            designColor:'',
+            feedbackColor:'#7560fd',
             vis_requirement:'none',
            vis_proposal:'none',
            vis_design:'none',
@@ -111,11 +131,12 @@ export default class ClientTitleMenu extends Component {
   render() {
     return (
       <div style={{display:'flex',cursor:'pointer'}}>
-          <span className={this.state.menu_class} style={{marginTop:'15px'}} onClick={this.openMenuList}></span>
-              <span onClick={()=>this.selectMenu('requirement')} className={this.state.selected_menu=='requirement'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_requirement,textTransform:'uppercase'}}>REQUIREMENTS</span>
-              <span onClick={()=>this.selectMenu('proposal')} className={this.state.selected_menu=='proposal'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_proposal}}>PROPOSAL</span>
-              <span onClick={()=>this.selectMenu('design')} className={this.state.selected_menu=='design'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_design}}>DESIGN</span>
-              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback}}>FEEDBACK</span>
+          <span className={this.state.menu_class} style={{marginTop:'15px'}}  onClick={this.openMenuList}></span>
+              <span onClick={()=>this.selectMenu('requirement')} className={this.state.selected_menu=='requirement'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_requirement,textTransform:'uppercase',color:this.state.requirementColor}}>REQUIREMENTS</span>
+              <span onClick={()=>this.selectMenu('proposal')} className={this.state.selected_menu=='proposal'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_proposal,color:this.state.proposalColor}}>Right Design Team</span>
+              <span onClick={()=>this.selectMenu('design')} className={this.state.selected_menu=='design'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_design,color:this.state.designColor}}>Design Journey</span>
+              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor}}>Support</span>
+              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor}}>Analysis</span>
       </div>
     )
   }

@@ -248,7 +248,7 @@ export default class QueryChat extends Component {
                        Hi {localStorage.getItem('userName')}, <br/>
                         I am your onboarding manager at 1THING.
                         Let me know if you hit any obstacle. I am available
-                        <a href='https://workspace.1thing.io' target='_blank'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                        
                       </div>  
                 </div>
@@ -263,7 +263,7 @@ export default class QueryChat extends Component {
                       Hi {localStorage.getItem('userName')}, <br/>
                        Seems like something holding you off. If you need any help,
                         we are always
-                        <a href='https://workspace.1thing.io' target='_blank'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                       
                      </div>  
                 </div>
@@ -280,13 +280,13 @@ export default class QueryChat extends Component {
                        I'll ping you
                        
                         {/* <span style={{marginLeft:'6px'}} className="clickable_text" target="_blank"onClick={()=>{window.location.assign("www.google.com")}} >here.</span> */}
-                        <a href='https://workspace.1thing.io' target='_blank'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                       </div>  
                 </div>
                 </div>
-                <div className="chat_icon">
+                <div className="chat_icon" style={{width:'60px',height:'60px'}}>
                     <img onClick={()=>{ window.open('https://workspace.1thing.io','_blank') }}
-                    width='50px' height='50px' src={require('../Images/floating-button.svg')}/>
+                    src={require('../Images/floating-button.svg')}/>
                 </div>
               </div>
             </div>

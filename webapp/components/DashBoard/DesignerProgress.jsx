@@ -396,7 +396,7 @@ export default class DesignerProgress extends Component {
             <Grid style={{width:'90%'}}>
               <Row className="margin_bu28" >
                   <Col  md={1}> <div  className="box"></div></Col>
-                  <Col  md={8} className="progress_text_main">your journey with 1thing</Col>
+                  <Col  md={8} className="progress_text_main">your journey with 1thing...</Col>
                   <Col  md={2} >
                   <div className="Oval"></div>
                   <div className="Oval"></div>

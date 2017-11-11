@@ -196,9 +196,9 @@ pushToAboard=()=>{
        
         <div style={{display:this.state.onboarding_display}} className="title-content">
           <div className="Onboarding-content-f">
-            Onboarding content four steps: 1st is about yourself, 2nd is about expertise, 
+            {/* Onboarding content four steps: 1st is about yourself, 2nd is about expertise, 
             3rd about your perspective and lastly, how you think about yourself .. here it is 
-            <img  width='24px' src={require('./Images/1f447.png')}/>
+            <img  width='24px' src={require('./Images/1f447.png')}/> */}
           </div>
           <OnBoardingTitles 
             openPanel={refs=>this.refs=refs}
