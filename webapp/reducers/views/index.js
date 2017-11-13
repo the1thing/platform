@@ -8,5 +8,6 @@ import channel from './channel';
 
 export default combineReducers({
     rhs,
-    channel
+    channel,
+    
 });

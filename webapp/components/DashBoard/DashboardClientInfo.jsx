@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import {privateChannel} from './utils/constant';
 
 export default class DashboardClientInfo extends Component {
     render() {
@@ -12,7 +13,7 @@ export default class DashboardClientInfo extends Component {
                  can put together just the Right Design Team along with product plan for you.{/* <img  width='24px' src={require('./Images/1f447.png')}/>   */}
                 {/* <span onClick={()=>window.open("https://1thing.io/communication/right-design-team").location} className="clickable_text"> the easiest way of working together.</span><br/> */}
                <div style={{marginTop:'8px'}}>We are 
-               <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here</span></a> for anything else you may want to talk about.
+               <a href={privateChannel+this.props.channelName}><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here</span></a> for anything else you may want to talk about.
                {/* <span onClick={()=>window.open("https://workspace.1thing.io").location}  className="clickable_text"> here</span> to guide you ahead. */}
                </div>
                 </div>

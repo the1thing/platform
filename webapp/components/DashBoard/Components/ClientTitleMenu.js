@@ -132,11 +132,11 @@ export default class ClientTitleMenu extends Component {
     return (
       <div style={{display:'flex',cursor:'pointer'}}>
           <span className={this.state.menu_class} style={{marginTop:'15px'}}  onClick={this.openMenuList}></span>
-              <span onClick={()=>this.selectMenu('requirement')} className={this.state.selected_menu=='requirement'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_requirement,textTransform:'uppercase',color:this.state.requirementColor}}>REQUIREMENTS</span>
-              <span onClick={()=>this.selectMenu('proposal')} className={this.state.selected_menu=='proposal'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_proposal,color:this.state.proposalColor}}>Right Design Team</span>
-              <span onClick={()=>this.selectMenu('design')} className={this.state.selected_menu=='design'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_design,color:this.state.designColor}}>Design Journey</span>
-              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor}}>Support</span>
-              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor}}>Analysis</span>
+              <span onClick={()=>this.selectMenu('requirement')} className={this.state.selected_menu=='requirement'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_requirement,textTransform:'uppercase',color:this.state.requirementColor,opacity:this.state.selected_menu=='requirement'? '1' :this.props.opacity}}>REQUIREMENTS</span>
+              <span onClick={()=>this.selectMenu('proposal')} className={this.state.selected_menu=='proposal'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_proposal,color:this.state.proposalColor,opacity:this.state.selected_menu=='proposal'? '1' :this.props.opacity}}>Right Design Team</span>
+              <span onClick={()=>this.selectMenu('design')} className={this.state.selected_menu=='design'?"selected_menu_class":"unselected_menu"}    style={{display:this.state.vis_design,color:this.state.designColor,opacity:this.state.selected_menu=='design'? '1' :this.props.opacity}}>Design Journey</span>
+              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor,opacity:this.state.selected_menu=='feedback'? '1' :this.props.opacity}}>Support</span>
+              <span onClick={()=>this.selectMenu('feedback')} className={this.state.selected_menu=='feedback'?"selected_menu_class":"unselected_menu"} style={{display:this.state.vis_feedback,color:this.state.feedbackColor,opacity:this.state.selected_menu=='feedback'? '1' :this.props.opacity}}>Analysis</span>
       </div>
     )
   }

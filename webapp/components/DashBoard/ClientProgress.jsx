@@ -324,8 +324,8 @@ export default class ClientProgress extends Component {
         return(
         <div>
            <Row  className="margin_bu16">
-               <Col  md={1} ><div className={this.state.proposal.completed.value?"check_Oval_md":this.state.check_proposal_nextpart?"Oval_md":"dim_Oval_md"}></div></Col>
-               <Col  md={6} className={this.state.proposal.completed.value?"checked_progress_text":this.state.check_proposal_nextpart?"progress_text_dark":"progress_text"}> proposal</Col>
+               <Col  md={1} style={{height:'18px'}} ><div className={this.state.proposal.completed.value?"check_Oval_md":this.state.check_proposal_nextpart?"Oval_md":"dim_Oval_md"}></div></Col>
+               <Col  md={6} className={this.state.proposal.completed.value?"checked_progress_text":this.state.check_proposal_nextpart?"progress_text_dark":"progress_text"}> Right Design Team</Col>
                <Col  md={4} className={!this.state.proposal.completed.value?"hide_progress_text":"progress_text_position"}> Date</Col>
            </Row>
            <div className={this.state.margin_bu8_proposal}>
@@ -345,6 +345,91 @@ export default class ClientProgress extends Component {
                <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
            </Row>
         </div>
+     </div>
+   )
+}
+
+renderDesignJourneyStatus=()=>{
+        return(
+        <div style={{marginTop:'14px'}}>
+           <Row  className="margin_bu16">
+               <Col  md={1} style={{height:'18px'}}><div className="dim_Oval_md"></div></Col>
+               <Col  md={6} className="progress_text"> Design Journey</Col>
+               <Col  md={4}style={{visibility:'hidden'}}> Date</Col>
+           </Row>
+           {/* <div className={this.state.margin_bu8_proposal}>
+           <Row className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.inProcess.completed?"check_Oval_sm":this.state.not_cross_inProcess?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6} className={this.state.proposal.inProcess.completed?"checked_progress_text_sub":this.state.not_cross_inProcess?"progress_text_subpart":"progress_text_sub_dim"}> In process</Col>
+               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.received.completed?"check_Oval_sm":this.state.not_cross_received?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.received.completed?"checked_progress_text_sub":this.state.not_cross_received?"progress_text_subpart":"progress_text_sub_dim"}> Received</Col>
+               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approved</Col>
+               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+        </div> */}
+     </div>
+   )
+}
+renderImplementationSupportStatus=()=>{
+        return(
+        <div style={{marginTop:'14px'}}>
+           <Row  className="margin_bu16">
+               <Col  md={1} style={{height:'18px'}}><div className="dim_Oval_md"></div></Col>
+               <Col  md={6} className="progress_text">Support</Col>
+               <Col  md={4}style={{visibility:'hidden'}}> Date</Col>
+           </Row>
+           {/* <div className={this.state.margin_bu8_proposal}>
+           <Row className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.inProcess.completed?"check_Oval_sm":this.state.not_cross_inProcess?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6} className={this.state.proposal.inProcess.completed?"checked_progress_text_sub":this.state.not_cross_inProcess?"progress_text_subpart":"progress_text_sub_dim"}> In process</Col>
+               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.received.completed?"check_Oval_sm":this.state.not_cross_received?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.received.completed?"checked_progress_text_sub":this.state.not_cross_received?"progress_text_subpart":"progress_text_sub_dim"}> Received</Col>
+               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approved</Col>
+               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+        </div> */}
+     </div>
+   )
+}
+renderAnalysisStatus=()=>{
+        return(
+        <div style={{marginTop:'14px'}}>
+           <Row  className="margin_bu16">
+               <Col  md={1} style={{height:'18px'}}><div className="dim_Oval_md"></div></Col>
+               <Col  md={6} className="progress_text"> Analysis</Col>
+               <Col  md={4}style={{visibility:'hidden'}}> Date</Col>
+           </Row>
+           {/* <div className={this.state.margin_bu8_proposal}>
+           <Row className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.inProcess.completed?"check_Oval_sm":this.state.not_cross_inProcess?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6} className={this.state.proposal.inProcess.completed?"checked_progress_text_sub":this.state.not_cross_inProcess?"progress_text_subpart":"progress_text_sub_dim"}> In process</Col>
+               <Col  md={4} className={!this.state.not_cross_inProcess?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.received.completed?"check_Oval_sm":this.state.not_cross_received?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.received.completed?"checked_progress_text_sub":this.state.not_cross_received?"progress_text_subpart":"progress_text_sub_dim"}> Received</Col>
+               <Col  md={4}  className={!this.state.not_cross_received?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+           <Row  className="margin_bu8">
+               <Col  md={1} ><div className={this.state.proposal.approval.completed?"check_Oval_sm":this.state.not_cross_approval?"Oval_sm":"dim_Oval_sm"}></div></Col>
+               <Col  md={6}  className={this.state.proposal.approval.completed?"checked_progress_text_sub":this.state.not_cross_approval?"progress_text_subpart":"progress_text_sub_dim"}>Approved</Col>
+               <Col  md={4}  className={!this.state.not_cross_approval?"hide_progress_text":"progress_text_curr_position"}>you are here</Col>
+           </Row>
+        </div> */}
      </div>
    )
 }
@@ -368,14 +453,16 @@ export default class ClientProgress extends Component {
                   </Col>
                </Row >
                <Row className="margin_bu24" >
-                 <Col  md={1} ><div className="check_Oval_md"></div></Col>
+                 <Col  md={1}><div className="check_Oval_md"></div></Col>
                  <Col  md={6} className="checked_progress_text margin_le20">Sign up</Col>
                  {/* <Col  md={4} className="progress_text_position">{localStorage.getItem('projectDate')}</Col> */}
                  <Col  md={4} className="progress_text_position">{ returnDate(localStorage.getItem('signUpDate') )}</Col>
               </Row>
               {this.renderRequirementStatus()}
               {this.renderProposalStatus()}
-              
+              {this.renderDesignJourneyStatus()}
+              {this.renderImplementationSupportStatus()}
+              {this.renderAnalysisStatus()}
             </Grid>
         )
       }

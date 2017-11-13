@@ -12,7 +12,8 @@ export default class OnboardingTitles extends Component {
       plus_cursor:'',
       plus_visiblity:'inline',
       minus_visiblity:'none',
-      panelClass:'active'
+      panelClass:'active',
+      borderRadius:'4px',
     }
   }
   componentWillMount = () => {
@@ -52,32 +53,35 @@ export default class OnboardingTitles extends Component {
       // });
       if(this.state.about_user_view){
         this.setState({
+          borderRadius:'4px',
           plus_visiblity:'inline',
           minus_visiblity:'none',
           about_user_view:false,
         });
       }
       else{
+        window.scrollBy(0,+100);
         this.setState({
+          borderRadius:'4px 4px 0 0',
           plus_visiblity:'none',
           minus_visiblity:'inline',
           about_user_view:true,
         });
       }
     }
-    this.showCoords(e)  
+    // this.showCoords(e)  
   }
-  showCoords(event) {
-    var y = event.clientY;
-    if(y>=628){
-      window.scrollBy(0,+100);
-    }
-}
+//   showCoords(event) {
+//     var y = event.clientY;
+//     if(y>=628){
+//       window.scrollBy(0,+100);
+//     }
+// }
   
   render() {
     return (
       <div >
-        <div className={this.props.active ? 'Rectangle-3' : 'unactive-title'} style={{backgroundImage:this.props.active ? this.props.color : '',borderRadius:this.props.borderRadius}} onClick={(e) => {this.openPanel(e)}}>
+        <div className={this.props.active ? 'Rectangle-3' : 'unactive-title'} style={{backgroundImage:this.props.active ? this.props.color : '',borderRadius:this.state.borderRadius}} onClick={(e) => {this.openPanel(e)}}>
           <div className={this.props.active ? '-About-yourself' : '-Your-expertise'}>{this.props.title}</div>
           <div className={this.props.active ? '-About-yourself' : '-Your-expertise'} 
                style={{ cursor: this.props.active ? 'pointer' : 'not-allowed' }} 

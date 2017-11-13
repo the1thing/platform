@@ -42,7 +42,8 @@ export default class OnboardingMonochromeForms extends Component {
       aboutProductCompleted: false,
       aboutDesignCompleted: false,
       aboutTimelineCompleted: false,
-      redirect: false
+      redirect: false,
+      menuOpacity:'0.4',
     };
   }
 
@@ -82,6 +83,11 @@ export default class OnboardingMonochromeForms extends Component {
             aboutTimelineView: _response.timeline.completed,
             loading: false
           });
+          if(this.state.aboutDesignActive && this.state.aboutProductView && this.state.aboutTimelineActive){
+            this.setState({
+              menuOpacity:'1',
+            })
+          }
           console.log("about designe view",this.state.aboutDesignView);
           let temp = {
             aboutProduct: this.state.aboutProductCompleted,
@@ -89,8 +95,8 @@ export default class OnboardingMonochromeForms extends Component {
             aboutTimeline: this.state.aboutTimelineCompleted,
             aboutTimelineDate: this.state.timeline_date
           };
-          // this.props.reloadProgress(temp);
-           this.props.route.reloadProgress(temp);
+          this.props.reloadProgress(temp);
+          //  this.props.route.reloadProgress(temp);
         } else {
           this.setState({
             loading: false,
@@ -133,7 +139,7 @@ export default class OnboardingMonochromeForms extends Component {
               marginBottom: "32px"
             }}
           >
-            <DashboardClientInfo />
+            <DashboardClientInfo channelName={this.props.channelName}/>
           </div>
           <ClientTitleMenu
             title="requirement"
@@ -141,6 +147,7 @@ export default class OnboardingMonochromeForms extends Component {
             pushPropsProposal={this.pushTOProposal}
             pushPropsDesign={this.pushToDesign}
             pushPropsFeeddback={this.pushTOFeeddback}
+            opacity={this.state.menuOpacity}
           />
           <div
             style={{ display: this.state.requirement_display }}

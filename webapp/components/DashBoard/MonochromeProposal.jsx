@@ -57,7 +57,7 @@ export default class MonochromeProposal extends Component {
                 plan.
             </div>
           </div>
-          <div className="small_info_text margin_top">
+          {/* <div className="small_info_text margin_top">
             Your proposal will appear here..
           </div>
           <div className="assimnt_box margin_top">
@@ -85,13 +85,14 @@ export default class MonochromeProposal extends Component {
                 </span>
               </div>
             </div>
-          </div>
+          </div> */}
           <div style={{ marginTop: "35px", marginBottom: "200px" }}>
             <Tooltip
               title={
                 <span>
-                  Meanwhile, you should check out our 1 greatest thing
-                  campaign <a>or read our Monochromes</a> which we
+                  Meanwhile, you should check out our 
+                  <a href='https://www.instagram.com/1thing.io/'>1 greatest thing campaign</a> or 
+                  <a href='https://us16.campaign-archive.com/home/?u=95427cf7d6deb2176f1c4e41e&id=f000ef9497'>read our Monochromes</a> which we
                   publish every week to help Founders and CXOs design great products.
                 </span>
               }

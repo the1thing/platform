@@ -13,6 +13,7 @@ export default class App extends Component {
       userType: "",
       loader: true,
       dashboardIconClass:'',
+      channelName:'a',
     };
   }
 
@@ -66,7 +67,9 @@ export default class App extends Component {
     axios
       .get(basepath + "user/getUser/pjpff7qakpnp8rxyucofrh4rbr")
       .then(resp => {
+        console.log("response----->",resp);
         this.setState({
+          channelName:resp.data.data.channelName,
           userType: resp.data.data.userType
         });
         localStorage.setItem("userName", resp.data.data.name);
@@ -94,13 +97,13 @@ export default class App extends Component {
       if (this.state.userType == "client") {
         return (
           <div className={this.state.dashboardIconClass}>
-            <OnboardingClient />
+            <OnboardingClient channelName={this.state.channelName}/>
           </div>
         );
       } else if (this.state.userType == "designer") {
         return (
           <div className={this.state.dashboardIconClass}>
-            <OnboardingDesigner />
+            <OnboardingDesigner channelName={this.state.channelName}/>
           </div>
         );
       } else {

@@ -54,6 +54,8 @@ export default class Dashboard extends Component {
       userType: "",
       loader: false,
       dashboardIconClass:'',
+      channelName:'a',
+    
     };
   }
   getCookie = name => {
@@ -78,6 +80,8 @@ export default class Dashboard extends Component {
       loader: true
     });
     let uId = this.getCookie("MMUSERID");
+    // client 'b5moybzsetncpqg88y6icxu48o'
+    //designer 'hcjei7zkj3g1ffitdez6nx5r7c'
     // console.log('----->',uId)
     // k5iu4qh1kfy1iyft4dh7gwus3r  designer
     // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
@@ -87,7 +91,7 @@ export default class Dashboard extends Component {
     //designer aaf5yhz9pjbfjnabwsccctus5e
     axios({
       method: "get",
-      url: basepath + "user/getUser/" + uId,
+      url: basepath + "user/getUser/" + 'b5moybzsetncpqg88y6icxu48o',
     })
       .then(resp => {
         console.log(resp.data.data.userType, "api data------------>", resp);
@@ -117,7 +121,7 @@ export default class Dashboard extends Component {
       if (this.state.userType == "client") {
         return (
           <div className={this.state.dashboardIconClass}>
-            <OnboardingClient />
+            <OnboardingClient channelName={this.state.channelName} />
             {/* <OnboardingDesigner/>  */}
           </div>
         );
@@ -125,7 +129,7 @@ export default class Dashboard extends Component {
         return (
           <div className={this.state.dashboardIconClass}>
             {/* <OnboardingClient /> */}
-            <OnboardingDesigner />
+            <OnboardingDesigner  channelName={this.state.channelName}/>
           </div>
         );
       } else {

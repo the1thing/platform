@@ -42,7 +42,7 @@ class OnboardingClient extends Component {
         <div className='dashboard-sidebar'><TeamSidebar/></div>
         <div className="_header">
           <DashboardHeader
-            header_title1="MONOCHROME"
+            header_title1="Product Name"
           //  header_title2="+  Start New Project"
           />
         </div>
@@ -51,6 +51,7 @@ class OnboardingClient extends Component {
           <Router>
           <Route path='/'
           component={OnboardingMonochromeForms}
+          channelName={this.props.channelName}
           reloadProgress={(e)=>{this.setState({setUserProgress:e})}}
           />
           <Route  path='/proposal' component={MonochromeProposal} />
@@ -62,7 +63,7 @@ class OnboardingClient extends Component {
             <div className="progress-container">
               <ClientProgress setUserProgress={this.state.setUserProgress} />
             </div>
-               <QueryChat setUserProgress={this.state.setUserProgress} />
+               <QueryChat channelName={this.props.channelName} setUserProgress={this.state.setUserProgress} />
            </div>
         </div>
       </div>
