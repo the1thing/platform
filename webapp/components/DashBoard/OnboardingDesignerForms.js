@@ -108,8 +108,8 @@ export default class OnboardingDesignerForms extends Component {
                       userRating:this.state.userRatingCompleted,
                       userRatingDate:this.state.userRatingCompletedDate
                       };
-                  this.props.reloadProgress(temp);
-                  // this.props.route.reloadProgress(temp);
+                  // this.props.reloadProgress(temp);
+                  this.props.route.reloadProgress(temp);
                })
                .then((res)=>{
                  if(this.state.userRatingCompleted && this.state.redirect){

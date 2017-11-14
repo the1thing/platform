@@ -95,8 +95,8 @@ export default class OnboardingMonochromeForms extends Component {
             aboutTimeline: this.state.aboutTimelineCompleted,
             aboutTimelineDate: this.state.timeline_date
           };
-          this.props.reloadProgress(temp);
-          //  this.props.route.reloadProgress(temp);
+          // this.props.reloadProgress(temp);
+           this.props.route.reloadProgress(temp);
         } else {
           this.setState({
             loading: false,
@@ -174,6 +174,7 @@ export default class OnboardingMonochromeForms extends Component {
               }
               panelContent={
                 <AboutProduct
+                  ref="openPanel"
                   openPanel={() => {
                     this.openPanel();
                   }}
@@ -194,6 +195,7 @@ export default class OnboardingMonochromeForms extends Component {
               }
               panelContent={
                 <AboutDesign
+                  ref="openPanel"
                   projectId={this.state.projectId}
                   openPanel={() => {
                     this.openPanel();
