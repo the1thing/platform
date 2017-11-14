@@ -5,8 +5,10 @@ import {combineReducers} from 'redux';
 
 import rhs from './rhs';
 import channel from './channel';
+import dashboard from './dashboard';
 
 export default combineReducers({
     rhs,
-    channel
+    channel,
+    dashboard
 });

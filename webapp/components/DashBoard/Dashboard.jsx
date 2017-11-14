@@ -45,9 +45,11 @@ import axios from "axios";
 import OnboardingDesigner from "./OnboardingDesigner";
 import OnboardingClient from "./OnboardingClient";
 import { basepath } from "./utils/constant";
+import { connect } from "react-redux";
 import "./App.scss";
+import {getUserInformation} from './Actions/AsyncActions';
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,10 +76,9 @@ export default class Dashboard extends Component {
       });
     }
 
-    this.setState({
-      loader: true
-    });
-    let uId = this.getCookie("MMUSERID");
+    // this.setState({
+    //   loader: true
+    // });
     // console.log('----->',uId)
     // k5iu4qh1kfy1iyft4dh7gwus3r  designer
     // axios.get(basepath + 'user/getUser/8pi33tgbe38ypq5xr378bcbjwa') //b5moybzsetncpqg88y6icxu48o
@@ -85,58 +86,85 @@ export default class Dashboard extends Component {
     //axios.get(basepath + 'user/getUser/pwgy5iddnfnw9edp7mdb966tke')  //designer
     //  axios.get(basepath + 'user/getUser/'+uId)
     //designer aaf5yhz9pjbfjnabwsccctus5e
-    axios({
-      method: "get",
-      url: basepath + "user/getUser/" + uId,
-    })
-      .then(resp => {
-        console.log(resp.data.data.userType, "api data------------>", resp);
-        this.setState({
-          userType: resp.data.data.userType
-        });
-        localStorage.setItem("userName", resp.data.data.name);
-        localStorage.setItem("userId", resp.data.data._id);
-        localStorage.setItem("userType", resp.data.data.userType),
-          localStorage.setItem("signUpDate", resp.data.data.createdAt);
-        this.setState({
-          loader: false
-        });
-      })
-      .catch(err => {
-        this.setState({
-          loader: false
-        });
-        console.log("errorrrrrrrrrrrrrrrr123", err);
-      });
+    // axios({
+    //   method: "get",
+    //   url: basepath + "user/getUser/" + uId,
+    // })
+    //   .then(resp => {
+    //     console.log(resp.data.data.userType, "api data------------>", resp);
+    //     this.setState({
+    //       userType: resp.data.data.userType
+    //     });
+    //     localStorage.setItem("userName", resp.data.data.name);
+    //     localStorage.setItem("userId", resp.data.data._id);
+    //     localStorage.setItem("userType", resp.data.data.userType),
+    //       localStorage.setItem("signUpDate", resp.data.data.createdAt);
+    //     this.setState({
+    //       loader: false
+    //     });
+    //   })
+    //   .catch(err => {
+    //     this.setState({
+    //       loader: false
+    //     });
+    //     console.log("errorrrrrrrrrrrrrrrr123", err);
+    //   });
+    let uId = this.getCookie("MMUSERID");
+    let url = basepath + "user/getUser/" + 'hgy16f4m6pdupfspnuuepsccfr';
+    this.props.getUserInfo(url);
   }
-
+  // getData=()=>{
+  //   let uId = this.getCookie("MMUSERID");
+  //   let url = basepath + "user/getUser/" + 'hgy16f4m6pdupfspnuuepsccfr';
+  //   let data = {
+  //     userType: resp.data.data.userType,
+  //     userName: resp.data.data.name,
+  //     userId: resp.data.data._id,
+  //     signUpDate: resp.data.data.createdAt,
+  //   };
+  //   this.props.getUserInfo(url, data);
+  // }
   render() {
-    if (this.state.loader) {
-      return <div>{/* loading... */}</div>;
+    if (this.props.dashboardState.loading) {
+      return <div>{/* loading... */}
+      
+      </div>;
     } else {
-      if (this.state.userType == "client") {
+      if (this.props.dashboardState.userTypeInfo.userType === "client") {
         return (
           <div className={this.state.dashboardIconClass}>
             <OnboardingClient />
-            {/* <OnboardingDesigner/>  */}
           </div>
         );
-      } else if (this.state.userType == "designer") {
+      } else if (this.props.dashboardState.userTypeInfo.userType === "designer") {
         return (
           <div className={this.state.dashboardIconClass}>
-            {/* <OnboardingClient /> */}
             <OnboardingDesigner />
           </div>
         );
-      } else {
+      } else{
         return (
           <div className={this.state.dashboardIconClass}>
-            {/* {<OnboardingClient/>  } */}
             You have no workspace. Please start Afresh.
-            {/* <OnboardingDesigner/>    */}
           </div>
         );
       }
     }
   }
 }
+function mapStateToProps(state) {
+  console.log('state----', state)
+  return {
+    dashboardState:state.views.dashboard
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+      getUserInfo: (url) => {
+        dispatch(getUserInformation(url));
+      }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
