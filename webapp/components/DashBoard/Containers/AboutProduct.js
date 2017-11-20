@@ -11,8 +11,14 @@ import {
 import axios from "axios";
 import { basepath } from "../utils/constant";
 import { validateUrl } from "../utils/Methods";
+import { connect } from "react-redux";
+import {
+  getAboutproductData,
+  setproductAddUpdate
+} from "../Actions/AsyncActions";
+import { isEmpty } from "../utils/Methods";
 
-export default class AboutProduct extends Component {
+class AboutProduct extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,80 +74,144 @@ export default class AboutProduct extends Component {
   componentWillMount = () => {
     this.getAllProjectsForWorkspace();
   };
+
+  componentWillReceiveProps=(nextProps)=> {
+    // this.setState({
+    //   loading:true,
+    // })
+    let temp = nextProps.productState.aboutProduct;
+    if (typeof temp.name !== "undefined") {
+        this.setState({
+          productName: temp.name,
+          productType: temp.projectType.projectType,
+          productLink: temp.projectType.link,
+          productLinkVisiblity:
+            temp.projectType.projectType === "Existing Product"
+              ? "visible"
+              : "hidden",
+          domains: temp.domain != null ? temp.domain : [],
+          otherProduct: temp.similarProduct,
+          scopeDocument:
+            temp.userDocumentLink != null ? temp.userDocumentLink : [],
+        });
+    }
+  }
+
   getAllProjectsForWorkspace = () => {
-    this.setState({ loading: true });
-    axios({
-      method: "get",
-      url:
-        basepath +
-        "project/getAllProjectsForWorkspace/" +
-        localStorage.getItem("userId")
-    })
-      .then(response => {
-        if (response.data == null) {
-          this.setState({
-            checkProjectId: "",
-            apiMethode: "post",
-            productName: "",
-            productType: "",
-            productLink: "",
-            domains: [],
-            otherProduct: "",
-            scopeDocument: [],
-            apiLink: "project/addProjectFromWorkspace",
-            loading: false
-          });
-        } else {
-          localStorage.setItem("projectId", response.data._id);
-          this.setState({
-            checkProjectId: response.data._id,
-            apiMethode: "put",
-            apiLink: "project/updateProject",
-            loading: false
-          });
-          this.getAboutProductData();
-        }
-      })
-      .catch(error => {
-        console.log("get project error", error.response);
-        this.setState({ loading: false });
+    if (
+      this.props.productState.allProjectWorkspace._id == "" ||
+      this.props.productState.allProjectWorkspace._id == "undefined"
+    ) {
+      this.setState({
+        apiMethode: "post",
+        apiLink: "project/addProjectFromWorkspace"
       });
+    } else {
+      this.setState({
+        apiMethode: "put",
+        apiLink: "project/updateProject"
+        //  loading:true,
+      });
+      this.getAboutProductData();
+    }
+    // this.setState({ loading: true });
+    // axios({
+    //   method: "get",
+    //   url:
+    //     basepath +
+    //     "project/getAllProjectsForWorkspace/" +
+    //     localStorage.getItem("userId")
+    // })
+    //   .then(response => {
+    //     if (response.data == null) {
+    //       this.setState({
+    //         checkProjectId: "",
+    //         apiMethode: "post",
+    //         productName: "",
+    //         productType: "",
+    //         productLink: "",
+    //         domains: [],
+    //         otherProduct: "",
+    //         scopeDocument: [],
+    //         apiLink: "project/addProjectFromWorkspace",
+    //         loading: false
+    //       });
+    //     } else {
+    //       localStorage.setItem("projectId", response.data._id);
+    //       this.setState({
+    //         checkProjectId: response.data._id,
+    //         apiMethode: "put",
+    //         apiLink: "project/updateProject",
+    //         loading: false
+    //       });
+    //       this.getAboutProductData();
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log("get project error", error.response);
+    //     this.setState({ loading: false });
+    //   });
   };
   getAboutProductData = () => {
-    this.setState({
-      loading: true
-    });
-    axios({
-      method: "get",
-      url:
-        basepath +
-        "project/getProjectByIds/" +
-        localStorage.getItem("projectId") +
-        "?stage=1"
-    })
-      .then(response => {
-        this.setState({
-          productName: response.data.name,
-          productType: response.data.projectType.projectType,
-          productLink: response.data.projectType.link,
-          domains: response.data.domain != null ? response.data.domain : [],
-          otherProduct: response.data.similarProduct,
-          scopeDocument:
-            response.data.userDocumentLink != null
-              ? response.data.userDocumentLink
-              : [],
-          loading: false
-        });
-        if (response.data.projectType.projectType === "Existing Product") {
-          this.setStateMethod("productLinkVisiblity", "visible");
-        }
-      })
-      .catch(error => {
-        console.log("get project error stge 1", error.response);
-        this.setState({
-          loading: false
-        });
-      });
+    let url =
+      basepath +
+      "project/getProjectByIds/" +
+      this.props.productState.allProjectWorkspace._id +
+      "?stage=1";
+
+    this.props.getProductData(url);
+    //let temp=this.props.productState.aboutProduct;
+    // this.setState({
+    //         productName: temp.name,
+    //         productType: temp.projectType.projectType,
+    //         productLink: temp.projectType.link,
+    //         domains: temp.domain != null ? temp.domain : [],
+    //         otherProduct: temp.similarProduct,
+    //         scopeDocument:
+    //           temp.userDocumentLink != null
+    //             ? temp.userDocumentLink
+    //             : [],
+    //         // loading: false
+    //       });
+    //       if (temp.projectType.projectType === "Existing Product") {
+    //         this.setStateMethod("productLinkVisiblity", "visible");
+    //       }
+    // let url=basepath + "project/getProjectByIds/" + localStorage.getItem("projectId") + "?stage=1";
+    // this.setState({
+    //   loading: true
+    // });
+    // axios({
+    //   method: "get",
+    //   url:
+    //     basepath +
+    //     "project/getProjectByIds/" +
+    //     localStorage.getItem("projectId") +
+    //     "?stage=1"
+    // })
+    //   .then(response => {
+    //     console.log("about product response--------->",response)
+    //     this.setState({
+    //       productName: response.data.name,
+    //       productType: response.data.projectType.projectType,
+    //       productLink: response.data.projectType.link,
+    //       domains: response.data.domain != null ? response.data.domain : [],
+    //       otherProduct: response.data.similarProduct,
+    //       scopeDocument:
+    //         response.data.userDocumentLink != null
+    //           ? response.data.userDocumentLink
+    //           : [],
+    //       loading: false
+    //     });
+    //     if (response.data.projectType.projectType === "Existing Product") {
+    //       this.setStateMethod("productLinkVisiblity", "visible");
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log("get project error stge 1", error.response);
+    //     this.setState({
+    //       loading: false
+    //     });
+    //   });
   };
 
   setStateMethod = (label, value) => {
@@ -151,34 +221,69 @@ export default class AboutProduct extends Component {
     });
   };
   postDataOfProduct = () => {
-    axios({
-      method: this.state.apiMethode,
-      url: basepath + this.state.apiLink,
-      data: {
-        projectName: this.state.productName,
-        type: this.state.productType,
-        link: this.state.productLink,
-        userDocumentLink: this.state.scopeDocument,
-        domain: this.state.domains,
-        similarProduct: this.state.otherProduct,
-        userId: localStorage.getItem("userId"),
-        userName: localStorage.getItem("userName"),
-        projectId: localStorage.getItem("projectId")
-      }
-    })
-      .then(response => {
-        this.setState({ edit: true });
-        if (this.state.apiMethode == "post") {
-          localStorage.setItem("projectId", response.data.data._id);
-        }
-      })
-      .then(res => {
-        this.props.openPanel();
-        
-      })
-      .catch(err => {
-        console.log("about priduct error", err);
-      });
+    let method = this.state.apiMethode;
+    let url = basepath + this.state.apiLink;
+    let _apidata = {
+      projectName: this.state.productName,
+      type: this.state.productType,
+      link: this.state.productLink,
+      userDocumentLink: this.state.scopeDocument,
+      domain: this.state.domains,
+      similarProduct: this.state.otherProduct,
+      userId: this.props.productState.userTypeInfo._id,
+      userName: this.props.productState.userTypeInfo.userName,
+      projectId: this.props.productState.allProjectWorkspace._id
+    };
+    let apiMethode =
+      basepath +
+      "project/getProjectByIds/" +
+      this.props.productState.allProjectWorkspace._id +
+      "?stage=1";
+    let getUserApi =
+      basepath +
+      "project/getAllProjectsForWorkspace/" +
+      this.props.productState.userTypeInfo._id;
+    // let _storedata = {
+    //   name: this.state.productName,
+    //   userDocumentLink: this.state.scopeDocument,
+    //   domain: this.state.domains,
+    //   similarProduct: this.state.otherProduct,
+    //   projectType: {
+    //     link: this.state.productLink,
+    //     projectType: this.state.productType
+    //   },
+    //   _id: this.state.checkProjectId
+    // };
+    // this.setProductData(method,url,data);
+    this.props.productAddUpdate(method, url, _apidata, apiMethode, getUserApi);
+    // axios({
+    //   method: this.state.apiMethode,
+    //   url: basepath + this.state.apiLink,
+    //   data: {
+    //     projectName: this.state.productName,
+    //     type: this.state.productType,
+    //     link: this.state.productLink,
+    //     userDocumentLink: this.state.scopeDocument,
+    //     domain: this.state.domains,
+    //     similarProduct: this.state.otherProduct,
+    //     userId: localStorage.getItem("userId"),
+    //     userName: localStorage.getItem("userName"),
+    //     projectId: localStorage.getItem("projectId")
+    //   }
+    // })
+    //   .then(response => {
+    //     this.setState({ edit: true });
+    //     if (this.state.apiMethode == "post") {
+    //       localStorage.setItem("projectId", response.data.data._id);
+    //     }
+    //   })
+    //   .then(res => {
+    //     this.props.openPanel();
+
+    //   })
+    //   .catch(err => {
+    //     console.log("about priduct error", err);
+    //   });
   };
 
   goTo = () => {
@@ -314,9 +419,7 @@ export default class AboutProduct extends Component {
 
   render() {
     if (this.state.loading) {
-      return (<div>
-                  {/* loading */}
-         </div>)
+      return <div>{/* loading */}</div>;
     } else
       return (
         <div>
@@ -325,8 +428,9 @@ export default class AboutProduct extends Component {
               className={this.state.productNameClass}
               placeholder="Product Name"
               value={this.state.productName}
+              //value='pooja'
+
               onChange={e => {
-                this.setStateMethod("edit", false);
                 this.setStateMethod("productName", e.target.value);
               }}
             />
@@ -390,17 +494,16 @@ export default class AboutProduct extends Component {
           <div>
             <Row>
               <Col mdOffset={6}>
-              <div
-            style={{
-              visibility: this.state.productLinkVisiblityError,
-              marginBottom: "35px",
-              marginLeft:'16px'
-            }}
-            className="display-error"
-          >
-            Please Enter Valid URL
-          </div>
-          
+                <div
+                  style={{
+                    visibility: this.state.productLinkVisiblityError,
+                    marginBottom: "35px",
+                    marginLeft: "16px"
+                  }}
+                  className="display-error"
+                >
+                  Please Enter Valid URL
+                </div>
               </Col>
             </Row>
           </div>
@@ -419,7 +522,7 @@ export default class AboutProduct extends Component {
                 domain = this.state.domains;
                 domain = domain.concat(value);
                 this.setStateMethod("domains", domain);
-                this.setStateMethod('edit',false)
+                this.setStateMethod("edit", false);
               }}
             />
           </div>
@@ -479,3 +582,23 @@ export default class AboutProduct extends Component {
       );
   }
 }
+function mapStateToProps(state) {
+  return {
+    productState: state.views.dashboard
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getProductData: url => {
+      dispatch(getAboutproductData(url));
+    },
+    productAddUpdate: (method, url, _apidata, _apigeturl, getUserApi) => {
+      dispatch(
+        setproductAddUpdate(method, url, _apidata, _apigeturl, getUserApi)
+      );
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AboutProduct);

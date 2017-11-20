@@ -32,6 +32,17 @@ export default class OnboardingTitles extends Component {
         plus_cursor:'not-allowed'
       });
     }
+    if(this.props.view){
+      this.setState({
+        plus_visiblity:'none',
+        minus_visiblity:'inline'
+      })
+    }else{
+      this.setState({
+        plus_visiblity:'inline',
+        minus_visiblity:'none',
+      })
+    }
     this.setState({
       about_user_view:this.props.view,
     })
@@ -42,7 +53,7 @@ export default class OnboardingTitles extends Component {
   }
   
   openPanel=(e)=>{
-    this.props.openPanel(this)
+    //this.props.openPanel(this)
     if(this.props.active){
       // this.setState({
       //   panelClass:'active',

@@ -54,7 +54,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       userType: "",
-      loader: false,
+      loading: false,
       dashboardIconClass:'',
     };
   }
@@ -64,7 +64,18 @@ class Dashboard extends Component {
     var value = re.exec(document.cookie);
     return value != null ? unescape(value[1]) : null;
   };
-
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      loading:true,
+    })
+    let temp=nextProps.dashboardState.userTypeInfo;
+    this.setState({
+      userType:temp.userType,
+      loading:false,
+    })
+  }
+  
   componentWillMount() {
     if (window.location.href.includes("dashboard")) {
     //   this.setState({
@@ -72,7 +83,7 @@ class Dashboard extends Component {
     //   });
     } else {
       this.setState({
-        dashboardIconClass: ""
+        dashboardIconClass: "",
       });
     }
 
@@ -109,8 +120,10 @@ class Dashboard extends Component {
     //     });
     //     console.log("errorrrrrrrrrrrrrrrr123", err);
     //   });
+    // client 8pi33tgbe38ypq5xr378bcbjwa
+    //ij7s8nft4fduf8ys6pt3g54for
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + 'hgy16f4m6pdupfspnuuepsccfr';
+    let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke';
     this.props.getUserInfo(url);
   }
   // getData=()=>{
@@ -125,7 +138,7 @@ class Dashboard extends Component {
   //   this.props.getUserInfo(url, data);
   // }
   render() {
-    if (this.props.dashboardState.loading) {
+    if (this.state.loading) {
       return <div>{/* loading... */}
       
       </div>;
@@ -153,7 +166,6 @@ class Dashboard extends Component {
   }
 }
 function mapStateToProps(state) {
-  console.log('state----', state)
   return {
     dashboardState:state.views.dashboard
   };

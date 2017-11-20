@@ -26,7 +26,21 @@ export class Selection extends Component {
             })
         }
     }
-
+    
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.placeholder && !nextProps.defaultValue) {
+            this.setState({
+                toggleVisiblity: true,
+            })
+        } else {
+            this.setState({
+                selectedValue: nextProps.defaultValue,
+                toggleVisiblity: false,
+            })
+        }
+        
+    }
+    
     handleClick = (e) => {
         if (!this.state.popupVisible) {
             document.addEventListener('click', this.handleOutsideClick, false);
@@ -231,6 +245,50 @@ export class SelectMultiple extends Component {
         }
         if(this.props.defaultValue.length>0){
             this.props.defaultValue.map((value1,key1)=>{
+                this.temp.map((value2,key2)=>{
+                    if(value1 == value2)
+                    this.temp.splice(key2, 1)
+                })
+            })
+            this.setState({
+                optionList:this.temp,
+                toggleVisiblity:false,
+                containerClass: 'popover-container change-width',
+                mainContainer:'popover-container main-container-width',
+            })
+        }
+        
+    }
+
+    
+    componentWillReceiveProps=(nextProps)=>{
+        this.temp=nextProps.optionList;
+        // if(this.props.defaultValue.length>0){
+        //     this.props.defaultValue.map((value1,key1)=>{
+        //         this.temp.map((value2,key2)=>{
+        //             if(value1 == value2)
+        //             this.temp.splice(key2, 1)
+        //         })
+        //     })
+        // }
+        
+        if (nextProps.placeholder && nextProps.defaultValue) {
+            this.setState({
+                toggleVisiblity: true,
+                optionList: nextProps.optionList,
+               selectedList:nextProps.defaultValue,
+            })
+        } else {
+            this.setState({
+                selectedValue: nextProps.defaultValue,
+                toggleVisiblity: false,
+                optionList: nextProps.optionList,
+                selectedList:nextProps.defaultValue
+            });
+            
+        }
+        if(nextProps.defaultValue.length>0){
+            nextProps.defaultValue.map((value1,key1)=>{
                 this.temp.map((value2,key2)=>{
                     if(value1 == value2)
                     this.temp.splice(key2, 1)

@@ -13,8 +13,11 @@ import { basepath } from "../utils/constant";
 import axios from "axios";
 import RadioBoxComp from "../Components/RadioBoxComp";
 import { validateUrl, numberOnly } from "../utils/Methods";
+import {getAboutTimelineData,setTimelineAddUpdate } from '../Actions/AsyncActions';
+import  {isEmpty} from '../utils/Methods'
+import { connect } from "react-redux";
 
-export default class AboutTimeline extends Component {
+class AboutTimeline extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,49 +50,76 @@ export default class AboutTimeline extends Component {
     this.getTimeLineData();
   };
   
-  componentWillReceiveProps() {
-    window.scrollBy(0, -100);
-    
+  componentWillReceiveProps(nextProps) {
+    // this.setState({
+    //   loading:true,
+    // })
+    let temp=nextProps.timelineState.aboutTimeline;
+    if((typeof temp.userProposal) !== 'undefined'){
+    this.setState({
+      time:temp.userProposal.startTime,
+      timeline: temp.userProposal.timeline,
+    })
+    if (
+      temp.userProposal.budgetRange == "Later" ||
+      temp.userProposal.budgetRange == "I'm here for top quality"
+      ) {
+        this.setState({
+          //budgetRange: temp.userProposal.budgetRange,
+          defaultValue: temp.userProposal.budgetRange,
+          budgetRange: temp.userProposal.budgetRange
+        });
+      } else {
+        this.setState({
+          defaultRange: _tempUserPropsal.budgetRange
+        });
+      }
+    // this.setState({
+    //   loading:false,
+    // })
+  }
   }
   
   getTimeLineData = () => {
-    if (localStorage.getItem("projectId")) {
-      this.setState({ loading: true });
-      axios({
-        method: "get",
-        url:
-          basepath +
-          "project/getProjectByIds/" +
-          localStorage.getItem("projectId") +
-          "?stage=3"
-      })
-        .then(response => {
-          var _tempUserPropsal = response.data.userProposal;
-          this.setState({
-            time: _tempUserPropsal.startTime,
-            timeline: _tempUserPropsal.timeline,
-            loading: false
-          });
-          if (
-            _tempUserPropsal.budgetRange == "Later" ||
-            _tempUserPropsal.budgetRange == "I'm here for top quality"
-          ) {
-            this.setState({
-              budgetRange: _tempUserPropsal.budgetRange,
-              defaultValue: _tempUserPropsal.budgetRange,
-              budgetRange: _tempUserPropsal.budgetRange
-            });
-          } else {
-            this.setState({
-              defaultRange: _tempUserPropsal.budgetRange
-            });
-          }
-        })
-        .catch(error => {
-          console.log("get project error stage 3", error.response);
-          this.setState({ loading: false });
-        });
-    }
+    let url=basepath + "project/getProjectByIds/" + this.props.timelineState.allProjectWorkspace._id + "?stage=3";
+    this.props.getTimelineData(url);
+    // if (localStorage.getItem("projectId")) {
+    //   this.setState({ loading: true });
+    //   axios({
+    //     method: "get",
+    //     url:
+    //       basepath +
+    //       "project/getProjectByIds/" +
+    //       localStorage.getItem("projectId") +
+    //       "?stage=3"
+    //   })
+    //     .then(response => {
+    //       var _tempUserPropsal = response.data.userProposal;
+    //       this.setState({
+    //         time: _tempUserPropsal.startTime,
+    //         timeline: _tempUserPropsal.timeline,
+    //         loading: false
+    //       });
+    //       if (
+    //         _tempUserPropsal.budgetRange == "Later" ||
+    //         _tempUserPropsal.budgetRange == "I'm here for top quality"
+    //       ) {
+    //         this.setState({
+    //           budgetRange: _tempUserPropsal.budgetRange,
+    //           defaultValue: _tempUserPropsal.budgetRange,
+    //           budgetRange: _tempUserPropsal.budgetRange
+    //         });
+    //       } else {
+    //         this.setState({
+    //           defaultRange: _tempUserPropsal.budgetRange
+    //         });
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log("get project error stage 3", error.response);
+    //       this.setState({ loading: false });
+    //     });
+    // }
   };
 
   setStateMethod = (label, value) => {
@@ -162,27 +192,50 @@ export default class AboutTimeline extends Component {
       window.scrollBy(0, -100);
       this.setStateMethod("budgetRangeClass", true);
     } else {
-      axios({
-        method: "put",
-        url: basepath + "project/updateTimelineForWorkspace",
-        data: {
-          startTime: this.state.time,
-          timeline: this.state.timeline,
-          budgetRange: this.state.budgetRange,
-          projectId: localStorage.getItem("projectId")
-        }
-      })
-        .then(resp => {
-          this.setState({
-            edit: true
-          });
-          this.props.openPanel();
-        })
-        .catch(err => {
-          console.log("about timeLine  error", err);
-        });
-    }
-  };
+      let url=basepath + "project/updateTimelineForWorkspace";
+      let method="put";
+      let _apidata={
+        startTime: this.state.time,
+        timeline: this.state.timeline,
+        budgetRange: this.state.budgetRange,
+        projectId: this.props.timelineState.allProjectWorkspace._id,
+      };
+      let _apigeturl=basepath + "project/getProjectByIds/" + this.props.timelineState.allProjectWorkspace._id + "?stage=3";
+      // let _storedata={
+      //   statusBar:this.props.timelineState.allProjectWorkspace.statusBar,
+      //   userProposal:{
+      //     budgetRange:this.state.budgetRange,
+      //     designObjective:"",
+      //     designServices:"",
+      //     referenceLink:"",
+      //     startTime:this.state.time,
+      //     timeline:this.state.timeline,
+      //   },
+      //   _id:this.props.timelineState.allProjectWorkspace._id,
+      // }
+      this.props.history.push("/proposal");
+      this.props.TimelineAddUpdate(method, url, _apidata, _apigeturl);
+    //   axios({
+    //     method: "put",
+    //     url: basepath + "project/updateTimelineForWorkspace",
+    //     data: {
+    //       startTime: this.state.time,
+    //       timeline: this.state.timeline,
+    //       budgetRange: this.state.budgetRange,
+    //       projectId: this.props.timelineState.allProjectWorkspace,
+    //     }
+    //   })
+    //     .then(resp => {
+    //       this.setState({
+    //         edit: true
+    //       });
+    //       this.props.openPanel();
+    //     })
+    //     .catch(err => {
+    //       console.log("about timeLine  error", err);
+    //     });
+    // }
+  }};
   renderRadioClass = value => {
     if (value == this.state.defaultValue) {
       return "checked-radio-container";
@@ -219,7 +272,7 @@ export default class AboutTimeline extends Component {
     if (this.state.loading) {
       return <div>{/* Loading.... */}</div>;
     }
-    return (
+    else return (
       <div>
         {/* {this.dropdownList('Expected start time','time',this.state.timeClass,this.state.timeList)}
         {this.dropdownList('Expected timeline','timeline',this.state.timelineClass,this.state.timeLineList)} */}
@@ -250,7 +303,6 @@ export default class AboutTimeline extends Component {
             optionList={this.state.timeLineList}
             error={this.state.timelineClass}
             onclick={(value, key) => {
-              console.log("************", value);
               this.setState({ timeline: value, edit: false });
             }}
           />
@@ -378,3 +430,21 @@ export default class AboutTimeline extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    timelineState:state.views.dashboard,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+      getTimelineData:(url)=>{
+        dispatch(getAboutTimelineData(url))
+      },
+      TimelineAddUpdate: (method,url,_apidata,_apigeturl) => {
+        dispatch(setTimelineAddUpdate(method,url,_apidata,_apigeturl));
+      }
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AboutTimeline);

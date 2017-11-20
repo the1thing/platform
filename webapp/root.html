@@ -76,7 +76,7 @@
             display: block;
         }
         /* loader style aplied for dashboard */
-        #load {
+        /* #load {
     position: fixed;
     display: block;
     top: 0;
@@ -107,9 +107,9 @@
     display: block;
     animation: shift-rightwards 1.5s ease-in-out infinite;
     animation-delay: .8s;
-}
+} */
 
-
+/* 
 @keyframes shift-rightwards {
     0% {
         transform: translateX(-100%)
@@ -127,11 +127,11 @@
   @keyframes fade {
     from { opacity: 0 } 
      to { opacity: 1 }
-   }
+   } */
     </style>
 </head>
 <body class='font--open_sans'>
-   <div id="load" ></div>
+   <!-- <div id="load" ></div> -->
     <div id='root'>
         <div class='error-screen'>
             <h2>Cannot connect to Workspace by 1THING</h2>
@@ -151,18 +151,18 @@
         </div>
     </div>
     <script type="text/javascript">
-        document.onreadystatechange = function () {
+        // document.onreadystatechange = function () {
           
-                 var state = document.readyState
-                 if (state == 'interactive') {
-                 } else if (state == 'complete') {
-                     setTimeout(function(){
-                       document.getElementById('interactive');
-                       document.getElementById('load').style.visibility="hidden";
-                       document.getElementById('loading').style.visibility="hidden";
-                     },1000);
-                 }
-               }
+        //          var state = document.readyState
+        //          if (state == 'interactive') {
+        //          } else if (state == 'complete') {
+        //               setTimeout(function(){
+        //                document.getElementById('interactive');
+        //                document.getElementById('load').style.visibility="hidden";
+        //                document.getElementById('loading').style.visibility="hidden";
+        //               },1000);
+        //          }
+        //        }
        </script>
     <script>
         if (typeof window.setup_root !== 'function') {

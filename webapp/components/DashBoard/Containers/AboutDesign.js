@@ -6,6 +6,9 @@ import { AddLink } from '../Components/AddLink';
 import axios from 'axios';
 import{ basepath} from '../utils/constant'
 import {validateUrl} from '../utils/Methods';
+import {getAboutDesignData,setDesignAddUpdate } from '../Actions/AsyncActions';
+import  {isEmpty} from '../utils/Methods'
+import { connect } from "react-redux";
 
 
 // const dropdownList = (title,field,onclick)=>{
@@ -30,7 +33,7 @@ let DropdownList = (props) => {
     );
 }
 
-export default class AboutDesign extends Component {
+class AboutDesign extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -65,46 +68,63 @@ export default class AboutDesign extends Component {
   componentWillMount = () => {
       this.getAboutDesignData()
     }
+    componentWillReceiveProps(nextProps) {
+        let temp=nextProps.designState.aboutDesign;
+        if((typeof temp.userProposal) !== 'undefined')
+        {
+            this.setState({
+                platforms: (temp.platform !=null )?temp.platform:[],
+                services:'services',
+                objective:temp.userProposal.designObjective,
+                addLink:(temp.userProposal.referenceLink!=null)?temp.userProposal.referenceLink:[],
+               // loading:false,
+            })
+        }
+    }
   getAboutDesignData=()=>{
-    if(localStorage.getItem('projectId'))
-    {
-        this.setState({
-            loading:true,
-        })
-     axios({
-        method: 'get',
-        url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId') +'?stage=2',
-        }).then((response) => {
-        var _response=response.data;
-        var _tempUserPropsal=response.data.userProposal;
-        //designServices  designObjective
-        this.setState({
-             platforms: (_response.platform !=null )?_response.platform:[],
-            services:'services',
-            objective:_tempUserPropsal.designObjective,
-            addLink:(_tempUserPropsal.referenceLink!=null)?_tempUserPropsal.referenceLink:[],
-            loading:false,
-           })
-           
-      })
-      .then((res)=>{
-        
-        this.setState({
-           
-            platforms:this.state.platforms,
-            services:this.state.services,
-            addLink:this.state.addLink,
-            objective:this.state.objective,
-            loading:false,
-        })
-      })
-       .catch((error) => {
-          console.log('get project error stage 2', error.response);
-           this.setState({
-             loading:false,
-           })
-        });
+      if(this.props.designState.allProjectWorkspace._id !== ""){
+          let url=basepath + 'project/getProjectByIds/' + this.props.designState.allProjectWorkspace._id +'?stage=2';
+          this.props.getDesignData(url);
       }
+    // if(localStorage.getItem('projectId'))
+    // {
+    //     this.setState({
+    //         loading:true,
+    //     })
+    //  axios({
+    //     method: 'get',
+    //     url: basepath + 'project/getProjectByIds/' + localStorage.getItem('projectId') +'?stage=2',
+    //     }).then((response) => {
+    //     var _response=response.data;
+    //     var _tempUserPropsal=response.data.userProposal;
+    //     //designServices  designObjective
+    //     this.setState({
+    //          platforms: (_response.platform !=null )?_response.platform:[],
+    //         services:'services',
+    //         objective:_tempUserPropsal.designObjective,
+    //         addLink:(_tempUserPropsal.referenceLink!=null)?_tempUserPropsal.referenceLink:[],
+    //         loading:false,
+    //        })
+           
+    //   })
+    //   .then((res)=>{
+        
+    //     this.setState({
+           
+    //         platforms:this.state.platforms,
+    //         services:this.state.services,
+    //         addLink:this.state.addLink,
+    //         objective:this.state.objective,
+    //         loading:false,
+    //     })
+    //   })
+    //    .catch((error) => {
+    //       console.log('get project error stage 2', error.response);
+    //        this.setState({
+    //          loading:false,
+    //        })
+    //     });
+    //   }
 }
 
  renderClass = () => {
@@ -182,37 +202,62 @@ goTo=()=>{
      }
 }
 postAboutDesignData=(link_list)=>{
-    axios({
-        method:'put',
-        url:basepath+'project/updateProjectFromWorkspace',
-        data:{
-            platform:this.state.platforms,
-            designServices:this.state.services,
-            designObjective:this.state.objective,
-            referenceLink:this.state.addLink,
-            projectId:localStorage.getItem('projectId'),
-        },
-    })
-    .then((resp)=>{
+    let method='put';
+    let url=basepath+'project/updateProjectFromWorkspace';
+    let _apidata={
+        platform:this.state.platforms,
+        designServices:this.state.services,
+        designObjective:this.state.objective,
+        referenceLink:this.state.addLink,
+        projectId:this.props.designState.allProjectWorkspace._id,
+    }
+    let _apigeturl=basepath + 'project/getProjectByIds/' + this.props.designState.allProjectWorkspace._id +'?stage=2';
+    // let _storedata={
+    //     platform:this.state.platforms,
+    //     statusBar:this.props.designState.allProjectWorkspace.statusBar,
+    //     userProposal:{
+    //         budgetRange:"",
+    //         designObjective:this.state.objective,
+    //         designServices:this.state.services,
+    //         referenceLink:this.state.addLink,
+    //         startTime:"",
+    //         timeline:"",
+    //     },
+    //     _id:this.props.designState.allProjectWorkspace._id
+    // }
+    this.props.productAddUpdate(method, url, _apidata, _apigeturl);
+    // axios({
+    //     method:'put',
+    //     url:basepath+'project/updateProjectFromWorkspace',
+    //     data:{
+    //         platform:this.state.platforms,
+    //         designServices:this.state.services,
+    //         designObjective:this.state.objective,
+    //         referenceLink:this.state.addLink,
+    //         projectId:localStorage.getItem('projectId'),
+    //     },
+    // })
+    // .then((resp)=>{
         
-        this.setState({
-            edit:true,
-        })
-        this.props.openPanel();
-        // window.location.reload();
-    })
-    .catch((err)=>{
-        console.log("about design  error",err)
-    })
+    //     this.setState({
+    //         edit:true,
+    //     })
+    //     this.props.openPanel();
+    //     // window.location.reload();
+    // })
+    // .catch((err)=>{
+    //     console.log("about design  error",err)
+    // })
 }
 
     render() {
-        if (this.state.loading) {
-            return( <div>
-                {/* loading... */}
-                </div>)
-        }
-        else return (
+        // if (this.state.loading) {
+        //     return( <div>
+        //         {/* loading... */}
+        //         </div>)
+        // }
+        // else 
+        return (
             <div>
                 <div className="input-spacing platform-selection" id='platforms'>
                     {/********************* Select Multiple *****  */}
@@ -329,3 +374,22 @@ postAboutDesignData=(link_list)=>{
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+      designState:state.views.dashboard,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+      return {
+        getDesignData:(url)=>{
+          dispatch(getAboutDesignData(url))
+        },
+        productAddUpdate: (method,url,_apidata,_apigeturl) => {
+          dispatch(setDesignAddUpdate(method,url,_apidata,_apigeturl));
+        }
+      };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(AboutDesign);
+  

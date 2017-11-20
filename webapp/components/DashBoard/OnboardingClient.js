@@ -60,9 +60,9 @@ class OnboardingClient extends Component {
     </div>
           <div className="progressbar-container">
             <div className="progress-container">
-              <ClientProgress setUserProgress={this.state.setUserProgress} />
+              {<ClientProgress setUserProgress={this.state.setUserProgress} />}
             </div>
-               <QueryChat setUserProgress={this.state.setUserProgress} />
+               {<QueryChat setUserProgress={this.state.setUserProgress} />}
            </div>
         </div>
       </div>

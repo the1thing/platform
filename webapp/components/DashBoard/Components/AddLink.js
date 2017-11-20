@@ -34,6 +34,27 @@ export class AddLink extends Component {
       });
     }
   };
+  
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultValue) {
+      //this.props.addAnotherLink(e);
+      nextProps.defaultValue.map((value, key) => {
+        let list = this.state.linkList;
+        list = list.concat(
+          <div className="subcomponent-spacing">
+            <input className="simple-input" value={value} />
+          </div>
+        );
+        this.setState({
+          myList: this.props.defaultValue,
+          linkList: list,
+          buttonVisiblity: "hidden"
+        });
+      });
+    }
+    
+  }
+  
   // validateUrl = (checkLink) => {
   //     let regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
   //     let checkProduct = regex.test(checkLink);

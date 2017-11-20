@@ -8,6 +8,10 @@ import {basepath} from '../utils/constant';
 import {validateUrl, numberOnly} from '../utils/Methods';
 import axios from 'axios';
 import LoreamTooltip from '../Components/LoreamTooltip';
+import  {isEmpty} from '../utils/Methods'
+// import {getClientInformation } from './Dashboard/Actions/AsyncActions';
+import { connect } from "react-redux";
+import {setUserAddUpdate,getAboutUserData} from '../Actions/AsyncActions';
 
 const tooltip = (
     <Tooltip id="tooltip">
@@ -19,7 +23,7 @@ const tooltip = (
         </div>
     </Tooltip>
   );
-export default class AboutUser extends Component {
+class AboutUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -44,26 +48,29 @@ export default class AboutUser extends Component {
     }
     
     componentWillMount=()=> {
-        setTimeout(()=>{this.getAboutUserData()},6)
+        this.getAboutUserData()
+        // setTimeout(()=>{this.getAboutUserData()},6)
     }
     getAboutUserData=()=>{
-        this.setState({loader:true});
-        axios({
-            method: 'get',
-            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-           }).then((response) => {
-            this.setState({
-                linkdinLink:response.data.linkedinProfile,
-                workExperience:response.data.workExperience,
-                jobTiming:response.data.role,
-                availability:response.data.hoursAvailable,
-                checkboxArray: (response.data.profile!=null)?response.data.profile:[],
-                loader:false,
-               })
-          }).catch((error) => {
-            console.log('get project error', error);
-            this.setState({loader:false})
-          });
+        // this.setState({loader:true});
+        let url=basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1';
+        this.props.getAboutUserData(url);
+        // axios({
+        //     method: 'get',
+        //     url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
+        //    }).then((response) => {
+        //     this.setState({
+        //         linkdinLink:response.data.linkedinProfile,
+        //         workExperience:response.data.workExperience,
+        //         jobTiming:response.data.role,
+        //         availability:response.data.hoursAvailable,
+        //         checkboxArray: (response.data.profile!=null)?response.data.profile:[],
+        //         loader:false,
+        //        })
+        //   }).catch((error) => {
+        //     console.log('get project error', error);
+        //     this.setState({loader:false})
+        //   });
     }
     renderClass = () => {
         if (this.state.checkboxArray[0] && this.state.linkdinLink && validateUrl(this.state.linkdinLink) && this.state.workExperience
@@ -257,3 +264,23 @@ export default class AboutUser extends Component {
     }
   } 
 }
+
+function mapStateToProps(state) {
+    return {
+      userState:state.views.dashboard,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+        getDesignData:(url)=>{
+          dispatch(getAboutUserData(url))
+        },
+        userAddUpdate: (method,url,_apidata,_apigeturl) => {
+          dispatch(setUserAddUpdate(method,url,_apidata,_apigeturl));
+        }
+      };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(AboutUser);
+  
