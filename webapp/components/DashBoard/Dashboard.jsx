@@ -123,7 +123,7 @@ class Dashboard extends Component {
     // client 8pi33tgbe38ypq5xr378bcbjwa
     //ij7s8nft4fduf8ys6pt3g54for
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke';
+    let url = basepath + "user/getUser/" + uId;
     this.props.getUserInfo(url);
   }
   // getData=()=>{
