@@ -1,7 +1,8 @@
 export function popCheckBox(value, index, checkboxArray) {
     //console.log('index', index)
-    var arr = checkboxArray;
-    arr.splice(index, 1);
+    
+    var arr = checkboxArray.filter((v)=>v!==value);
+    //arr.splice(index, 1);
     // this.setState({
     //     checkboxArray: arr
     // });

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '../Styles/queryChat.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { basepath } from '../utils/constant';
+import { basepath,channelpath } from '../utils/constant';
 // import ReactTooltip from 'react-tooltip';
 export default class QueryChat extends Component {
     constructor(props){
@@ -248,7 +248,7 @@ export default class QueryChat extends Component {
                        Hi {localStorage.getItem('userName')}, <br/>
                         I am your onboarding manager at 1THING.
                         Let me know if you hit any obstacle. I am available
-                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href={channelpath+this.props.channelName}><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                        
                       </div>  
                 </div>
@@ -263,7 +263,7 @@ export default class QueryChat extends Component {
                       Hi {localStorage.getItem('userName')}, <br/>
                        Seems like something holding you off. If you need any help,
                         we are always
-                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href={channelpath+this.props.channelName}><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                       
                      </div>  
                 </div>
@@ -280,7 +280,7 @@ export default class QueryChat extends Component {
                        I'll ping you
                        
                         {/* <span style={{marginLeft:'6px'}} className="clickable_text" target="_blank"onClick={()=>{window.location.assign("www.google.com")}} >here.</span> */}
-                        <a href='https://workspace.1thing.io'><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
+                        <a href={channelpath+this.props.channelName}><span style={{marginLeft:'6px',textDecoration: 'underline',color:'#030303'}}>here.</span></a>
                       </div>  
                 </div>
                 </div>

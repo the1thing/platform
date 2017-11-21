@@ -1,28 +1,20 @@
 import {
-    //LOADER_TRUE,
-    //LOADER_FALSE, 
     SET_USERTYPE,
     SET_ALLPROJECTWORKSPACE,
     SET_ADDUPDATEPRODUCT,
     SET_ADDUPDATEDESIGN,
-    SET_ADDUPDATETIMELINE} from '../../../reducers/views/dashboard';
+    SET_ADDUPDATETIMELINE,
+    SET_ADDUPDATEUSER,
+    SET_ADDUPDATEEXPERTISE,
+    SET_ADDUPDATEPERSPECTIVE,
+    SET_ADDUPDATERATING
+} from '../../../reducers/views/dashboard';
 export function setUserInformation(data){
     return {
         type:'SET_USERTYPE',
         data
     }
 }
-// export function setLoader(){
-//     return{
-//         type:'LOADER_TRUE'
-//     }
-// }
-// export function removeLoader(){
-//     return{
-//         type:'LOADER_FALSE'
-//     }
-// }
-
 export function setAllProjectsForWorkspace(data){
     return{
         type:'SET_ALLPROJECTWORKSPACE',
@@ -36,7 +28,6 @@ export function setAboutProductData(data){
     }
 }
 export function setAboutDesignData(data){
-    // console.log("called action----->",data)
     return{
         type:'SET_ADDUPDATEDESIGN',
         data
@@ -45,6 +36,30 @@ export function setAboutDesignData(data){
 export function setAboutTimelineData(data){
     return{
         type:'SET_ADDUPDATETIMELINE',
+        data
+    }
+}
+export function setAboutUserData(data){
+    return{
+        type:'SET_ADDUPDATEUSER',
+        data
+    }
+}
+export function setAboutExpertiseData(data){
+    return{
+        type:'SET_ADDUPDATEEXPERTISE',
+        data
+    }
+}
+export function setAboutPerspectiveData(data){
+    return{
+        type:'SET_ADDUPDATEPERSPECTIVE',
+        data
+    }
+}
+export function setUserRatingData(data){
+    return{
+        type:'SET_ADDUPDATERATING',
         data
     }
 }

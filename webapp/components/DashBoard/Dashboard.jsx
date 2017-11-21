@@ -119,11 +119,11 @@ class Dashboard extends Component {
     //       loader: false
     //     });
     //     console.log("errorrrrrrrrrrrrrrrr123", err);
-    //   });
+    //   });  var arr = checkboxArray.filter((v)=>v!==value);
     // client 8pi33tgbe38ypq5xr378bcbjwa
-    //ij7s8nft4fduf8ys6pt3g54for
+    //ij7s8nft4fduf8ys6pt3g54for  
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + uId;
+    let url = basepath + "user/getUser/" + 'ij7s8nft4fduf8ys6pt3g54for';
     this.props.getUserInfo(url);
   }
   // getData=()=>{
@@ -146,7 +146,7 @@ class Dashboard extends Component {
       if (this.props.dashboardState.userTypeInfo.userType === "client") {
         return (
           <div className={this.state.dashboardIconClass}>
-            <OnboardingClient />
+            <OnboardingClient channelName={this.props.dashboardState.userTypeInfo.channelName}/>
           </div>
         );
       } else if (this.props.dashboardState.userTypeInfo.userType === "designer") {

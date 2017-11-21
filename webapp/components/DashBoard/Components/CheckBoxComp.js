@@ -20,11 +20,8 @@ export default class CheckBoxComp extends Component {
             <Checkbox
                  inline
                  checked={this.props.isChecked}
-                 //className={this.state.toggle?'checkbox-bordered':'checkbox-unbordered'}
                  className={this.props.toggle?'checkbox-bordered':'checkbox-unbordered'}
-                 //checked={this.props.checkboxChecked} 
                   onClick={(event)=>{this.handleCheckBox(event,this.props.label)
-                    // this.setState({toggle:!this.state.toggle})
                     }} 
                      >
                 <span style={{marginLeft:'3px'}}>{this.props.label}</span>

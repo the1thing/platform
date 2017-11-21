@@ -6,6 +6,10 @@ import {
   setAboutProductData,
   setAboutDesignData,
   setAboutTimelineData,
+  setAboutUserData,
+  setAboutExpertiseData,
+  setAboutPerspectiveData,
+  setUserRatingData,
 } from "./UserActions";
 import axios from "axios";
 
@@ -239,7 +243,7 @@ export function getAboutUserData(_apiurl) {
       .then(response => {
         console.log("getAboutUserData response------>", response);
         if (response.data !== null || response.data !== "null") {
-          dispatch(setAboutTimelineData(response.data));
+          dispatch(setAboutUserData(response.data));
         }
       })
       .catch(error => {
@@ -256,10 +260,118 @@ export function setUserAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
     })
       .then(response => {
         console.log("setUserAddUpdate response---------->",response)
-        dispatch(getAboutTimelineData(_apigeturl));
+        dispatch(getAboutUserData(_apigeturl));
       })
       .catch(error => {
         console.log( error);
       });
   };
 }
+
+
+//about expertise---------------------------
+export function getAboutExpertiseData(_apiurl) {
+  return dispatch => {
+    axios({
+      method: "get",
+      url: _apiurl
+    })
+      .then(response => {
+        console.log("getAboutExpertiseData response------>", response);
+        if (response.data !== null || response.data !== "null") {
+          dispatch(setAboutExpertiseData(response.data));
+        }
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+export function setExpertiseAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
+  return dispatch => {
+    axios({
+      method: _apimethod,
+      url: _apiurl,
+      data: _apidata
+    })
+      .then(response => {
+        console.log("setExpertiseAddUpdate response---------->",response)
+        dispatch(getAboutExpertiseData(_apigeturl));
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+
+// user perspective--------------------------------
+export function getAboutPerspectiveData(_apiurl) {
+  return dispatch => {
+    axios({
+      method: "get",
+      url: _apiurl
+    })
+      .then(response => {
+        console.log("getAboutPerspectiveData response------>", response);
+        if (response.data !== null || response.data !== "null") {
+          dispatch(setAboutPerspectiveData(response.data));
+        }
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+export function setPerspectiveAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
+  return dispatch => {
+    axios({
+      method: _apimethod,
+      url: _apiurl,
+      data: _apidata
+    })
+      .then(response => {
+        console.log("setPerspectiveAddUpdate response---------->",response)
+        dispatch(getAboutPerspectiveData(_apigeturl));
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+
+
+// user userself-------------------------
+export function getAboutRatingData(_apiurl) {
+  return dispatch => {
+    axios({
+      method: "get",
+      url: _apiurl
+    })
+      .then(response => {
+        console.log("getAboutPerspectiveData response------>", response);
+        if (response.data !== null || response.data !== "null") {
+          dispatch(setUserRatingData(response.data));
+        }
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+export function setRatingAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
+  return dispatch => {
+    axios({
+      method: _apimethod,
+      url: _apiurl,
+      data: _apidata
+    })
+      .then(response => {
+        console.log("setPerspectiveAddUpdate response---------->",response)
+        dispatch(getAboutRatingData(_apigeturl));
+      })
+      .catch(error => {
+        console.log( error);
+      });
+  };
+}
+

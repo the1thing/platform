@@ -4,9 +4,13 @@ import ReactDOM from 'react-dom';
 import {returnDate } from './utils/Methods';
 import { basepath } from './utils/constant';
 import axios from 'axios';
+import { getAboutDesignData, setDesignAddUpdate } from "./Actions/AsyncActions";
+import { isEmpty } from "./utils/Methods";
+import { connect } from "react-redux";
+
 var final_view='';
 
-export default class DesignerProgress extends Component {
+class DesignerProgress extends Component {
     constructor(props){
         super(props);
         this.state={
@@ -99,8 +103,26 @@ export default class DesignerProgress extends Component {
       }
       
       componentWillReceiveProps=(nextProps)=> {
-          let gotProgressData=nextProps.setUserProgress
-            if(!gotProgressData.aboutUser)
+        this.setState({
+            loading: true
+          });
+          let temp = nextProps.designerState.allProjectWorkspace.statusBar;
+          //let gotProgressData=nextProps.setUserProgress
+          if (nextProps.designerState.allProjectWorkspace.statusBar.aboutYourself.completed == false) {
+            (this.state.onboarding.completed.value=false),
+              this.setState({
+                onboarding: this.state.onboarding,
+              });
+          }
+          else{
+            this.state.onboarding.aboutYourself.completed=temp.aboutYourself.completed;
+            this.state.onboarding.yourExpertise.completed=temp.expertise.completed;
+            this.state.onboarding.yourPerspective.completed=temp.perspective.completed;
+            this.state.onboarding.howYouThink.completed=temp.thinkAboutYourself.completed;
+            this.state.onboarding.howYouThink.completedDate=temp.thinkAboutYourself.completedDate;
+            this.state.onboarding.dateOfCompletion=temp.thinkAboutYourself.completedDate;
+           
+          if(!temp.aboutYourself.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
                      onboarding:this.state.onboarding,
@@ -108,21 +130,21 @@ export default class DesignerProgress extends Component {
                      })
                     
                 }
-              else if(!gotProgressData.aboutExpertise)
+              else if(!temp.expertise.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
                        onboarding:this.state.onboarding,
                      })
                     
                 }
-               else if(!gotProgressData.aboutPerspective)
+               else if(!temp.perspective.completed)
                 {     this.state.onboarding.completed.value=false,
                      this.setState({
                      onboarding:this.state.onboarding,
                      })
                     
                 } 
-                else if(!gotProgressData.userRating)
+                else if(!temp.thinkAboutYourself.completed)
                 {
                     this.state.onboarding.completed.value=false,
                      this.setState({
@@ -136,83 +158,78 @@ export default class DesignerProgress extends Component {
                      requirement:this.state.requirement,
                      })
                }
-               
-             this.state.onboarding.aboutYourself.completed=gotProgressData.aboutUser;
-             this.state.onboarding.yourExpertise.completed=gotProgressData.aboutExpertise;
-             this.state.onboarding.yourPerspective.completed=gotProgressData.aboutPerspective;
-             this.state.onboarding.howYouThink.completed=gotProgressData.userRating;
-             this.state.onboarding.howYouThink.completedDate=gotProgressData.userRatingDate;
-             this.state.onboarding.dateOfCompletion=gotProgressData.userRatingDate;
+               this.checkRenderStaus();
+            }
                this.setState({
                  requirement:this.state.requirement,
                  loading:false,
                  })
       this.checkRenderStaus();
       }
-      getClientStatus=()=>{
-         this.setState({loading:true});
-        axios({
-            method: 'get',
-            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-        }).then((response) => {
-            if(response.data!=null){
-            let _tempStatus=response.data.statusBar;
-            this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
-            this.state.onboarding.aboutYourself=_tempStatus.aboutYourself;
-            this.state.onboarding.yourExpertise=_tempStatus.expertise;
-            this.state.onboarding.yourPerspective=_tempStatus.perspective;
-            this.state.onboarding.howYouThink=_tempStatus.thinkAboutYourself;
+    //   getClientStatus=()=>{
+    //      this.setState({loading:true});
+    //     axios({
+    //         method: 'get',
+    //         url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
+    //     }).then((response) => {
+    //         if(response.data!=null){
+    //         let _tempStatus=response.data.statusBar;
+    //         this.state.onboarding.dateOfCompletion=_tempStatus.thinkAboutYourself.completedDate;
+    //         this.state.onboarding.aboutYourself=_tempStatus.aboutYourself;
+    //         this.state.onboarding.yourExpertise=_tempStatus.expertise;
+    //         this.state.onboarding.yourPerspective=_tempStatus.perspective;
+    //         this.state.onboarding.howYouThink=_tempStatus.thinkAboutYourself;
  
-            if(!_tempStatus.aboutYourself.completed)
-                {     this.state.onboarding.completed.value=false,
-                     this.setState({
-                     onboarding:this.state.onboarding,
-                     loading:false,
-                     })
+    //         if(!_tempStatus.aboutYourself.completed)
+    //             {     this.state.onboarding.completed.value=false,
+    //                  this.setState({
+    //                  onboarding:this.state.onboarding,
+    //                  loading:false,
+    //                  })
                     
-                }
-              else if(!_tempStatus.expertise.completed)
-                {     this.state.onboarding.completed.value=false,
-                     this.setState({
-                       onboarding:this.state.onboarding,
-                     })
+    //             }
+    //           else if(!_tempStatus.expertise.completed)
+    //             {     this.state.onboarding.completed.value=false,
+    //                  this.setState({
+    //                    onboarding:this.state.onboarding,
+    //                  })
                     
-                }
-               else if(!_tempStatus.perspective.completed)
-                {     this.state.onboarding.completed.value=false,
-                     this.setState({
-                     onboarding:this.state.onboarding,
-                     })
+    //             }
+    //            else if(!_tempStatus.perspective.completed)
+    //             {     this.state.onboarding.completed.value=false,
+    //                  this.setState({
+    //                  onboarding:this.state.onboarding,
+    //                  })
                     
-                } 
-                else if(!_tempStatus.thinkAboutYourself.completed)
-                {
-                    this.state.onboarding.completed.value=false,
-                     this.setState({
-                     onboarding:this.state.onboarding,
-                     })
+    //             } 
+    //             else if(!_tempStatus.thinkAboutYourself.completed)
+    //             {
+    //                 this.state.onboarding.completed.value=false,
+    //                  this.setState({
+    //                  onboarding:this.state.onboarding,
+    //                  })
                     
-                }
-               else{
-                    this.state.onboarding.completed.value=true,
-                     this.setState({
-                     requirement:this.state.requirement,
-                     })
-               }
-            }
-        }).then(()=>{
-            this.setState({
-                requirement:this.state.requirement,
-                loading:false,
-            })
-            this.checkRenderStaus();
+    //             }
+    //            else{
+    //                 this.state.onboarding.completed.value=true,
+    //                  this.setState({
+    //                  requirement:this.state.requirement,
+    //                  })
+    //            }
+    //         }
+    //     }).then(()=>{
+    //         this.setState({
+    //             requirement:this.state.requirement,
+    //             loading:false,
+    //         })
+    //         this.checkRenderStaus();
 
-        })
-        .catch((error) => {
-            console.log('get project error', error);
-             this.setState({loading:false});
-        });
-    }
+    //     })
+    //     .catch((error) => {
+    //         console.log('get project error', error);
+    //          this.setState({loading:false});
+    //     });
+    // }
     checkRenderStaus=()=>{
         if(!this.state.onboarding.completed.value)
         {
@@ -316,7 +333,7 @@ export default class DesignerProgress extends Component {
     }
     
     componentWillMount=()=> {
-        this.getClientStatus();
+        // this.getClientStatus();
         
     }
    
@@ -415,3 +432,22 @@ export default class DesignerProgress extends Component {
 
     }
 }
+function mapStateToProps(state) {
+    return {
+      designerState: state.views.dashboard
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+    //   getDesignData: url => {
+    //     dispatch(getAboutDesignData(url));
+    //   },
+    //   productAddUpdate: (method, url, _apidata, _storedata) => {
+    //     dispatch(setDesignAddUpdate(method, url, _apidata, _storedata));
+    //   }
+    };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(DesignerProgress);
+  

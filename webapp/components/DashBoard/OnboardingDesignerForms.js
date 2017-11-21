@@ -24,7 +24,6 @@ import {
   Redirect
 } from 'react-router-dom'
 import  {isEmpty} from './utils/Methods'
-// import {getClientInformation } from './Dashboard/Actions/AsyncActions';
 import { connect } from "react-redux";
 import {getDesignerInformation} from './Actions/AsyncActions';
 
@@ -35,36 +34,7 @@ class OnboardingDesignerForms extends Component {
   constructor(props){
     super(props);
     this.state={
-      // aboutUserActive:true,
-      // aboutExpertiseActive:false,
-      // aboutPerspectiveActive:false,
-      // userRatingActive:false,
-      // aboutUserView:false,
-      // aboutExpertiseView:false,
-      // aboutPerspectiveView:false,
-      // userRatingView:false,
-      // onboarding_display:'block',
-      // assignment_display:'none',
-      // pricing_bandwidth_display:'none',
-      // welAboard_display:'none',
-      // manifesto_display:'block',
-      // designer_info_display:'block',
-      // //************************** panel dates ****************//
-      // aboutYourselfDate:'',
-      // expertiseDate:'',
-      // perspectiveDate:'',
-      // thinkAboutYourselfDate:'',
-      // aboutUserCompleted:'',
-      // expertiseCompleted:'',
-      // perspectiveCompleted:'',
-      // userRatingCompleted:'',
-      // userRatingCompletedDate:'',
-      
-      
-
-
        loading:false,
-      // redirect:false,
       userCompleted:false,
       userDate:'',
       perspectiveCompleted:false,
@@ -79,12 +49,7 @@ class OnboardingDesignerForms extends Component {
   }
   
   componentWillMount() {
-    // this.setState({
-    //   loading:true,
-      
-    // });
     this.getUserData();
-    console.log("checkoing hostory props",this.props.history)
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
@@ -108,94 +73,12 @@ class OnboardingDesignerForms extends Component {
   }
   
   getUserData=()=>{
-    console.log("***********>>>>>designer",this.props.designerState)
     let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.designerState.userTypeInfo._id+'?stage=1';
     this.props.getdesignerInfo(url);
-  
-    // axios({
-    //         method: 'get',
-    //         url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-    //        })
-    //        .then((response)=>{
-    //          let _tempStatus=response.data.statusBar;
-    //         this.setState({
-    //                     aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
-    //                     aboutExpertiseActive:_tempStatus.aboutYourself.completed,
-    //                     aboutUserView:_tempStatus.aboutYourself.completed,
-    //                     expertiseDate:_tempStatus.expertise.completedDate,
-    //                     aboutPerspectiveActive:_tempStatus.expertise.completed,
-    //                     aboutExpertiseView:_tempStatus.expertise.completed,
-    //                     perspectiveDate:_tempStatus.perspective.completedDate,
-    //                     userRatingActive:_tempStatus.perspective.completed,
-    //                     aboutPerspectiveView:_tempStatus.perspective.completed,
-    //                     thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
-    //                     loading:false,
-    //                     aboutUserCompleted:_tempStatus.aboutYourself.completed,
-    //                     expertiseCompleted:_tempStatus.expertise.completed,
-    //                     perspectiveCompleted:_tempStatus.perspective.completed,
-    //                     userRatingCompleted:_tempStatus.thinkAboutYourself.completed,
-    //                     userRatingView:_tempStatus.thinkAboutYourself.completed,
-    //                     userRatingCompletedDate:_tempStatus.thinkAboutYourself.completedDate,
-    //                     })
-    //            })
-    //            .then((res)=>{ 
-    //                   let temp={
-    //                   aboutUser:this.state.aboutUserCompleted,
-    //                   aboutExpertise:this.state.expertiseCompleted,
-    //                   aboutPerspective:this.state.perspectiveCompleted,
-    //                   userRating:this.state.userRatingCompleted,
-    //                   userRatingDate:this.state.userRatingCompletedDate
-    //                   };
-    //               // this.props.reloadProgress(temp);
-    //               this.props.route.reloadProgress(temp);
-    //            })
-    //            .then((res)=>{
-    //              if(this.state.userRatingCompleted && this.state.redirect){
-    //                this.props.history.push('/assignment');
-    //               }
-    //           // this.props.reloadProgress(temp);
-    //         }).catch((error) => {
-    //         console.log('get project error', error);
-    //          this.setState({loading:false});
-    //       });
-            //aboutYourself
-            //expertise
-           //perspective
-           //thinkAboutYourself
-  
   }
-  
-  // componentWillReceiveProps=(nextProps)=> {
-  //   this.setState({loading:true});
-  //   axios({
-  //           method: 'get',
-  //           url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-  //          }).then((response) => {
-  //          console.log('props props  response of get about userrrrrrrrrrr11111', response);
-  //          let _tempStatus=response.data.statusBar;
-  //           this.setState({
-  //               aboutYourselfDate:_tempStatus.aboutYourself.completedDate,
-  //               aboutExpertiseActive:_tempStatus.aboutYourself.completed,
-  //               expertiseDate:_tempStatus.expertise.completedDate,
-  //               aboutPerspectiveActive:_tempStatus.expertise.completed,
-  //               perspectiveDate:_tempStatus.perspective.completedDate,
-  //               userRatingActive:_tempStatus.perspective.completed,
-  //               thinkAboutYourselfDate:_tempStatus.thinkAboutYourself.completedDate,
-  //               loading:false,
-  //              })
-  //         })
-  //         .catch((error) => {
-  //           console.log('get project error', error);
-  //            this.setState({loading:false});
-  //         });
-  // }
-
   openPanel=()=>{
     this.refs.openPanel();
     this.getUserData();
-    // if(this.state.userRatingCompleted){
-    //   this.props.history.push('/assignment');
-    // }
   }
   pushToOnboarding=()=>{
     this.props.history.push('/')
@@ -284,7 +167,7 @@ pushToAboard=()=>{
             title={<span>4.<span className="title-padding">Rate Yourself</span></span>}
             panelContent={(
               <RatingUserself
-              ref="openPanel"
+              history={this.props.history}
               openPanel={()=>{this.setState({redirect:true});this.openPanel()}}/>
             )}
           />
@@ -293,15 +176,6 @@ pushToAboard=()=>{
               title="After this, an assignment will be shared with you in the next 48 hrs."/>
           </div>
         </div>
-        {/* <div className="title-content" style={{display:this.state.assignment_display}}>
-           <OnboardAssignment/>
-         </div> */}
-        {/* very important      -------------   dont remove------- */}
-
-        {/* <div className="title-content" style={{display:this.state.manifesto_display}}>
-         <OnboardManifesto/>
-         </div> */}
-         
       </div>
     )
   }

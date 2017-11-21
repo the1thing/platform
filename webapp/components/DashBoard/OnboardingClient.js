@@ -62,7 +62,7 @@ class OnboardingClient extends Component {
             <div className="progress-container">
               {<ClientProgress setUserProgress={this.state.setUserProgress} />}
             </div>
-               {<QueryChat setUserProgress={this.state.setUserProgress} />}
+               {<QueryChat setUserProgress={this.state.setUserProgress} channelName={this.props.channelName}/>}
            </div>
         </div>
       </div>

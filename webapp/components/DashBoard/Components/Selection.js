@@ -349,11 +349,18 @@ export class SelectMultiple extends Component {
         let list = this.state.optionList;
         let removeList = this.state.selectedList;
         list = list.concat(value);
-        removeList.splice(key, 1);
+        //removeList.splice(key, 1);
+        removeList = removeList.filter((v)=>v!==value);
         this.props.handleRemoval(removeList);
         this.setState({
             optionList: list,
         });
+        if(removeList.length==0){
+            this.setState({
+                mainContainer:'popover-container',
+                containerClass:'popover-container',
+            })
+        }
         if (this.state.selectedList == '') {
             this.setState({
                 toggleVisiblity: true,

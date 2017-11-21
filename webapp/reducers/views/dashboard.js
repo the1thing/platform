@@ -8,11 +8,9 @@ let initialState = {
   userPerspective:{},
   userExpertise:{},
   userRating:{},
-  //  loading: false
 };
 
 export default function dashboard(state = initialState, action) {
-   console.log("reducer called------>",action.data)
   switch (action.type) {
     case "SET_USERTYPE":
       return {

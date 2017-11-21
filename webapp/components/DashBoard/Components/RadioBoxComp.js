@@ -19,6 +19,12 @@ export default class RadioBoxComp extends Component {
       })
     }
     
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+        defaultValue:nextProps.defaultValue,
+      })
+    }
+    
     handleRadioClick=(value)=>{
         this.setState({
             defaultValue:value,

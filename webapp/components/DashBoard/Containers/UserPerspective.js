@@ -5,6 +5,10 @@ import RadioBoxComp from '../Components/RadioBoxComp';
 import {basepath} from '../utils/constant';
 import {validateUrl} from '../utils/Methods';
 import axios from 'axios';
+import  {isEmpty} from '../utils/Methods'
+import { connect } from "react-redux";
+import {setPerspectiveAddUpdate,getAboutPerspectiveData} from '../Actions/AsyncActions';
+
 
 let linkcount = 0;
 let inputcount = 0;
@@ -57,7 +61,7 @@ let LinkWithTextArea = (props) => {
 }
 
 
-export default class UserPerspective extends Component {
+class UserPerspective extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -93,35 +97,31 @@ export default class UserPerspective extends Component {
         }
     }
     componentWillMount = () => {
-        setTimeout(()=>{ this.getUserPerspectiveData()},6);
+        let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.perspectiveState.allProjectWorkspace._id+'?stage=3';
+        this.props.getPerspectiveData(url);
     }
-    getUserPerspectiveData=()=>{
-        this.setState({loader:true});
-        axios({
-            method: 'get',
-            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=3',
-        }).then((response) => {
-            let threeThing=response.data.necessaryThing.things.split(',');
+    
+    componentWillReceiveProps(nextProps) {
+        let temp=nextProps.perspectiveState.userPerspective;
+        if(temp.work.product1 !== 'undefined')
+        {
+            let threeThing=temp.necessaryThing.things.split(',');
             this.setState({
-                productTitle1:response.data.work.product1,
-                productContent1:response.data.work.info1,
-                productTitle2:response.data.work.product2,
-                productContent2:response.data.work.info2,
-                productTitle3:response.data.work.product3,
-                productContent3:response.data.work.info3,
-                workSpace: response.data.workingPlace,
+                productTitle1:temp.work.product1,
+                productContent1:temp.work.info1,
+                productTitle2:temp.work.product2,
+                productContent2:temp.work.info2,
+                productTitle3:temp.work.product3,
+                productContent3:temp.work.info3,
+                workSpace: temp.workingPlace,
                 necessaryThings1: threeThing[0],
                 necessaryThings2: threeThing[1],
                 necessaryThings3:threeThing[2],
-                userPersonality:response.data.necessaryThing.selected,
-                loader:false,
+                userPersonality:temp.necessaryThing.selected,
                })
-        
-        }).catch((error) => {
-            console.log('get project error', error.response);
-            this.setState({loader:false});
-        });
+        }
     }
+    
     renderClass = () => {
         if (this.state.productTitle1 && this.state.productContent1 && this.state.productTitle2
             && this.state.productContent2 && this.state.productTitle3 && this.state.productContent3
@@ -214,30 +214,22 @@ export default class UserPerspective extends Component {
         }
     }
     setUserPerpectiveData=()=>{
-        axios({
-            method:'put',
-            url:basepath+'designer/addPerspectiveForWorkspace',
-            data:{
-                product1:this.state.productTitle1,
-                info1:this.state.productContent1,
-                product2:this.state.productTitle2,
-                info2:this.state.productContent2,
-                product3:this.state.productTitle3,
-                info3:this.state.productContent3,
-                workingPlace:this.state.workSpace,
-                things:this.state.necessaryThings1+','+this.state.necessaryThings2+','+this.state.necessaryThings3,
-                selected:this.state.userPersonality,
-                designerId:localStorage.getItem('userId'),
-            }
-        }).then((response)=>{
-            console.log("User Perspective Data---------->");
-        })
-        .then((res)=>{
-            this.props.openPanel()
-        })
-        .catch((error)=>{
-            console.log("User Perspective Error--------->",error)
-        })
+        let method='put';
+        let url=basepath+'designer/addPerspectiveForWorkspace';
+        let data={
+            product1:this.state.productTitle1,
+            info1:this.state.productContent1,
+            product2:this.state.productTitle2,
+            info2:this.state.productContent2,
+            product3:this.state.productTitle3,
+            info3:this.state.productContent3,
+            workingPlace:this.state.workSpace,
+            things:this.state.necessaryThings1+','+this.state.necessaryThings2+','+this.state.necessaryThings3,
+            selected:this.state.userPersonality,
+            designerId:this.props.perspectiveState.allProjectWorkspace._id,
+        }
+        let _apigeturl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.perspectiveState.allProjectWorkspace._id+'?stage=3';
+        this.props.perspectiveAddUpdate(method,url,data,_apigeturl);
     }
     render() {
         if(this.state.loader){
@@ -301,10 +293,6 @@ export default class UserPerspective extends Component {
                                 this.setstateMethod('productContent2', e.target.value)
                                 this.setstateMethod('linkClass2', false)
                             }} />
-                        {/* <div style={{ visibility: this.state.linkVisiblityError2,marginLeft:'52px' }} className='display-error'>
-                            Please Enter Valid URL
-                        </div> */}
-                        
                         <LinkWithTextArea
                             id='product3'
                             input_value={this.state.productTitle3}
@@ -328,9 +316,6 @@ export default class UserPerspective extends Component {
                                 this.setstateMethod('productContent3', e.target.value)
                                 this.setstateMethod('linkClass3', false)
                             }} />
-                        {/* <div style={{ visibility: this.state.linkVisiblityError3,marginLeft:'52px' }} className='display-error'>
-                            Please Enter Valid URL
-                        </div> */}
                         
                     </div>
                 </div>
@@ -349,9 +334,7 @@ export default class UserPerspective extends Component {
                                 }}/>
                         </div>
                     </div>
-                    {/* <div style={{ visibility: this.state.workSpaceVisiblityError }} className='display-error'>
-                        Please identify yourself
-                    </div> */}
+                 
                 </div>
                 <div className="input-spacing">
                     <div className="form-label">
@@ -396,12 +379,8 @@ export default class UserPerspective extends Component {
                                 }}/>
                         </div>
                     </div>
-                    {/* <div style={{ visibility: this.state.userPersonalityVisiblityError }} className='display-error'>
-                        Please identify yourself
-                    </div> */}
                 </div>
                 <button className={this.renderClass()} onClick={() => this.goTo()}>
-                    {/* <span className="button-title">NEXT</span> */}
                     <span className="button-title">
                         <span>SAVE</span>
                         <span><img src={require('../Images/arrow-down.svg')}/></span>
@@ -412,3 +391,21 @@ export default class UserPerspective extends Component {
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+        perspectiveState:state.views.dashboard,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+        getPerspectiveData:(url)=>{
+          dispatch(getAboutPerspectiveData(url))
+        },
+        perspectiveAddUpdate: (method,url,_apidata,_apigeturl) => {
+          dispatch(setPerspectiveAddUpdate(method,url,_apidata,_apigeturl));
+        }
+      };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(UserPerspective);

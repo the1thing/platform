@@ -6,6 +6,10 @@ import axios from 'axios';
 import { basepath } from '../utils/constant';
 let myStringList = ['Quality of design','Ability to use tools','Communication Skills',
 'Project management','Working in a team','Leading a design team'];
+import  {isEmpty} from '../utils/Methods'
+import { connect } from "react-redux";
+import {setRatingAddUpdate,getAboutRatingData} from '../Actions/AsyncActions';
+
 let myList = [];
 let CreateRadio = (props) => {
     return (
@@ -17,7 +21,7 @@ let CreateRadio = (props) => {
 let i=1;
 
 
-export default class RatingUserself extends Component {
+class RatingUserself extends Component {
     constructor(props){
         super(props);
         this.state={
@@ -33,53 +37,43 @@ export default class RatingUserself extends Component {
         }
     }
     componentWillMount = () => {
-        setTimeout(()=>{ this.getRatingOfUserData()},6);
+        let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.ratingState.allProjectWorkspace._id+'?stage=4';
+        this.props.getRatingData(url);
     }
-    getRatingOfUserData=()=>{
-        this.setState({loading:true});
-        axios({
-            method: 'get',
-            url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=4',
-        }).then((response) => {
+    
+    componentWillReceiveProps(nextProps) {
+        let temp=nextProps.ratingState.userRating;
+        if(temp.rating !== 'undefined')
+        {
             this.setState({
-                designQuality:response.data.about1thing,
-                useToolQuality:response.data.rating.tools,
-                commSkills:response.data.rating.communication,
-                proManagement:response.data.rating.projectManagement,
-                teamWorking:response.data.rating.workingWithTeam,
-                leadingTeam:response.data.rating.teamLead,
-                loading:false,
+                designQuality:temp.about1thing,
+                useToolQuality:temp.rating.tools,
+                commSkills:temp.rating.communication,
+                proManagement:temp.rating.projectManagement,
+                teamWorking:temp.rating.workingWithTeam,
+                leadingTeam:temp.rating.teamLead,
                })
         
-        }).catch((error) => {
-                    this.setState({loading:false});
-
-        });
+        }
     }
-
     putRatingUserSelf=()=>{
-        axios({
-            method:'put',
-            url:basepath+'designer/ratingYourselfFromWorkspace',
-            data:{
-                designerId:localStorage.getItem('userId'),
-                about1thing:this.state.designQuality,
-                rating: {
-                        design:this.state.designQuality,
-                        tools: this.state.useToolQuality,
-                        communication:this.state.commSkills,
-                        projectManagement:this.state.proManagement,
-                        workingWithTeam:this.state.teamWorking,
-                        teamLead:this.state.leadingTeam,
-                       },
-              },
-        })
-        .then((resp)=>{
-            this.props.openPanel()
-        })
-        .catch((err)=>{
-            console.log("about put rating  error",err)
-        })
+        let method='put';
+        let url=basepath+'designer/ratingYourselfFromWorkspace';
+        let data={
+            designerId:this.props.ratingState.allProjectWorkspace._id,
+            about1thing:this.state.designQuality,
+            rating: {
+                    design:this.state.designQuality,
+                    tools: this.state.useToolQuality,
+                    communication:this.state.commSkills,
+                    projectManagement:this.state.proManagement,
+                    workingWithTeam:this.state.teamWorking,
+                    teamLead:this.state.leadingTeam,
+                },
+        };
+        let _apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.ratingState.allProjectWorkspace._id+'?stage=4';
+        this.props.history.push("/assignment");
+        this.props.ratingAddUpdate(method,url,data,_apiurl)
     }
    
     renderClass=()=>{
@@ -112,9 +106,6 @@ export default class RatingUserself extends Component {
                                         onclick={(value)=>{this.handleRadioClick(value,no)}}/>
                                 </div>
                             </div>
-                            {/* <div style={{ visibility: this.state.error[no] }} className='display-error'>
-                                Please identify yourself
-                            </div> */}
                         </Col>
                     </div>
                 </Row>
@@ -277,14 +268,10 @@ export default class RatingUserself extends Component {
                                         }}/>
                                 </div>
                             </div>
-                            {/* <div style={{ visibility: this.state.designQualityError }} className='display-error'>
-                                Please identify yourself
-                            </div> */}
                         </Col>
                     </Row>
                 </div>   
                 <button className={this.renderClass()} onClick={()=>{this.goTo()}}>
-                    {/* <span className="button-title">NEXT</span> */}
                     <span className="button-title">
                         <span>DONE</span>
                         <span><img src={require('../Images/arrow-right.svg')}/></span>
@@ -295,3 +282,21 @@ export default class RatingUserself extends Component {
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+        ratingState:state.views.dashboard,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+        getRatingData:(url)=>{
+          dispatch(getAboutRatingData(url))
+        },
+        ratingAddUpdate: (method,url,_apidata,_apigeturl) => {
+          dispatch(setRatingAddUpdate(method,url,_apidata,_apigeturl));
+        }
+      };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(RatingUserself);

@@ -9,7 +9,6 @@ import {validateUrl, numberOnly} from '../utils/Methods';
 import axios from 'axios';
 import LoreamTooltip from '../Components/LoreamTooltip';
 import  {isEmpty} from '../utils/Methods'
-// import {getClientInformation } from './Dashboard/Actions/AsyncActions';
 import { connect } from "react-redux";
 import {setUserAddUpdate,getAboutUserData} from '../Actions/AsyncActions';
 
@@ -48,30 +47,25 @@ class AboutUser extends Component {
     }
     
     componentWillMount=()=> {
-        this.getAboutUserData()
-        // setTimeout(()=>{this.getAboutUserData()},6)
+        let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userState.allProjectWorkspace._id+'?stage=1';// let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userTypeInfo._id+'?stage=1';
+        this.props.getUserData(url);
     }
-    getAboutUserData=()=>{
-        // this.setState({loader:true});
-        let url=basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1';
-        this.props.getAboutUserData(url);
-        // axios({
-        //     method: 'get',
-        //     url: basepath + 'designer/getDesignerDetailsByStage/'+localStorage.getItem('userId')+'?stage=1',
-        //    }).then((response) => {
-        //     this.setState({
-        //         linkdinLink:response.data.linkedinProfile,
-        //         workExperience:response.data.workExperience,
-        //         jobTiming:response.data.role,
-        //         availability:response.data.hoursAvailable,
-        //         checkboxArray: (response.data.profile!=null)?response.data.profile:[],
-        //         loader:false,
-        //        })
-        //   }).catch((error) => {
-        //     console.log('get project error', error);
-        //     this.setState({loader:false})
-        //   });
+    
+    componentWillReceiveProps(nextProps) {
+        let temp=nextProps.userState.allProjectWorkspace;
+        if(temp.statusBar.aboutYourself.completed !== false)
+        {
+            this.setState({
+                linkdinLink:temp.linkedinProfile,
+                workExperience:temp.workExperience,
+                jobTiming:temp.role,
+                availability:temp.hoursAvailable,
+                checkboxArray: (temp.profile!=null)?temp.profile:[],
+            })
+        }
+    
     }
+    
     renderClass = () => {
         if (this.state.checkboxArray[0] && this.state.linkdinLink && validateUrl(this.state.linkdinLink) && this.state.workExperience
             && this.state.jobTiming && this.state.availability) {
@@ -87,28 +81,18 @@ class AboutUser extends Component {
         })
     }
     putAboutUser=()=>{
-        axios({
-            method:'put',
-            url:basepath+'designer/addAboutYourself',
-            data:{
-                designerId:localStorage.getItem('userId'),
-                profile:this.state.checkboxArray,
-                linkedinProfile:this.state.linkdinLink,
-                workExperience:this.state.workExperience,
-                role:this.state.jobTiming,
-                hoursAvailable:this.state.availability,
-            },
-        })
-        .then((resp)=>{
-            //this.props.openPanel()
-        }).then(()=>{
-            this.props.openPanel();
-            localStorage.setItem('openView','aboutDesign')
-            
-        })
-        .catch((err)=>{
-            console.log("about design  error",err)
-        })
+        let method='put';
+        let url=basepath+'designer/addAboutYourself';
+        let _apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userState.allProjectWorkspace._id+'?stage=1';// let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userTypeInfo._id+'?stage=1';
+        let data={
+            designerId:this.props.userState.allProjectWorkspace._id,
+            profile:this.state.checkboxArray,
+            linkedinProfile:this.state.linkdinLink,
+            workExperience:this.state.workExperience,
+            role:this.state.jobTiming,
+            hoursAvailable:this.state.availability,
+        }
+        this.props.userAddUpdate(method,url,data,_apiurl)
     }
     goTo = () => {
         if (this.state.checkboxArray.length==0) {
@@ -182,9 +166,6 @@ class AboutUser extends Component {
                             {this.renderCheckBox()}
                         </div>
                     </div>
-                    {/* <div style={{ visibility: this.state.idVisiblityError }} className='display-error'>
-                        Please identify yourself
-                    </div> */}
                 </div>
                 <div style={{display:'flex'}}>
                     <input
@@ -234,9 +215,6 @@ class AboutUser extends Component {
                                 onclick={(e)=>{this.setStateMethod('jobTiming',e);this.setStateMethod('jobTimingError','')}}/>
                         </div>
                     </div>
-                    {/* <div style={{ visibility: this.state.jobTimingError }} className='display-error'>
-                        Please select at-least
-                    </div> */}
                 </div>
                 <div className="input-spacing" style={{display:'flex'}}>
                     <input
@@ -273,7 +251,7 @@ function mapStateToProps(state) {
   
   function mapDispatchToProps(dispatch) {
     return {
-        getDesignData:(url)=>{
+        getUserData:(url)=>{
           dispatch(getAboutUserData(url))
         },
         userAddUpdate: (method,url,_apidata,_apigeturl) => {

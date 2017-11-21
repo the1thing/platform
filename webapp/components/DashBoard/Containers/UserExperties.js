@@ -8,10 +8,13 @@ import { getCheckBoxValue } from '../utils/Methods';
 import { basepath } from '../utils/constant';
 import '../Styles/UserExperties.css';
 import axios from 'axios';
+import  {isEmpty} from '../utils/Methods'
+import { connect } from "react-redux";
+import {setExpertiseAddUpdate,getAboutExpertiseData} from '../Actions/AsyncActions';
 
 let count = 0;
 
-export default class UserExperties extends Component {
+class UserExperties extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,24 +52,22 @@ export default class UserExperties extends Component {
         });
     }
     componentWillMount = () => {
-        // let list = this.state.selectionList;
-        // list = list.concat(
-        //     <SelectContent
-        //         key={count}
-        //         placeholder="Select your preferred domain"
-        //         count = {++count}
-        //         onSelectionClick={(value, key) => {
-        //                         this.setState({
-        //                             domain: value,
-        //                         })
-        //                     }}
-        //         onTextAreaClick={(e)=>this.setState({
-        //                         content: e.target.value,
-        //                     })}/>
-        // );
-        this.getExpertiseData();
-
+        let url= basepath + 'designer/getDesignerDetailsByStage/' + this.props.expertiseState.allProjectWorkspace._id + '?stage=2';
+        this.props.getExpertiseData(url);
+        }
+    
+    componentWillReceiveProps(nextProps) {
+        let temp=nextProps.expertiseState.userExpertise;
+        if(temp.expertisePlatform !== 'undefined')
+        {
+            this.setState({
+                platforms: temp.expertisePlatform,
+                domainArray: (temp == null || temp.expertiseDomain.length > 0) ? temp.expertiseDomain : [{ name: '', info: '' }],
+            })
+        }
+    
     }
+    
     setStateMethod = (label, value) => {
         this.setState({
             [label]: value,
@@ -110,23 +111,6 @@ export default class UserExperties extends Component {
 
             </div>
         })
-        // let list = this.state.selectionList;
-        // list = list.concat(
-        //     <SelectContent
-        //         placeholder="Select your preferred domain"
-        //         count={++count}
-        //         error={this.state.domainsClass}
-        //         onSelectionClick={(value, key) => {
-        //             this.setState({
-        //                 domain: value,
-        //                 domainsClass: false,
-        //             })
-        //             {/* this.setStateMethod('domain',value)
-        //             this.setStateMethod('domainsClass',false) */}
-        //         }}
-        //         onTextAreaClick={(e) => this.setStateMethod('content', e.target.value)} />
-        // );
-        // this.setStateMethod('selectionList', list)
     }
     handleAddButton = (e) => {
         let len = this.state.domainArray.length;
@@ -134,79 +118,25 @@ export default class UserExperties extends Component {
             this.state.domainArray.push({ name: '', info: '' });
             this.setState({ domainArray: this.state.domainArray })
         }
-        // if (this.state.domain && this.state.content) {
-        //     let list = this.state.selectionList;
-        //     list = list.concat(
-        //         <SelectContent
-        //             placeholder="Select your preferred domain"
-        //             count={++count}
-        //             error={this.state.domainsClass}
-        //             onSelectionClick={(value, key) => {
-        //                 this.setStateMethod('domain', value)
-        //             //    this.setStateMethod('domainsClass', false)
-        //             }}
-        //             onTextAreaClick={(e) => this.setStateMethod('content', e.target.value)} />
-        //     );
-        //     let tempList=this.state.domains;
-
-        //     tempList = tempList.concat({
-        //         name:this.state.domain,
-        //         info:this.state.content,
-        //     });
-        //     this.setStateMethod('selectionList',list)
-        //     this.setStateMethod('domains',tempList)
-        //     this.setStateMethod('domainsClass',false)
-        //     this.setStateMethod('domain','')
-        //     this.setStateMethod('content','')
-
-        // }
     }
     submitExpertise = () => {
-        this.setState({ loading: true });
         let len = this.state.domainArray.length;
         if (this.state.domainArray[len - 1].name == '' && this.state.domainArray[len - 1].info == '') {
             this.state.domainArray.pop();
             this.setState({ domainArray: this.state.domainArray })
         }
-        //  let filterarr=this.removeDuplicates(this.state.domainArray,'info');
-
-        axios({
-            method: 'put',
-            url: basepath + 'designer/addExpertigeForWorkspace',
-            data: {
-                expertisePlatform: this.state.platforms,
-                expertiseDomain: this.state.domainArray,
-                designerId: localStorage.getItem('userId'),
-            },
-        })
-            .then((response) => {
-                this.setState({ loading: false });
-            }) 
-            .then((res)=>{
-                this.props.openPanel()
-            })
-            .catch((err) => {
-                this.setState({ loading: false });
-            })
-
-    }
-    getExpertiseData = () => {
-        this.setState({ loading: true });
-        axios({
-            method: 'get',
-            url: basepath + 'designer/getDesignerDetailsByStage/' + localStorage.getItem('userId') + '?stage=2',
-        }).then((response) => {
-            this.setState({
-                platforms: response.data.expertisePlatform,
-                domainArray: (response.data == null || response.data.expertiseDomain.length > 0) ? response.data.expertiseDomain : [{ name: '', info: '' }],
-                loading: false
-            })
-        }).catch((error) => {
-            console.log('get project error', error.response);
-            this.setState({ loading: false });
-        });
-    }
-
+        let method='put';
+        let url=basepath + 'designer/addExpertigeForWorkspace';
+        let data={
+            expertisePlatform: this.state.platforms,
+            expertiseDomain: this.state.domainArray,
+            designerId: this.props.expertiseState.allProjectWorkspace._id,
+        };
+        let _apiurl=basepath + 'designer/getDesignerDetailsByStage/' + this.props.expertiseState.allProjectWorkspace._id + '?stage=2';
+        this.props.expertiseAddUpdate(method,url,data,_apiurl);
+        
+        
+     }
     goTo = () => {
         let len = this.state.domainArray.length;
         if (this.state.platforms.length == 0) {
@@ -230,34 +160,6 @@ export default class UserExperties extends Component {
         else {
             this.submitExpertise();
         }
-
-
-        // if(this.state.domains.length>1)
-        // {
-        //     this.state.domains.spl
-        // }
-        // if(this.state.domain!=''){
-        //     this.state.domains.push({
-        //       name:this.state.domain,
-        //       info:this.state.content,
-        //     });
-        //     this.setState({
-        //         domains:this.state.domains,
-        //     });
-        // }
-
-        // if (this.state.platforms.length<1) {
-        //     this.setStateMethod('platformsVisiblityError', 'visible')
-        // }
-        // else if (!this.state.content || !this.state.domain) {
-        //     this.setStateMethod('domainsClass', true)
-        // }
-
-        // else{
-        //     this.submitExpertise();
-        // }
-
-
     }
     setStateMethod = (label, value) => {
         this.setState({
@@ -302,9 +204,6 @@ export default class UserExperties extends Component {
                             {this.renderCheckBox()}
                         </div>
                     </div>
-                    {/* <div style={{ visibility: this.state.platformsVisiblityError }} className='display-error'>
-                        Please identify yourself
-                    </div> */}
                 </div>
                 <div className="input-spacing selection-content">
                     <div className="form-label" id='domains'>
@@ -315,23 +214,6 @@ export default class UserExperties extends Component {
                         {<p style={{ color: '#eb444c', marginLeft: '52px' }} className="display-error">
                             {this.state.domainError ? 'Please Select All values' : ""}
                         </p>}
-                        {/* {this.renderDomainArray()} */}
-                        {/* <SelectContent
-                            defaultValue=''
-                           // textAreaDefaultValues={this.state.domains[0].content}
-                            placeholder="Select your preferred domain"
-                            count={1}
-                            error={this.state.domainsClass}
-                            onSelectionClick={(value, key) => {
-                                this.setState({
-                                    domain: value,
-                                    domainsClass: false,
-                                })
-                            }}
-                            onTextAreaClick={(e) =>{ 
-                                this.setStateMethod('content', e.target.value);
-                                this.setStateMethod('domainsClass',false)}} />  */}
-
                     </div>
                     {this.state.selectionList}
                     <div>
@@ -366,3 +248,21 @@ export default class UserExperties extends Component {
         )
     }
 }
+function mapStateToProps(state) {
+    return {
+        expertiseState:state.views.dashboard,
+    };
+  }
+  
+  function mapDispatchToProps(dispatch) {
+    return {
+        getExpertiseData:(url)=>{
+          dispatch(getAboutExpertiseData(url))
+        },
+        expertiseAddUpdate: (method,url,_apidata,_apigeturl) => {
+          dispatch(setExpertiseAddUpdate(method,url,_apidata,_apigeturl));
+        }
+      };
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(UserExperties);

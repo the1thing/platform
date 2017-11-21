@@ -8,6 +8,7 @@ import { getAboutDesignData, setDesignAddUpdate } from "./Actions/AsyncActions";
 import { isEmpty } from "./utils/Methods";
 import { connect } from "react-redux";
 
+
 var final_view = "";
 
 class ClientProgress extends Component {
@@ -119,8 +120,7 @@ class ClientProgress extends Component {
       this.state.requirement.aboutProduct.completed = temp.product.completed;
       this.state.requirement.aboutDesign.completed = temp.design.completed;
       this.state.requirement.aboutTimeline.completed = temp.timeline.completed;
-      this.state.requirement.aboutTimeline.completedDate =
-        temp.timeline.completedDate;
+      this.state.requirement.aboutTimeline.completedDate = temp.timeline.completedDate;
       this.state.requirement.dateOfCompletion = temp.timeline.completedDate;
       this.state.margin_bu8_requirement = temp.timeline.completed;
       if (!temp.product.completed) {

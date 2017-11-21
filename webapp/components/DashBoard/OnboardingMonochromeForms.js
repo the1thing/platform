@@ -158,7 +158,7 @@ class OnboardingMonochromeForms extends Component {
     }
     else
       return (
-        <div>
+        <div>{console.log("monochrome---------->",this.props.clientState)}
           <div
             className="title-content"
             style={{
@@ -166,7 +166,7 @@ class OnboardingMonochromeForms extends Component {
               marginBottom: "32px"
             }}
           >
-            <DashboardClientInfo />
+            <DashboardClientInfo channelName={this.props.clientState.userTypeInfo.channelName}/>
           </div>
           <ClientTitleMenu
             title="requirement"
