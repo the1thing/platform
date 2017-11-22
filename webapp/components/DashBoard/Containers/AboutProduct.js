@@ -75,27 +75,24 @@ class AboutProduct extends Component {
     this.getAllProjectsForWorkspace();
   };
 
-  componentWillReceiveProps=(nextProps)=> {
-    // this.setState({
-    //   loading:true,
-    // })
+  componentWillReceiveProps = nextProps => {
     let temp = nextProps.productState.aboutProduct;
     if (typeof temp.name !== "undefined") {
-        this.setState({
-          productName: temp.name,
-          productType: temp.projectType.projectType,
-          productLink: temp.projectType.link,
-          productLinkVisiblity:
-            temp.projectType.projectType === "Existing Product"
-              ? "visible"
-              : "hidden",
-          domains: temp.domain != null ? temp.domain : [],
-          otherProduct: temp.similarProduct,
-          scopeDocument:
-            temp.userDocumentLink != null ? temp.userDocumentLink : [],
-        });
+      this.setState({
+        productName: temp.name,
+        productType: temp.projectType.projectType,
+        productLink: temp.projectType.link,
+        productLinkVisiblity:
+          temp.projectType.projectType === "Existing Product"
+            ? "visible"
+            : "hidden",
+        domains: temp.domain != null ? temp.domain : [],
+        otherProduct: temp.similarProduct,
+        scopeDocument:
+          temp.userDocumentLink != null ? temp.userDocumentLink : []
+      });
     }
-  }
+  };
 
   getAllProjectsForWorkspace = () => {
     if (
@@ -110,47 +107,9 @@ class AboutProduct extends Component {
       this.setState({
         apiMethode: "put",
         apiLink: "project/updateProject"
-        //  loading:true,
       });
       this.getAboutProductData();
     }
-    // this.setState({ loading: true });
-    // axios({
-    //   method: "get",
-    //   url:
-    //     basepath +
-    //     "project/getAllProjectsForWorkspace/" +
-    //     localStorage.getItem("userId")
-    // })
-    //   .then(response => {
-    //     if (response.data == null) {
-    //       this.setState({
-    //         checkProjectId: "",
-    //         apiMethode: "post",
-    //         productName: "",
-    //         productType: "",
-    //         productLink: "",
-    //         domains: [],
-    //         otherProduct: "",
-    //         scopeDocument: [],
-    //         apiLink: "project/addProjectFromWorkspace",
-    //         loading: false
-    //       });
-    //     } else {
-    //       localStorage.setItem("projectId", response.data._id);
-    //       this.setState({
-    //         checkProjectId: response.data._id,
-    //         apiMethode: "put",
-    //         apiLink: "project/updateProject",
-    //         loading: false
-    //       });
-    //       this.getAboutProductData();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("get project error", error.response);
-    //     this.setState({ loading: false });
-    //   });
   };
   getAboutProductData = () => {
     let url =
@@ -160,58 +119,6 @@ class AboutProduct extends Component {
       "?stage=1";
 
     this.props.getProductData(url);
-    //let temp=this.props.productState.aboutProduct;
-    // this.setState({
-    //         productName: temp.name,
-    //         productType: temp.projectType.projectType,
-    //         productLink: temp.projectType.link,
-    //         domains: temp.domain != null ? temp.domain : [],
-    //         otherProduct: temp.similarProduct,
-    //         scopeDocument:
-    //           temp.userDocumentLink != null
-    //             ? temp.userDocumentLink
-    //             : [],
-    //         // loading: false
-    //       });
-    //       if (temp.projectType.projectType === "Existing Product") {
-    //         this.setStateMethod("productLinkVisiblity", "visible");
-    //       }
-    // let url=basepath + "project/getProjectByIds/" + localStorage.getItem("projectId") + "?stage=1";
-    // this.setState({
-    //   loading: true
-    // });
-    // axios({
-    //   method: "get",
-    //   url:
-    //     basepath +
-    //     "project/getProjectByIds/" +
-    //     localStorage.getItem("projectId") +
-    //     "?stage=1"
-    // })
-    //   .then(response => {
-    //     console.log("about product response--------->",response)
-    //     this.setState({
-    //       productName: response.data.name,
-    //       productType: response.data.projectType.projectType,
-    //       productLink: response.data.projectType.link,
-    //       domains: response.data.domain != null ? response.data.domain : [],
-    //       otherProduct: response.data.similarProduct,
-    //       scopeDocument:
-    //         response.data.userDocumentLink != null
-    //           ? response.data.userDocumentLink
-    //           : [],
-    //       loading: false
-    //     });
-    //     if (response.data.projectType.projectType === "Existing Product") {
-    //       this.setStateMethod("productLinkVisiblity", "visible");
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log("get project error stge 1", error.response);
-    //     this.setState({
-    //       loading: false
-    //     });
-    //   });
   };
 
   setStateMethod = (label, value) => {
@@ -234,59 +141,20 @@ class AboutProduct extends Component {
       userName: this.props.productState.userTypeInfo.userName,
       projectId: this.props.productState.allProjectWorkspace._id
     };
-    let apiMethode =
-      basepath +
-      "project/getProjectByIds/" ;
-      let id=this.props.productState.allProjectWorkspace._id;
-      // +
-      // this.props.productState.allProjectWorkspace._id +
-      // "?stage=1";
-    // let id=this.props.productState.allProjectWorkspace._id;
+    let apiMethode = basepath + "project/getProjectByIds/";
+    let id = this.props.productState.allProjectWorkspace._id;
     let getUserApi =
       basepath +
       "project/getAllProjectsForWorkspace/" +
       this.props.productState.userTypeInfo._id;
-    // let _storedata = {
-    //   name: this.state.productName,
-    //   userDocumentLink: this.state.scopeDocument,
-    //   domain: this.state.domains,
-    //   similarProduct: this.state.otherProduct,
-    //   projectType: {
-    //     link: this.state.productLink,
-    //     projectType: this.state.productType
-    //   },
-    //   _id: this.state.checkProjectId
-    // };
-    // this.setProductData(method,url,data);
-     this.props.productAddUpdate(method, url, _apidata, apiMethode,id, getUserApi);
-    // axios({
-    //   method: this.state.apiMethode,
-    //   url: basepath + this.state.apiLink,
-    //   data: {
-    //     projectName: this.state.productName,
-    //     type: this.state.productType,
-    //     link: this.state.productLink,
-    //     userDocumentLink: this.state.scopeDocument,
-    //     domain: this.state.domains,
-    //     similarProduct: this.state.otherProduct,
-    //     userId: localStorage.getItem("userId"),
-    //     userName: localStorage.getItem("userName"),
-    //     projectId: localStorage.getItem("projectId")
-    //   }
-    // })
-    //   .then(response => {
-    //     this.setState({ edit: true });
-    //     if (this.state.apiMethode == "post") {
-    //       localStorage.setItem("projectId", response.data.data._id);
-    //     }
-    //   })
-    //   .then(res => {
-    //     this.props.openPanel();
-
-    //   })
-    //   .catch(err => {
-    //     console.log("about priduct error", err);
-    //   });
+    this.props.productAddUpdate(
+      method,
+      url,
+      _apidata,
+      apiMethode,
+      id,
+      getUserApi
+    );
   };
 
   goTo = () => {
@@ -350,13 +218,6 @@ class AboutProduct extends Component {
       } else {
         this.postDataOfProduct();
       }
-      //  if(this.state.document==''){
-      //     let list=this.state.scopeDocument;
-      //      this.postDataOfProduct(list);
-      //    }
-      //else if(validateUrl(this.state.document)){
-      //  let list=this.state.scopeDocument;
-      //    list=list.concat(this.state.document);
     }
   };
   renderClass = () => {
@@ -421,168 +282,153 @@ class AboutProduct extends Component {
   };
 
   render() {
-    if (this.state.loading) {
-      return <div>{/* loading */}</div>;
-    } else
-      return (
-        <div>{console.log("product-------->",this.props.productState)}
-          <div className="input-spacing" id="productName">
-            <input
-              className={this.state.productNameClass}
-              placeholder="Product Name"
-              value={this.state.productName}
-              //value='pooja'
-
-              onChange={e => {
-                this.setStateMethod("productName", e.target.value);
-              }}
-            />
-          </div>
-          <div>
-            <Row>
-              <Col md={6} id="productType">
-                <Selection
-                  defaultValue={this.state.productType}
-                  onChange={e => {
-                    this.handleButtonClick(e);
-                  }}
-                  placeholder="Stage of your product"
-                  optionList={["Existing Product", "Start Afresh"]}
-                  error={this.state.productTypeClass}
-                  onclick={(value, key) => {
-                    this.setStateMethod("edit", false);
-                    if (value === "Existing Product") {
-                      this.setStateMethod("productLinkVisiblity", "visible");
-                      this.setStateMethod("productType", "Existing Product");
-                    } else {
-                      this.setStateMethod("productLinkVisiblity", "hidden");
-                      this.setStateMethod("productType", "Starting Afresh");
-                    }
-                  }}
-                />
-              </Col>
-              <Col
-                md={6}
-                style={{ visibility: this.state.productLinkVisiblity }}
-              >
-                <input
-                  style={{ lineHeight: "48px", color: this.state.linkColor }}
-                  onChange={e => {
-                    this.handleButtonClick(e);
-                  }}
-                  placeholder="Paste the link of product"
-                  className={this.state.productLinkClass}
-                  value={this.state.productLink}
-                  onChange={e => {
-                    this.setStateMethod("edit", false);
-                    this.setStateMethod("productLink", e.target.value);
-                    if (validateUrl(e.target.value)) {
-                      this.setStateMethod("linkColor", " #118bf3");
-                      this.setStateMethod(
-                        "productLinkVisiblityError",
-                        "hidden"
-                      );
-                      this.setStateMethod(
-                        "productLinkErrorMessage",
-                        "Plaese Enter Valid URL"
-                      );
-                    } else {
-                      this.setStateMethod("linkColor", "#030303");
-                    }
-                  }}
-                />
-              </Col>
-            </Row>
-          </div>
-          <div>
-            <Row>
-              <Col mdOffset={6}>
-                <div
-                  style={{
-                    visibility: this.state.productLinkVisiblityError,
-                    marginBottom: "35px",
-                    marginLeft: "16px"
-                  }}
-                  className="display-error"
-                >
-                  Please Enter Valid URL
-                </div>
-              </Col>
-            </Row>
-          </div>
-          <div className="input-spacing" id="domains">
-            <SelectMultiple
-              handleRemoval={list => {
-                this.setStateMethod("edit", false);
-                this.setStateMethod("domains", list);
-              }}
-              placeholder="Select Domain"
-              defaultValue={this.state.domains}
-              optionList={this.state.domainList}
-              error={this.state.domainsClass}
-              onclick={(value, key) => {
-                let domain = [];
-                domain = this.state.domains;
-                domain = domain.concat(value);
-                this.setStateMethod("domains", domain);
-                this.setStateMethod("edit", false);
-              }}
-            />
-          </div>
-          <div className="input-spacing">
-            <input
-              id="otherProduct"
-              className={this.state.otherProductClass}
-              placeholder="Similar Products (India/Outside)"
-              onChange={e => {
-                this.setStateMethod("otherProduct", e.target.value);
-              }}
-              value={this.state.otherProduct}
-            />
-          </div>
-          <AddLink
-            id="scopeDocument"
-            defaultValue={this.state.scopeDocument}
-            error={this.state.scopeDocumentClass}
-            placeholder="Link(s) to scope document (if any)"
-            errorLink={this.state.documentErrorVisiblity}
-            onclick={e => {
-              this.setState({ document: e.target.value });
-              //     if(validateUrl(e.target.value)){
-              this.setState({ edit: false });
-              this.setState({ documentErrorVisiblity: false });
-              //  }
-              //    else{
-              //       this.setState({edit:true})
-              //     }
-            }}
-            clearDocument={() => {
-              this.setState({ document: "" });
-            }}
-            addAnotherLink={e => {
-              let list = this.state.scopeDocument;
-              list = list.concat(this.state.document);
-              this.setStateMethod("scopeDocument", list);
-              this.setStateMethod("document", "");
-              this.setStateMethod("scopeDocumentClass", false);
+    return (
+      <div>
+        {console.log("product-------->", this.props.productState)}
+        <div className="input-spacing" id="productName">
+          <input
+            className={this.state.productNameClass}
+            placeholder="Product Name"
+            value={this.state.productName}
+            onChange={e => {
+              this.setStateMethod("productName", e.target.value);
             }}
           />
-          <button
-            disabled={this.state.edit}
-            className={this.renderClass()}
-            onClick={() => {
-              this.goTo();
-            }}
-          >
-            <span className="button-title">
-              <span>SAVE</span>
-              <span>
-                <img src={require("../Images/arrow-down.svg")} />
-              </span>
-            </span>
-          </button>
         </div>
-      );
+        <div>
+          <Row>
+            <Col md={6} id="productType">
+              <Selection
+                defaultValue={this.state.productType}
+                onChange={e => {
+                  this.handleButtonClick(e);
+                }}
+                placeholder="Stage of your product"
+                optionList={["Existing Product", "Start Afresh"]}
+                error={this.state.productTypeClass}
+                onclick={(value, key) => {
+                  this.setStateMethod("edit", false);
+                  if (value === "Existing Product") {
+                    this.setStateMethod("productLinkVisiblity", "visible");
+                    this.setStateMethod("productType", "Existing Product");
+                  } else {
+                    this.setStateMethod("productLinkVisiblity", "hidden");
+                    this.setStateMethod("productType", "Starting Afresh");
+                  }
+                }}
+              />
+            </Col>
+            <Col md={6} style={{ visibility: this.state.productLinkVisiblity }}>
+              <input
+                style={{ lineHeight: "48px", color: this.state.linkColor }}
+                onChange={e => {
+                  this.handleButtonClick(e);
+                }}
+                placeholder="Paste the link of product"
+                className={this.state.productLinkClass}
+                value={this.state.productLink}
+                onChange={e => {
+                  this.setStateMethod("edit", false);
+                  this.setStateMethod("productLink", e.target.value);
+                  if (validateUrl(e.target.value)) {
+                    this.setStateMethod("linkColor", " #118bf3");
+                    this.setStateMethod("productLinkVisiblityError", "hidden");
+                    this.setStateMethod(
+                      "productLinkErrorMessage",
+                      "Plaese Enter Valid URL"
+                    );
+                  } else {
+                    this.setStateMethod("linkColor", "#030303");
+                  }
+                }}
+              />
+            </Col>
+          </Row>
+        </div>
+        <div>
+          <Row>
+            <Col mdOffset={6}>
+              <div
+                style={{
+                  visibility: this.state.productLinkVisiblityError,
+                  marginBottom: "35px",
+                  marginLeft: "16px"
+                }}
+                className="display-error"
+              >
+                Please Enter Valid URL
+              </div>
+            </Col>
+          </Row>
+        </div>
+        <div className="input-spacing" id="domains">
+          <SelectMultiple
+            handleRemoval={list => {
+              this.setStateMethod("edit", false);
+              this.setStateMethod("domains", list);
+            }}
+            placeholder="Select Domain"
+            defaultValue={this.state.domains}
+            optionList={this.state.domainList}
+            error={this.state.domainsClass}
+            onclick={(value, key) => {
+              let domain = [];
+              domain = this.state.domains;
+              domain = domain.concat(value);
+              this.setStateMethod("domains", domain);
+              this.setStateMethod("edit", false);
+            }}
+          />
+        </div>
+        <div className="input-spacing">
+          <input
+            id="otherProduct"
+            className={this.state.otherProductClass}
+            placeholder="Similar Products (India/Outside)"
+            onChange={e => {
+              this.setStateMethod("otherProduct", e.target.value);
+            }}
+            value={this.state.otherProduct}
+          />
+        </div>
+        <AddLink
+          id="scopeDocument"
+          defaultValue={this.state.scopeDocument}
+          error={this.state.scopeDocumentClass}
+          placeholder="Link(s) to scope document (if any)"
+          errorLink={this.state.documentErrorVisiblity}
+          onclick={e => {
+            this.setState({ document: e.target.value });
+            this.setState({ edit: false });
+            this.setState({ documentErrorVisiblity: false });
+          }}
+          clearDocument={() => {
+            this.setState({ document: "" });
+          }}
+          addAnotherLink={e => {
+            let list = this.state.scopeDocument;
+            list = list.concat(this.state.document);
+            this.setStateMethod("scopeDocument", list);
+            this.setStateMethod("document", "");
+            this.setStateMethod("scopeDocumentClass", false);
+          }}
+        />
+        <button
+          disabled={this.state.edit}
+          className={this.renderClass()}
+          onClick={() => {
+            this.goTo();
+          }}
+        >
+          <span className="button-title">
+            <span>SAVE</span>
+            <span>
+              <img src={require("../Images/arrow-down.svg")} />
+            </span>
+          </span>
+        </button>
+      </div>
+    );
   }
 }
 function mapStateToProps(state) {
@@ -596,9 +442,9 @@ function mapDispatchToProps(dispatch) {
     getProductData: url => {
       dispatch(getAboutproductData(url));
     },
-    productAddUpdate: (method, url, _apidata, _apigeturl,id, getUserApi) => {
+    productAddUpdate: (method, url, _apidata, _apigeturl, id, getUserApi) => {
       dispatch(
-        setproductAddUpdate(method, url, _apidata, _apigeturl,id, getUserApi)
+        setproductAddUpdate(method, url, _apidata, _apigeturl, id, getUserApi)
       );
     }
   };

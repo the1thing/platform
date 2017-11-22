@@ -13,8 +13,11 @@ import { basepath } from "../utils/constant";
 import axios from "axios";
 import RadioBoxComp from "../Components/RadioBoxComp";
 import { validateUrl, numberOnly } from "../utils/Methods";
-import {getAboutTimelineData,setTimelineAddUpdate } from '../Actions/AsyncActions';
-import  {isEmpty} from '../utils/Methods'
+import {
+  getAboutTimelineData,
+  setTimelineAddUpdate
+} from "../Actions/AsyncActions";
+import { isEmpty } from "../utils/Methods";
 import { connect } from "react-redux";
 
 class AboutTimeline extends Component {
@@ -49,23 +52,19 @@ class AboutTimeline extends Component {
   componentWillMount = () => {
     this.getTimeLineData();
   };
-  
+
   componentWillReceiveProps(nextProps) {
-    // this.setState({
-    //   loading:true,
-    // })
-    let temp=nextProps.timelineState.aboutTimeline;
-    if((typeof temp.userProposal) !== 'undefined'){
-    this.setState({
-      time:temp.userProposal.startTime,
-      timeline: temp.userProposal.timeline,
-    })
-    if (
-      temp.userProposal.budgetRange == "Later" ||
-      temp.userProposal.budgetRange == "I'm here for top quality"
+    let temp = nextProps.timelineState.aboutTimeline;
+    if (typeof temp.userProposal !== "undefined") {
+      this.setState({
+        time: temp.userProposal.startTime,
+        timeline: temp.userProposal.timeline
+      });
+      if (
+        temp.userProposal.budgetRange == "Later" ||
+        temp.userProposal.budgetRange == "I'm here for top quality"
       ) {
         this.setState({
-          //budgetRange: temp.userProposal.budgetRange,
           defaultValue: temp.userProposal.budgetRange,
           budgetRange: temp.userProposal.budgetRange
         });
@@ -74,52 +73,16 @@ class AboutTimeline extends Component {
           defaultRange: temp.userProposal.budgetRange
         });
       }
-    // this.setState({
-    //   loading:false,
-    // })
+    }
   }
-  }
-  
+
   getTimeLineData = () => {
-    let url=basepath + "project/getProjectByIds/" + this.props.timelineState.allProjectWorkspace._id + "?stage=3";
+    let url =
+      basepath +
+      "project/getProjectByIds/" +
+      this.props.timelineState.allProjectWorkspace._id +
+      "?stage=3";
     this.props.getTimelineData(url);
-    // if (localStorage.getItem("projectId")) {
-    //   this.setState({ loading: true });
-    //   axios({
-    //     method: "get",
-    //     url:
-    //       basepath +
-    //       "project/getProjectByIds/" +
-    //       localStorage.getItem("projectId") +
-    //       "?stage=3"
-    //   })
-    //     .then(response => {
-    //       var _tempUserPropsal = response.data.userProposal;
-    //       this.setState({
-    //         time: _tempUserPropsal.startTime,
-    //         timeline: _tempUserPropsal.timeline,
-    //         loading: false
-    //       });
-    //       if (
-    //         _tempUserPropsal.budgetRange == "Later" ||
-    //         _tempUserPropsal.budgetRange == "I'm here for top quality"
-    //       ) {
-    //         this.setState({
-    //           budgetRange: _tempUserPropsal.budgetRange,
-    //           defaultValue: _tempUserPropsal.budgetRange,
-    //           budgetRange: _tempUserPropsal.budgetRange
-    //         });
-    //       } else {
-    //         this.setState({
-    //           defaultRange: _tempUserPropsal.budgetRange
-    //         });
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log("get project error stage 3", error.response);
-    //       this.setState({ loading: false });
-    //     });
-    // }
   };
 
   setStateMethod = (label, value) => {
@@ -155,14 +118,6 @@ class AboutTimeline extends Component {
             });
           }}
         />
-
-        {/* <DropdownButton
-            id="input-dropdown-addon"
-            title={<span style={{color:'#7f7f7f',opacity:'0.5'}}>{title}</span>}
-        >
-            <MenuItem key="New Product">New Product</MenuItem>
-            <MenuItem key="Existing Product">Existing Product</MenuItem>
-        </DropdownButton> */}
       </div>
     );
   };
@@ -192,55 +147,34 @@ class AboutTimeline extends Component {
       window.scrollBy(0, -100);
       this.setStateMethod("budgetRangeClass", true);
     } else {
-      let url=basepath + "project/updateTimelineForWorkspace";
-      let method="put";
-      let _apidata={
+      let url = basepath + "project/updateTimelineForWorkspace";
+      let method = "put";
+      let _apidata = {
         startTime: this.state.time,
         timeline: this.state.timeline,
         budgetRange: this.state.budgetRange,
-        projectId: this.props.timelineState.allProjectWorkspace._id,
+        projectId: this.props.timelineState.allProjectWorkspace._id
       };
-      let _apigeturl=basepath + "project/getProjectByIds/" + this.props.timelineState.allProjectWorkspace._id + "?stage=3";
-      // let _storedata={
-      //   statusBar:this.props.timelineState.allProjectWorkspace.statusBar,
-      //   userProposal:{
-      //     budgetRange:this.state.budgetRange,
-      //     designObjective:"",
-      //     designServices:"",
-      //     referenceLink:"",
-      //     startTime:this.state.time,
-      //     timeline:this.state.timeline,
-      //   },
-      //   _id:this.props.timelineState.allProjectWorkspace._id,
-      // }
+      let _apigeturl =
+        basepath +
+        "project/getProjectByIds/" +
+        this.props.timelineState.allProjectWorkspace._id +
+        "?stage=3";
       let getUserApi =
-      basepath +
-      "project/getAllProjectsForWorkspace/" +
-      this.props.designState.userTypeInfo._id;
-    
+        basepath +
+        "project/getAllProjectsForWorkspace/" +
+        this.props.timelineState.userTypeInfo._id;
+
       this.props.history.push("/proposal");
-      this.props.TimelineAddUpdate(method, url, _apidata, _apigeturl,getUserApi);
-    //   axios({
-    //     method: "put",
-    //     url: basepath + "project/updateTimelineForWorkspace",
-    //     data: {
-    //       startTime: this.state.time,
-    //       timeline: this.state.timeline,
-    //       budgetRange: this.state.budgetRange,
-    //       projectId: this.props.timelineState.allProjectWorkspace,
-    //     }
-    //   })
-    //     .then(resp => {
-    //       this.setState({
-    //         edit: true
-    //       });
-    //       this.props.openPanel();
-    //     })
-    //     .catch(err => {
-    //       console.log("about timeLine  error", err);
-    //     });
-    // }
-  }};
+      this.props.TimelineAddUpdate(
+        method,
+        url,
+        _apidata,
+        _apigeturl,
+        getUserApi
+      );
+    }
+  };
   renderRadioClass = value => {
     if (value == this.state.defaultValue) {
       return "checked-radio-container";
@@ -270,23 +204,15 @@ class AboutTimeline extends Component {
       budgetRange: value,
       defaultRange: ""
     });
-    //  this.props.onclick(value)
   };
 
   render() {
-    if (this.state.loading) {
-      return <div>{/* Loading.... */}</div>;
-    }
-    else return (
-      <div>{console.log("timeline-------->",this.props.productState)}
-        {/* {this.dropdownList('Expected start time','time',this.state.timeClass,this.state.timeList)}
-        {this.dropdownList('Expected timeline','timeline',this.state.timelineClass,this.state.timeLineList)} */}
-
+    return (
+      <div>
         <div className="input-spacing" id="time">
           <Selection
             defaultValue={this.state.time}
             value={this.state.time}
-            // onChange={(e) => { this.handleButtonClick(e) }}
             placeholder="Expected start time"
             optionList={this.state.timeList}
             error={this.state.timeClass}
@@ -303,7 +229,6 @@ class AboutTimeline extends Component {
           <Selection
             defaultValue={this.state.timeline}
             value={this.state.timeline}
-            // onChange={(e) => { this.handleButtonClick(e) }}
             placeholder="Expected Timeline"
             optionList={this.state.timeLineList}
             error={this.state.timelineClass}
@@ -324,19 +249,7 @@ class AboutTimeline extends Component {
               <Selection
                 defaultValue="INR"
                 optionList={["INR", "$"]}
-                onclick={(value, key) => {
-                  // if (value === 'INR') {
-                  //     this.setState({
-                  //         productLinkVisiblity: 'visible',
-                  //         productType: 'Existing Product'
-                  //     });
-                  // } else {
-                  //     this.setState({
-                  //         productLinkVisiblity: 'hidden',
-                  //         productType: 'Starting Afresh'
-                  //     })
-                  // }; console.log("value", this.state.productType)
-                }}
+                onclick={(value, key) => {}}
               />
             </div>
             <div style={{ width: "21%" }}>
@@ -404,17 +317,7 @@ class AboutTimeline extends Component {
                   </div>
                 </div>
               </div>
-              {/* <RadioBoxComp 
-                  radioList={['Part time', 'Full time']} 
-                  middleValue='or'
-                  onclick={(value)=>{console.log("value",value)}}/> */}
             </div>
-            {/* <div>
-              <span className="or-copy">or</span>
-            </div>
-            <div className={this.state.radioImageClass}>
-                  {this.createRadio("I'm here for top quality")}
-            </div> */}
           </div>
         </div>
         <button
@@ -428,8 +331,6 @@ class AboutTimeline extends Component {
               <img src={require("../Images/arrow-right.svg")} />
             </span>
           </span>
-
-          {/* <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span> */}
         </button>
       </div>
     );
@@ -437,19 +338,21 @@ class AboutTimeline extends Component {
 }
 function mapStateToProps(state) {
   return {
-    timelineState:state.views.dashboard,
+    timelineState: state.views.dashboard
   };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-      getTimelineData:(url)=>{
-        dispatch(getAboutTimelineData(url))
-      },
-      TimelineAddUpdate: (method,url,_apidata,_apigeturl,getUserApi) => {
-        dispatch(setTimelineAddUpdate(method,url,_apidata,_apigeturl,getUserApi));
-      }
-    };
+  return {
+    getTimelineData: url => {
+      dispatch(getAboutTimelineData(url));
+    },
+    TimelineAddUpdate: (method, url, _apidata, _apigeturl, getUserApi) => {
+      dispatch(
+        setTimelineAddUpdate(method, url, _apidata, _apigeturl, getUserApi)
+      );
+    }
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AboutTimeline);

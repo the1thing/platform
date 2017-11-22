@@ -71,9 +71,10 @@ class RatingUserself extends Component {
                     teamLead:this.state.leadingTeam,
                 },
         };
+        let getDesignerUrl=_apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.ratingState.allProjectWorkspace._id+'?stage=1';
         let _apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.ratingState.allProjectWorkspace._id+'?stage=4';
         this.props.history.push("/assignment");
-        this.props.ratingAddUpdate(method,url,data,_apiurl)
+        this.props.ratingAddUpdate(method,url,data,_apiurl,getDesignerUrl)
     }
    
     renderClass=()=>{
@@ -293,8 +294,8 @@ function mapStateToProps(state) {
         getRatingData:(url)=>{
           dispatch(getAboutRatingData(url))
         },
-        ratingAddUpdate: (method,url,_apidata,_apigeturl) => {
-          dispatch(setRatingAddUpdate(method,url,_apidata,_apigeturl));
+        ratingAddUpdate: (method,url,_apidata,_apigeturl,getDesignerUrl) => {
+          dispatch(setRatingAddUpdate(method,url,_apidata,_apigeturl,getDesignerUrl));
         }
       };
   }

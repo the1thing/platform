@@ -83,7 +83,7 @@ class AboutUser extends Component {
     putAboutUser=()=>{
         let method='put';
         let url=basepath+'designer/addAboutYourself';
-        let _apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userState.allProjectWorkspace._id+'?stage=1';// let url=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userTypeInfo._id+'?stage=1';
+        let _apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userState.allProjectWorkspace._id+'?stage=1';
         let data={
             designerId:this.props.userState.allProjectWorkspace._id,
             profile:this.state.checkboxArray,
@@ -92,7 +92,8 @@ class AboutUser extends Component {
             role:this.state.jobTiming,
             hoursAvailable:this.state.availability,
         }
-        this.props.userAddUpdate(method,url,data,_apiurl)
+        let getDesignerUrl=_apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.userState.allProjectWorkspace._id+'?stage=1';
+        this.props.userAddUpdate(method,url,data,_apiurl,getDesignerUrl)
     }
     goTo = () => {
         if (this.state.checkboxArray.length==0) {
@@ -254,8 +255,8 @@ function mapStateToProps(state) {
         getUserData:(url)=>{
           dispatch(getAboutUserData(url))
         },
-        userAddUpdate: (method,url,_apidata,_apigeturl) => {
-          dispatch(setUserAddUpdate(method,url,_apidata,_apigeturl));
+        userAddUpdate: (method,url,_apidata,_apigeturl,getDesignerUrl) => {
+          dispatch(setUserAddUpdate(method,url,_apidata,_apigeturl,getDesignerUrl));
         }
       };
   }

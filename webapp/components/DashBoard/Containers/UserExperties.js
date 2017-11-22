@@ -132,8 +132,9 @@ class UserExperties extends Component {
             expertiseDomain: this.state.domainArray,
             designerId: this.props.expertiseState.allProjectWorkspace._id,
         };
+        let getDesignerUrl=_apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.expertiseState.allProjectWorkspace._id+'?stage=1';
         let _apiurl=basepath + 'designer/getDesignerDetailsByStage/' + this.props.expertiseState.allProjectWorkspace._id + '?stage=2';
-        this.props.expertiseAddUpdate(method,url,data,_apiurl);
+        this.props.expertiseAddUpdate(method,url,data,_apiurl,getDesignerUrl);
         
         
      }
@@ -259,8 +260,8 @@ function mapStateToProps(state) {
         getExpertiseData:(url)=>{
           dispatch(getAboutExpertiseData(url))
         },
-        expertiseAddUpdate: (method,url,_apidata,_apigeturl) => {
-          dispatch(setExpertiseAddUpdate(method,url,_apidata,_apigeturl));
+        expertiseAddUpdate: (method,url,_apidata,_apigeturl,getDesignerUrl) => {
+          dispatch(setExpertiseAddUpdate(method,url,_apidata,_apigeturl,getDesignerUrl));
         }
       };
   }

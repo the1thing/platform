@@ -228,6 +228,7 @@ class UserPerspective extends Component {
             selected:this.state.userPersonality,
             designerId:this.props.perspectiveState.allProjectWorkspace._id,
         }
+        let getDesignerUrl=_apiurl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.perspectiveState.allProjectWorkspace._id+'?stage=1';
         let _apigeturl=basepath + 'designer/getDesignerDetailsByStage/'+this.props.perspectiveState.allProjectWorkspace._id+'?stage=3';
         this.props.perspectiveAddUpdate(method,url,data,_apigeturl);
     }
@@ -402,8 +403,8 @@ function mapStateToProps(state) {
         getPerspectiveData:(url)=>{
           dispatch(getAboutPerspectiveData(url))
         },
-        perspectiveAddUpdate: (method,url,_apidata,_apigeturl) => {
-          dispatch(setPerspectiveAddUpdate(method,url,_apidata,_apigeturl));
+        perspectiveAddUpdate: (method,url,_apidata,_apigeturl,getDesignerUrl) => {
+          dispatch(setPerspectiveAddUpdate(method,url,_apidata,_apigeturl,getDesignerUrl));
         }
       };
   }
