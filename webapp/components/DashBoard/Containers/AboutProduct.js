@@ -236,9 +236,12 @@ class AboutProduct extends Component {
     };
     let apiMethode =
       basepath +
-      "project/getProjectByIds/" +
-      this.props.productState.allProjectWorkspace._id +
-      "?stage=1";
+      "project/getProjectByIds/" ;
+      let id=this.props.productState.allProjectWorkspace._id;
+      // +
+      // this.props.productState.allProjectWorkspace._id +
+      // "?stage=1";
+    // let id=this.props.productState.allProjectWorkspace._id;
     let getUserApi =
       basepath +
       "project/getAllProjectsForWorkspace/" +
@@ -255,7 +258,7 @@ class AboutProduct extends Component {
     //   _id: this.state.checkProjectId
     // };
     // this.setProductData(method,url,data);
-    this.props.productAddUpdate(method, url, _apidata, apiMethode, getUserApi);
+     this.props.productAddUpdate(method, url, _apidata, apiMethode,id, getUserApi);
     // axios({
     //   method: this.state.apiMethode,
     //   url: basepath + this.state.apiLink,
@@ -422,7 +425,7 @@ class AboutProduct extends Component {
       return <div>{/* loading */}</div>;
     } else
       return (
-        <div>
+        <div>{console.log("product-------->",this.props.productState)}
           <div className="input-spacing" id="productName">
             <input
               className={this.state.productNameClass}
@@ -593,9 +596,9 @@ function mapDispatchToProps(dispatch) {
     getProductData: url => {
       dispatch(getAboutproductData(url));
     },
-    productAddUpdate: (method, url, _apidata, _apigeturl, getUserApi) => {
+    productAddUpdate: (method, url, _apidata, _apigeturl,id, getUserApi) => {
       dispatch(
-        setproductAddUpdate(method, url, _apidata, _apigeturl, getUserApi)
+        setproductAddUpdate(method, url, _apidata, _apigeturl,id, getUserApi)
       );
     }
   };

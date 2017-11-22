@@ -47,7 +47,7 @@ export function returnDate(date) {
         var _date = new Date(date);
         var day = _date.getDate();
         var month = _months[_date.getMonth()];
-        var hours = _date.getHours() % 12;
+        var hours = (_date.getHours() % 12==0) ? 12 : _date.getHours() % 12;
         var minutes = _date.getMinutes();
         var ampm = (_date.getHours() > 12) ? 'PM' : "AM"
 

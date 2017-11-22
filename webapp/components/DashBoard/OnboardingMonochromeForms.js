@@ -79,7 +79,9 @@ class OnboardingMonochromeForms extends Component {
       })
     }
   }
-  
+  componentDidUpdate(prevProps, prevState){
+    console.log("nextprops------->",prevProps,"nextState------->",prevState)
+  }
   openPanel = () => {
     // this.refs.openPanel();
     // this.getUserData();

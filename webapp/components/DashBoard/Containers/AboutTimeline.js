@@ -71,7 +71,7 @@ class AboutTimeline extends Component {
         });
       } else {
         this.setState({
-          defaultRange: _tempUserPropsal.budgetRange
+          defaultRange: temp.userProposal.budgetRange
         });
       }
     // this.setState({
@@ -213,8 +213,13 @@ class AboutTimeline extends Component {
       //   },
       //   _id:this.props.timelineState.allProjectWorkspace._id,
       // }
+      let getUserApi =
+      basepath +
+      "project/getAllProjectsForWorkspace/" +
+      this.props.designState.userTypeInfo._id;
+    
       this.props.history.push("/proposal");
-      this.props.TimelineAddUpdate(method, url, _apidata, _apigeturl);
+      this.props.TimelineAddUpdate(method, url, _apidata, _apigeturl,getUserApi);
     //   axios({
     //     method: "put",
     //     url: basepath + "project/updateTimelineForWorkspace",
@@ -273,7 +278,7 @@ class AboutTimeline extends Component {
       return <div>{/* Loading.... */}</div>;
     }
     else return (
-      <div>
+      <div>{console.log("timeline-------->",this.props.productState)}
         {/* {this.dropdownList('Expected start time','time',this.state.timeClass,this.state.timeList)}
         {this.dropdownList('Expected timeline','timeline',this.state.timelineClass,this.state.timeLineList)} */}
 
@@ -441,8 +446,8 @@ function mapDispatchToProps(dispatch) {
       getTimelineData:(url)=>{
         dispatch(getAboutTimelineData(url))
       },
-      TimelineAddUpdate: (method,url,_apidata,_apigeturl) => {
-        dispatch(setTimelineAddUpdate(method,url,_apidata,_apigeturl));
+      TimelineAddUpdate: (method,url,_apidata,_apigeturl,getUserApi) => {
+        dispatch(setTimelineAddUpdate(method,url,_apidata,_apigeturl,getUserApi));
       }
     };
 }

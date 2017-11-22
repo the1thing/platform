@@ -56,6 +56,7 @@ export function getClientInformation(_apiurl) {
     })
       .then(response => {
         if (response.data !== null) {
+         // console.log(clientInfo,response.data)
           dispatch(setAllProjectsForWorkspace(response.data));
         } else {
 
@@ -102,16 +103,18 @@ export function getAboutproductData(_apiurl) {
       });
   };
 }
-export function setproductAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getClientApi) {
+export function setproductAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,id,getClientApi) {
   return dispatch => {
     axios({
       method: _apimethod,
       url: _apiurl,
       data: _apidata
     })
+    //console.log("_apigeturl",_apigeturl,"getClientApi",getClientApi)
       .then(response => {
-        getClientInformation(getClientApi);
-        dispatch(getAboutproductData(_apigeturl));
+        let productId= (id=='')?response.data.data._id:id;
+        dispatch(getAboutproductData(id+productId+'?stage=1'));
+        getClientInformation(_apigeturl);
       })
       .catch(error => {
         console.log( error);
@@ -137,7 +140,7 @@ export function getAboutDesignData(_apiurl) {
       });
   };
 }
-export function setDesignAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
+export function setDesignAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_getClientUrl) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -146,6 +149,7 @@ export function setDesignAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
     })
       .then(response => {
         dispatch(getAboutDesignData(_apigeturl));
+        getClientInformation(_getClientUrl);
       })
       .catch(error => {
         console.log( error);
@@ -172,7 +176,7 @@ export function getAboutTimelineData(_apiurl) {
       });
   };
 }
-export function setTimelineAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) {
+export function setTimelineAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_getClientUrl) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -181,6 +185,7 @@ export function setTimelineAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl) 
     })
       .then(response => {
         dispatch(getAboutTimelineData(_apigeturl));
+        getClientInformation(_getClientUrl);
       })
       .catch(error => {
         console.log( error);

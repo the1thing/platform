@@ -211,6 +211,11 @@ postAboutDesignData=(link_list)=>{
         referenceLink:this.state.addLink,
         projectId:this.props.designState.allProjectWorkspace._id,
     }
+    let getUserApi =
+    basepath +
+    "project/getAllProjectsForWorkspace/" +
+    this.props.designState.userTypeInfo._id;
+  
     let _apigeturl=basepath + 'project/getProjectByIds/' + this.props.designState.allProjectWorkspace._id +'?stage=2';
     // let _storedata={
     //     platform:this.state.platforms,
@@ -225,7 +230,7 @@ postAboutDesignData=(link_list)=>{
     //     },
     //     _id:this.props.designState.allProjectWorkspace._id
     // }
-    this.props.productAddUpdate(method, url, _apidata, _apigeturl);
+     this.props.productAddUpdate(method, url, _apidata, _apigeturl,getUserApi);
     // axios({
     //     method:'put',
     //     url:basepath+'project/updateProjectFromWorkspace',
@@ -258,7 +263,7 @@ postAboutDesignData=(link_list)=>{
         // }
         // else 
         return (
-            <div>
+            <div>{console.log("design-------->",this.props.productState)}
                 <div className="input-spacing platform-selection" id='platforms'>
                     {/********************* Select Multiple *****  */}
 
@@ -385,8 +390,8 @@ function mapStateToProps(state) {
         getDesignData:(url)=>{
           dispatch(getAboutDesignData(url))
         },
-        productAddUpdate: (method,url,_apidata,_apigeturl) => {
-          dispatch(setDesignAddUpdate(method,url,_apidata,_apigeturl));
+        productAddUpdate: (method,url,_apidata,_apigeturl,getUserApi) => {
+          dispatch(setDesignAddUpdate(method,url,_apidata,_apigeturl,getUserApi));
         }
       };
   }
