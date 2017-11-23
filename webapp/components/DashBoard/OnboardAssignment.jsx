@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import DesignerTitleMenu from "./Components/DesignerTitleMenu";
-import "./Styles/OnboardAssignment.css";
+import "./Styles/OnboardAssignment.scss";
 import Tooltip from "./Components/Tooltip";
-const styles = {
-  borders: {
-    border: "1px solid #f7f7f7"
-  }
-};
 
 export default class OnboardAssignment extends Component {
-  componentWillMount() {
-    console.log("gggggggggg", this.props.history);
-  }
   componentDidMount() {
     window.scrollTo(0, 0);
   }
@@ -40,7 +32,7 @@ export default class OnboardAssignment extends Component {
           />
         </div>
         <div style={{ paddingLeft: "3%" }}>
-          <div styles={styles.borders} className="assign_info_text">
+          <div className="assign_info_text">
             <div>
               {" "}
               <img

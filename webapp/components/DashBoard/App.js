@@ -3,8 +3,6 @@ import axios from "axios";
 import OnboardingDesigner from "./OnboardingDesigner";
 import OnboardingClient from "./OnboardingClient";
 import { basepath } from "./utils/constant";
-// import { browserHistory } from 'react-router/es6';
-// import './App.scss';
 
 export default class App extends Component {
   constructor(props) {
@@ -15,13 +13,6 @@ export default class App extends Component {
       dashboardIconClass:'',
     };
   }
-
-  // getCookie=(name)=> {
-  //     // console.log('-------------->>',name);
-  //      var re = new RegExp(name + "=([^;]+)");
-  //      var value = re.exec(document.cookie);
-  //      return (value != null) ? unescape(value[1]) : null;
-  //  }
 
   componentWillMount() {
     if (window.location.href.includes("dashboard")) {

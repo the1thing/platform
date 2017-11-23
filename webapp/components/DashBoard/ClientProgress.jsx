@@ -8,7 +8,6 @@ import { getAboutDesignData, setDesignAddUpdate } from "./Actions/AsyncActions";
 import { isEmpty } from "./utils/Methods";
 import { connect } from "react-redux";
 
-
 var final_view = "";
 
 class ClientProgress extends Component {
@@ -100,33 +99,32 @@ class ClientProgress extends Component {
       }
     };
   }
-  componentWillMount = () => {
-    this.getClientStatus();
-  };
   componentWillReceiveProps = nextProps => {
     this.setState({
       loading: true
     });
     let temp = nextProps.clientState.allProjectWorkspace.statusBar;
-    let gotProgressData=nextProps.setUserProgress;
-    //if(this.state.loading){
-    if (nextProps.clientState.allProjectWorkspace.statusBar.product.completed == false) {
+    //let gotProgressData = nextProps.setUserProgress;
+    if (
+      nextProps.clientState.allProjectWorkspace.statusBar.product.completed ==
+      false
+    ) {
       (this.state.requirement.completed.value = false),
         this.setState({
-          requirement: this.state.requirement,
+          requirement: this.state.requirement
         });
-    }
-     else {
+    } else {
       this.state.requirement.aboutProduct.completed = temp.product.completed;
       this.state.requirement.aboutDesign.completed = temp.design.completed;
       this.state.requirement.aboutTimeline.completed = temp.timeline.completed;
-      this.state.requirement.aboutTimeline.completedDate = temp.timeline.completedDate;
+      this.state.requirement.aboutTimeline.completedDate =
+        temp.timeline.completedDate;
       this.state.requirement.dateOfCompletion = temp.timeline.completedDate;
-      this.state.margin_bu8_requirement = temp.timeline.completed;
+      //this.state.margin_bu8_requirement = temp.timeline.completed;
       if (!temp.product.completed) {
         (this.state.requirement.completed.value = false),
           this.setState({
-            requirement: this.state.requirement,
+            requirement: this.state.requirement
           });
       } else if (!temp.design.completed) {
         (this.state.requirement.completed.value = false),
@@ -143,24 +141,23 @@ class ClientProgress extends Component {
           this.setState({
             requirement: this.state.requirement
           });
-     }
-     this.checkRenderStaus();
-    
+      }
+      this.checkRenderStaus();
     }
-    
-     this.checkRenderStaus();
-    
-      this.setState({
-        requirement: this.state.requirement,
-      });
+
+    this.checkRenderStaus();
+
+    this.setState({
+      requirement: this.state.requirement
+    });
   };
   checkRenderStaus = () => {
     if (!this.state.requirement.completed.value) {
+      this.updateRequirementState();
       this.setState({
         margin_bu8_proposal: "margin_bu8_subpart_completed",
         check_proposal_nextpart: false
       });
-      this.updateRequirementState();
     } else if (!this.state.proposal.completed.value) {
       this.setState({
         margin_bu8_proposal: "margin_bu8_subpart",
@@ -187,8 +184,8 @@ class ClientProgress extends Component {
       });
     }
     this.setState({
-        loading:false,
-    })
+      loading: false
+    });
   };
   updateRequirementState = () => {
     if (!this.state.requirement.aboutProduct.completed) {
@@ -239,62 +236,6 @@ class ClientProgress extends Component {
     }
   };
 
-  getClientStatus = () => {
-    // this.setState({ loading: true });
-    // console.log("progres----111111--->", this.props.clientState);
-    // axios({
-    //     method: 'get',
-    //     url: basepath + 'project/getAllProjectsForWorkspace/' + this.props.clientState.userTypeInfo._id,
-    //    }).then((response) => {
-    //        console.log("progress---------->",response,"****",this.props.clientState)
-    //  if(response.data!=null)
-    //       {
-    //     this.state.requirement.dateOfCompletion=response.data.statusBar.timeline.completedDate;
-    //     this.state.requirement.aboutProduct=response.data.statusBar.product;
-    //     this.state.requirement.aboutDesign=response.data.statusBar.design;
-    //     this.state.requirement.aboutTimeline=response.data.statusBar.timeline;
-
-    //     if(!response.data.statusBar.product.completed)
-    //         {
-
-    //              this.state.requirement.completed.value=false,
-    //              this.setState({
-    //              requirement:this.state.requirement,
-    //              })
-
-    //         }
-    //       else if(!response.data.statusBar.design.completed)
-    //         {     this.state.requirement.completed.value=false,
-    //              this.setState({
-    //              requirement:this.state.requirement,
-    //              })
-
-    //         }
-    //        else if(!response.data.statusBar.timeline.completed)
-    //         {     this.state.requirement.completed.value=false,
-    //              this.setState({
-    //              requirement:this.state.requirement,
-    //              })
-
-    //         }
-    //        else{
-    //             this.state.requirement.completed.value=true,
-    //              this.setState({
-    //              requirement:this.state.requirement,
-    //              })
-    //        }
-    //     }
-    //      this.setState({
-    //          requirement:this.state.requirement,
-    //          loading:false,
-    //         })
-    // }).then(()=>{
-    //     this.checkRenderStaus();
-    // })
-    // .catch((error) => {
-    //     this.setState({loading:false});
-    // });
-  };
   renderRequirementStatus = () => {
     return (
       <div>
@@ -592,7 +533,7 @@ class ClientProgress extends Component {
   };
   render() {
     if (this.state.loading) {
-      return <div>{/* loading ... */}</div>;
+      return <div />;
     } else {
       return (
         <Grid style={{ width: "90%" }}>
@@ -617,7 +558,6 @@ class ClientProgress extends Component {
             <Col md={6} className="checked_progress_text margin_le20">
               Sign up
             </Col>
-            {/* <Col  md={4} className="progress_text_position">{localStorage.getItem('projectDate')}</Col> */}
             <Col md={4} className="progress_text_position">
               {returnDate(localStorage.getItem("signUpDate"))}
             </Col>

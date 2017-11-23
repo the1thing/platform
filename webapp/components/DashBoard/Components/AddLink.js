@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { validateUrl } from "../utils/Methods";
-import "../Styles/AddLink.css";
+import "../Styles/AddLink.scss";
 
 export class AddLink extends Component {
   constructor(props) {
@@ -18,7 +18,6 @@ export class AddLink extends Component {
   }
   componentWillMount = () => {
     if (this.props.defaultValue) {
-      //this.props.addAnotherLink(e);
       this.props.defaultValue.map((value, key) => {
         let list = this.state.linkList;
         list = list.concat(
@@ -34,10 +33,9 @@ export class AddLink extends Component {
       });
     }
   };
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.defaultValue) {
-      //this.props.addAnotherLink(e);
       nextProps.defaultValue.map((value, key) => {
         let list = this.state.linkList;
         list = list.concat(
@@ -52,14 +50,7 @@ export class AddLink extends Component {
         });
       });
     }
-    
   }
-  
-  // validateUrl = (checkLink) => {
-  //     let regex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{1,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-  //     let checkProduct = regex.test(checkLink);
-  //     return checkProduct;
-  // }
   renderLinkList = () => {
     return this.state.myList.map((v, k) => {
       return (
@@ -126,7 +117,7 @@ export class AddLink extends Component {
           }}
         />
         <div
-          style={{ display: this.props.errorLink ? 'block' : 'none' }}
+          style={{ display: this.props.errorLink ? "block" : "none" }}
           className="display-error"
         >
           Please Enter Valid URL
@@ -157,7 +148,6 @@ export class AddLink extends Component {
   }
 }
 
-// import React, { Component } from 'react'
 export class AddButton extends Component {
   render() {
     return (
@@ -192,6 +182,7 @@ export class AddButtonLink extends Component {
     );
   }
 }
+
 export class AddButtonDomain extends Component {
   render() {
     return (

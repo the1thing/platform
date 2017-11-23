@@ -1,6 +1,4 @@
 import {
-  // setLoader,
-  // removeLoader,
   setAllProjectsForWorkspace,
   setUserInformation,
   setAboutProductData,
@@ -9,12 +7,11 @@ import {
   setAboutUserData,
   setAboutExpertiseData,
   setAboutPerspectiveData,
-  setUserRatingData,
+  setUserRatingData
 } from "./UserActions";
 import axios from "axios";
 
-
-// identy user-----------------
+// ----------------------------identy user-------------------------
 export function getUserInformation(_apiurl) {
   return dispatch => {
     axios({
@@ -27,23 +24,22 @@ export function getUserInformation(_apiurl) {
         } else {
           let _temp = {
             userType: "",
-            _id:'',
-            userName:'',
-            updatedAt:'',
-            channelName:'',
-            createdAt:'',
+            _id: "",
+            userName: "",
+            updatedAt: "",
+            channelName: "",
+            createdAt: ""
           };
           dispatch(setUserInformation(_temp));
         }
       })
       .catch(error => {
-        console.log( error.response);
+        console.log(error.response);
       });
   };
 }
 
-
-// user details-------------
+// ---------------------------client details---------------------------
 export function getClientInformation(_apiurl) {
   return dispatch => {
     axios({
@@ -54,7 +50,6 @@ export function getClientInformation(_apiurl) {
         if (response.data !== null) {
           dispatch(setAllProjectsForWorkspace(response.data));
         } else {
-
           let _temp = {
             statusBar: {
               design: {
@@ -76,12 +71,12 @@ export function getClientInformation(_apiurl) {
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-// product api----------------
+// ----------------------------product details---------------------------
 export function getAboutproductData(_apiurl) {
   return dispatch => {
     axios({
@@ -94,11 +89,18 @@ export function getAboutproductData(_apiurl) {
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setproductAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,id,getClientApi) {
+export function setproductAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  id,
+  getClientApi
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -106,18 +108,17 @@ export function setproductAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,id
       data: _apidata
     })
       .then(response => {
-        let productId= (id=='')?response.data.data._id:id;
-        dispatch(getAboutproductData(_apigeturl+productId+'?stage=1'));
+        let productId = id == "" ? response.data.data._id : id;
+        dispatch(getAboutproductData(_apigeturl + productId + "?stage=1"));
         dispatch(getClientInformation(getClientApi));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-// about design----------------------
+// ------------------------------about design details---------------------------
 export function getAboutDesignData(_apiurl) {
   return dispatch => {
     axios({
@@ -130,11 +131,17 @@ export function getAboutDesignData(_apiurl) {
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setDesignAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_getClientUrl) {
+export function setDesignAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  _getClientUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -146,13 +153,12 @@ export function setDesignAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_ge
         dispatch(getClientInformation(_getClientUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-// about timeline----------------------
+// ----------------------------about timeline details------------------------------
 export function getAboutTimelineData(_apiurl) {
   return dispatch => {
     axios({
@@ -165,11 +171,17 @@ export function getAboutTimelineData(_apiurl) {
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setTimelineAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_getClientUrl) {
+export function setTimelineAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  _getClientUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -181,13 +193,12 @@ export function setTimelineAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,_
         dispatch(getClientInformation(_getClientUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-//designer-------------------
+//-----------------------------designer details------------------------------
 export function getDesignerInformation(_apiurl) {
   return dispatch => {
     axios({
@@ -196,10 +207,8 @@ export function getDesignerInformation(_apiurl) {
     })
       .then(response => {
         if (response.data !== null) {
-          console.log("response------>",response)
           dispatch(setAllProjectsForWorkspace(response.data));
         } else {
-
           let _temp = {
             statusBar: {
               aboutYourself: {
@@ -225,13 +234,12 @@ export function getDesignerInformation(_apiurl) {
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-// about user---------------------------------
+// ---------------------------------about user details---------------------------------
 export function getAboutUserData(_apiurl) {
   return dispatch => {
     axios({
@@ -239,17 +247,22 @@ export function getAboutUserData(_apiurl) {
       url: _apiurl
     })
       .then(response => {
-        console.log("getAboutUserData response------>", response);
         if (response.data !== null || response.data !== "null") {
           dispatch(setAboutUserData(response.data));
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setUserAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getDesignerUrl) {
+export function setUserAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  getDesignerUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -257,18 +270,16 @@ export function setUserAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getDe
       data: _apidata
     })
       .then(response => {
-        console.log("setUserAddUpdate response---------->",response)
         dispatch(getAboutUserData(_apigeturl));
         dispatch(getDesignerInformation(getDesignerUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-//about expertise---------------------------
+//---------------------------------about expertise details---------------------------
 export function getAboutExpertiseData(_apiurl) {
   return dispatch => {
     axios({
@@ -276,18 +287,22 @@ export function getAboutExpertiseData(_apiurl) {
       url: _apiurl
     })
       .then(response => {
-        console.log("getAboutExpertiseData response------>", response);
         if (response.data !== null || response.data !== "null") {
           dispatch(setAboutExpertiseData(response.data));
-          
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setExpertiseAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getDesignerUrl) {
+export function setExpertiseAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  getDesignerUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -295,17 +310,16 @@ export function setExpertiseAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,
       data: _apidata
     })
       .then(response => {
-        console.log("setExpertiseAddUpdate response---------->",response)
         dispatch(getAboutExpertiseData(_apigeturl));
         dispatch(getDesignerInformation(getDesignerUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-// user perspective--------------------------------
+// -------------------------------user perspective details--------------------------------
 export function getAboutPerspectiveData(_apiurl) {
   return dispatch => {
     axios({
@@ -313,17 +327,22 @@ export function getAboutPerspectiveData(_apiurl) {
       url: _apiurl
     })
       .then(response => {
-        console.log("getAboutPerspectiveData response------>", response);
         if (response.data !== null || response.data !== "null") {
           dispatch(setAboutPerspectiveData(response.data));
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setPerspectiveAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getDesignerUrl) {
+export function setPerspectiveAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  getDesignerUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -331,18 +350,16 @@ export function setPerspectiveAddUpdate(_apimethod, _apiurl, _apidata, _apigetur
       data: _apidata
     })
       .then(response => {
-        console.log("setPerspectiveAddUpdate response---------->",response)
         dispatch(getAboutPerspectiveData(_apigeturl));
         dispatch(getDesignerInformation(getDesignerUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
 
-
-// user userself-------------------------
+// ------------------------------user userself details-------------------------------
 export function getAboutRatingData(_apiurl) {
   return dispatch => {
     axios({
@@ -350,17 +367,22 @@ export function getAboutRatingData(_apiurl) {
       url: _apiurl
     })
       .then(response => {
-        console.log("getAboutPerspectiveData response------>", response);
         if (response.data !== null || response.data !== "null") {
           dispatch(setUserRatingData(response.data));
         }
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-export function setRatingAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,getDesignerUrl) {
+export function setRatingAddUpdate(
+  _apimethod,
+  _apiurl,
+  _apidata,
+  _apigeturl,
+  getDesignerUrl
+) {
   return dispatch => {
     axios({
       method: _apimethod,
@@ -368,13 +390,11 @@ export function setRatingAddUpdate(_apimethod, _apiurl, _apidata, _apigeturl,get
       data: _apidata
     })
       .then(response => {
-        console.log("setPerspectiveAddUpdate response---------->",response)
         dispatch(getAboutRatingData(_apigeturl));
         dispatch(getDesignerInformation(getDesignerUrl));
       })
       .catch(error => {
-        console.log( error);
+        console.log(error);
       });
   };
 }
-

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../Styles/AboutDesign.css";
+import "../Styles/AboutDesign.scss";
 import { Row, Col, MenuItem, DropdownButton } from "react-bootstrap";
 import { Selection, SelectMultiple } from "../Components/Selection";
 import { AddLink } from "../Components/AddLink";
@@ -71,7 +71,7 @@ class AboutDesign extends Component {
   };
   componentWillReceiveProps(nextProps) {
     let temp = nextProps.designState.aboutDesign;
-    if (typeof temp.userProposal !== "undefined") {
+    if (typeof temp.userProposal !== "undefined" && temp.userProposal !== undefined ) {
       this.setState({
         platforms: temp.platform != null ? temp.platform : [],
         services: "services",
@@ -84,7 +84,8 @@ class AboutDesign extends Component {
     }
   }
   getAboutDesignData = () => {
-    if (this.props.designState.allProjectWorkspace._id !== "") {
+    let productId=this.props.designState.allProjectWorkspace._id;
+    if ( productId !== "" && productId !== "undefined" && productId !== undefined) {
       let url =
         basepath +
         "project/getProjectByIds/" +
@@ -181,7 +182,6 @@ class AboutDesign extends Component {
   render() {
     return (
       <div>
-        {console.log("design-------->", this.props.productState)}
         <div className="input-spacing platform-selection" id="platforms">
           {/********************* Select Multiple *****  */}
 
@@ -232,7 +232,6 @@ class AboutDesign extends Component {
           <Selection
             defaultValue={this.state.objective}
             value={this.state.objective}
-            // onChange={(e) => { this.handleButtonClick(e) }}
             placeholder="Design Objective"
             optionList={this.state.objectiveList}
             error={this.state.objectiveClass}
@@ -244,21 +243,6 @@ class AboutDesign extends Component {
             }}
           />
         </div>
-        {/* <AddLink
-                
-                error={this.state.scopeDocumentClass}
-                placeholder="Link(s) to scope document, if any"
-                onclick={(e) => {
-                    
-                    this.setStateMethod('document', e.target.value)
-                }}
-                addAnotherLink={(e) => {
-                    let list = this.state.scopeDocument;
-                    list = list.concat(this.state.document);
-                    this.setStateMethod('scopeDocument', list)
-                    this.setStateMethod('document', '')
-                    this.setStateMethod('scopeDocumentClass', false)
-                }} /> */}
         <AddLink
           id="addLink"
           defaultValue={this.state.addLink}
@@ -267,17 +251,10 @@ class AboutDesign extends Component {
           placeholder="Link to a site or an app you like"
           onclick={e => {
             this.setState({ document: e.target.value });
-            //if(validateUrl(e.target.value)){
             this.setState({
               edit: false,
               documentErrorVisiblity: false
             });
-            // }
-            // else{
-            //     this.setState({
-            //         edit:true,
-            //     })
-            // }
           }}
           addAnotherLink={e => {
             let list = this.state.addLink;
@@ -299,8 +276,6 @@ class AboutDesign extends Component {
               <img src={require("../Images/arrow-down.svg")} />
             </span>
           </span>
-
-          {/* <span className="button-title">DONE<span style={{marginLeft:'42px'}}><img  width='18px'height='16px' src={require('../Images/invalid-name.png')}/>  </span></span> */}
         </button>
       </div>
     );
