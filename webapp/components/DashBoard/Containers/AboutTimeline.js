@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../Styles/AboutTimeline.css";
+import "../Styles/AboutTimeline.scss";
 import {
   Row,
   Col,
@@ -55,7 +55,7 @@ class AboutTimeline extends Component {
 
   componentWillReceiveProps(nextProps) {
     let temp = nextProps.timelineState.aboutTimeline;
-    if (typeof temp.userProposal !== "undefined") {
+    if (typeof temp.userProposal !== "undefined" && temp.userProposal !== undefined) {
       this.setState({
         time: temp.userProposal.startTime,
         timeline: temp.userProposal.timeline
@@ -77,12 +77,15 @@ class AboutTimeline extends Component {
   }
 
   getTimeLineData = () => {
+    let productId=this.props.timelineState.allProjectWorkspace._id;
+    if(productId !== '' && productId !== 'undefined' && productId !== undefined){
     let url =
       basepath +
       "project/getProjectByIds/" +
       this.props.timelineState.allProjectWorkspace._id +
       "?stage=3";
     this.props.getTimelineData(url);
+    }
   };
 
   setStateMethod = (label, value) => {

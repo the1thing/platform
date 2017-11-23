@@ -55,7 +55,7 @@
 }
 .arrow-div{
   width: 13px;
-  height: 6px;
+  height: 10px;
   -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
   -webkit-transition-duration: 0.5s; /* Safari */
     transition-duration: 0.5s;
@@ -63,7 +63,7 @@
 }
 .rotate-div{
   width: 13px;
-  height: 6px;
+  height: 10px;
   -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
   -webkit-transition-duration: 0.5s; /* Safari */
     transition-duration: 0.5s;
@@ -139,7 +139,7 @@
   color: #030303!important;
     background-color: hsla(0,0%,94%,.5);
     opacity: 1;
-    font-weight: 200;
+  //  font-weight: 200;
 }
   .selection-placeholder{
     // width: 254px;

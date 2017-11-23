@@ -1,17 +1,9 @@
 import React, { Component } from "react";
-import "./Styles/OnboardAssignment.css";
+import "./Styles/OnboardAssignment.scss";
 import ClientTitleMenu from "./Components/ClientTitleMenu";
 import Tooltip from "./Components/Tooltip";
-const styles = {
-  borders: {
-    border: "1px solid #f7f7f7"
-  }
-};
 
 export default class MonochromeProposal extends Component {
-  componentWillMount() {
-    console.log("gggggggggg", this.props.history);
-  }
   componentDidMount() {
     window.scrollTo(0, 0);
   }
@@ -41,7 +33,7 @@ export default class MonochromeProposal extends Component {
           />
         </div>
         <div style={{ paddingLeft: "3%" }}>
-          <div styles={styles.borders} className="assign_info_text">
+          <div className="assign_info_text">
             <div>
               {" "}
               <img
@@ -51,10 +43,10 @@ export default class MonochromeProposal extends Component {
               />
             </div>
             <div>
-                We have received your requirements & our AI is
-                working on it. Since our AI is still a baby, it needs a little handholding. In
-                48 hours, we will share your Right Design Team along with the Product
-                plan.
+              We have received your requirements & our AI is working on it.
+              Since our AI is still a baby, it needs a little handholding. In 48
+              hours, we will share your Right Design Team along with the Product
+              plan.
             </div>
           </div>
           <div className="small_info_text margin_top">
@@ -90,9 +82,9 @@ export default class MonochromeProposal extends Component {
             <Tooltip
               title={
                 <span>
-                  Meanwhile, you should check out our 1 greatest thing
-                  campaign <a>or read our Monochromes</a> which we
-                  publish every week to help Founders and CXOs design great products.
+                  Meanwhile, you should check out our 1 greatest thing campaign{" "}
+                  <a>or read our Monochromes</a> which we publish every week to
+                  help Founders and CXOs design great products.
                 </span>
               }
             />

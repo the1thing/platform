@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../Styles/LoreamTooltip.css';
+import '../Styles/LoreamTooltip.scss';
 
 export default class LoreamTooltip extends Component {
     constructor(props){

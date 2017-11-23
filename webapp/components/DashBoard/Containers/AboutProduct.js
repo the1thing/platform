@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../Styles/AboutProduct.css";
+import "../Styles/AboutProduct.scss";
 import { DropdownButton, MenuItem, Row, Col } from "react-bootstrap";
 import { AddLink } from "../Components/AddLink";
 import {
@@ -77,7 +77,7 @@ class AboutProduct extends Component {
 
   componentWillReceiveProps = nextProps => {
     let temp = nextProps.productState.aboutProduct;
-    if (typeof temp.name !== "undefined") {
+    if (typeof temp.name !== "undefined" && temp.name !== undefined) {
       this.setState({
         productName: temp.name,
         productType: temp.projectType.projectType,
@@ -96,8 +96,9 @@ class AboutProduct extends Component {
 
   getAllProjectsForWorkspace = () => {
     if (
-      this.props.productState.allProjectWorkspace._id == "" ||
-      this.props.productState.allProjectWorkspace._id == "undefined"
+      this.props.productState.allProjectWorkspace._id === "" ||
+      this.props.productState.allProjectWorkspace._id === "undefined" ||
+      this.props.productState.allProjectWorkspace._id === undefined
     ) {
       this.setState({
         apiMethode: "post",
@@ -112,6 +113,8 @@ class AboutProduct extends Component {
     }
   };
   getAboutProductData = () => {
+    let productId=this.props.productState.allProjectWorkspace._id;
+    if(productId !== '' && productId !== 'undefined' && productId !== undefined){
     let url =
       basepath +
       "project/getProjectByIds/" +
@@ -119,6 +122,7 @@ class AboutProduct extends Component {
       "?stage=1";
 
     this.props.getProductData(url);
+    }
   };
 
   setStateMethod = (label, value) => {
@@ -236,7 +240,6 @@ class AboutProduct extends Component {
     }
   };
 
-  //new code for selection
   getSatgeOfProduct = e => {
     if (!this.state.popupVisible) {
       document.addEventListener("click", this.handleOutsideClick, false);
@@ -284,7 +287,6 @@ class AboutProduct extends Component {
   render() {
     return (
       <div>
-        {console.log("product-------->", this.props.productState)}
         <div className="input-spacing" id="productName">
           <input
             className={this.state.productNameClass}

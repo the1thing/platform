@@ -47,22 +47,24 @@
 }
 
 .menu-image {
-  background: url('../Images/hemburger.svg');
-  height: 18px;
-  width: 18px;
+  background: url('../Images/menu.svg');
+  height: 23px;
+  width: 23px;
+  margin-right: 5px;
+  margin-top: 13px;
   background-position: center;
   background-size: cover;
-  margin-top: 7px;
 }
 
 // ---------------------------------------------
 .cross_menu_img {
+  margin-top: 13px;
   background: url('../Images/close.svg');
-  height: 18px;
-  width: 18px;
+  height: 23px;
+  width: 23px;
+  margin-right: 5px;
   background-position: center;
   background-size: cover;
-  margin-top: 7px;
 }
 
 .unselected_menu {
@@ -72,9 +74,10 @@
   height: 40px;
   letter-spacing: 2.3px;
   text-align: left;
+  /* border: 1px solid; */
   color: #7f7f7f;
-  padding-right: 32px;
-  padding: 15px;
+  /* padding-right: 32px; */
+  padding: 15px 32px 0 0;
 }
 
 .unselected_menu:hover {
@@ -88,8 +91,9 @@
   letter-spacing: 3px;
   height: 40px;
   text-align: left;
+  /* border: 1px solid; */
   color: #ffbc00;
-  padding: 10px 20px 10px 5px
+  padding: 10px 32px 0px 0;
 }
 
 .unselected_menu,
