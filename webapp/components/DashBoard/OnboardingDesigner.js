@@ -28,7 +28,7 @@ class OnboardingDesigner extends Component {
           <TeamSidebar />
         </div>
         <div className="_header">
-          <DashboardHeader header_title1="ONBOARDING" />
+          <DashboardHeader header_title1="ONBOARDING"/>
         </div>
         <div className="dashboard-container">
           <div style={{ width: "67%", marginTop: "32px" }}>
