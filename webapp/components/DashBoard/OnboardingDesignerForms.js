@@ -106,7 +106,8 @@ class OnboardingDesignerForms extends Component {
               marginBottom: "32px"
             }}
           >
-            <DashboardDesignerInfo />
+            <DashboardDesignerInfo
+              name={this.props.designerState.userTypeInfo.name} />
           </div>
           <div>
             <DesignerTitleMenu

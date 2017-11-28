@@ -31,7 +31,7 @@ export default class OnboardAssignment extends Component {
             pushPropsAboard={this.pushToAboard}
           />
         </div>
-        <div style={{ paddingLeft: "3%" }}>
+        <div className='title-content'>
           <div className="assign_info_text">
             <div>
               {" "}

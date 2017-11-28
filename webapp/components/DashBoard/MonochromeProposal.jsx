@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Styles/OnboardAssignment.scss";
-import DisignerTitleMenu from "./Components/DesignerTitleMenu";
+import DesignerTitleMenu from "./Components/DesignerTitleMenu";
 import Tooltip from "./Components/Tooltip";
 
 export default class MonochromeProposal extends Component {
@@ -24,7 +24,7 @@ export default class MonochromeProposal extends Component {
     return (
       <div>
         <div>
-          <DisignerTitleMenu
+          <DesignerTitleMenu
             title="proposal"
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}
@@ -32,7 +32,7 @@ export default class MonochromeProposal extends Component {
             pushPropsFeeddback={this.pushTOFeeddback}
           />
         </div>
-        <div style={{ paddingLeft: "3%" }}>
+        <div className='title-content'>
           <div className="assign_info_text">
             <div>
               {" "}

@@ -8,7 +8,7 @@ export default class DashboardDesignerInfo extends Component {
           <div style={{ marginBottom: "8px" }}>
             {" "}
             <span style={{ textTransform: "capitalize" }}>
-              {localStorage.getItem("userName")}
+              {this.props.name}
             </span>! This is your WorkSpace.<img
               width="24px"
               src={require("./Images/1f60a.png")}

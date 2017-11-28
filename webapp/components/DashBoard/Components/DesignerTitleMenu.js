@@ -17,6 +17,20 @@ export default class DesignerTitleMenu extends Component {
       toggleMenu:false,
     };
   }
+  renderTopLocation=()=>{
+    let title=this.props.title.toLowerCase();
+    if(title=='onboarding'){
+      return 'designer-form'
+    }else if(title=='assignment'){
+      return 'assignment'
+    }else if(title=='requirements'){
+      return 'requirements'
+    }else if(title=='proposal'){
+      return 'proposal'
+    }else{
+      return ''
+    }
+  }
   renderDesignerMenu=()=>{
     let title=this.props.title.toLowerCase();
     if(title=='onboarding' ||title=='assignment' ||title=='pricing & bandwidth' ||title=='welcome aboard'  ){
@@ -35,7 +49,7 @@ export default class DesignerTitleMenu extends Component {
   }
   popoverRight = (
   <Popover
-    className={"menu_container"}
+    className={'menu_container '+this.renderTopLocation()}
   >
     <div>
       <b>
@@ -43,27 +57,27 @@ export default class DesignerTitleMenu extends Component {
           className="icon_list" 
           style={{ borderRadius: "4px 4px 0px 0px",display:this.renderDesignerMenu() }} 
           >
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/' className={"menu_links "}>ONBOARDING</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/assignment' className={"menu_links "}>ASSIGNMENT</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/pricing' className={"menu_links "}>PRICING & BANDWIDTH</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/aboard' className={"menu_links "}>WELCOME ABOARD</Link></li>
+          <li>
+          <Link to='/' className="menu_links ">ONBOARDING</Link></li>
+          <li>
+          <Link to='/assignment' className="menu_links ">ASSIGNMENT</Link></li>
+          <li className="hoverlinkblock">
+          <Link to=''>PRICING & BANDWIDTH</Link></li>
+          <li className="hoverlinkblock">
+          <Link to=''>WELCOME ABOARD</Link></li>
         </ul>
         <ul 
           className="icon_list" 
           style={{ borderRadius: "4px 4px 0px 0px",display:this.renderClientMenu() }} 
           >
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/' className={"menu_links "}>REQUIREMENTS</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/proposal' className={"menu_links "}>PROPOSAL</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/design' className={"menu_links "}>DESIGN</Link></li>
-          <li className="hoverlinkblock hoverlink1">
-          <Link to='/feedback' className={"menu_links "}>FEEDBACK</Link></li>
+          <li>
+          <Link to='/' className="menu_links ">REQUIREMENTS</Link></li>
+          <li>
+          <Link to='/proposal' className="menu_links ">PROPOSAL</Link></li>
+          <li className="hoverlinkblock">
+          <Link to=''>DESIGN</Link></li>
+          <li className="hoverlinkblock">
+          <Link to=''>FEEDBACK</Link></li>
         </ul>
       </b>
     </div>
@@ -97,10 +111,12 @@ export default class DesignerTitleMenu extends Component {
       <div style={{ display: "flex", cursor: "pointer" }}>
         <OverlayTrigger
           trigger="click"
-          placement="right" rootClose
+          placement="right"
           overlay={this.popoverRight}
         >
-          <span className={this.state.toggleMenu?'cross_menu_img':'menu-image'} onClick={(e)=>this.setState({toggleMenu:!this.state.toggleMenu})} />
+          <span 
+            className={this.state.toggleMenu?'cross_menu_img':'menu-image'} 
+            onClick={(e)=>this.setState({toggleMenu:!this.state.toggleMenu})} />
         </OverlayTrigger>
         <span
           className='selected_menu_class'

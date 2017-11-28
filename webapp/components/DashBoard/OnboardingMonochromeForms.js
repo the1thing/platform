@@ -44,7 +44,7 @@ class OnboardingMonochromeForms extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      loading: true
+      loading: true,
     });
     let temp = nextProps.clientState.allProjectWorkspace;
     if (!isEmpty(temp)) {
@@ -55,13 +55,14 @@ class OnboardingMonochromeForms extends Component {
         designDate: temp.statusBar.design.completedDate,
         timelineCompleted: temp.statusBar.timeline.completed,
         timelineDate: temp.statusBar.timeline.completedDate,
-        loading: false
+        loading: false,
       });
     }
   }
   getUserData = () => {
+    this.setState({loading:true,})
     let userId=this.props.clientState.userTypeInfo._id;
-    if(userId !== '' || userId !== 'undefined' || userId != undefined){
+    if(!(userId === '' && userId === 'undefined' && userId === undefined)){
     let url =
       basepath +
       "project/getAllProjectsForWorkspace/" +
@@ -83,7 +84,7 @@ class OnboardingMonochromeForms extends Component {
   };
   render() {
     if (this.state.loading) {
-      return <div />;
+      return <div></div>;
     } else
       return (
         <div>
@@ -96,6 +97,7 @@ class OnboardingMonochromeForms extends Component {
           >
             <DashboardClientInfo
               channelName={this.props.clientState.userTypeInfo.channelName}
+              name={this.props.clientState.userTypeInfo.name}
             />
           </div>
           <DesignerTitleMenu

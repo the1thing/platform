@@ -10,7 +10,7 @@ export default class DashboardClientInfo extends Component {
             {" "}
             Welcome to your space at 1THING,{" "}
             <span style={{ textTransform: "capitalize" }}>
-              {localStorage.getItem("userName")}
+              {this.props.name}
             </span>
             <img width="24px" src={require("./Images/1f60a.png")} />
           </div>

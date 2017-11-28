@@ -13,7 +13,7 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       userType: "",
-      loading: false,
+      loading: true,
     };
   }
   getCookie = name => {
@@ -32,10 +32,12 @@ class Dashboard extends Component {
       loading: false
     });
   }
+  //pwgy5iddnfnw9edp7mdb966tke pjpff7qakpnp8rxyucofrh4rbr
+  //new s9kfqgs4xp8g5burantssc6mje  hqwnp6ftw3yqde1ac39rowpgna
 
   componentWillMount() {
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke';
+    let url = basepath + "user/getUser/" + 'pjpff7qakpnp8rxyucofrh4rbr';
     this.props.getUserInfo(url);
   }
   render() {
@@ -44,10 +46,8 @@ class Dashboard extends Component {
     } else {
       if (this.props.dashboardState.userTypeInfo.userType === "client") {
         return (
-          <div className={this.state.dashboardIconClass}>
-            <OnboardingClient
-              channelName={window.location.href.includes("dashboard")?'dashboard-active-icon':''}
-            />
+          <div className={window.location.href.includes("dashboard")?'dashboard-active-icon':''}>
+            <OnboardingClient/>
           </div>
         );
       } else if (
