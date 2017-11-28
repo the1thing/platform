@@ -25,7 +25,7 @@ export default class DesignerPricing extends Component {
       <div>
         <div>
           <DesignerTitleMenu
-            title="pricing"
+            title="pricing & bandwidth"
             pushPropsOnboarding={this.pushToOnboarding}
             pushPropsAssignment={this.pushToAssignment}
             pushPropsPricing={this.pushToPricing}

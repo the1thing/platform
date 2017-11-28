@@ -111,6 +111,7 @@ class OnboardingDesignerForms extends Component {
           <div>
             <DesignerTitleMenu
               title="onboarding"
+              history={this.props.history}
               pushPropsOnboarding={this.pushToOnboarding}
               pushPropsAssignment={this.pushToAssignment}
               pushPropsPricing={this.pushToPricing}

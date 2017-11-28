@@ -37,7 +37,7 @@ class OnboardingClient extends Component {
         </div>
         <div className="dashboard-container">
           <div style={{ width: "67%", marginTop: "32px" }}>
-            {/* <Router> */}
+            <Router>
               <Route
                 path="/"
                 component={OnboardingMonochromeForms}
@@ -48,7 +48,7 @@ class OnboardingClient extends Component {
               <Route path="/proposal" component={MonochromeProposal} />
               <Route path="/design" component={ClientDesign} />
               <Route path="/feedback" component={ClientFeedback} />
-            {/* </Router> */}
+            </Router>
           </div>
           <div className="progressbar-container">
             <div className="progress-container">

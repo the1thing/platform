@@ -25,7 +25,7 @@ export default class DesignerAboard extends Component {
       <div>
         <div>
           <DesignerTitleMenu
-            title="aboard"
+            title="welcome aboard"
             pushPropsOnboarding={this.pushToOnboarding}
             pushPropsAssignment={this.pushToAssignment}
             pushPropsPricing={this.pushToPricing}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Styles/OnboardAssignment.scss";
-import ClientTitleMenu from "./Components/ClientTitleMenu";
+import DesignerTitleMenu from "./Components/DesignerTitleMenu";
 import Tooltip from "./Components/Tooltip";
 
 export default class ClientFeedback extends Component {
@@ -24,7 +24,7 @@ export default class ClientFeedback extends Component {
     return (
       <div>
         <div>
-          <ClientTitleMenu
+          <DesignerTitleMenu
             title="feedback"
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}

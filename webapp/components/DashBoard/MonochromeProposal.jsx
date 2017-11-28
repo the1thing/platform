@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Styles/OnboardAssignment.scss";
-import ClientTitleMenu from "./Components/ClientTitleMenu";
+import DisignerTitleMenu from "./Components/DesignerTitleMenu";
 import Tooltip from "./Components/Tooltip";
 
 export default class MonochromeProposal extends Component {
@@ -24,7 +24,7 @@ export default class MonochromeProposal extends Component {
     return (
       <div>
         <div>
-          <ClientTitleMenu
+          <DisignerTitleMenu
             title="proposal"
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}

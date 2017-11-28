@@ -21,6 +21,8 @@ import { isEmpty } from "./utils/Methods";
 // import {getClientInformation } from './Dashboard/Actions/AsyncActions';
 import { connect } from "react-redux";
 import { getClientInformation } from "./Actions/AsyncActions";
+import DesignerTitleMenu from "./Components/DesignerTitleMenu";
+
 
 class OnboardingMonochromeForms extends Component {
   constructor(props) {
@@ -96,8 +98,8 @@ class OnboardingMonochromeForms extends Component {
               channelName={this.props.clientState.userTypeInfo.channelName}
             />
           </div>
-          <ClientTitleMenu
-            title="requirement"
+          <DesignerTitleMenu
+            title="requirements"
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}
             pushPropsDesign={this.pushToDesign}
