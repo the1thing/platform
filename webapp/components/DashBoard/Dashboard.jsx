@@ -14,7 +14,6 @@ class Dashboard extends Component {
     this.state = {
       userType: "",
       loading: false,
-      dashboardIconClass: ""
     };
   }
   getCookie = name => {
@@ -35,14 +34,8 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-    if (window.location.href.includes("dashboard")) {
-    } else {
-      this.setState({
-        dashboardIconClass: ""
-      });
-    }
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + uId;
+    let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke';
     this.props.getUserInfo(url);
   }
   render() {
@@ -53,7 +46,7 @@ class Dashboard extends Component {
         return (
           <div className={this.state.dashboardIconClass}>
             <OnboardingClient
-              channelName={this.props.dashboardState.userTypeInfo.channelName}
+              channelName={window.location.href.includes("dashboard")?'dashboard-active-icon':''}
             />
           </div>
         );
@@ -61,7 +54,7 @@ class Dashboard extends Component {
         this.props.dashboardState.userTypeInfo.userType === "designer"
       ) {
         return (
-          <div className={this.state.dashboardIconClass}>
+          <div className={window.location.href.includes("dashboard")?'dashboard-active-icon':''}>
             <OnboardingDesigner />
           </div>
         );

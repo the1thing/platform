@@ -29,7 +29,8 @@ export default class TeamSidebar extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.setStyles = this.setStyles.bind(this);
-
+        this.goToDashBoard = this.goToDashBoard.bind(this);
+        
         this.state = this.getStateFromStores();
     }
 
@@ -53,12 +54,14 @@ export default class TeamSidebar extends React.Component {
         TeamStore.addUnreadChangeListener(this.onChange);
         this.props.actions.getTeams(0, 200);
         this.setStyles();
+        
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
         TeamStore.removeChangeListener(this.onChange);
         TeamStore.removeUnreadChangeListener(this.onChange);
+        
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -73,11 +76,13 @@ export default class TeamSidebar extends React.Component {
                 $('.team-wrapper').perfectScrollbar('update');
             }
         }
+        
     }
 
     onChange() {
         this.setState(this.getStateFromStores());
         this.setStyles();
+        
     }
 
     handleResize() {
@@ -96,8 +101,8 @@ export default class TeamSidebar extends React.Component {
         }
     }
     goToDashBoard(){
-//        console.log('called');
         browserHistory.push('/dashboard');
+        
     }
 
     render() {
@@ -140,7 +145,7 @@ export default class TeamSidebar extends React.Component {
                         key={'switch_team_' + team.name}
                         url={`/${team.name}`}
                         tip={team.display_name}
-                        active={team.id === this.state.currentTeamId}
+                        active={(window.location.href.includes("dashboard"))?false:(team.id === this.state.currentTeamId)}
                         isMobile={this.state.isMobile}
                         displayName={team.display_name}
                         unread={team.unread}
@@ -188,7 +193,7 @@ export default class TeamSidebar extends React.Component {
                 <div className='team-wrapper'>
                     <div className="dashboard-icon">
                         <a>
-                         <div className="dashboard-btn" onClick={this.goToDashBoard}>
+                         <div className="dashboard-btn" onClick={(e)=>this.goToDashBoard()}>
                             <div className="dashboard-btn-initials">d</div>
                          </div>
                         </a>

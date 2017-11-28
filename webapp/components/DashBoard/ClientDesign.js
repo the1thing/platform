@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Styles/OnboardAssignment.scss";
-import ClientTitleMenu from "./Components/ClientTitleMenu";
+import DesignerTitleMenu from "./Components/DesignerTitleMenu";
 import Tooltip from "./Components/Tooltip";
 
 export default class ClientDesign extends Component {
@@ -24,7 +24,7 @@ export default class ClientDesign extends Component {
     return (
       <div>
         <div>
-          <ClientTitleMenu
+          <DesignerTitleMenu
             title="design"
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}

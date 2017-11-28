@@ -117,7 +117,7 @@ export default class ClientTitleMenu extends Component {
   render() {
     return (
       <div style={{ display: "flex", cursor: "pointer" }}>
-        <span
+        {/* <span
           className={this.state.menu_class}
           onClick={this.openMenuList}
         />
@@ -191,7 +191,7 @@ export default class ClientTitleMenu extends Component {
           }}
         >
           Analysis
-        </span>
+        </span> */}
       </div>
     );
   }
