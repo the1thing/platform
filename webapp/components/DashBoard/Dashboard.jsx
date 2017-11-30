@@ -37,7 +37,8 @@ class Dashboard extends Component {
 
   componentWillMount() {
     let uId = this.getCookie("MMUSERID");
-    let url = basepath + "user/getUser/" + 'pjpff7qakpnp8rxyucofrh4rbr';
+    // let url = basepath + "user/getUser/" + 'pjpff7qakpnp8rxyucofrh4rbr'; // login bug
+    let url = basepath + "user/getUser/" + uId;
     this.props.getUserInfo(url);
   }
   render() {
