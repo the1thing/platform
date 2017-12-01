@@ -142,26 +142,28 @@
   border: 1px solid #f0f0f0!important;
 }
 .menu_container .popover-content {
-  border: 1px solid #f0f0f0;
+  // border: 1px solid #f0f0f0;
   width: 300px;
-  background-color: #fff;
-  color: #030303;
+  // background-color: #fff;
+  // color: #030303;
   padding: 0;
-  z-index: 100;
-  border-radius: 4px;
-  top: -714px;
-  position: absolute !important;
+  // z-index: 100;
+  // border-radius: 4px;
+  // top: -714px;
+  // position: absolute !important;
 }
 .menu_container.popover {
   // top: 59px!important;
   // right: 7%!important;
   // left: auto!important;
   // top: 170.333px !important; 
-  position: relative ;
   // top: 0 !important;
-  padding: 0!important;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+ 
+  // position: relative ;
+  // padding: 0!important;
+  // -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  // box-shadow: 0 1px 2px rgba(0,0,0,.2);
+ 
   // max-width: 328px!important;
   // position: fixed;
 }
@@ -212,12 +214,12 @@ a, a:focus {
   cursor: pointer;
 }
 .popover.right > .arrow {
-  top: -610px !important;
+  top: 16% !important;
   border-right-color: #fff !important;
 }
 .popover.bottom > .arrow:after, .popover.right > .arrow:after, .popover.top > .arrow:after, .popover.left > .arrow:after {
-  position: absolute !important;
-  top: -611px !important;
+  // position: absolute !important;
+  // top: -611px !important;
   border-right-color: #fff !important;
 }
 .hoverlinkblock{

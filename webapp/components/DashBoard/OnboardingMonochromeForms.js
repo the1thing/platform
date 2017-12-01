@@ -87,7 +87,7 @@ class OnboardingMonochromeForms extends Component {
       return <div></div>;
     } else
       return (
-        <div>
+        <div>{console.log("client form---->",this.props.clientState)}
           <div
             className="title-content"
             style={{
@@ -102,6 +102,7 @@ class OnboardingMonochromeForms extends Component {
           </div>
           <DesignerTitleMenu
             title="requirements"
+            activeProposal={this.props.clientState.allProjectWorkspace.statusBar.timeline.completed}
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}
             pushPropsDesign={this.pushToDesign}

@@ -113,6 +113,7 @@ class OnboardingDesignerForms extends Component {
             <DesignerTitleMenu
               title="onboarding"
               history={this.props.history}
+              activeAssignment={this.props.designerState.allProjectWorkspace.statusBar.thinkAboutYourself.completed}
               pushPropsOnboarding={this.pushToOnboarding}
               pushPropsAssignment={this.pushToAssignment}
               pushPropsPricing={this.pushToPricing}

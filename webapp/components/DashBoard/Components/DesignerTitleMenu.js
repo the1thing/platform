@@ -49,7 +49,7 @@ export default class DesignerTitleMenu extends Component {
   }
   popoverRight = (
   <Popover
-    className={'menu_container '+this.renderTopLocation()}
+    className={'menu_container'}
   >
     <div>
       <b>
@@ -59,8 +59,8 @@ export default class DesignerTitleMenu extends Component {
           >
           <li>
           <Link to='/' className="menu_links ">ONBOARDING</Link></li>
-          <li>
-          <Link to='/assignment' className="menu_links ">ASSIGNMENT</Link></li>
+          <li className={this.props.activeAssignment?'':'hoverlinkblock'}>
+          <Link to={this.props.activeAssignment?'/assignment':''} className={this.props.activeAssignment?'menu_links':''}>ASSIGNMENT</Link></li>
           <li className="hoverlinkblock">
           <Link to=''>PRICING & BANDWIDTH</Link></li>
           <li className="hoverlinkblock">
@@ -72,8 +72,8 @@ export default class DesignerTitleMenu extends Component {
           >
           <li>
           <Link to='/' className="menu_links ">REQUIREMENTS</Link></li>
-          <li>
-          <Link to='/proposal' className="menu_links ">PROPOSAL</Link></li>
+          <li className={this.props.activeProposal?'':'hoverlinkblock'}>
+          <Link to={this.props.activeProposal?'/proposal':''} className={this.props.activeProposal?'menu_links':''}>PROPOSAL</Link></li>
           <li className="hoverlinkblock">
           <Link to=''>DESIGN</Link></li>
           <li className="hoverlinkblock">
