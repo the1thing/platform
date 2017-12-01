@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../Styles/TitleMenu.scss";
 import { OverlayTrigger, Popover } from "react-bootstrap";
-// import { Link } from 'react-router-dom';
 import {browserHistory,Link} from 'react-router/es6';
 
 
@@ -9,11 +8,6 @@ export default class DesignerTitleMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // onboarding:false,
-      // requirements:false,
-      // assignment:false,
-      // pricing:false,
-      // aboard:false,
       toggleMenu:false,
     };
   }
@@ -49,6 +43,7 @@ export default class DesignerTitleMenu extends Component {
   }
   popoverRight = (
   <Popover
+    id="popover-positioned-right"
     className={'menu_container'}
   >
     <div>

@@ -32,12 +32,12 @@ class Dashboard extends Component {
       loading: false
     });
   }
-  //pwgy5iddnfnw9edp7mdb966tke pjpff7qakpnp8rxyucofrh4rbr qcf55aqpf7r75rxxamxcw56nmy
-  //new s9kfqgs4xp8g5burantssc6mje  hqwnp6ftw3yqde1ac39rowpgna c4up5ox8wi8mub8fm1mp13bz7y
+  //pwgy5iddnfnw9edp7mdb966tke pjpff7qakpnp8rxyucofrh4rbr qcf55aqpf7r75rxxamxcw56nmy 
+  //new s9kfqgs4xp8g5burantssc6mje  hqwnp6ftw3yqde1ac39rowpgna c4up5ox8wi8mub8fm1mp13bz7y b93dw4zghtgm7nb5kx6h9tni6h
 
   componentWillMount() {
     let uId = this.getCookie("MMUSERID");
-    // let url = basepath + "user/getUser/" + 'pjpff7qakpnp8rxyucofrh4rbr'; // login bug
+    // let url = basepath + "user/getUser/" + 's9kfqgs4xp8g5burantssc6mje'; // login bug
     let url = basepath + "user/getUser/" + uId;
     this.props.getUserInfo(url);
   }

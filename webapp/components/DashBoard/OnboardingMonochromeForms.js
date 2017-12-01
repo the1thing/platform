@@ -87,7 +87,7 @@ class OnboardingMonochromeForms extends Component {
       return <div></div>;
     } else
       return (
-        <div>{console.log("client form---->",this.props.clientState)}
+        <div>
           <div
             className="title-content"
             style={{

@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import DesignerTitleMenu from "./Components/DesignerTitleMenu";
 import "./Styles/OnboardAssignment.scss";
 import Tooltip from "./Components/Tooltip";
+import { connect } from "react-redux";
 
-export default class OnboardAssignment extends Component {
+class OnboardAssignment extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
@@ -25,6 +26,7 @@ export default class OnboardAssignment extends Component {
         <div>
           <DesignerTitleMenu
             title="assignment"
+            activeAssignment={this.props.assignmentState.allProjectWorkspace.statusBar.thinkAboutYourself.completed}
             pushPropsOnboarding={this.pushToOnboarding}
             pushPropsAssignment={this.pushToAssignment}
             pushPropsPricing={this.pushToPricing}
@@ -82,3 +84,20 @@ export default class OnboardAssignment extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    assignmentState: state.views.dashboard
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    // getdesignerInfo: url => {
+    //   dispatch(getDesignerInformation(url));
+    // }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  OnboardAssignment
+);

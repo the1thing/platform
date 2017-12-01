@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import "./Styles/OnboardAssignment.scss";
 import DesignerTitleMenu from "./Components/DesignerTitleMenu";
 import Tooltip from "./Components/Tooltip";
+import { connect } from "react-redux";
 
-export default class MonochromeProposal extends Component {
+
+class MonochromeProposal extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
   }
@@ -26,6 +28,7 @@ export default class MonochromeProposal extends Component {
         <div>
           <DesignerTitleMenu
             title="proposal"
+            activeProposal={this.props.proposalState.allProjectWorkspace.statusBar.timeline.completed}
             pushPropsRequire={this.pushTORequire}
             pushPropsProposal={this.pushTOProposal}
             pushPropsDesign={this.pushToDesign}
@@ -94,3 +97,20 @@ export default class MonochromeProposal extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    proposalState: state.views.dashboard
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    // getdesignerInfo: url => {
+    //   dispatch(getDesignerInformation(url));
+    // }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  MonochromeProposal
+);

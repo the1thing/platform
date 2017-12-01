@@ -114,7 +114,8 @@ class AboutProduct extends Component {
   };
   getAboutProductData = () => {
     let productId=this.props.productState.allProjectWorkspace._id;
-    if(!(productId === '' && productId === 'undefined' && productId === undefined)){
+    if(productId !== '' && productId !== 'undefined' && productId !== undefined){
+      console.log("product id",productId)
     let url =
       basepath +
       "project/getProjectByIds/" +
