@@ -11,7 +11,7 @@ export default class DashboardHeader extends Component {
             <div
               style={{
                 borderBottom: "2px solid #030303",
-                paddingBottom: "31px",
+                paddingBottom: "21px",
                 position: "absolute",
                 width: "48px"
               }}
@@ -21,7 +21,7 @@ export default class DashboardHeader extends Component {
             {this.props.header_title2}
           </span>
         </div>
-        <div style={{marginRight:'20px'}}>
+        <div style={{marginRight:'20px',cursor:'pointer'}}>
           <div className="dashboard-logout" onClick={(e)=>{emitUserLoggedOutEvent()}}></div>
         </div>
         {/* <button onClick={(e)=>{emitUserLoggedOutEvent()}}>emitUserLoggedOutEvent</button> */}

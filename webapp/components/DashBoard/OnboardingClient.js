@@ -12,13 +12,16 @@ import TeamSidebar from "../team_sidebar/index";
 import Sidebar from "../sidebar.jsx";
 import ClientDesign from "./ClientDesign";
 import ClientFeedback from "./ClientFeedback";
+import { connect } from "react-redux";
+import { getUserInformation } from "./Actions/AsyncActions";
+
 
 import "./App.scss";
 class OnboardingClient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      setUserProgress: []
+      setUserProgress: [],
     };
   }
   reloadProgress = e => {
@@ -26,6 +29,8 @@ class OnboardingClient extends Component {
       setUserProgress: e
     });
   };
+  
+  
   render() {
     return (
       <div>
@@ -33,7 +38,7 @@ class OnboardingClient extends Component {
           <TeamSidebar />
         </div>
         <div className="_header">
-          <DashboardHeader header_title1="MONOCHROME" />
+          <DashboardHeader header_title1={(this.props.clientState.aboutProduct.name === undefined)?'NEW DESIGN JOURNEY':this.props.clientState.aboutProduct.name} />
         </div>
         <div className="dashboard-container">
           <div style={{ width: "67%", marginTop: "32px" }}>
@@ -66,5 +71,18 @@ class OnboardingClient extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    clientState: state.views.dashboard
+  };
+}
 
-export default OnboardingClient;
+function mapDispatchToProps(dispatch) {
+  return {
+    getUserInfo: url => {
+      dispatch(getUserInformation(url));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingClient);
