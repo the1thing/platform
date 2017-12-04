@@ -25,14 +25,18 @@ export default class QueryChat extends Component {
       stage2: false,
       stage3: false,
       stage4: false,
-      stage_complete: false
+      stage_complete: false,
+      channelName:'',
+      userId:'',
+      userName:'',
+
     };
   }
 
   componentWillMount = () => {
-    if (localStorage.getItem("userType") == "designer")
+    if (this.props.userType == "designer")
       this.getDesignerQueryChat();
-    else if (localStorage.getItem("userType") == "client") {
+    else if (this.props.userType == "client") {
       this.getClientQueryChat();
     }
   };
@@ -41,9 +45,12 @@ export default class QueryChat extends Component {
     this.setState({
       message1_visibility: "none",
       message2_visibility: "none",
-      message3_visibility: "none"
+      message3_visibility: "none",
+      channelName:nextProps.channelName,
+      userId:nextProps.userId,
+      userName:nextProps.userName,
     });
-    if (localStorage.getItem("userType") == "designer") {
+    if (nextProps.userType == "designer") {
       let check_query = nextProps.setUserProgress;
       if (!check_query.aboutUser) {
         this.setState({
@@ -95,7 +102,7 @@ export default class QueryChat extends Component {
           this.openQueryChatMessage3();
         }, 4000);
       }
-    } else if (localStorage.getItem("userType") == "client") {
+    } else if (nextProps.userType == "client") {
       let check_query = nextProps.setUserProgress;
       if (!check_query.aboutProduct) {
         this.setState({
@@ -146,7 +153,7 @@ export default class QueryChat extends Component {
       url:
         basepath +
         "project/getAllProjectsForWorkspace/" +
-        localStorage.getItem("userId")
+        this.props.userId
     })
       .then(response => {
         if (response.data == null) {
@@ -173,7 +180,7 @@ export default class QueryChat extends Component {
       url:
         basepath +
         "designer/getDesignerDetailsByStage/" +
-        localStorage.getItem("userId") +
+        this.props.userId +
         "?stage=1"
     })
       .then(response => {
@@ -215,7 +222,7 @@ export default class QueryChat extends Component {
       message3_visibility: "block"
     });
   };
-
+  
   render() {
     return (
       <div>
@@ -237,7 +244,7 @@ export default class QueryChat extends Component {
                 />
               </div>
               <div className="Rec_7_content">
-                Hi {localStorage.getItem("userName")}, <br />
+                Hi {this.props.userName}, <br />
                 I am your onboarding manager at 1THING. Let me know if you hit
                 any obstacle. I am available
                 <a href={channelpath + this.props.channelName}>
@@ -270,7 +277,7 @@ export default class QueryChat extends Component {
                 />
               </div>
               <div className="Rec_7_content">
-                Hi {localStorage.getItem("userName")}, <br />
+                Hi {this.props.userName}, <br />
                 Seems like something holding you off. If you need any help, we
                 are always
                 <a href={channelpath + this.props.channelName}>
@@ -303,7 +310,7 @@ export default class QueryChat extends Component {
                 />
               </div>
               <div className="Rec_7_content">
-                Hi {localStorage.getItem("userName")}, <br />
+                Hi {this.props.userName}, <br />
                 If we have any questions to understand scope for Monochrome,
                 I'll ping you
                 <a href={channelpath + this.props.channelName}>
@@ -323,7 +330,7 @@ export default class QueryChat extends Component {
           <div className="chat_icon" style={{ width: "60px", height: "60px" }}>
             <img
               onClick={() => {
-                window.open("https://workspace.1thing.io", "_blank");
+                window.open(channelpath + this.props.channelName, "_blank");
               }}
               src={require("../Images/floating-button.svg")}
             />

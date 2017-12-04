@@ -12,6 +12,8 @@ import { browserHistory, Route, Router } from "react-router";
 import TeamSidebar from "../team_sidebar/index";
 import DesignerPricing from "./DesignerPricing";
 import DesignerAboard from "./DesignerAboard";
+import { connect } from "react-redux";
+import { getUserInformation } from "./Actions/AsyncActions";
 
 import "./App.scss";
 class OnboardingDesigner extends Component {
@@ -24,7 +26,7 @@ class OnboardingDesigner extends Component {
   render() {
     return (
       <div>
-        <div className="dashboard-sidebar">
+        <div className="dashboard-sidebar">{console.log("designer--->",this.props.designerState)}
           <TeamSidebar />
         </div>
         <div className="_header">
@@ -54,6 +56,11 @@ class OnboardingDesigner extends Component {
                />
             </div>
             <QueryChat
+                channelName={this.props.designerState.userTypeInfo.channelName}
+                userType={this.props.designerState.userTypeInfo.userType}
+                userId={this.props.designerState.userTypeInfo._id}
+                userName={this.props.designerState.userTypeInfo.name}
+          
             //  setUserProgress={this.state.setUserProgress} 
               />
           </div>
@@ -62,5 +69,18 @@ class OnboardingDesigner extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    designerState: state.views.dashboard
+  };
+}
 
-export default OnboardingDesigner;
+function mapDispatchToProps(dispatch) {
+  return {
+    getUserInfo: url => {
+      dispatch(getUserInformation(url));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingDesigner);

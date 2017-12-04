@@ -63,7 +63,10 @@ class OnboardingClient extends Component {
             </div>
               <QueryChat
           //      setUserProgress={this.state.setUserProgress}
-                channelName={this.props.channelName}
+                channelName={this.props.clientState.userTypeInfo.channelName}
+                userType={this.props.clientState.userTypeInfo.userType}
+                userId={this.props.clientState.userTypeInfo._id}
+                userName={this.props.clientState.userTypeInfo.userName}
               />
           </div>
         </div>

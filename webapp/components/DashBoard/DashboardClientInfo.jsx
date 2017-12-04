@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import channelpath from "./utils/constant";
+import {channelpath} from "./utils/constant";
 
 export default class DashboardClientInfo extends Component {
   render() {

@@ -107,7 +107,9 @@ class OnboardingDesignerForms extends Component {
             }}
           >
             <DashboardDesignerInfo
-              name={this.props.designerState.userTypeInfo.name} />
+              name={this.props.designerState.userTypeInfo.name} 
+              channelName={this.props.designerState.userTypeInfo.channelName}
+              />
           </div>
           <div>
             <DesignerTitleMenu
