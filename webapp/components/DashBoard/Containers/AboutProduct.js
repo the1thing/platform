@@ -76,6 +76,7 @@ class AboutProduct extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
+    console.log("api link",this.state.apiLink)
     let temp = nextProps.productState.aboutProduct;
     if (!(typeof temp.name === "undefined" && temp.name === undefined)) {
       this.setState({
@@ -96,21 +97,24 @@ class AboutProduct extends Component {
 
   getAllProjectsForWorkspace = () => {
     if (
-      this.props.productState.allProjectWorkspace._id === "" &&
-      this.props.productState.allProjectWorkspace._id === "undefined" &&
-      this.props.productState.allProjectWorkspace._id === undefined
+      this.props.productState.allProjectWorkspace._id === "" //&&
+      // this.props.productState.allProjectWorkspace._id === "undefined" &&
+      // this.props.productState.allProjectWorkspace._id === undefined
     ) {
       this.setState({
         apiMethode: "post",
         apiLink: "project/addProjectFromWorkspace"
       });
+      console.log("api link if--->",this.state.apiLink)
     } else {
       this.setState({
         apiMethode: "put",
         apiLink: "project/updateProject"
       });
+      console.log("api link else--->",this.state.apiLink)
       this.getAboutProductData();
     }
+    console.log("api link--->",this.state.apiLink)
   };
   getAboutProductData = () => {
     let productId=this.props.productState.allProjectWorkspace._id;
@@ -202,7 +206,11 @@ class AboutProduct extends Component {
         window.scrollBy(0, -100);
       } else {
         if (validateUrl(this.state.document)) {
-          this.state.scopeDocument.push(this.state.document);
+          //let scopeDocument=this.state.scopeDocument;
+          //scopeDocument=scopeDocument.concat(this.state.document);
+       let temp= this.state.scopeDocument.concat(this.state.document)
+          this.setState({scopeDocument:temp})
+          // this.state.scopeDocument.push(this.state.document);
           this.postDataOfProduct();
         } else {
           this.setStateMethod("documentErrorVisiblity", true);
@@ -213,7 +221,12 @@ class AboutProduct extends Component {
     } else {
       if (this.state.document) {
         if (validateUrl(this.state.document)) {
-          this.state.scopeDocument.push(this.state.document);
+          // this.state.scopeDocument.push(this.state.document);
+          // let scopeDocument=this.state.scopeDocument;
+          // scopeDocument=scopeDocument.concat(this.state.document);
+          //this.setState({scopeDocument:scopeDocument})
+          let temp=this.state.scopeDocument.concat(this.state.document)
+          this.setState({scopeDocument:temp})
           this.postDataOfProduct();
         } else {
           this.setStateMethod("documentErrorVisiblity", true);
@@ -287,7 +300,7 @@ class AboutProduct extends Component {
 
   render() {
     return (
-      <div>
+      <div>{console.log("product-->",this.props.productState)}
         <div className="input-spacing" id="productName">
           <input
             className={this.state.productNameClass}

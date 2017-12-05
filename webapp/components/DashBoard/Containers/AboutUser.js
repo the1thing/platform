@@ -218,9 +218,9 @@ class AboutUser extends Component {
               }}
             />
             <div style={{ height: "40px" }}>
-              <OverlayTrigger placement="top" overlay={tooltip}>
+              {/* <OverlayTrigger placement="top" overlay={tooltip}>
                 <div className="tooltip-image" />
-              </OverlayTrigger>
+              </OverlayTrigger> */}
             </div>
           </div>
           <div style={{ marginBottom: "35px" }}>
@@ -274,9 +274,9 @@ class AboutUser extends Component {
               }
             />
             <div style={{ height: "40px" }}>
-              <OverlayTrigger placement="top" overlay={tooltip}>
+              {/* <OverlayTrigger placement="top" overlay={tooltip}>
                 <div className="tooltip-image" />
-              </OverlayTrigger>
+              </OverlayTrigger> */}
             </div>
           </div>
           <button className={this.renderClass()} onClick={() => this.goTo()}>

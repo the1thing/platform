@@ -52,7 +52,7 @@ export class AddLink extends Component {
     }
   }
   renderLinkList = () => {
-    return this.state.myList.map((v, k) => {
+    return this.props.defaultValue.map((v, k) => {
       return (
         <div key={k} className="subcomponent-spacing">
           <input
@@ -126,12 +126,14 @@ export class AddLink extends Component {
         <div className="input-spacing">
           <div
             style={{
-              visibility: this.state.buttonVisiblity,
+              // visibility: this.state.buttonVisiblity,
               cursor: "notAllowed"
             }}
           >
             <AddButtonLink
               checkDisable={this.state.btnDisability}
+              disabledClass={false}
+              //checkDisable={true}
               onclick={e => {
                 if (!this.state.btnDisability) {
                   this.addAnotherLink(e);

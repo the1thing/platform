@@ -155,6 +155,7 @@ export default class LoginController extends React.Component {
                 const hash = this.props.location.query.h;
                 const data = this.props.location.query.d;
                 const inviteId = this.props.location.query.id;
+
                 if (inviteId || hash) {
                     addUserToTeamFromInvite(
                         data,
