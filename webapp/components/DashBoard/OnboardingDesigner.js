@@ -26,7 +26,7 @@ class OnboardingDesigner extends Component {
   render() {
     return (
       <div>
-        <div className="dashboard-sidebar">{console.log("designer--->",this.props.designerState)}
+        <div className="dashboard-sidebar">
           <TeamSidebar />
         </div>
         <div className="_header">

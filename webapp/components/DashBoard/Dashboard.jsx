@@ -37,13 +37,13 @@ class Dashboard extends Component {
 
   componentWillMount() {
     let uId = this.getCookie("MMUSERID");
-    // let url = basepath + "user/getUser/" + 'hqwnp6ftw3yqde1ac39rowpgna'; // login bug
+    // let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke'; // login bug
     let url = basepath + "user/getUser/" + uId;
     this.props.getUserInfo(url);
   }
   render() {
     if (this.state.loading) {
-      return <div />;
+      return <div />
     } else {
       if (this.props.dashboardState.userTypeInfo.userType === "client") {
         return (

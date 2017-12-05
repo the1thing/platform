@@ -15,6 +15,9 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {browserHistory} from 'react-router/es6';
 
+import { basepath } from "../DashBoard/utils/constant";
+import axios from "axios";
+
 export default class TeamSidebar extends React.Component {
     static propTypes = {
         actions: PropTypes.shape({
@@ -30,6 +33,7 @@ export default class TeamSidebar extends React.Component {
         this.handleResize = this.handleResize.bind(this);
         this.setStyles = this.setStyles.bind(this);
         this.goToDashBoard = this.goToDashBoard.bind(this);
+        this.getCookie=this.getCookie.bind(this);
         
         this.state = this.getStateFromStores();
     }
@@ -37,7 +41,7 @@ export default class TeamSidebar extends React.Component {
     getStateFromStores() {
         const teamMembers = TeamStore.getMyTeamMembers();
         const currentTeamId = TeamStore.getCurrentId();
-
+        
         return {
             teams: TeamStore.getAll(),
             teamListings: TeamStore.getTeamListings(),
@@ -55,6 +59,32 @@ export default class TeamSidebar extends React.Component {
         this.props.actions.getTeams(0, 200);
         this.setStyles();
         
+    }
+    
+    
+    componentWillMount() {
+        let uId = this.getCookie("MMUSERID");
+        // let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke'; // login bug
+        let url = basepath + "user/getUser/" + uId;
+        this.getUserType(url);
+        
+    }
+    
+    getUserType(_apiurl){
+     return axios({
+            method: "get",
+            url: _apiurl
+        }).then((response)=>{
+            if(response.data.data==null){
+                localStorage.setItem('dashVisibility',false);
+            }
+            else{
+                localStorage.setItem('dashVisibility',true);
+            }
+        }
+            ).catch((error)=>{
+                console.log('error in dashboard button visibility', error);
+            })
     }
 
     componentWillUnmount() {
@@ -104,6 +134,11 @@ export default class TeamSidebar extends React.Component {
         browserHistory.push('/dashboard');
         
     }
+    getCookie = name => {
+        var re = new RegExp(name + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        return value != null ? unescape(value[1]) : null;
+      };
 
     render() {
         if (!this.state.show) {
@@ -191,7 +226,8 @@ export default class TeamSidebar extends React.Component {
         return (
             <div className='team-sidebar'>
                 <div className='team-wrapper'>
-                    <div className="dashboard-icon">
+                    <div className="dashboard-icon" 
+                    style={{display:localStorage.getItem('dashVisibility') === 'true'?'block':'none'}}>
                         <a>
                          <div className="dashboard-btn" onClick={(e)=>this.goToDashBoard()}>
                             <div className="dashboard-btn-initials">d</div>
