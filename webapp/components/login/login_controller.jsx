@@ -24,6 +24,7 @@ import PropTypes from 'prop-types';
 
 import React from 'react';
 import logoImage from 'images/logo.png';
+import { basepath } from "../DashBoard/utils/constant";
 
 export default class LoginController extends React.Component {
     static get propTypes() {
@@ -42,6 +43,7 @@ export default class LoginController extends React.Component {
 
         this.handleLoginIdChange = this.handleLoginIdChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.getCookie=this.getCookie.bind(this);
 
         let loginId = '';
         if (this.props.location.query.extra === Constants.SIGNIN_VERIFIED && this.props.location.query.email) {
@@ -59,6 +61,12 @@ export default class LoginController extends React.Component {
             loading: false
         };
     }
+
+    getCookie = name => {
+        var re = new RegExp(name + "=([^;]+)");
+        var value = re.exec(document.cookie);
+        return value != null ? unescape(value[1]) : null;
+      };
 
     componentDidMount() {
         document.title = global.window.mm_config.SiteName;
@@ -155,6 +163,25 @@ export default class LoginController extends React.Component {
                 const hash = this.props.location.query.h;
                 const data = this.props.location.query.d;
                 const inviteId = this.props.location.query.id;
+
+                /*<---------6 dec-2017 for dashboard button visibility--------> */
+                let uId = this.getCookie("MMUSERID");
+                // let url = basepath + "user/getUser/" + 's9kfqgs4xp8g5burantssc6mje'; // login bug
+                let url = basepath + "user/getUser/" + uId;
+
+                fetch(url).then((resp) => resp.json())
+                                .then((response) => {
+                                    if(response.data==null){
+                                        localStorage.setItem('dashVisibility',false);
+                                    }
+                                    else{
+                                        
+                                        localStorage.setItem('dashVisibility',true);
+                                    }
+                                              })
+                                .catch(function (error) {
+                                    console.log('Error', error);
+                                })
 
                 if (inviteId || hash) {
                     addUserToTeamFromInvite(

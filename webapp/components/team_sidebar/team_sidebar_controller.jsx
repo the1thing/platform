@@ -62,30 +62,29 @@ export default class TeamSidebar extends React.Component {
     }
     
     
-    componentWillMount() {
-        let uId = this.getCookie("MMUSERID");
-        // let url = basepath + "user/getUser/" + 'pwgy5iddnfnw9edp7mdb966tke'; // login bug
-        let url = basepath + "user/getUser/" + uId;
-        this.getUserType(url);
+    // componentWillMount() {
+    //     let uId = this.getCookie("MMUSERID");
+    //     // let url = basepath + "user/getUser/" + 'hqwnp6ftw3yqde1ac39rowpgna'; // login bug
+    //     let url = basepath + "user/getUser/" + uId;
         
-    }
+    // }
     
-    getUserType(_apiurl){
-     return axios({
-            method: "get",
-            url: _apiurl
-        }).then((response)=>{
-            if(response.data.data==null){
-                localStorage.setItem('dashVisibility',false);
-            }
-            else{
-                localStorage.setItem('dashVisibility',true);
-            }
-        }
-            ).catch((error)=>{
-                console.log('error in dashboard button visibility', error);
-            })
-    }
+    // getUserType(_apiurl){
+    //  return axios({
+    //         method: "get",
+    //         url: _apiurl
+    //     }).then((response)=>{
+    //         if(response.data.data==null){
+    //             localStorage.setItem('dashVisibility',false);
+    //         }
+    //         else{
+    //             localStorage.setItem('dashVisibility',true);
+    //         }
+    //     }
+    //         ).catch((error)=>{
+    //             console.log('error in dashboard button visibility', error);
+    //         })
+    // }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
