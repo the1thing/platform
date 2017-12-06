@@ -76,7 +76,6 @@ class AboutProduct extends Component {
   };
 
   componentWillReceiveProps = nextProps => {
-    console.log("api link",this.state.apiLink)
     let temp = nextProps.productState.aboutProduct;
     if (!(typeof temp.name === "undefined" && temp.name === undefined)) {
       this.setState({
@@ -105,21 +104,17 @@ class AboutProduct extends Component {
         apiMethode: "post",
         apiLink: "project/addProjectFromWorkspace"
       });
-      console.log("api link if--->",this.state.apiLink)
     } else {
       this.setState({
         apiMethode: "put",
         apiLink: "project/updateProject"
       });
-      console.log("api link else--->",this.state.apiLink)
       this.getAboutProductData();
     }
-    console.log("api link--->",this.state.apiLink)
   };
   getAboutProductData = () => {
     let productId=this.props.productState.allProjectWorkspace._id;
     if(productId !== '' && productId !== 'undefined' && productId !== undefined){
-      console.log("product id",productId)
     let url =
       basepath +
       "project/getProjectByIds/" +
@@ -300,7 +295,7 @@ class AboutProduct extends Component {
 
   render() {
     return (
-      <div>{console.log("product-->",this.props.productState)}
+      <div>
         <div className="input-spacing" id="productName">
           <input
             className={this.state.productNameClass}

@@ -20,8 +20,10 @@ export function getUserInformation(_apiurl) {
     })
       .then(response => {
         if (response.data.data !== null) {
+          localStorage.setItem('dashVisibility',true)
           dispatch(setUserInformation(response.data.data));
         } else {
+          localStorage.setItem('dashVisibility',false);
           let _temp = {
             userType: "",
             _id: "",
