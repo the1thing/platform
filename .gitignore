@@ -4,6 +4,7 @@ logs
 node_modules
 /dist
 /webapp/dist
+/docker/volumes
 jobserver
 npm-debug.log
 webapp/yarn-error.log
