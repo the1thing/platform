@@ -168,7 +168,7 @@ export default class LoginController extends React.Component {
                 let uId = this.getCookie("MMUSERID");
                 // let url = basepath + "user/getUser/" + 's9kfqgs4xp8g5burantssc6mje'; // login bug
                 let url = basepath + "user/getUser/" + uId;
-
+                
                 fetch(url).then((resp) => resp.json())
                                 .then((response) => {
                                     if(response.data==null){
